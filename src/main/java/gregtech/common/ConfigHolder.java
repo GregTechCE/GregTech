@@ -57,9 +57,9 @@ public class ConfigHolder {
     @Config.Comment("Chance with which flint and steel will create fire. Default: 50")
     public static int flintChanceToCreateFire = 50;
 
-    @Config.Comment("Recipes for machine hulls use more materials. Default: false")
+    @Config.Comment("Recipes for machine hulls use more materials. Default: true")
     @Config.RequiresMcRestart
-    public static boolean harderMachineHulls = false;
+    public static boolean harderMachineHulls = true;
 
     @Config.Comment("If true, insufficient energy supply will reset recipe progress to zero. If false, progress will decrease to zero with 2x speed. Default: false")
     @Config.RequiresWorldRestart
@@ -185,12 +185,11 @@ public class ConfigHolder {
 
         public static class GT5U {
 
-            @Config.Comment("Set these to true to enable certain Batteries.")
-            @Config.Name("Batteries - Enable an extra ZPM and UV Battery (this also makes the Ultimate Battery harder to make)")
+            @Config.Comment("Enable an extra ZPM and UV Battery (this also makes the Ultimate Battery harder to make). Default: false")
             @Config.RequiresMcRestart
             public boolean enableZPMandUVBats = false;
 
-            @Config.Name("Batteries - Replace the Ultimate Battery with a MAX Battery")
+            @Config.Comment("Replace the Ultimate Battery with a MAX Battery. Default: false")
             @Config.RequiresMcRestart
             public boolean replaceUVwithMAXBat = false;
 
@@ -210,6 +209,9 @@ public class ConfigHolder {
 
             @Config.Comment("Change the recipe of rods to result in 1 stick and 2 small piles of dusts. Default: false")
             public boolean harderRods = false;
+
+            @Config.Comment("Whether or not to use polymers instead of rare metals for Carbon Fibers. REMOVES THE CHANCED OUTPUT! Default: false")
+            public boolean polymerCarbonFiber = false;
         }
 
         public static class GT6 {

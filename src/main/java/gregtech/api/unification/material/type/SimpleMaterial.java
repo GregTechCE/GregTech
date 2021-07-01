@@ -37,7 +37,7 @@ public abstract class SimpleMaterial <T extends SimpleMaterial<T>> implements IM
     }
 
     public T setFormula(String formula) {
-        this.chemicalFormula = formula;
+        this.chemicalFormula = IMaterial.calculateChemicalFormula(formula);
         return (T)this;
     }
 

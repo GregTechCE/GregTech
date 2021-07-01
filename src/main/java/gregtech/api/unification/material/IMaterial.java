@@ -4,6 +4,7 @@ import com.google.common.base.CaseFormat;
 import com.google.common.collect.ImmutableList;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.GTControlledRegistry;
+import gregtech.api.util.SmallDigits;
 import net.minecraft.client.resources.I18n;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
@@ -61,6 +62,20 @@ public interface IMaterial <T> {
             index++;
         }
         return index;
+    }
+
+    // TODO Fix isotope tooltips being set toSmallDownNumbers
+    static String calculateChemicalFormula(String unformattedFormula) {
+        StringBuilder sb = new StringBuilder();
+        if (unformattedFormula != null && !unformattedFormula.isEmpty()) {
+            for (char c : unformattedFormula.toCharArray()) {
+                if (Character.isDigit(c))
+                    sb.append(SmallDigits.toSmallDownNumbers(Character.toString(c)));
+                else
+                    sb.append(c);
+            }
+        }
+        return sb.toString(); // returns "" if no formula, like other method
     }
 
     @Nullable

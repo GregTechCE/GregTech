@@ -73,7 +73,7 @@ public class Materials {
     public static FluidMaterial Fluorine = new FluidMaterial(36, "fluorine", 0xFFFFFF, GAS, of(), STATE_GAS, Elements.get("Fluorine")).setFluidTemperature(253);
     public static IngotMaterial Francium = new IngotMaterial(37, "francium", 0xAAAAAA, SHINY, 2, of(), 0, Elements.get("Francium"));
     public static IngotMaterial Gadolinium = new IngotMaterial(38, "gadolinium", 0xDDDDFF, METALLIC, 2, of(), 0, Elements.get("Gadolinium"), 1585);
-    public static IngotMaterial Gallium = new IngotMaterial(39, "gallium", 0xDCDCFF, SHINY, 2, of(), GENERATE_PLATE, Elements.get("Gallium"));
+    public static IngotMaterial Gallium = new IngotMaterial(39, "gallium", 0xDCDCFF, SHINY, 2, of(), GENERATE_PLATE | GENERATE_FOIL, Elements.get("Gallium"));
     public static IngotMaterial Germanium = new IngotMaterial(40, "germanium", 0x434343, SHINY, 2, of(), 0, Elements.get("Germanium"));
     public static IngotMaterial Gold = new IngotMaterial(41, "gold", 0xFFFF1E, SHINY, 2, of(), EXT2_METAL | GENERATE_ORE | MORTAR_GRINDABLE | EXCLUDE_BLOCK_CRAFTING_BY_HAND_RECIPES, Elements.get("Gold"));
     public static IngotMaterial Hafnium = new IngotMaterial(42, "hafnium", 0x99999a, SHINY, 2, of(), 0, Elements.get("Hafnium"));
@@ -138,7 +138,7 @@ public class Materials {
     public static IngotMaterial Sodium = new IngotMaterial(101, "sodium", 0x000096, METALLIC, 2, of(), STD_METAL, Elements.get("Sodium"));
     public static IngotMaterial Strontium = new IngotMaterial(102, "strontium", 0xC8C8C8, METALLIC, 2, of(), STD_METAL, Elements.get("Strontium"));
     public static DustMaterial Sulfur = new DustMaterial(103, "sulfur", 0xC8C800, DULL, 2, of(), NO_SMASHING | NO_SMELTING | FLAMMABLE | GENERATE_ORE, Elements.get("Sulfur"));
-    public static IngotMaterial Tantalum = new IngotMaterial(104, "tantalum", 0xFFFFFF, METALLIC, 2, of(), STD_METAL, Elements.get("Tantalum"));
+    public static IngotMaterial Tantalum = new IngotMaterial(104, "tantalum", 0xFFFFFF, METALLIC, 2, of(), STD_METAL | GENERATE_FOIL, Elements.get("Tantalum"));
     public static IngotMaterial Technetium = new IngotMaterial(105, "technetium", 0x545455, SHINY, 2, of(), 0, Elements.get("Technetium"));
     public static IngotMaterial Tellurium = new IngotMaterial(106, "tellurium", 0xFFFFFF, METALLIC, 2, of(), STD_METAL, Elements.get("Tellurium"));
     public static IngotMaterial Tennessine = new IngotMaterial(107, "tennessine" , 0x977fd6, SHINY, 2, of(), 0, Elements.get("Tennessine"));
@@ -573,6 +573,17 @@ public class Materials {
     public static DustMaterial Wheat = new DustMaterial(353, "wheat", 0xFFFFC4, FINE, 0, of(), 0);
     public static DustMaterial Meat = new DustMaterial(354, "meat", 12667980, SAND, 1, of(), DISABLE_DECOMPOSITION);
 
+    // TODO Put these in good places, PBI Tools
+    public static final IngotMaterial Polybenzimidazole = new IngotMaterial(356, "polybenzimidazole", 0x2D2D2D, DULL, 0, of(new MaterialStack(Carbon, 20), new MaterialStack(Hydrogen, 12), new MaterialStack(Nitrogen, 4)), EXCLUDE_BLOCK_CRAFTING_RECIPES | SMELT_INTO_FLUID | NO_SMASHING | DISABLE_DECOMPOSITION | GENERATE_FOIL);
+    public static final SimpleFluidMaterial DiphenylIsophtalate = new SimpleFluidMaterial(122, "diphenyl_isophthalate", 0x246E57, DULL, of(new MaterialStack(Carbon, 20), new MaterialStack(Hydrogen, 14), new MaterialStack(Oxygen, 4)), DISABLE_DECOMPOSITION);
+    public static final SimpleFluidMaterial PhthalicAcid = new SimpleFluidMaterial(123, "phthalic_acid", 0xD1D1D1, FLUID, of(new MaterialStack(Carbon, 8), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 4)), GENERATE_FLUID_BLOCK | DISABLE_DECOMPOSITION);
+    public static final SimpleFluidMaterial Dimethylbenzene = new SimpleFluidMaterial(124, "dimethylbenzene", 0x669C40, FLUID, of(new MaterialStack(Carbon, 8), new MaterialStack(Hydrogen, 10)), DISABLE_DECOMPOSITION).setFormula("C6H4(CH3)2");
+    public static final SimpleFluidMaterial Diaminobenzidine = new SimpleFluidMaterial(125, "diaminobenzidine", 0x337D59, DULL, of(new MaterialStack(Carbon, 12), new MaterialStack(Hydrogen, 14), new MaterialStack(Nitrogen, 4)), DISABLE_DECOMPOSITION);
+    public static final SimpleFluidMaterial Dichlorobenzidine = new SimpleFluidMaterial(126, "dichlorobenzidine", 0xA1DEA6, DULL, of(new MaterialStack(Carbon, 12), new MaterialStack(Hydrogen, 10), new MaterialStack(Chlorine, 2), new MaterialStack(Nitrogen, 2)), DISABLE_DECOMPOSITION);
+    public static final SimpleFluidMaterial Nitrochlorobenzene = new SimpleFluidMaterial(127, "nitrochlorobenzene", 0x8FB51A, DULL, of(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 4), new MaterialStack(Chlorine, 1), new MaterialStack(Nitrogen, 1), new MaterialStack(Oxygen, 2)), DISABLE_DECOMPOSITION);
+    public static final SimpleFluidMaterial Chlorobenzene = new SimpleFluidMaterial(128, "chlorobenzene", 0x326A3E, DULL, of(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 5), new MaterialStack(Chlorine, 1)), DISABLE_DECOMPOSITION);
+    public static final SimpleDustMaterial PotassiumDichromate = new SimpleDustMaterial(845, "potassium_dichromate", 0xFF084E, DULL, of(new MaterialStack(Potassium, 2), new MaterialStack(Chrome, 2), new MaterialStack(Oxygen, 7)), GENERATE_SMALL_TINY);
+    public static final SimpleDustMaterial ChromiumTrioxide = new SimpleDustMaterial(848, "chromium_trioxide", 0xFFE4E1, DULL, of(new MaterialStack(Chrome, 1), new MaterialStack(Oxygen, 3)), GENERATE_SMALL_TINY);
 
 
     static {

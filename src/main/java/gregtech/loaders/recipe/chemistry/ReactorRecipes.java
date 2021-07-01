@@ -270,11 +270,12 @@ public class ReactorRecipes {
             .duration(80).EUt(30).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
-            .fluidInputs(Chlorine.getFluid(4000))
-            .fluidInputs(Benzene.getFluid(1000))
-            .fluidOutputs(HydrochloricAcid.getFluid(2000))
-            .fluidOutputs(Dichlorobenzene.getFluid(1000))
-            .duration(120).EUt(30).buildAndRegister();
+                .fluidInputs(Chlorine.getFluid(4000))
+                .fluidInputs(Benzene.getFluid(1000))
+                .notConsumable(new IntCircuitIngredient(2))
+                .fluidOutputs(HydrochloricAcid.getFluid(2000))
+                .fluidOutputs(Dichlorobenzene.getFluid(1000))
+                .duration(120).EUt(30).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
             .fluidInputs(Propene.getFluid(1000))

@@ -301,6 +301,13 @@ public class MetaItem1 extends MaterialMetaItem {
             .EUt(16)
             .buildAndRegister();
 
+        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().duration(30).EUt(4)
+                .input(OrePrefix.dust, Materials.Tantalum)
+                .input(OrePrefix.foil, Materials.Manganese)
+                .fluidInputs(Materials.Polyethylene.getFluid(144))
+                .outputs(MetaItems.BATTERY_RE_ULV_TANTALUM.getStackForm(8))
+                .buildAndRegister();
+
         RecipeMaps.EXTRACTOR_RECIPES.recipeBuilder()
             .inputs(BATTERY_SU_LV_SULFURIC_ACID.getStackForm())
             .outputs(BATTERY_HULL_LV.getStackForm())

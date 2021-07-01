@@ -248,20 +248,32 @@ public class DistillationRecipes {
             .duration(600).EUt(120).buildAndRegister();
 
         DISTILLATION_RECIPES.recipeBuilder()
-            .fluidInputs(CharcoalByproducts.getFluid(1000))
-            .output(dustSmall, Charcoal)
-            .fluidOutputs(WoodTar.getFluid(250))
-            .fluidOutputs(WoodVinegar.getFluid(500))
-            .fluidOutputs(WoodGas.getFluid(250))
-            .duration(40).EUt(256).buildAndRegister();
+                .fluidInputs(CharcoalByproducts.getFluid(1000))
+                .output(dustSmall, Charcoal)
+                .fluidOutputs(WoodTar.getFluid(250))
+                .fluidOutputs(WoodVinegar.getFluid(400))
+                .fluidOutputs(WoodGas.getFluid(250))
+                .fluidOutputs(Dimethylbenzene.getFluid(100))
+                .duration(40).EUt(256).buildAndRegister();
 
         DISTILLATION_RECIPES.recipeBuilder()
-            .fluidInputs(WoodTar.getFluid(1000))
-            .fluidOutputs(Creosote.getFluid(500))
-            .fluidOutputs(Phenol.getFluid(75))
-            .fluidOutputs(Benzene.getFluid(350))
-            .fluidOutputs(Toluene.getFluid(75))
-            .duration(40).EUt(256).buildAndRegister();
+                .fluidInputs(WoodTar.getFluid(1000))
+                .fluidOutputs(Creosote.getFluid(300))
+                .fluidOutputs(Phenol.getFluid(75))
+                .fluidOutputs(Benzene.getFluid(350))
+                .fluidOutputs(Toluene.getFluid(75))
+                .fluidOutputs(Dimethylbenzene.getFluid(200))
+                .duration(40).EUt(256).buildAndRegister();
+
+        DISTILLATION_RECIPES.recipeBuilder()
+                .fluidInputs(WoodVinegar.getFluid(1000))
+                .fluidOutputs(AceticAcid.getFluid(100))
+                .fluidOutputs(Water.getFluid(500))
+                .fluidOutputs(Ethanol.getFluid(10))
+                .fluidOutputs(Methanol.getFluid(300))
+                .fluidOutputs(Acetone.getFluid(50))
+                .fluidOutputs(MethylAcetate.getFluid(10))
+                .duration(40).EUt(256).buildAndRegister();
 
         DISTILLATION_RECIPES.recipeBuilder()
             .fluidInputs(WoodGas.getFluid(1000))
@@ -301,16 +313,6 @@ public class DistillationRecipes {
             .fluidInputs(SeedOil.getFluid(24))
             .fluidOutputs(Lubricant.getFluid(12))
             .duration(16).EUt(96).buildAndRegister();
-
-        DISTILLATION_RECIPES.recipeBuilder()
-            .fluidInputs(WoodVinegar.getFluid(1000))
-            .fluidOutputs(AceticAcid.getFluid(100))
-            .fluidOutputs(Water.getFluid(500))
-            .fluidOutputs(Ethanol.getFluid(10))
-            .fluidOutputs(Methanol.getFluid(300))
-            .fluidOutputs(Acetone.getFluid(50))
-            .fluidOutputs(MethylAcetate.getFluid(10))
-            .duration(40).EUt(256).buildAndRegister();
 
         DISTILLATION_RECIPES.recipeBuilder()
             .fluidInputs(FermentedBiomass.getFluid(1000))
