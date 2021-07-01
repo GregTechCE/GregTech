@@ -19,6 +19,7 @@ public class ChemistryRecipes {
         BrewingRecipes.init();
         ChemicalBathRecipes.init();
         ReactorRecipes.init();
+        PolymerRecipes.init();
 
 
         // A Few Random Recipes
