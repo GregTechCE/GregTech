@@ -26,21 +26,16 @@ public class RecipeMapGroupOutput extends RecipeMap<SimpleRecipeBuilder> impleme
 
     @Override
     public Builder createUITemplate(DoubleSupplier progressSupplier, IItemHandlerModifiable importItems, IItemHandlerModifiable exportItems, FluidTankList importFluids, FluidTankList exportFluids) {
-        return createUITemplate(progressSupplier, importItems, exportItems, importFluids, exportFluids, 0);
-    }
-
-    @Override
-    public Builder createUITemplate(DoubleSupplier progressSupplier, IItemHandlerModifiable importItems, IItemHandlerModifiable exportItems, FluidTankList importFluids, FluidTankList exportFluids, int yOffset) {
-        ModularUI.Builder builder = ModularUI.defaultBuilder(yOffset);
-        builder.widget(new ProgressWidget(progressSupplier, 77, 22 + yOffset, 21, 20, progressBarTexture, moveType));
-        addInventorySlotGroup(builder, importItems, importFluids, false, yOffset);
+        ModularUI.Builder builder = ModularUI.defaultBuilder();
+        builder.widget(new ProgressWidget(progressSupplier, 77, 22, 21, 20, progressBarTexture, moveType));
+        addInventorySlotGroup(builder, importItems, importFluids, false);
         BooleanWrapper booleanWrapper = new BooleanWrapper();
-        ServerWidgetGroup itemOutputGroup = createItemOutputWidgetGroup(exportItems, new ServerWidgetGroup(() -> !booleanWrapper.getCurrentMode()), yOffset);
-        ServerWidgetGroup fluidOutputGroup = createFluidOutputWidgetGroup(exportFluids, new ServerWidgetGroup(booleanWrapper::getCurrentMode), yOffset);
+        ServerWidgetGroup itemOutputGroup = createItemOutputWidgetGroup(exportItems, new ServerWidgetGroup(() -> !booleanWrapper.getCurrentMode()));
+        ServerWidgetGroup fluidOutputGroup = createFluidOutputWidgetGroup(exportFluids, new ServerWidgetGroup(booleanWrapper::getCurrentMode));
         builder.widget(itemOutputGroup).widget(fluidOutputGroup);
-        ToggleButtonWidget buttonWidget = new ToggleButtonWidget(176 - 7 - 20, 60 + yOffset, 20, 20,
-                GuiTextures.BUTTON_SWITCH_VIEW, booleanWrapper::getCurrentMode, booleanWrapper::setCurrentMode)
-                .setTooltipText("gregtech.gui.toggle_view");
+        ToggleButtonWidget buttonWidget = new ToggleButtonWidget(176 - 7 - 20, 60, 20, 20,
+            GuiTextures.BUTTON_SWITCH_VIEW, booleanWrapper::getCurrentMode, booleanWrapper::setCurrentMode)
+            .setTooltipText("gregtech.gui.toggle_view");
         builder.widget(buttonWidget);
         return builder;
     }
@@ -69,15 +64,11 @@ public class RecipeMapGroupOutput extends RecipeMap<SimpleRecipeBuilder> impleme
     }
 
     protected ServerWidgetGroup createItemOutputWidgetGroup(IItemHandlerModifiable itemHandler, ServerWidgetGroup widgetGroup) {
-        return createItemOutputWidgetGroup(itemHandler, widgetGroup, 0);
-    }
-
-    protected ServerWidgetGroup createItemOutputWidgetGroup(IItemHandlerModifiable itemHandler, ServerWidgetGroup widgetGroup, int yOffset) {
         int[] inputSlotGrid = determineSlotsGrid(itemHandler.getSlots());
         int itemSlotsToLeft = inputSlotGrid[0];
         int itemSlotsToDown = inputSlotGrid[1];
         int startInputsX = 106;
-        int startInputsY = 32 - (int) (itemSlotsToDown / 2.0 * 18) + yOffset;
+        int startInputsY = 32 - (int) (itemSlotsToDown / 2.0 * 18);
         for (int i = 0; i < itemSlotsToDown; i++) {
             for (int j = 0; j < itemSlotsToLeft; j++) {
                 int slotIndex = i * itemSlotsToLeft + j;
@@ -91,15 +82,11 @@ public class RecipeMapGroupOutput extends RecipeMap<SimpleRecipeBuilder> impleme
     }
 
     protected ServerWidgetGroup createFluidOutputWidgetGroup(IMultipleTankHandler fluidHandler, ServerWidgetGroup widgetGroup) {
-        return createFluidOutputWidgetGroup(fluidHandler, widgetGroup, 0);
-    }
-
-    protected ServerWidgetGroup createFluidOutputWidgetGroup(IMultipleTankHandler fluidHandler, ServerWidgetGroup widgetGroup, int yOffset) {
         int[] inputSlotGrid = determineSlotsGrid(fluidHandler.getTanks());
         int itemSlotsToLeft = inputSlotGrid[0];
         int itemSlotsToDown = inputSlotGrid[1];
         int startInputsX = 106;
-        int startInputsY = 32 - (int) (itemSlotsToDown / 2.0 * 18) + yOffset;
+        int startInputsY = 32 - (int) (itemSlotsToDown / 2.0 * 18);
         for (int i = 0; i < itemSlotsToDown; i++) {
             for (int j = 0; j < itemSlotsToLeft; j++) {
                 int slotIndex = i * itemSlotsToLeft + j;
