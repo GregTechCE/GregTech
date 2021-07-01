@@ -285,24 +285,14 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
 
     //this DOES NOT include machine control widgets or binds player inventory
     public ModularUI.Builder createUITemplate(DoubleSupplier progressSupplier, IItemHandlerModifiable importItems, IItemHandlerModifiable exportItems, FluidTankList importFluids, FluidTankList exportFluids) {
-        return createUITemplate(progressSupplier, importItems, exportItems, importFluids, exportFluids, 0);
-    }
-
-    //this DOES NOT include machine control widgets or binds player inventory
-    //to be called in order to offset widgets and slots from the top of the window
-    public ModularUI.Builder createUITemplate(DoubleSupplier progressSupplier, IItemHandlerModifiable importItems, IItemHandlerModifiable exportItems, FluidTankList importFluids, FluidTankList exportFluids, int yOffset) {
-        ModularUI.Builder builder = ModularUI.defaultBuilder(yOffset);
-        builder.widget(new ProgressWidget(progressSupplier, 77, 22 + yOffset, 21, 20, progressBarTexture, moveType));
-        addInventorySlotGroup(builder, importItems, importFluids, false, yOffset);
-        addInventorySlotGroup(builder, exportItems, exportFluids, true, yOffset);
+        ModularUI.Builder builder = ModularUI.defaultBuilder();
+        builder.widget(new ProgressWidget(progressSupplier, 77, 22, 21, 20, progressBarTexture, moveType));
+        addInventorySlotGroup(builder, importItems, importFluids, false);
+        addInventorySlotGroup(builder, exportItems, exportFluids, true);
         return builder;
     }
 
     protected void addInventorySlotGroup(ModularUI.Builder builder, IItemHandlerModifiable itemHandler, FluidTankList fluidHandler, boolean isOutputs) {
-        addInventorySlotGroup(builder, itemHandler, fluidHandler, isOutputs, 0);
-    }
-
-    protected void addInventorySlotGroup(ModularUI.Builder builder, IItemHandlerModifiable itemHandler, FluidTankList fluidHandler, boolean isOutputs, int yOffset) {
         int itemInputsCount = itemHandler.getSlots();
         int fluidInputsCount = fluidHandler.getTanks();
         boolean invertFluids = false;
@@ -316,7 +306,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
         int itemSlotsToLeft = inputSlotGrid[0];
         int itemSlotsToDown = inputSlotGrid[1];
         int startInputsX = isOutputs ? 106 : 69 - itemSlotsToLeft * 18;
-        int startInputsY = 32 - (int) (itemSlotsToDown / 2.0 * 18) + yOffset;
+        int startInputsY = 32 - (int) (itemSlotsToDown / 2.0 * 18);
         for (int i = 0; i < itemSlotsToDown; i++) {
             for (int j = 0; j < itemSlotsToLeft; j++) {
                 int slotIndex = i * itemSlotsToLeft + j;
