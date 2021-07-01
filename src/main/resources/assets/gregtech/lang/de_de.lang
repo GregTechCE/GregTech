@@ -1915,7 +1915,7 @@ gregtech.machine.gas_turbine.hv.name=Turbo Gas Turbine
 gregtech.machine.gas_turbine.ev.name=Turbo Gas Turbine II
 
 gregtech.machine.magic_energy_absorber.name=Magic Energy Absorber
-gregtech.machine.magic_energy_absorber.tooltip=Max Voltage OUT: §a2048 §7(§aEV§7)/nCollects energy from ender crystals in 64 blocks/nEach ender crystal adds 32 EU/t to output/nPlace Dragon Egg on top to amplify output/n/nWhen amplified:/nEach ender crystal adds 128 EU/t
+gregtech.machine.magic_energy_absorber.tooltip=Max Voltage OUT: §a2048 §7(§aEV§7)/nSammelt Energie von Enderkristallen die sich auf nätürlich-generierten Obsidian Säulen befinden und im bereich von 64 Blöcken sind/nJeder Enderkristall erzeugt 32 EU/t /nPlaziere ein Drachenei auf den Enderkristall um mehr Energie zu erzäugen/nDadurch erzeügen alle Enderkristalle auf denen ein Drachenei ist:/n128 EU/t
 gregtech.machine.magic_energy_converter.name=Magic Energy Converter
 gregtech.machine.magic_energy_converter.tooltip=Voltage OUT: §a128 §7(§aMV§7)/nCollects essentia from containers within 16 blocks/nConsumes 20 Potentia per second
 
