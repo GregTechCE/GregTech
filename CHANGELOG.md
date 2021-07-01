@@ -1,5 +1,10 @@
 ## Changelog
 
+### 1.16.1
+* Note: This is hotfix
+* Fixed Surface block spawning (#1681) - ALongStringOfNumbers
+* Reverted "Fixed name overlaps in GUIs (#1665)" (#1686) - LAGIdiot
+
 ### 1.16.0
 * Added Fluid Regulator (#1570) - hjae78
 * Added Info tab for multiblock description (#1583) - ALongStringOfNumbers
