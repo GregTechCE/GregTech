@@ -62,7 +62,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
     protected MoveType moveType;
 
     private final Map<FluidKey, Collection<Recipe>> recipeFluidMap = new HashMap<>();
-    private final Collection<Recipe> recipeList = new ArrayList<>();
+    private final List<Recipe> recipeList = new ArrayList<>();
 
     public RecipeMap(String unlocalizedName,
                      int minInputs, int maxInputs, int minOutputs, int maxOutputs,
@@ -91,6 +91,13 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
     @ZenMethod
     public static List<RecipeMap<?>> getRecipeMaps() {
         return Collections.unmodifiableList(RECIPE_MAPS);
+    }
+
+    public static void sortMaps() {
+        for (RecipeMap<?> rmap : RECIPE_MAPS) {
+            rmap.recipeList.sort(Comparator.comparingInt(Recipe::getDuration)
+                    .thenComparingInt(Recipe::getEUt));
+        }
     }
 
     @ZenMethod
@@ -372,8 +379,8 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
     }
 
 
-    public Collection<Recipe> getRecipeList() {
-        return Collections.unmodifiableCollection(recipeList);
+    public List<Recipe> getRecipeList() {
+        return Collections.unmodifiableList(recipeList);
     }
 
     @ZenMethod("findRecipe")
