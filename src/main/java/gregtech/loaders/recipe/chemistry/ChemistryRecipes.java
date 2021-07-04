@@ -1,12 +1,12 @@
 package gregtech.loaders.recipe.chemistry;
 
-import gregtech.common.items.MetaItems;
+import gregtech.loaders.recipe.LargeReactorRecipes;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 
-import static gregtech.api.unification.ore.OrePrefix.*;
-import static gregtech.api.unification.material.Materials.*;
 import static gregtech.api.recipes.RecipeMaps.*;
+import static gregtech.api.unification.material.Materials.*;
+import static gregtech.api.unification.ore.OrePrefix.dust;
+import static gregtech.api.unification.ore.OrePrefix.ingot;
 
 public class ChemistryRecipes {
 
@@ -20,6 +20,7 @@ public class ChemistryRecipes {
         ChemicalBathRecipes.init();
         ReactorRecipes.init();
         PolymerRecipes.init();
+        LargeReactorRecipes.init();
 
 
         // A Few Random Recipes
