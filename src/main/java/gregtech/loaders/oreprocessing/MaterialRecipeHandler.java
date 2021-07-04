@@ -26,7 +26,6 @@ import static gregtech.api.unification.material.type.DustMaterial.MatFlags.*;
 import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.GENERATE_ROD;
 import static gregtech.api.unification.material.type.SolidMaterial.MatFlags.MORTAR_GRINDABLE;
 import static gregtech.api.unification.ore.OrePrefix.*;
-import static gregtech.api.unification.ore.OrePrefix.block;
 
 public class MaterialRecipeHandler {
 
@@ -111,7 +110,7 @@ public class MaterialRecipeHandler {
                             .blastFurnaceTemp(metalMaterial.blastFurnaceTemperature)
                             .duration(duration).EUt(120);
                     if (circuitRequiringMaterials.contains(metalMaterial)) {
-                        ingotSmeltingBuilder.inputs(new CountableIngredient(new IntCircuitIngredient(0), 0));
+                        ingotSmeltingBuilder.inputs(new CountableIngredient(new IntCircuitIngredient(1), 0));
                     }
                     ingotSmeltingBuilder.buildAndRegister();
 
@@ -122,7 +121,7 @@ public class MaterialRecipeHandler {
                                 .blastFurnaceTemp(metalMaterial.blastFurnaceTemperature)
                                 .duration(Math.max(1, duration / 9)).EUt(120);
                         if (circuitRequiringMaterials.contains(metalMaterial)) {
-                            nuggetSmeltingBuilder.inputs(IntCircuitIngredient.getIntegratedCircuit(0));
+                            nuggetSmeltingBuilder.inputs(IntCircuitIngredient.getIntegratedCircuit(1));
                         }
                         nuggetSmeltingBuilder.buildAndRegister();
                     }
@@ -259,7 +258,7 @@ public class MaterialRecipeHandler {
             if (!material.hasFlag(NO_SMASHING)) {
                 ItemStack plateStack = OreDictUnifier.get(OrePrefix.plate, material);
                 RecipeMaps.BENDER_RECIPES.recipeBuilder()
-                    .circuitMeta(0)
+                    .circuitMeta(1)
                     .input(ingotPrefix, material)
                     .outputs(plateStack)
                     .EUt(24).duration((int) (material.getAverageMass()))

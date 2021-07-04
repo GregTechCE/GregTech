@@ -58,7 +58,7 @@ public class ReactorRecipes {
             .duration(120).EUt(30).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
-            .notConsumable(new IntCircuitIngredient(0))
+            .notConsumable(new IntCircuitIngredient(1))
             .input(dust, Carbon)
             .fluidInputs(Hydrogen.getFluid(4000))
             .fluidOutputs(Methane.getFluid(1000))
@@ -88,21 +88,21 @@ public class ReactorRecipes {
             .duration(240).EUt(360).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
-            .notConsumable(new IntCircuitIngredient(0))
+            .notConsumable(new IntCircuitIngredient(1))
             .fluidInputs(Air.getFluid(1000))
             .fluidInputs(Ethylene.getFluid(144))
             .fluidOutputs(Polyethylene.getFluid(144))
             .duration(160).EUt(30).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
-            .notConsumable(new IntCircuitIngredient(0))
+            .notConsumable(new IntCircuitIngredient(1))
             .fluidInputs(Oxygen.getFluid(1000))
             .fluidInputs(Ethylene.getFluid(144))
             .fluidOutputs(Polyethylene.getFluid(216))
             .duration(160).EUt(30).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
-            .notConsumable(new IntCircuitIngredient(1))
+            .notConsumable(new IntCircuitIngredient(2))
             .fluidInputs(Air.getFluid(7500))
             .fluidInputs(Ethylene.getFluid(2160))
             .fluidInputs(TitaniumTetrachloride.getFluid(100))
@@ -110,7 +110,7 @@ public class ReactorRecipes {
             .duration(800).EUt(30).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
-            .notConsumable(new IntCircuitIngredient(1))
+            .notConsumable(new IntCircuitIngredient(2))
             .fluidInputs(Oxygen.getFluid(7500))
             .fluidInputs(Ethylene.getFluid(2160))
             .fluidInputs(TitaniumTetrachloride.getFluid(100))
@@ -118,21 +118,21 @@ public class ReactorRecipes {
             .duration(800).EUt(30).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
-            .notConsumable(new IntCircuitIngredient(0))
+            .notConsumable(new IntCircuitIngredient(1))
             .fluidInputs(Air.getFluid(1000))
             .fluidInputs(VinylChloride.getFluid(144))
             .fluidOutputs(PolyvinylChloride.getFluid(144))
             .duration(160).EUt(30).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
-            .notConsumable(new IntCircuitIngredient(0))
+            .notConsumable(new IntCircuitIngredient(1))
             .fluidInputs(Oxygen.getFluid(1000))
             .fluidInputs(VinylChloride.getFluid(144))
             .fluidOutputs(PolyvinylChloride.getFluid(216))
             .duration(160).EUt(30).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
-            .notConsumable(new IntCircuitIngredient(1))
+            .notConsumable(new IntCircuitIngredient(2))
             .fluidInputs(Air.getFluid(7500))
             .fluidInputs(VinylChloride.getFluid(2160))
             .fluidInputs(TitaniumTetrachloride.getFluid(100))
@@ -140,7 +140,7 @@ public class ReactorRecipes {
             .duration(800).EUt(30).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
-            .notConsumable(new IntCircuitIngredient(1))
+            .notConsumable(new IntCircuitIngredient(2))
             .fluidInputs(Oxygen.getFluid(7500))
             .fluidInputs(VinylChloride.getFluid(2160))
             .fluidInputs(TitaniumTetrachloride.getFluid(100))
@@ -168,21 +168,21 @@ public class ReactorRecipes {
             .duration(320).EUt(8).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
-            .notConsumable(new IntCircuitIngredient(0))
+            .notConsumable(new IntCircuitIngredient(1))
             .fluidInputs(Air.getFluid(1000))
             .fluidInputs(Tetrafluoroethylene.getFluid(144))
             .fluidOutputs(Polytetrafluoroethylene.getFluid(144))
             .duration(160).EUt(30).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
-            .notConsumable(new IntCircuitIngredient(0))
+            .notConsumable(new IntCircuitIngredient(1))
             .fluidInputs(Oxygen.getFluid(1000))
             .fluidInputs(Tetrafluoroethylene.getFluid(144))
             .fluidOutputs(Polytetrafluoroethylene.getFluid(216))
             .duration(160).EUt(30).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
-            .notConsumable(new IntCircuitIngredient(1))
+            .notConsumable(new IntCircuitIngredient(2))
             .fluidInputs(Air.getFluid(7500))
             .fluidInputs(Tetrafluoroethylene.getFluid(2160))
             .fluidInputs(TitaniumTetrachloride.getFluid(100))
@@ -190,7 +190,7 @@ public class ReactorRecipes {
             .duration(800).EUt(30).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
-            .notConsumable(new IntCircuitIngredient(1))
+            .notConsumable(new IntCircuitIngredient(2))
             .fluidInputs(Oxygen.getFluid(7500))
             .fluidInputs(Tetrafluoroethylene.getFluid(2160))
             .fluidInputs(TitaniumTetrachloride.getFluid(100))
@@ -328,21 +328,21 @@ public class ReactorRecipes {
             .duration(40).EUt(8).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
-            .notConsumable(new IntCircuitIngredient(0))
+            .notConsumable(new IntCircuitIngredient(1))
             .fluidInputs(Air.getFluid(1000))
             .fluidInputs(Styrene.getFluid(144))
             .fluidOutputs(Polystyrene.getFluid(144))
             .duration(160).EUt(30).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
-            .notConsumable(new IntCircuitIngredient(0))
+            .notConsumable(new IntCircuitIngredient(1))
             .fluidInputs(Oxygen.getFluid(1000))
             .fluidInputs(Styrene.getFluid(144))
             .fluidOutputs(Polystyrene.getFluid(216))
             .duration(160).EUt(30).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
-            .notConsumable(new IntCircuitIngredient(1))
+            .notConsumable(new IntCircuitIngredient(2))
             .fluidInputs(Air.getFluid(7500))
             .fluidInputs(Styrene.getFluid(2160))
             .fluidInputs(TitaniumTetrachloride.getFluid(100))
@@ -350,7 +350,7 @@ public class ReactorRecipes {
             .duration(800).EUt(30).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
-            .notConsumable(new IntCircuitIngredient(1))
+            .notConsumable(new IntCircuitIngredient(2))
             .fluidInputs(Oxygen.getFluid(7500))
             .fluidInputs(Styrene.getFluid(2160))
             .fluidInputs(TitaniumTetrachloride.getFluid(100))
@@ -485,21 +485,21 @@ public class ReactorRecipes {
             .duration(160).EUt(30).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
-            .notConsumable(new IntCircuitIngredient(0))
+            .notConsumable(new IntCircuitIngredient(1))
             .fluidInputs(Air.getFluid(1000))
             .fluidInputs(VinylAcetate.getFluid(144))
             .fluidOutputs(PolyvinylAcetate.getFluid(144))
             .duration(160).EUt(30).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
-            .notConsumable(new IntCircuitIngredient(0))
+            .notConsumable(new IntCircuitIngredient(1))
             .fluidInputs(Oxygen.getFluid(1000))
             .fluidInputs(VinylAcetate.getFluid(144))
             .fluidOutputs(PolyvinylAcetate.getFluid(216))
             .duration(160).EUt(30).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
-            .notConsumable(new IntCircuitIngredient(1))
+            .notConsumable(new IntCircuitIngredient(2))
             .fluidInputs(Air.getFluid(7500))
             .fluidInputs(VinylAcetate.getFluid(2160))
             .fluidInputs(TitaniumTetrachloride.getFluid(100))
@@ -507,7 +507,7 @@ public class ReactorRecipes {
             .duration(800).EUt(30).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
-            .notConsumable(new IntCircuitIngredient(1))
+            .notConsumable(new IntCircuitIngredient(2))
             .fluidInputs(Oxygen.getFluid(7500))
             .fluidInputs(VinylAcetate.getFluid(2160))
             .fluidInputs(TitaniumTetrachloride.getFluid(100))
@@ -522,7 +522,7 @@ public class ReactorRecipes {
             .duration(120).EUt(96).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
-            .notConsumable(new IntCircuitIngredient(0))
+            .notConsumable(new IntCircuitIngredient(1))
             .fluidInputs(Hydrogen.getFluid(4000))
             .fluidInputs(CarbonMonoxide.getFluid(1000))
             .fluidOutputs(Methanol.getFluid(1000))
@@ -621,7 +621,7 @@ public class ReactorRecipes {
             .duration(300).EUt(30).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
-            .notConsumable(new IntCircuitIngredient(1))
+            .notConsumable(new IntCircuitIngredient(2))
             .fluidInputs(Hydrogen.getFluid(4000))
             .fluidInputs(CarbonMonoxide.getFluid(2000))
             .fluidOutputs(AceticAcid.getFluid(1000))

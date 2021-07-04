@@ -1,9 +1,8 @@
 package gregtech.loaders.recipe;
 
 import gregtech.api.recipes.ModHandler;
-import gregtech.api.recipes.ingredients.IntCircuitIngredient;
-import gregtech.api.unification.material.MarkerMaterials.Tier;
 import gregtech.api.unification.material.MarkerMaterials.Color;
+import gregtech.api.unification.material.MarkerMaterials.Tier;
 import gregtech.api.unification.material.type.IngotMaterial;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.unification.stack.UnificationEntry;
@@ -40,7 +39,6 @@ public class CircuitRecipes {
         BLAST_RECIPES.recipeBuilder().duration(9000).EUt(120)
                 .input(dust, Silicon, 32)
                 .input(dustSmall, GalliumArsenide)
-                .notConsumable(new IntCircuitIngredient(1))
                 .output(SILICON_BOULE)
                 .blastFurnaceTemp(1784)
                 .buildAndRegister();
@@ -48,7 +46,6 @@ public class CircuitRecipes {
         BLAST_RECIPES.recipeBuilder().duration(12000).EUt(480)
                 .input(dust, Silicon, 64)
                 .input(dust, Glowstone, 8)
-                .notConsumable(new IntCircuitIngredient(1))
                 .fluidInputs(Nitrogen.getFluid(8000))
                 .output(GLOWSTONE_BOULE)
                 .blastFurnaceTemp(2484)
@@ -57,7 +54,6 @@ public class CircuitRecipes {
         BLAST_RECIPES.recipeBuilder().duration(1500).EUt(1920)
                 .input(block, Silicon, 9)
                 .input(ingot, Naquadah)
-                .notConsumable(new IntCircuitIngredient(1))
                 .fluidInputs(Argon.getFluid(8000))
                 .output(NAQUADAH_BOULE)
                 .blastFurnaceTemp(5400)
