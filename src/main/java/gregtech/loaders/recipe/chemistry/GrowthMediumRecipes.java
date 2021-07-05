@@ -7,7 +7,8 @@ import net.minecraft.item.ItemStack;
 
 import static gregtech.api.recipes.RecipeMaps.*;
 import static gregtech.api.unification.material.Materials.*;
-import static gregtech.api.unification.ore.OrePrefix.*;
+import static gregtech.api.unification.ore.OrePrefix.dust;
+import static gregtech.api.unification.ore.OrePrefix.dustTiny;
 import static gregtech.common.items.MetaItems.*;
 
 public class GrowthMediumRecipes {
@@ -170,7 +171,7 @@ public class GrowthMediumRecipes {
                 .buildAndRegister();
 
         // Agar
-        MIXER_RECIPES.recipeBuilder().EUt(480).duration(600)
+        AUTOCLAVE_RECIPES.recipeBuilder().EUt(480).duration(600)
                 .input(dust, Gelatin)
                 .fluidInputs(DistilledWater.getFluid(1000))
                 .output(dust, Agar)

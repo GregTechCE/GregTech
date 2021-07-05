@@ -1,9 +1,9 @@
 package gregtech.loaders.recipe;
 
 import gregtech.api.recipes.ModHandler;
+import gregtech.api.unification.material.MarkerMaterials.Color;
 import gregtech.api.unification.material.MarkerMaterials.Component;
 import gregtech.api.unification.material.MarkerMaterials.Tier;
-import gregtech.api.unification.material.MarkerMaterials.Color;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.common.ConfigHolder;
 import net.minecraft.init.Items;
@@ -162,7 +162,7 @@ public class CircuitRecipes {
                 'T', GLASS_TUBE.getStackForm(),
                 'W', new UnificationEntry(wireGtSingle, Copper));
 
-        ASSEMBLER_RECIPES.recipeBuilder().duration(120).EUt(8)
+        ASSEMBLER_RECIPES.recipeBuilder().duration(120).EUt(8).circuitMeta(1)
                 .input(GLASS_TUBE)
                 .input(bolt, Steel, 2)
                 .input(wireGtSingle, Copper, 2)
@@ -177,7 +177,7 @@ public class CircuitRecipes {
                 .output(VACUUM_TUBE, 4)
                 .buildAndRegister();
 
-        ASSEMBLER_RECIPES.recipeBuilder().duration(120).EUt(8)
+        ASSEMBLER_RECIPES.recipeBuilder().duration(120).EUt(8).circuitMeta(1)
                 .input(GLASS_TUBE)
                 .input(bolt, Steel, 2)
                 .input(wireGtSingle, AnnealedCopper, 2)
