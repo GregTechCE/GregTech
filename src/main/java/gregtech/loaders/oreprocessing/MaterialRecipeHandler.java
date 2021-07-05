@@ -113,7 +113,7 @@ public class MaterialRecipeHandler {
                             .blastFurnaceTemp(metalMaterial.blastFurnaceTemperature)
                             .duration(Math.max(1, duration / 9)).EUt(120);
                         if (circuitRequiringMaterials.contains(material)) {
-                            nuggetSmeltingBuilder.inputs(IntCircuitIngredient.getIntegratedCircuit(0));
+                            nuggetSmeltingBuilder.notConsumable(IntCircuitIngredient.getIntegratedCircuit(0));
                         }
                         nuggetSmeltingBuilder.buildAndRegister();
                     }
