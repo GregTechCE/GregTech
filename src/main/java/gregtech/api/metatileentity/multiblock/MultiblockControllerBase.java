@@ -47,6 +47,7 @@ public abstract class MultiblockControllerBase extends MetaTileEntity implements
     public MultiblockControllerBase(ResourceLocation metaTileEntityId) {
         super(metaTileEntityId);
         reinitializeStructurePattern();
+        this.setPaintingColor(0xFFFFFF);
     }
 
     protected void reinitializeStructurePattern() {
