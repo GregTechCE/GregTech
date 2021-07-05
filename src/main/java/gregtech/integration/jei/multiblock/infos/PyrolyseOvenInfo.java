@@ -15,7 +15,7 @@ import net.minecraft.util.EnumFacing;
 
 import java.util.List;
 
-public class PyrolyzeOvenInfo extends MultiblockInfoPage {
+public class PyrolyseOvenInfo extends MultiblockInfoPage {
 
     @Override
     public MultiblockControllerBase getController() {
