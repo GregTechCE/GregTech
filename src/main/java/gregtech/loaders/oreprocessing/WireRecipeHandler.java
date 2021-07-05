@@ -1,7 +1,6 @@
 package gregtech.loaders.oreprocessing;
 
 import gregtech.api.GTValues;
-import gregtech.api.items.OreDictNames;
 import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.recipes.ingredients.IntCircuitIngredient;
@@ -15,14 +14,11 @@ import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTUtility;
 import gregtech.common.items.MetaItems;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.lang.Math;
 
 import static gregtech.api.GTValues.M;
 import static gregtech.api.recipes.RecipeMaps.PACKER_RECIPES;
@@ -88,23 +84,22 @@ public class WireRecipeHandler {
         ItemStack cableStack = OreDictUnifier.get(cablePrefix, material);
         if (material.cableProperties == null) return;
 
-        if (isPaperInsulatedCable(material)) {
-            if (cableAmount <= 7) {
-                Object[] ingredients = new Object[2 + cableAmount];
+        if (isManualInsulatedCable(material)) {
+            if (cableAmount <= 8) {
+                Object[] ingredients = new Object[1 + cableAmount];
                 ingredients[0] = new UnificationEntry(wirePrefix, material);
-                ingredients[ingredients.length - 1] = OreDictNames.string;
-                for (int i = 1; i < ingredients.length - 1; i++) {
-                    ingredients[i] = new ItemStack(Blocks.CARPET, 1, EnumDyeColor.BLACK.getMetadata());
+                for (int i = 1; i < ingredients.length; i++) {
+                    ingredients[i] = OreDictUnifier.get(OrePrefix.plate, Materials.Rubber);
                 }
                 ModHandler.addShapelessRecipe(String.format("%s_cable_%d", material, cableAmount), cableStack, ingredients);
             }
         }
 
-        if (isPaperInsulatedCable(material)) {
-            ItemStack carpetStack = new ItemStack(Blocks.CARPET, cableAmount, EnumDyeColor.BLACK.getMetadata());
+        if (isManualInsulatedCable(material)) {
+            ItemStack rubberStack = OreDictUnifier.get(OrePrefix.plate, Materials.Rubber, cableAmount);
             RecipeMaps.PACKER_RECIPES.recipeBuilder()
                 .input(wirePrefix, material)
-                .inputs(carpetStack)
+                .inputs(rubberStack)
                 .outputs(cableStack)
                 .duration(100).EUt(8)
                 .buildAndRegister();
@@ -219,7 +214,7 @@ public class WireRecipeHandler {
         return Math.max(36, 144 / (1 + insulationDiscount));
     }
 
-    public static boolean isPaperInsulatedCable(IngotMaterial material) {
+    public static boolean isManualInsulatedCable(IngotMaterial material) {
         return material.cableProperties != null && GTUtility.getTierByVoltage(material.cableProperties.voltage) <= 1;
     }
 
