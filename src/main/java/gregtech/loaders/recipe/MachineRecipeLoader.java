@@ -134,31 +134,73 @@ public class MachineRecipeLoader {
             .buildAndRegister();
 
         BENDER_RECIPES.recipeBuilder()
-            .circuitMeta(1)
-            .input(OrePrefix.plate, Materials.Iron, 12)
-            .outputs(new ItemStack(Items.BUCKET, 4))
-            .duration(800).EUt(4)
-            .buildAndRegister();
-
-        BENDER_RECIPES.recipeBuilder()
-            .circuitMeta(1)
-            .input(OrePrefix.plate, Materials.WroughtIron, 12)
-            .outputs(new ItemStack(Items.BUCKET, 4))
+            .circuitMeta(12)
+            .input(OrePrefix.plate, Materials.Iron, 3)
+            .outputs(new ItemStack(Items.BUCKET))
             .duration(800).EUt(4)
             .buildAndRegister();
 
         BENDER_RECIPES.recipeBuilder()
             .circuitMeta(12)
-            .input(OrePrefix.plate, Materials.Iron, 2)
+            .input(OrePrefix.plate, Materials.WroughtIron, 3)
+            .outputs(new ItemStack(Items.BUCKET))
+            .duration(800).EUt(4)
+            .buildAndRegister();
+
+        BENDER_RECIPES.recipeBuilder()
+            .circuitMeta(12)
+            .input(OrePrefix.plate, Materials.Tin, 2)
             .outputs(MetaItems.FLUID_CELL.getStackForm())
-            .duration(200).EUt(30)
+            .duration(200).EUt(8)
+            .buildAndRegister();
+
+        BENDER_RECIPES.recipeBuilder()
+            .circuitMeta(12)
+            .input(OrePrefix.plate, Materials.Steel)
+            .outputs(MetaItems.FLUID_CELL.getStackForm())
+            .duration(100).EUt(8)
+            .buildAndRegister();
+
+        BENDER_RECIPES.recipeBuilder()
+            .circuitMeta(12)
+            .input(OrePrefix.plate, Polytetrafluoroethylene)
+            .outputs(MetaItems.FLUID_CELL.getStackForm(4))
+            .duration(100).EUt(8)
+            .buildAndRegister();
+
+        BENDER_RECIPES.recipeBuilder()
+            .circuitMeta(12)
+            .input(OrePrefix.plate, Polybenzimidazole)
+            .outputs(MetaItems.FLUID_CELL.getStackForm(16))
+            .duration(100).EUt(8)
             .buildAndRegister();
 
         EXTRUDER_RECIPES.recipeBuilder()
-            .input(OrePrefix.plate, Materials.Iron, 2)
             .notConsumable(MetaItems.SHAPE_EXTRUDER_CELL)
+            .input(OrePrefix.ingot, Materials.Tin, 2)
             .outputs(MetaItems.FLUID_CELL.getStackForm())
-            .duration(200).EUt(30)
+            .duration(128).EUt(30)
+            .buildAndRegister();
+
+        EXTRUDER_RECIPES.recipeBuilder()
+            .notConsumable(MetaItems.SHAPE_EXTRUDER_CELL)
+            .input(OrePrefix.ingot, Materials.Steel)
+            .outputs(MetaItems.FLUID_CELL.getStackForm())
+            .duration(128).EUt(30)
+            .buildAndRegister();
+
+        EXTRUDER_RECIPES.recipeBuilder()
+            .notConsumable(MetaItems.SHAPE_EXTRUDER_CELL)
+            .input(OrePrefix.ingot, Polytetrafluoroethylene)
+            .outputs(MetaItems.FLUID_CELL.getStackForm(4))
+            .duration(128).EUt(30)
+            .buildAndRegister();
+
+        EXTRUDER_RECIPES.recipeBuilder()
+            .notConsumable(MetaItems.SHAPE_EXTRUDER_CELL)
+            .input(OrePrefix.ingot, Polybenzimidazole)
+            .outputs(MetaItems.FLUID_CELL.getStackForm(16))
+            .duration(128).EUt(30)
             .buildAndRegister();
 
         COMPRESSOR_RECIPES.recipeBuilder()
@@ -644,6 +686,61 @@ public class MachineRecipeLoader {
         EXTRACTOR_RECIPES.recipeBuilder().duration(150).EUt(2)
                 .inputs(new ItemStack(Items.SLIME_BALL))
                 .output(dust, RawRubber, 2)
+                .buildAndRegister();
+
+        EXTRACTOR_RECIPES.recipeBuilder().duration(20).EUt(2)
+                .inputs(MetaItems.FLUID_CELL.getStackForm())
+                .outputs(MetaItems.FLUID_CELL.getStackForm())
+                .buildAndRegister();
+
+        EXTRACTOR_RECIPES.recipeBuilder().duration(20).EUt(2)
+                .inputs(MetaItems.UNIVERSAL_FLUID_CELL.getStackForm())
+                .outputs(MetaItems.UNIVERSAL_FLUID_CELL.getStackForm())
+                .buildAndRegister();
+
+        EXTRACTOR_RECIPES.recipeBuilder().duration(20).EUt(2)
+                .inputs(MetaItems.LARGE_FLUID_CELL_STEEL.getStackForm())
+                .outputs(MetaItems.LARGE_FLUID_CELL_STEEL.getStackForm())
+                .buildAndRegister();
+
+        EXTRACTOR_RECIPES.recipeBuilder().duration(20).EUt(2)
+                .inputs(MetaItems.LARGE_FLUID_CELL_ALUMINIUM.getStackForm())
+                .outputs(MetaItems.LARGE_FLUID_CELL_ALUMINIUM.getStackForm())
+                .buildAndRegister();
+
+        EXTRACTOR_RECIPES.recipeBuilder().duration(20).EUt(2)
+                .inputs(MetaItems.LARGE_FLUID_CELL_STAINLESS_STEEL.getStackForm())
+                .outputs(MetaItems.LARGE_FLUID_CELL_STAINLESS_STEEL.getStackForm())
+                .buildAndRegister();
+
+        EXTRACTOR_RECIPES.recipeBuilder().duration(20).EUt(2)
+                .inputs(MetaItems.LARGE_FLUID_CELL_TITANIUM.getStackForm())
+                .outputs(MetaItems.LARGE_FLUID_CELL_TITANIUM.getStackForm())
+                .buildAndRegister();
+
+        EXTRACTOR_RECIPES.recipeBuilder().duration(20).EUt(2)
+                .inputs(MetaItems.LARGE_FLUID_CELL_TUNGSTEN_STEEL.getStackForm())
+                .outputs(MetaItems.LARGE_FLUID_CELL_TUNGSTEN_STEEL.getStackForm())
+                .buildAndRegister();
+
+        EXTRACTOR_RECIPES.recipeBuilder().duration(20).EUt(2)
+                .inputs(MetaItems.LARGE_FLUID_CELL_CHROME.getStackForm())
+                .outputs(MetaItems.LARGE_FLUID_CELL_CHROME.getStackForm())
+                .buildAndRegister();
+
+        EXTRACTOR_RECIPES.recipeBuilder().duration(20).EUt(2)
+                .inputs(MetaItems.LARGE_FLUID_CELL_IRIDIUM.getStackForm())
+                .outputs(MetaItems.LARGE_FLUID_CELL_IRIDIUM.getStackForm())
+                .buildAndRegister();
+
+        EXTRACTOR_RECIPES.recipeBuilder().duration(20).EUt(2)
+                .inputs(MetaItems.LARGE_FLUID_CELL_OSMIUM.getStackForm())
+                .outputs(MetaItems.LARGE_FLUID_CELL_OSMIUM.getStackForm())
+                .buildAndRegister();
+
+        EXTRACTOR_RECIPES.recipeBuilder().duration(20).EUt(2)
+                .inputs(MetaItems.LARGE_FLUID_CELL_NEUTRONIUM.getStackForm())
+                .outputs(MetaItems.LARGE_FLUID_CELL_NEUTRONIUM.getStackForm())
                 .buildAndRegister();
 
 

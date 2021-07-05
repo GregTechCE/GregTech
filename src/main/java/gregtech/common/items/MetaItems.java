@@ -92,8 +92,17 @@ public final class MetaItems {
 
     public static MetaItem<?>.MetaValueItem SPRAY_EMPTY;
 
+    public static MetaItem<?>.MetaValueItem FLUID_CELL;
+    public static MetaItem<?>.MetaValueItem UNIVERSAL_FLUID_CELL;
     public static MetaItem<?>.MetaValueItem LARGE_FLUID_CELL_STEEL;
+    public static MetaItem<?>.MetaValueItem LARGE_FLUID_CELL_ALUMINIUM;
+    public static MetaItem<?>.MetaValueItem LARGE_FLUID_CELL_STAINLESS_STEEL;
+    public static MetaItem<?>.MetaValueItem LARGE_FLUID_CELL_TITANIUM;
     public static MetaItem<?>.MetaValueItem LARGE_FLUID_CELL_TUNGSTEN_STEEL;
+    public static MetaItem<?>.MetaValueItem LARGE_FLUID_CELL_CHROME;
+    public static MetaItem<?>.MetaValueItem LARGE_FLUID_CELL_IRIDIUM;
+    public static MetaItem<?>.MetaValueItem LARGE_FLUID_CELL_OSMIUM;
+    public static MetaItem<?>.MetaValueItem LARGE_FLUID_CELL_NEUTRONIUM;
 
     public static MetaItem<?>.MetaValueItem TOOL_MATCHES;
     public static MetaItem<?>.MetaValueItem TOOL_MATCHBOX;
@@ -387,8 +396,6 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem COVER_SOLAR_PANEL_LV;
 
     public static MetaItem<?>.MetaValueItem INTEGRATED_CIRCUIT;
-
-    public static MetaItem<?>.MetaValueItem FLUID_CELL;
 
     public static MetaItem<?>.MetaValueItem FOAM_SPRAYER;
 
