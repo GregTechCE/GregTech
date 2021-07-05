@@ -95,6 +95,12 @@ public class CircuitRecipes {
         LASER_ENGRAVER_RECIPES.recipeBuilder().duration(500).EUt(1920).input(NAQUADAH_WAFER)  .notConsumable(craftingLens, Color.Blue)     .output(POWER_INTEGRATED_CIRCUIT_WAFER, 4) .buildAndRegister();
         LASER_ENGRAVER_RECIPES.recipeBuilder().duration(200).EUt(7680).input(NEUTRONIUM_WAFER).notConsumable(craftingLens, Color.Blue)     .output(POWER_INTEGRATED_CIRCUIT_WAFER, 8) .buildAndRegister();
 
+        LASER_ENGRAVER_RECIPES.recipeBuilder().duration(900).EUt(120) .input(SILICON_WAFER)   .notConsumable(craftingLens, Color.Magenta)  .output(ULTRA_LOW_POWER_INTEGRATED_CIRCUIT_WAFER).buildAndRegister();
+        LASER_ENGRAVER_RECIPES.recipeBuilder().duration(900).EUt(120) .input(GLOWSTONE_WAFER) .notConsumable(craftingLens, Color.Magenta)  .output(ULTRA_LOW_POWER_INTEGRATED_CIRCUIT_WAFER, 4).buildAndRegister();
+
+        LASER_ENGRAVER_RECIPES.recipeBuilder().duration(900).EUt(120) .input(SILICON_WAFER)   .notConsumable(craftingLens, Color.Orange)  .output(LOW_POWER_INTEGRATED_CIRCUIT_WAFER)       .buildAndRegister();
+        LASER_ENGRAVER_RECIPES.recipeBuilder().duration(900).EUt(120) .input(GLOWSTONE_WAFER) .notConsumable(craftingLens, Color.Orange)  .output(LOW_POWER_INTEGRATED_CIRCUIT_WAFER, 4).buildAndRegister();
+
         LASER_ENGRAVER_RECIPES.recipeBuilder().duration(300).EUt(120) .input(SILICON_WAFER)   .notConsumable(craftingLens, Color.Orange)   .output(SIMPLE_SYSTEM_ON_CHIP_WAFER)             .buildAndRegister();
 
         LASER_ENGRAVER_RECIPES.recipeBuilder().duration(900).EUt(480) .input(GLOWSTONE_WAFER) .notConsumable(craftingLens, Color.Yellow)   .output(SYSTEM_ON_CHIP_WAFER)                    .buildAndRegister();
