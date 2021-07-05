@@ -147,7 +147,7 @@ public class TankWidget extends Widget implements IIngredientSlot {
                 // Add chemical formula tooltip
                 String formula = FluidTooltipUtil.getFluidTooltip(lastFluidInTank);
                 if (formula != null && !formula.isEmpty())
-                    tooltips.add(ChatFormatting.GRAY.toString() + formula);
+                    tooltips.add(ChatFormatting.YELLOW.toString() + formula);
 
                 tooltips.add(I18n.format("gregtech.fluid.amount", lastFluidInTank.amount, lastTankCapacity));
                 tooltips.add(I18n.format("gregtech.fluid.temperature", fluid.getTemperature(lastFluidInTank)));
