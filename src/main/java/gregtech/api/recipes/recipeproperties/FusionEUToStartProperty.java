@@ -10,7 +10,7 @@ public class FusionEUToStartProperty extends RecipeProperty<Long>{
 
     private static FusionEUToStartProperty INSTANCE;
 
-    private FusionEUToStartProperty() {
+    protected FusionEUToStartProperty() {
         super(KEY, Long.class);
     }
 
