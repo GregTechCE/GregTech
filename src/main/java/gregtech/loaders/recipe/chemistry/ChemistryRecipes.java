@@ -1,6 +1,5 @@
 package gregtech.loaders.recipe.chemistry;
 
-import gregtech.loaders.recipe.LargeReactorRecipes;
 import net.minecraft.init.Items;
 
 import static gregtech.api.recipes.RecipeMaps.*;
@@ -20,7 +19,7 @@ public class ChemistryRecipes {
         ChemicalBathRecipes.init();
         ReactorRecipes.init();
         PolymerRecipes.init();
-        LargeReactorRecipes.init();
+        LCRCombined.init();
         GrowthMediumRecipes.init();
 
 
