@@ -222,6 +222,11 @@ public class ConfigHolder {
             @Config.Name("Default Cable Color")
             @Config.RequiresMcRestart
             public int defaultInsulationColor = 0x777777;
+
+            @Config.Comment("Enable temperature based bonuses for the Electric Blast Furnace. Default: true")
+            @Config.Name("Use electric blast furnace temperature bonuses")
+            @Config.RequiresMcRestart
+            public boolean ebfTemperatureBonuses = true;
         }
 
         public static class GT6 {
