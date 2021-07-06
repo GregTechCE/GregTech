@@ -585,8 +585,8 @@ public class Materials {
      */
     public static IngotMaterial Naquadah = new IngotMaterial(353, "naquadah", 0x323232, METALLIC, 4, of(), EXT_METAL | GENERATE_ORE | GENERATE_FOIL| GENERATE_SPRING, Elements.get("Naquadah"), 6.0F, 4.0f, 1280, 5400);
     public static IngotMaterial NaquadahAlloy = new IngotMaterial(354, "naquadah_alloy", 0x282828, METALLIC, 5, of(new MaterialStack(Naquadah, 1), new MaterialStack(Osmiridium, 1)), EXT2_METAL| GENERATE_SPRING, null, 8.0F, 5.0f, 5120, 7200);
-    public static IngotMaterial NaquadahEnriched = new IngotMaterial(355, "naquadah_enriched", 0x323232, METALLIC, 4, of(), EXT_METAL | GENERATE_ORE | GENERATE_FOIL, null, 6.0F, 4.0f, 1280, 4500);
-    public static IngotMaterial Naquadria = new IngotMaterial(356, "naquadria", 0x1E1E1E, SHINY, 3, of(), EXT_METAL, Elements.get("Naquadah"), 9000);
+    public static IngotMaterial NaquadahEnriched = new IngotMaterial(355, "naquadah_enriched", 0x323232, METALLIC, 4, of(), EXT_METAL | GENERATE_ORE | GENERATE_FOIL, Elements.get("NaquadahEnriched"), 6.0F, 4.0f, 1280, 4500);
+    public static IngotMaterial Naquadria = new IngotMaterial(356, "naquadria", 0x1E1E1E, SHINY, 3, of(), EXT_METAL, Elements.get("Naquadria"), 9000);
     public static IngotMaterial Neutronium = new IngotMaterial(357, "neutronium", 0xFAFAFA, DULL, 6, of(), EXT2_METAL | GENERATE_RING | GENERATE_ROTOR | GENERATE_SMALL_GEAR | GENERATE_LONG_ROD | GENERATE_FRAME, Elements.get("Neutronium"), 24.0F, 12F, 655360);
     public static IngotMaterial Tritanium = new IngotMaterial(358, "tritanium", 0x600000, METALLIC, 6, of(), EXT_METAL | GENERATE_FRAME, Elements.get("Tritanium"), 20.0F, 6.0f, 10240);
     public static IngotMaterial Duranium = new IngotMaterial(359, "duranium", 0xFFFFFF, METALLIC, 5, of(), EXT_METAL | GENERATE_FOIL, Elements.get("Duranium"), 16.0F, 5.0f, 5120);
