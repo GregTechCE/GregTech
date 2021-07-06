@@ -21,7 +21,6 @@ import gregtech.common.blocks.foam.BlockPetrifiedFoam;
 import gregtech.common.blocks.modelfactories.BakedModelHandler;
 import gregtech.common.blocks.surfacerock.BlockSurfaceRock;
 import gregtech.common.blocks.surfacerock.TileEntitySurfaceRock;
-import gregtech.common.blocks.tileentity.TileEntityCrusherBlade;
 import gregtech.common.blocks.wood.BlockGregLeaves;
 import gregtech.common.blocks.wood.BlockGregLog;
 import gregtech.common.blocks.wood.BlockGregSapling;
@@ -37,8 +36,6 @@ import gregtech.common.pipelike.fluidpipe.tile.TileEntityFluidPipe;
 import gregtech.common.pipelike.fluidpipe.tile.TileEntityFluidPipeTickable;
 import gregtech.common.render.CableRenderer;
 import gregtech.common.render.FluidPipeRenderer;
-import gregtech.common.render.tesr.TileEntityCrusherBladeRenderer;
-import gregtech.common.render.tesr.TileEntityRendererBase.TileEntityRenderBaseItem;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog.EnumAxis;
 import net.minecraft.block.properties.IProperty;
@@ -105,7 +102,6 @@ public class MetaBlocks {
     public static BlockGregLeaves LEAVES;
     public static BlockGregSapling SAPLING;
 
-    public static BlockCrusherBlade CRUSHER_BLADE;
     public static BlockSurfaceRock SURFACE_ROCK;
 
     public static Map<DustMaterial, BlockCompressed> COMPRESSED = new HashMap<>();
@@ -165,9 +161,6 @@ public class MetaBlocks {
         LEAVES.setRegistryName("leaves");
         SAPLING = new BlockGregSapling();
         SAPLING.setRegistryName("sapling");
-
-        CRUSHER_BLADE = new BlockCrusherBlade();
-        CRUSHER_BLADE.setRegistryName("crusher_blade");
 
         SURFACE_ROCK = new BlockSurfaceRock();
         SURFACE_ROCK.setRegistryName("surface_rock_new");
@@ -279,7 +272,6 @@ public class MetaBlocks {
 
     public static void registerTileEntity() {
         GameRegistry.registerTileEntity(MetaTileEntityHolder.class, new ResourceLocation(GTValues.MODID, "machine"));
-        GameRegistry.registerTileEntity(TileEntityCrusherBlade.class, new ResourceLocation(GTValues.MODID, "crusher_blade"));
         GameRegistry.registerTileEntity(TileEntityCable.class, new ResourceLocation(GTValues.MODID, "cable"));
         GameRegistry.registerTileEntity(TileEntityCableTickable.class, new ResourceLocation(GTValues.MODID, "cable_tickable"));
         GameRegistry.registerTileEntity(TileEntityFluidPipe.class, new ResourceLocation(GTValues.MODID, "fluid_pipe"));
@@ -392,10 +384,7 @@ public class MetaBlocks {
         FLUID_BLOCKS.forEach(modelHandler::addFluidBlock);
 
         modelHandler.addBuiltInBlock(SURFACE_ROCK, "stone_andesite");
-        modelHandler.addBuiltInBlock(CRUSHER_BLADE, "iron_block");
 
-        Item.getItemFromBlock(CRUSHER_BLADE).setTileEntityItemStackRenderer(new TileEntityRenderBaseItem<>(TileEntityCrusherBlade.class));
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCrusherBlade.class, new TileEntityCrusherBladeRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(MetaTileEntityHolder.class, new MetaTileEntityTESR());
     }
 

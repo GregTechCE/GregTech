@@ -80,7 +80,6 @@ public class CommonProxy {
         registry.register(LOG);
         registry.register(LEAVES);
         registry.register(SAPLING);
-        registry.register(CRUSHER_BLADE);
         registry.register(SURFACE_ROCK);
 
         COMPRESSED.values().stream().distinct().forEach(registry::register);
@@ -127,7 +126,6 @@ public class CommonProxy {
         registry.register(createMultiTexItemBlock(LOG, state -> state.getValue(BlockGregLog.VARIANT).getName()));
         registry.register(createMultiTexItemBlock(LEAVES, state -> state.getValue(BlockGregLeaves.VARIANT).getName()));
         registry.register(createMultiTexItemBlock(SAPLING, state -> state.getValue(BlockGregSapling.VARIANT).getName()));
-        registry.register(createItemBlock(CRUSHER_BLADE, ItemBlock::new));
 
         COMPRESSED.values()
             .stream().distinct()
