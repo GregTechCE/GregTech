@@ -44,10 +44,6 @@ public class ConfigHolder {
     @Config.RequiresMcRestart
     public static boolean disableRubberTreeGeneration = false;
 
-    @Config.Comment("Whether to disable Abandoned Base structure world generation. Default: false")
-    @Config.RequiresMcRestart
-    public static boolean disableAbandonedBaseGeneration = false;
-
     @Config.Comment("Whether machines should explode when overloaded with power. Default: true")
     public static boolean doExplosions = true;
 

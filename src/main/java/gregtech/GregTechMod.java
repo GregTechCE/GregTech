@@ -104,7 +104,7 @@ public class GregTechMod {
     public void onInit(FMLInitializationEvent event) {
         proxy.onLoad();
         if (RecipeMap.isFoundInvalidRecipe()) {
-            GTLog.logger.fatal("An invalid recipe was found.");
+            GTLog.logger.fatal("Seems like invalid recipe was found.");
             //crash if config setting is set to false, or we are in deobfuscated environment
             if (!ConfigHolder.ignoreErrorOrInvalidRecipes || !FMLForgePlugin.RUNTIME_DEOBF) {
                 GTLog.logger.fatal("Loading cannot continue. Either fix or report invalid recipes, or enable ignoreErrorOrInvalidRecipes in the config as a temporary solution");
@@ -113,7 +113,7 @@ public class GregTechMod {
                 GTLog.logger.fatal("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
                 GTLog.logger.fatal("Ignoring invalid recipes and continuing loading");
                 GTLog.logger.fatal("Some things may lack recipes or have invalid ones, proceed at your own risk");
-                GTLog.logger.fatal("Report to GTCE Github to get more help and fix the problem");
+                GTLog.logger.fatal("Report to GTCE github to get more help and fix the problem");
                 GTLog.logger.fatal("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             }
         }
@@ -125,9 +125,7 @@ public class GregTechMod {
         }
 
         WorldGenRegistry.INSTANCE.initializeRegistry();
-        if (!ConfigHolder.disableAbandonedBaseGeneration) {
-            GameRegistry.registerWorldGenerator(new WorldGenAbandonedBase(), 20000);
-        }
+        GameRegistry.registerWorldGenerator(new WorldGenAbandonedBase(), 20000);
         if (!ConfigHolder.disableRubberTreeGeneration) {
             GameRegistry.registerWorldGenerator(new WorldGenRubberTree(), 10000);
         }
@@ -140,7 +138,7 @@ public class GregTechMod {
 
     @Method(modid = GTValues.MODID_CT)
     private void runEarlyCraftTweakerScripts() {
-        CraftTweakerAPI.tweaker.loadScript(false, GTValues.MODID);
+        CraftTweakerAPI.tweaker.loadScript(false, "gregtech");
     }
 
     @Mod.EventHandler
@@ -152,4 +150,5 @@ public class GregTechMod {
     public void onServerLoad(FMLServerStartingEvent event) {
         event.registerServerCommand(new GregTechCommand());
     }
+
 }
