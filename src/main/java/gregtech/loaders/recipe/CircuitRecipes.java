@@ -67,7 +67,7 @@ public class CircuitRecipes {
         CUTTER_RECIPES.recipeBuilder().duration(1600).EUt(480) .input(NAQUADAH_BOULE)  .output(NAQUADAH_WAFER, 64).buildAndRegister();
         CUTTER_RECIPES.recipeBuilder().duration(2400).EUt(1920).input(NEUTRONIUM_BOULE).output(NEUTRONIUM_WAFER, 64).output(NEUTRONIUM_WAFER, 32).buildAndRegister();
 
-        // Wafer engraving TODO ULPIC, LPIC
+        // Wafer engraving
         LASER_ENGRAVER_RECIPES.recipeBuilder().duration(900).EUt(120) .input(SILICON_WAFER)   .notConsumable(craftingLens, Color.Red)      .output(INTEGRATED_LOGIC_CIRCUIT_WAFER)          .buildAndRegister();
         LASER_ENGRAVER_RECIPES.recipeBuilder().duration(500).EUt(480) .input(GLOWSTONE_WAFER) .notConsumable(craftingLens, Color.Red)      .output(INTEGRATED_LOGIC_CIRCUIT_WAFER, 4) .buildAndRegister();
         LASER_ENGRAVER_RECIPES.recipeBuilder().duration(200).EUt(1920).input(NAQUADAH_WAFER)  .notConsumable(craftingLens, Color.Red)      .output(INTEGRATED_LOGIC_CIRCUIT_WAFER, 8) .buildAndRegister();

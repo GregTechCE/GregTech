@@ -685,16 +685,6 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             return this;
         }
 
-        /**
-         * @deprecated Use {@link #addComponents(IItemComponent...)} instead
-         * Left there for binary compatibility purposes
-         */
-        @Deprecated
-        public MetaValueItem addStats(IMetaItemStats... stats) {
-            addItemComponentsInternal(stats);
-            return this;
-        }
-
         public MetaValueItem addComponents(IItemComponent... stats) {
             addItemComponentsInternal(stats);
             return this;

@@ -19,6 +19,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
+import javax.annotation.Nonnull;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -37,16 +38,8 @@ public class GTRecipeWrapper implements IRecipeWrapper {
         this.recipe = recipe;
     }
 
-    /**
-     * @deprecated use {@link #GTRecipeWrapper(Recipe recipe)} instead
-     */
-    @Deprecated
-    public GTRecipeWrapper(RecipeMap<?> recipeMap, Recipe recipe) {
-        this.recipe = recipe;
-    }
-
     @Override
-    public void getIngredients(IIngredients ingredients) {
+    public void getIngredients(@Nonnull IIngredients ingredients) {
         if (!recipe.getInputs().isEmpty()) {
             List<CountableIngredient> recipeInputs = recipe.getInputs();
             List<List<ItemStack>> matchingInputs = new ArrayList<>(recipeInputs.size());
