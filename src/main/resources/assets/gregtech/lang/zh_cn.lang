@@ -6,7 +6,6 @@ death.attack.turbine=%s将他的头伸进了涡轮机里.
 death.attack.explosion=%s爆炸了.
 death.attack.explosion.player=%s被%s炸死了.
 death.attack.heat.player=%s被%s煮熟了.
-death.attack.crusher=%s被碾死了.
 
 enchantment.disjunction=末影离析
 
@@ -58,11 +57,6 @@ metaitem.coin.doge.name=Doge币
 metaitem.coin.doge.tooltip=哇哦，这么多钱. 所以我现在非常有钱了:)!
 metaitem.coin.chocolate.name=巧克力币
 metaitem.coin.chocolate.tooltip=包裹着一层金
-
-metaitem.minecart.wheels.iron.name=铁矿车车轮
-metaitem.minecart.wheels.iron.tooltip=让他们滚动起来
-metaitem.minecart.wheels.steel.name=钢矿车车轮
-metaitem.minecart.wheels.steel.tooltip=让他们滚动起来
 
 metaitem.shape.empty.name=空模板
 metaitem.shape.empty.tooltip=用以制作模具与压模器的模头
@@ -151,21 +145,8 @@ metaitem.shape.extruder.gear.tooltip=用来制作齿轮的模头
 metaitem.shape.extruder.bottle.name=模头(瓶子)
 metaitem.shape.extruder.bottle.tooltip=用来制作瓶子的模头
 
-metaitem.shape.slicer.flat.name=切削器刀刃(平切)
-metaitem.shape.slicer.flat.tooltip=用来平切的切削器刀刃
-metaitem.shape.slicer.stripes.name=切削器刀刃(切条)
-metaitem.shape.slicer.stripes.tooltip=用来切条的切削器刀刃
-
-metaitem.fuel.can.plastic.empty.name=空塑料燃料罐
-metaitem.fuel.can.plastic.empty.tooltip=用来储存燃料
-metaitem.fuel.can.plastic.filled.name=塑料燃料罐
-metaitem.fuel.can.plastic.filled.tooltip=在柴油发电机里燃烧得很好
-
 metaitem.spray.empty.name=空喷洒罐
 metaitem.spray.empty.tooltip=用来制作喷雾器
-
-metaitem.thermos_can.empty.name=空保温瓶
-metaitem.thermos_can.empty.tooltip=让热的东西保持热量，让冷的东西保持凉爽
 
 metaitem.plant.ball.name=植物球
 
@@ -199,14 +180,6 @@ metaitem.tool.lighter.platinum.tooltip=上面刻着一位知名的恶作剧大�
 
 metaitem.ingot.iridiumalloy.name=铱合金锭
 metaitem.ingot.iridiumalloy.tooltip=用来制作铱合金板
-
-metaitem.paper.printed.pages.name=打印页
-metaitem.paper.printed.pages.tooltip=用来制作成书
-metaitem.paper.magic.empty.name=魔法纸(空白)
-metaitem.paper.magic.page.name=附魔书页(单张)
-metaitem.paper.magic.pages.name=附魔书页(多张)
-metaitem.paper.punch.card.empty.name=打孔卡(未打孔)
-metaitem.paper.punch.card.encoded.name=打孔卡(已打孔)
 
 metaitem.battery.hull.lv.name=小型电池外壳
 metaitem.battery.hull.lv.tooltip=一个空的 LV 电池外壳
@@ -287,12 +260,6 @@ metaitem.electric.pump.zpm.name=电动泵(ZPM)
 metaitem.electric.pump.zpm.tooltip=5242880 升/秒(作覆盖板时)
 metaitem.electric.pump.uv.name=电动泵(UV)
 metaitem.electric.pump.uv.tooltip=20971520 升/秒(作覆盖板时)
-
-metaitem.fluidregulator.lv.name=流体校准器(LV)
-metaitem.fluidregulator.mv.name=流体校准器(MV)
-metaitem.fluidregulator.hv.name=流体校准器(HV)
-metaitem.fluidregulator.ev.name=流体校准器(EV)
-metaitem.fluidregulator.iv.name=流体校准器(IV)
 
 metaitem.conveyor.module.lv.name=传送带(LV)
 metaitem.conveyor.module.lv.tooltip=每 20 秒传输 1 组物品(作覆盖板时)
@@ -389,7 +356,7 @@ metaitem.board.plastic.name=塑料基板
 metaitem.board.wetware.name=湿件生物电路基板
 
 metaitem.circuit.vacuum_tube.name=真空管
-metaitem.circuit.vacuum_tube.description=一个极其简易的电路板
+metaitem.circuit.vacuum_tube.tooltip=一个极其简易的电路板
 metaitem.component.diode.name=二极管
 metaitem.component.resistor.name=电阻
 metaitem.component.transistor.name=晶体管
@@ -438,37 +405,33 @@ metaitem.plate.random_access_memory.tooltip=随机存取存储器
 metaitem.plate.system_on_chip.name=SoC
 metaitem.plate.system_on_chip.tooltip=芯片级的系统
 
-metaitem.circuit.basic.name=基础电路板
-metaitem.circuit.basic_electronic.name=基础电子电路
-metaitem.circuit.advanced_parts.name=微型处理器
-metaitem.circuit.good.name=优质电子电路板
-metaitem.circuit.advanced.name=高级电路板
-metaitem.circuit.processor_assembly.name=处理器集群
+metaitem.circuit.electronic.name=基础电路板
+metaitem.circuit.basic_integrated.name=基础电子电路
+metaitem.circuit.good_integrated.name=微型处理器
+metaitem.circuit.processor.name=优质电子电路板
+metaitem.circuit.advanced_integrated.name=高级电路板
+metaitem.circuit.assembly.name=处理器集群
 metaitem.circuit.nano_processor.name=纳米处理器
 metaitem.circuit.nano_processor.tooltip=比以往更小
-metaitem.circuit.nano_processor_assembly.name=纳米处理器集群
+metaitem.circuit.nano_assembly.name=纳米处理器集群
 metaitem.circuit.quantum_processor.name=量子处理器
 metaitem.circuit.quantum_processor.tooltip=将量子计算带入现实!
-metaitem.circuit.data_control.name=数据控制电路
 metaitem.circuit.crystal_processor.name=晶体处理器
 metaitem.circuit.crystal_processor.tooltip=借晶体蚀刻之便
-metaitem.circuit.energy_flow.name=能量流电路
 metaitem.circuit.wetware_processor.name=湿件处理器
 metaitem.circuit.wetware_processor.tooltip=你感到湿件处理器在看着你
 metaitem.circuit.wetware_assembly.name=湿件处理器集群
 metaitem.circuit.wetware_assembly.tooltip=可以运行 Minecraft
-metaitem.circuit.wetware_super_computer.name=湿件处理器超级电脑
+metaitem.circuit.wetware_computer.name=湿件处理器超级电脑
 metaitem.circuit.wetware_mainframe.name=湿件主机
 
 metaitem.carbon.fibers.name=粗制碳网
 metaitem.carbon.mesh.name=粗制碳板
 metaitem.carbon.plate.name=碳板
-metaitem.carbon_fiber.name=碳纤维板
 metaitem.ingot.mixed_metal=合金锭
 metaitem.plate.advanced_alloy=高级合金
 metaitem.ingot.iridium_alloy=铱合金锭
 metaitem.plate.iridium_alloy=铱合金板
-metaitem.neutron_reflector=中子反射板
 
 metaitem.component.sawblade.diamond.name=钻石锯片
 metaitem.component.grinder.diamond.name=钻石研磨头
@@ -521,24 +484,11 @@ metaitem.cover.solar.panel.ulv.tooltip=8V 太阳能覆盖板
 metaitem.cover.solar.panel.lv.name=太阳能覆盖板(LV)
 metaitem.cover.solar.panel.lv.tooltip=LV 太阳能覆盖板
 
-metaitem.tool.cheat.name=调试扫描仪
-metaitem.tool.cheat.tooltip=同样也是一个无限的能量源
-metaitem.tool.scanner.name=便携式扫描仪
-metaitem.tool.scanner.tooltip=三录仪
-
-metaitem.duct.tape.name=布莱恩科技航空专用强化胶带FAL84型
-metaitem.duct.tape.tooltip=如果一个胶带不能修复你的大型机器, 那么就来两个! 
-
 metaitem.gelled_toluene.name=胶凝甲苯
 metaitem.gelled_toluene.tooltip=炸药原料
 
 metaitem.bottle.purple.drink.name=紫色饮料
-metaitem.bottle.purple.drink.tooltip=来点柠檬汽水吧. 或者来点冰红茶? 我有可是有紫色饮料! 
-
-metaitem.food.chum.name=海之霸肉块
-metaitem.food.chum.tooltip=Chum is Fum!
-metaitem.food.chum.on.stick.name=海之霸肉串
-metaitem.food.chum.on.stick.tooltip=Don't forget to try our Chum-balaya
+metaitem.bottle.purple.drink.tooltip=来点柠檬汽水吧. 或者来点冰红茶? 我有可是有紫色饮料!
 
 metaitem.dye.indigo.name=靛蓝染料
 metaitem.dye.indigo.tooltip=蓝色染料
@@ -559,11 +509,6 @@ metaitem.dye.brown.name=棕色染料
 metaitem.dye.green.name=绿色染料
 metaitem.dye.red.name=红色染料
 metaitem.dye.black.name=黑色染料
-
-metaitem.sfmixture.name=超级燃料粘合剂
-metaitem.sfmixture.tooltip=合成材料
-metaitem.msfmixture.name=魔法超级燃料粘合剂
-metaitem.msfmixture.tooltip=合成材料
 
 metaitem.rubber_drop.name=橡胶
 metaitem.plant_ball.name=植物球
@@ -633,8 +578,8 @@ metaitem.tool.screwdriver.lv.name=%s螺丝刀(LV)
 metaitem.tool.screwdriver.lv.tooltip=调整覆盖板和机器
 metaitem.tool.soldering_iron.lv.name=%s电烙铁(LV)
 metaitem.tool.soldering_iron.lv.tooltip=修复损坏的电路. 需要消耗1万EU且应在背包中准备焊接材料. 
-metaitem.tool.turbine.name=%s涡轮转子
-metaitem.tool.turbine.tooltip=大型涡轮使用的涡轮转子
+metaitem.turbine_rotor.name=%s涡轮转子
+metaitem.turbine_rotor.tooltip=大型涡轮使用的涡轮转子
 metaitem.tool.magnifying_glass.name=%s放大镜
 
 metaitem.jack_hammer.mode.three_by_three=3x3平面挖掘
@@ -666,8 +611,8 @@ cover.filter.mode.filter_insert=过滤输入
 cover.filter.mode.filter_extract=过滤输出
 cover.item_filter.ignore_damage.enabled=忽略耐久值
 cover.item_filter.ignore_damage.disabled=过滤耐久值
-cover.item_filter.nbt_damage.enabled=忽略NBT
-cover.item_filter.nbt_damage.disabled=过滤NBT
+cover.item_filter.ignore_nbt.enabled=忽略NBT
+cover.item_filter.ignore_nbt.disabled=过滤NBT
 
 cover.conveyor.title=传送带覆盖板设置(%s)
 cover.conveyor.transfer_rate=%s 物品/秒
@@ -947,7 +892,6 @@ material.ytterbium=镱
 material.yttrium=钇
 material.zinc=锌
 
-material.construction_foam=建筑泡沫
 material.bio_fuel=生物燃料
 material.biomass=生物质
 material.creosote=杂酚油
@@ -971,7 +915,7 @@ material.netherrack=地狱岩
 material.toluene=甲苯
 material.drilling_fluid=钻井液
 material.construction_foam=建筑泡沫
-material.epichlorhydrin=环氧氯丙烷
+material.epichlorohydrin=环氧氯丙烷
 material.nitric_acid=硝酸
 material.nitration_mixture=硝酸混酸
 material.fireclay=耐火砖
@@ -1048,8 +992,8 @@ material.obsidian=黑曜石
 material.phosphate=磷酸盐
 material.pig_iron=生铁
 material.plastic=聚乙烯
-material.epoxid=环氧树脂
-material.silicone=硅橡胶
+material.epoxy=环氧树脂
+material.silicon_rubber=硅橡胶
 material.polycaprolactam=聚己内酰胺
 material.polytetrafluoroethylene=聚四氟乙烯
 material.powellite=钼钨钙矿
@@ -1072,12 +1016,11 @@ material.sodium_persulfate=过硫酸钠
 material.sodium_sulfide=硫化钠
 material.hydrogen_sulfide=硫化氢
 
-material.phosphorous_pentoxide=五氧化二磷
+material.phosphorus_pentoxide=五氧化二磷
 material.phosphoric_acid=磷酸
 material.polyvinyl_acetate=聚乙酸乙烯酯
 material.phenol=苯酚
 material.bisphenol_a=双酚A
-material.epoxid=环氧树脂
 material.reinforced_epoxy_resin=纤维强化的环氧树脂
 material.borosilicate_glass=硼玻璃
 material.polyvinyl_chloride=聚氯乙烯
@@ -1096,7 +1039,6 @@ material.sulfur_dioxide=二氧化硫
 material.glycerol=甘油
 material.methanol=甲醇
 material.carbon_monoxide=一氧化碳
-material.nitro_fuel=高十六烷值柴油
 material.diluted_sulfuric_acid=稀硫酸
 material.sodium_bisulfate=硫酸氢钠
 material.chloroform=氯仿
@@ -1108,7 +1050,6 @@ material.dimethylamine=二甲胺
 material.dimethylhidrazine=偏二甲肼
 material.rocket_fuel=火箭燃料
 material.dinitrogen_tetroxide=四氧化二氮
-material.silicon_rubber=硅橡胶
 material.polydimethylsiloxane=聚二甲硅氧烷
 material.dimethyldichlorosilane=二甲基氯硅烷
 material.styrene=苯乙烯
@@ -1140,7 +1081,7 @@ material.propene=丙烯
 material.ethane=乙烷
 material.butene=丁烯
 material.butane=丁烷
-material.calcium_acetate=乙酸钙溶液
+material.dissolved_calcium_acetate=乙酸钙溶液
 material.cumene=异丙苯
 material.indium_gallium_phosphide=磷化铟镓
 material.platinum_group_sludge=铂系矿泥
@@ -1165,14 +1106,13 @@ material.steamcracked_ethane=蒸汽裂化的乙烷
 material.steamcracked_ethylene=蒸汽裂化的乙烯
 material.steamcracked_propene=蒸汽裂化的丙烯
 material.steamcracked_propane=蒸汽裂化的丙烷
-material.cracked_light_fuel=蒸汽裂化的轻燃料
+material.steamcracked_light_fuel=蒸汽裂化的轻燃料
 material.steamcracked_butane=蒸汽裂化的丁烷
 material.steamcracked_naphtha=蒸汽裂化的石脑油
-material.cracked_heavy_fuel=蒸汽裂化的重燃料
+material.steamcracked_heavy_fuel=蒸汽裂化的重燃料
 material.steamcracked_gas=蒸汽裂化的炼油气
 material.steamcracked_butene=蒸汽裂化的丁烯
 material.steamcracked_butadiene=蒸汽裂化的丁二烯
-material.biogas=沼气
 material.chloromethane=氯甲烷
 material.allyl_chloride=烯丙基氯
 material.isoprene=异戊二烯
@@ -1190,7 +1130,7 @@ material.oil_medium=原油
 material.oil_light=轻油
 material.natural_gas=天然气
 material.sulfuric_gas=含硫炼油气
-material.gas=炼油气
+material.refinery_gas=炼油气
 material.sulfuric_naphtha=含硫石脑油
 material.sulfuric_light_fuel=含硫轻燃油
 material.sulfuric_heavy_fuel=含硫重燃油
@@ -1198,8 +1138,6 @@ material.naphtha=石脑油
 material.light_fuel=轻燃料
 material.heavy_fuel=重燃料
 material.lpg=液化石油气
-material.cracked_light_fuel=裂化的轻燃油
-material.cracked_heavy_fuel=裂化的重燃油
 
 material.soldering_alloy=焊锡
 material.spessartine=锰铝榴石
@@ -1262,7 +1200,7 @@ material.tungsten_steel=钨钢
 material.nitro_fuel=高十六烷值柴油
 material.red_alloy=红石合金
 material.cobalt_brass=钴黄铜
-material.phosphor=磷酸钙
+material.tricalcium_phosphate=磷酸钙
 material.basalt=玄武岩
 material.andesite=安山岩
 material.diorite=闪长岩
@@ -1388,18 +1326,18 @@ item.plastic.dustTiny=小撮聚乙烯浆
 item.plastic.dustSmall=小堆聚乙烯浆
 item.plastic.dust=聚乙烯浆
 item.plastic.plate=聚乙烯片
-item.epoxid.ingot=环氧树脂杆
-item.epoxid.dustTiny=小撮环氧树脂浆
-item.epoxid.dustSmall=小堆环氧树脂浆
-item.epoxid.dust=环氧树脂浆
-item.epoxid.nugget=环氧树脂颗粒
-item.epoxid.plateDense=致密环氧树脂片
-item.epoxid.plate=环氧树脂片
-item.epoxid.foil=薄环氧树脂片
-item.silicone.dustTiny=小撮硅橡胶浆
-item.silicone.dustSmall=小堆硅橡胶浆
-item.silicone.dust=硅橡胶浆
-item.silicone.plate=硅橡胶片
+item.epoxy.ingot=环氧树脂杆
+item.epoxy.dustTiny=小撮环氧树脂浆
+item.epoxy.dustSmall=小堆环氧树脂浆
+item.epoxy.dust=环氧树脂浆
+item.epoxy.nugget=环氧树脂颗粒
+item.epoxy.plateDense=致密环氧树脂片
+item.epoxy.plate=环氧树脂片
+item.epoxy.foil=薄环氧树脂片
+item.silicon_rubber.dustTiny=小撮硅橡胶浆
+item.silicon_rubber.dustSmall=小堆硅橡胶浆
+item.silicon_rubber.dust=硅橡胶浆
+item.silicon_rubber.plate=硅橡胶片
 item.polycaprolactam.dustTiny=小撮聚己内酰胺浆
 item.polycaprolactam.dustSmall=小堆聚己内酰胺浆
 item.polycaprolactam.dust=聚己内酰胺浆
@@ -1514,7 +1452,7 @@ recipemap.scanner.name=扫描仪
 recipemap.rockbreaker.name=碎石机
 recipemap.byproductlist.name=矿物副产列表
 recipemap.replicator.name=复制机
-recipemap.assemblyline.name=装配线加工
+recipemap.assembly_line.name=装配线加工
 recipemap.assembler.name=组装机
 recipemap.press.name=冲压机床
 recipemap.macerator.name=研磨机
@@ -1568,8 +1506,6 @@ recipemap.gas_turbine.name=燃气轮机
 recipemap.steam_turbine.name=蒸汽轮机
 recipemap.semi_fluid_generator.name=半流体燃料
 
-behavior.magnifying_glass.description=单击表层岩石进行勘探
-behavior.magnifying_glass.inspect=这个岩石包含%s
 behaviour.hoe=可以耕作泥土
 behaviour.soft_hammer=用以开启与关闭机器
 behaviour.lighter.tooltip=可以点火
@@ -1612,8 +1548,6 @@ tile.wire_coil.tungstensteel.name=钨钢线圈方块
 tile.wire_coil.hss_g.name=高速钢-G线圈方块
 tile.wire_coil.naquadah.name=硅岩线圈方块
 tile.wire_coil.naquadah_alloy.name=硅岩合金线圈方块
-tile.wire_coil.superconductor.name=超导线圈方块
-tile.wire_coil.fusion_coil.name=聚变线圈方块
 
 # Warning sign blocks
 tile.warning_sign.yellow_stripes.name=黄色路障方块
@@ -1658,18 +1592,14 @@ tile.machine_casing.high_voltage.name=HV机器外壳
 tile.machine_casing.extreme_voltage.name=EV机器外壳
 tile.machine_casing.insane_voltage.name=IV机器外壳
 tile.machine_casing.ludicrous_voltage.name=LuV机器外壳
-tile.machine_casing.zero_point_module.name=ZPM机器外壳
-tile.machine_casing.ultra_voltage.name=UV机器外壳
+tile.machine_casing.zpm_voltage.name=ZPM机器外壳
+tile.machine_casing.ultimate_voltage.name=UV机器外壳
 tile.machine_casing.maximum_voltage.name=MAX机器外壳
 
-tile.machine_casing.bronze_hull.name=青铜外壳
-tile.machine_casing.bronze_hull.tooltip=你的第一批蒸汽机器
-tile.machine_casing.bronze_bricks_hull.name=砖砌青铜外壳
-tile.machine_casing.bronze_bricks_hull.tooltip=你的第一批蒸汽机器
-tile.machine_casing.steel_hull.name=钢外壳
-tile.machine_casing.steel_hull.tooltip=用以制作更高等级的蒸汽机器
-tile.machine_casing.steel_bricks_hull.name=砖砌钢外壳
-tile.machine_casing.steel_bricks_hull.tooltip=用以制作更高等级的蒸汽机器
+tile.steam_casing.bronze_hull.name=青铜外壳
+tile.steam_casing.bronze_bricks_hull.name=砖砌青铜外壳
+tile.steam_casing.steel_hull.name=钢外壳
+tile.steam_casing.steel_bricks_hull.name=砖砌钢外壳
 
 # Turbine casing blocks
 tile.turbine_casing.bronze_gearbox.name=青铜齿轮机械方块
@@ -1686,9 +1616,6 @@ tile.multiblock_casing.grate.name=栅格机械方块
 tile.multiblock_casing.assembler.name=装配线外壳
 tile.multiblock_casing.fusion.name=聚变机械方块
 tile.multiblock_casing.fusion_mk2.name=聚变机械方块MK II
-
-#Machine general things
-gregtech.machine.tooltip.added_by=§c§o添加者: %s
 
 # Chests
 gregtech.machine.wooden_chest.name=木箱子
@@ -1796,8 +1723,6 @@ gregtech.machine.steam_alloy_smelter_bronze.name=蒸汽合金炉
 gregtech.machine.steam_alloy_smelter_steel.name=高压合金炉
 
 # Generators
-gregtech.machine.combustion_generator.tooltip=需要液体燃料
-
 gregtech.machine.combustion_generator.lv.name=基础柴油发电机
 gregtech.machine.combustion_generator.mv.name=进阶柴油发电机
 gregtech.machine.combustion_generator.hv.name=涡轮柴油发电机
@@ -1807,8 +1732,6 @@ gregtech.machine.steam_turbine.lv.name=基础蒸汽轮机
 gregtech.machine.steam_turbine.mv.name=进阶蒸汽轮机
 gregtech.machine.steam_turbine.hv.name=涡轮蒸汽轮机
 gregtech.machine.steam_turbine.ev.name=涡轮蒸汽轮机 II
-
-gregtech.machine.gas_turbine.tooltip=需要可燃气体
 
 gregtech.machine.gas_turbine.lv.name=基础燃气轮机
 gregtech.machine.gas_turbine.mv.name=进阶燃气轮机
@@ -2147,7 +2070,6 @@ gregtech.machine.transformer.iv.name=强导压变压器
 gregtech.machine.transformer.luv.name=剧差压变压器
 gregtech.machine.transformer.zpm.name=零点压变压器
 gregtech.machine.transformer.uv.name=极限压变压器
-gregtech.machine.transformer.max.name=上限压变压器
 
 # Chargers
 gregtech.machine.charger.ulv.name=超低压充电箱
@@ -2207,10 +2129,6 @@ gregtech.machine.air_collector.tooltip=从临近方块中收集空气
 #Tesla Coil
 gregtech.machine.tesla_coil.name=特斯拉线圈
 gregtech.machine.tesla_coil.description=对 7 格以内的所有生物造成伤害/n每点伤害消耗 2500 EU/n电能缓存: §e256000 EU
-
-# General machinery
-gregtech.machine.basic.output_override.reset=过滤输出: 所有的储罐.
-gregtech.machine.basic.output_override.set=过滤输出: #%s储罐.
 
 # Achievement ores
 achievement.Naquadah=找到硅岩矿石
@@ -2580,7 +2498,6 @@ achievement.stargateliquid=液体的星际之门材料
 achievement.stargateliquid.desc=生产硅岩
 achievement.tothelimit=寻求极限
 achievement.tothelimit.desc=制作镅
-chievement.fullefficiency=满负荷效率
 achievement.fullefficiency.desc=制造一台离子发电机Mk.III
 achievement.upgrade5=升级你的线圈(五级)
 achievement.upgrade5.desc=制造一个硅岩线圈方块
@@ -2760,18 +2677,8 @@ gregtech.machine.energy_hatch.output.zpm.name=动力仓(ZPM)
 gregtech.machine.energy_hatch.output.uv.name=动力仓(UV)
 gregtech.machine.energy_hatch.output.max.name=动力仓(MAX)
 
-gregtech.machine.rotor_holder.tooltip=为多方块结构的转子提供支撑. 固定转子使其不能飞走.
-
-gregtech.machine.rotor_holder.ulv.name=转子支架(ULV)
-gregtech.machine.rotor_holder.lv.name=转子支架(LV)
-gregtech.machine.rotor_holder.mv.name=转子支架(MV)
 gregtech.machine.rotor_holder.hv.name=转子支架(HV)
-gregtech.machine.rotor_holder.ev.name=转子支架(EV)
-gregtech.machine.rotor_holder.iv.name=转子支架(IV)
 gregtech.machine.rotor_holder.luv.name=转子支架(LuV)
-gregtech.machine.rotor_holder.zpm.name=转子支架(ZPM)
-gregtech.machine.rotor_holder.uv.name=转子支架(UV)
-gregtech.machine.rotor_holder.max.name=转子支架(MAX)
 
 gregtech.machine.fluid_tank.fluid=含有 %s 升%s
 

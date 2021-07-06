@@ -6,7 +6,6 @@ death.attack.turbine=%s put their head into a turbine.
 death.attack.explosion=%s exploded.
 death.attack.explosion.player=%s exploded with help of %s.
 death.attack.heat.player=%s was boiled alive by %s.
-death.attack.crusher=%s was ground into a pulp.
 
 enchantment.disjunction=Disjunction
 
@@ -83,11 +82,6 @@ metaitem.coin.doge.name=Doge Coin
 metaitem.coin.doge.tooltip=wow much coin how money so crypto plz mine v rich very currency wow
 metaitem.coin.chocolate.name=Chocolate Coin
 metaitem.coin.chocolate.tooltip=Wrapped in Gold
-
-metaitem.minecart.wheels.iron.name=Iron Minecart Wheels
-metaitem.minecart.wheels.iron.tooltip=To get things rolling
-metaitem.minecart.wheels.steel.name=Steel Minecart Wheels
-metaitem.minecart.wheels.steel.tooltip=To get things rolling
 
 metaitem.shape.empty.name=Empty Shape Plate
 metaitem.shape.empty.tooltip=Raw Plate to make Molds and Extrude Shapes
@@ -187,21 +181,8 @@ metaitem.shape.extruder.gear.tooltip=Extruder Shape for making Gears
 metaitem.shape.extruder.bottle.name=Extruder Shape (Bottle)
 metaitem.shape.extruder.bottle.tooltip=Extruder Shape for making Bottles
 
-metaitem.shape.slicer.flat.name=Slicer Blade (Flat)
-metaitem.shape.slicer.flat.tooltip=Slicer Blade for cutting Flat
-metaitem.shape.slicer.stripes.name=Slicer Blade (Stripes)
-metaitem.shape.slicer.stripes.tooltip=Slicer Blade for cutting Stripes
-
-metaitem.fuel.can.plastic.empty.name=Empty Plastic Fuel Can
-metaitem.fuel.can.plastic.empty.tooltip=Used to store Fuels
-metaitem.fuel.can.plastic.filled.name=Plastic Fuel Can
-metaitem.fuel.can.plastic.filled.tooltip=Burns well in Diesel Generators
-
 metaitem.spray.empty.name=Spray Can (Empty)
 metaitem.spray.empty.tooltip=Can be filled with sprays of various colors
-
-metaitem.thermos_can.empty.name=Empty Thermos Can
-metaitem.thermos_can.empty.tooltip=Keeping hot things hot and cold things cold
 
 metaitem.plant.ball.name=Plantball
 
@@ -248,14 +229,6 @@ metaitem.tool.lighter.platinum.tooltip=A known Prank Master is engraved on it
 
 metaitem.ingot.iridiumalloy.name=Iridium Alloy Ingot
 metaitem.ingot.iridiumalloy.tooltip=Used to make Iridium Plates
-
-metaitem.paper.printed.pages.name=Printed Pages
-metaitem.paper.printed.pages.tooltip=Used to make written Books
-metaitem.paper.magic.empty.name=Magic Paper
-metaitem.paper.magic.page.name=Enchanted Page
-metaitem.paper.magic.pages.name=Enchanted Pages
-metaitem.paper.punch.card.empty.name=Punch Card
-metaitem.paper.punch.card.encoded.name=Punched Card
 
 metaitem.battery.hull.lv.name=Small Battery Hull
 metaitem.battery.hull.lv.tooltip=An empty LV Battery Hull
@@ -734,27 +707,11 @@ metaitem.cover.solar.panel.ulv.tooltip=8 Volt Solar Panel
 metaitem.cover.solar.panel.lv.name=Solar Panel (LV)
 metaitem.cover.solar.panel.lv.tooltip=Low Voltage Solar Panel
 
-metaitem.tool.cheat.name=Debug Scanner
-metaitem.tool.cheat.tooltip=Also an Infinite Energy Source
-metaitem.tool.scanner.name=Portable Scanner
-metaitem.tool.scanner.tooltip=Tricorder
-
-metaitem.rebreather.name=Rebreather
-metaitem.rebreather.tooltip=Allows breathing underwater at the expense of energy
-
-metaitem.duct.tape.name=BrainTech Aerospace Advanced Reinforced Duct Tape FAL-84
-metaitem.duct.tape.tooltip=If you can't fix it with this, use more of it!
-
 metaitem.gelled_toluene.name=Gelled Toluene
 metaitem.gelled_toluene.tooltip=Raw Explosive
 
 metaitem.bottle.purple.drink.name=Purple Drink
 metaitem.bottle.purple.drink.tooltip=How about Lemonade. Or some Ice Tea? I got Purple Drink!
-
-metaitem.food.chum.name=Chum
-metaitem.food.chum.tooltip=Chum is Fum!
-metaitem.food.chum.on.stick.name=Chum on a Stick
-metaitem.food.chum.on.stick.tooltip=Don't forget to try our Chum-balaya
 
 metaitem.dye.indigo.name=Indigo Dye
 metaitem.dye.indigo.tooltip=Blue Dye
@@ -775,11 +732,6 @@ metaitem.dye.brown.name=Brown Dye
 metaitem.dye.green.name=Green Dye
 metaitem.dye.red.name=Red Dye
 metaitem.dye.black.name=Black Dye
-
-metaitem.sfmixture.name=Super Fuel Binder
-metaitem.sfmixture.tooltip=Raw Material
-metaitem.msfmixture.name=Magic Super Fuel Binder
-metaitem.msfmixture.tooltip=Raw Material
 
 metaitem.rubber_drop.name=Sticky Resin
 metaitem.plant_ball.name=Plant Ball
@@ -922,7 +874,7 @@ cover.pump.transfer_rate=%s
 cover.pump.mode.export=Mode: Export
 cover.pump.mode.import=Mode: Import
 cover.pump.fluid_filter.title=Fluid Filter
-cover.bucket.mode.bucket=B/s
+cover.bucket.mode.bucket=kL/s
 cover.bucket.mode.milli_bucket=L/s
 cover.fluid_regulator.title=Fluid Regulator Settings (%s)
 cover.fluid_regulator.transfer_mode.description=§eTransfer Any§r - in this mode, cover will transfer as many fluids matching its filter as possible./n§eSupply Exact§r - in this mode, cover will supply fluids in portions specified in the window underneath this button. If amount of fluids is less than portion size, fluids won't be moved./n§eKeep Exact§r - in this mode, cover will keep specified amount of fluids in the destination inventory, supplying additional amount of fluids if required./n§7Tip: shift click will multiply increase/decrease amounts by 10 and ctrl click will multiply by 100.
