@@ -112,11 +112,12 @@ public class MetaTileEntityTransformer extends TieredMetaTileEntity {
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         super.renderMetaTileEntity(renderState, translation, pipeline);
 
-            SimpleOverlayRenderer frontFacetexture = isTransformUp ? Textures.ENERGY_OUT_MULTI : Textures.ENERGY_IN_MULTI;
-            SimpleOverlayRenderer OtherFacetexture = isTransformUp ? Textures.ENERGY_IN_MULTI : Textures.ENERGY_OUT_MULTI;
+            //these are swapped to temporarily "fix" the overlay being the opposite the transformer mode
+            SimpleOverlayRenderer otherFacetexture = isTransformUp ? Textures.ENERGY_OUT_MULTI : Textures.ENERGY_IN_MULTI;
+            SimpleOverlayRenderer frontFacetexture = isTransformUp ? Textures.ENERGY_IN_MULTI : Textures.ENERGY_OUT_MULTI;
             frontFacetexture.renderSided(frontFacing,renderState,translation,PipelineUtil.color(pipeline, GTValues.VC[getTier()]));
         Arrays.stream(EnumFacing.values()).filter(f -> f != frontFacing)
-                .forEach((f -> OtherFacetexture.renderSided(f,renderState,translation,PipelineUtil.color(pipeline, GTValues.VC[getTier() -1]))));
+                .forEach((f -> otherFacetexture.renderSided(f,renderState,translation,PipelineUtil.color(pipeline, GTValues.VC[getTier() -1]))));
 
         }
 
@@ -133,6 +134,7 @@ public class MetaTileEntityTransformer extends TieredMetaTileEntity {
             ISoftHammerItem softHammerItem = itemStack.getCapability(GregtechCapabilities.CAPABILITY_MALLET, null);
 
             if (getWorld().isRemote) {
+                scheduleRenderUpdate();
                 return true;
             }
             if(!softHammerItem.damageItem(DamageValues.DAMAGE_FOR_SOFT_HAMMER, false)) {
