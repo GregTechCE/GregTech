@@ -21,6 +21,7 @@ public class ChemistryRecipes {
         PolymerRecipes.init();
         LCRCombined.init();
         GrowthMediumRecipes.init();
+        NuclearRecipes.init();
 
 
         // A Few Random Recipes

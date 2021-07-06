@@ -934,22 +934,6 @@ public class ReactorRecipes {
             .duration(240).EUt(30).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
-            .input(dust, Uraninite, 3)
-            .input(dust, Aluminium)
-            .output(dust, Uranium238)
-            .fluidOutputs(Aluminium.getFluid(144))
-            .fluidOutputs(Oxygen.getFluid(2000))
-            .duration(360).EUt(120).buildAndRegister();
-
-        CHEMICAL_RECIPES.recipeBuilder()
-            .input(dust, Uraninite, 3)
-            .input(dust, Magnesium)
-            .output(dust, Uranium238)
-            .fluidOutputs(Magnesium.getFluid(144))
-            .fluidOutputs(Oxygen.getFluid(2000))
-            .duration(360).EUt(120).buildAndRegister();
-
-        CHEMICAL_RECIPES.recipeBuilder()
             .input(dust, Calcium)
             .input(dust, Carbon)
             .fluidInputs(Oxygen.getFluid(3000))

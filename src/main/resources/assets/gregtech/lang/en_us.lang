@@ -1671,6 +1671,10 @@ item.gelatin.dust=Gelatin
 material.agar=Agar
 item.agar.dust=Agar
 
+material.uranium_hexafluoride=Uranium Hexafluoride
+material.enriched_uranium_hexafluoride=Enriched Uranium Hexafluoride
+material.depleted_uranium_hexafluoride=Depleted Uranium Hexafluoride
+
 item.nether_quartz.oreNetherrack=Nether Quartz Ore
 item.gunpowder.dustTiny=Tiny Pile of Gunpowder
 item.gunpowder.dustSmall=Small Pile of Gunpowder
