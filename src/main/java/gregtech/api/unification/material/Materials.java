@@ -668,9 +668,13 @@ public class Materials {
         Pyrolusite.setDirectSmelting(Manganese);
         Magnesite.setDirectSmelting(Magnesium);
         Molybdenite.setDirectSmelting(Molybdenum);
+        BasalticMineralSand.setDirectSmelting(Iron);
+        GraniticMineralSand.setDirectSmelting(Iron);
+        Chromite.setDirectSmelting(Chrome);
+        Galena.setDirectSmelting(Lead);
 
-        Salt.setOreMultiplier(3);
-        RockSalt.setOreMultiplier(3);
+        Salt.setOreMultiplier(2);
+        RockSalt.setOreMultiplier(2);
         Lepidolite.setOreMultiplier(5);
 
         Spodumene.setOreMultiplier(2);
@@ -708,9 +712,9 @@ public class Materials {
 
         TricalciumPhosphate.setOreMultiplier(3);
         Saltpeter.setOreMultiplier(4);
-        Apatite.setOreMultiplier(5);
+        Apatite.setOreMultiplier(4);
         Apatite.setByProductMultiplier(2);
-        Redstone.setOreMultiplier(6);
+        Redstone.setOreMultiplier(5);
 
         Lapis.setOreMultiplier(6);
         Lapis.setByProductMultiplier(4);
