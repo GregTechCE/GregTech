@@ -16,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Tuple;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import scala.tools.cmd.Meta;
 
 import java.util.Collection;
 import java.util.List;
@@ -301,6 +302,27 @@ public class SeparationRecipes {
                 .fluidInputs(Air.getFluid(10000))
                 .fluidOutputs(Nitrogen.getFluid(3900))
                 .fluidOutputs(Oxygen.getFluid(1000))
+                .buildAndRegister();
+
+        // Stone Dust
+        CENTRIFUGE_RECIPES.recipeBuilder().duration(480).EUt(120)
+                .input(dust, Stone)
+                .output(dustSmall, Quartzite)
+                .output(dustSmall, PotassiumFeldspar)
+                .output(dustTiny, Marble, 2)
+                .output(dustTiny, Biotite)
+                .chancedOutput(dustTiny, MetalMixture, 7500, 750)
+                .chancedOutput(dustTiny, Sodalite, 5000, 500)
+                .buildAndRegister();
+
+        CENTRIFUGE_RECIPES.recipeBuilder().duration(1000).EUt(900)
+                .input(dust, MetalMixture)
+                .output(dustSmall, BandedIron)
+                .output(dustSmall, Bauxite)
+                .output(dustTiny, Pyrolusite, 2)
+                .output(dustTiny, Barite)
+                .chancedOutput(dustTiny, Chromite, 7500, 750)
+                .chancedOutput(dustTiny, Ilmenite, 5000, 500)
                 .buildAndRegister();
 
 

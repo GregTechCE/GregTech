@@ -449,7 +449,7 @@ public class Materials {
     public static SimpleDustMaterial ArsenicTrioxide = new SimpleDustMaterial(24, "arsenic_trioxide", 0xFFFFFF, ROUGH, of(new MaterialStack(Arsenic, 2), new MaterialStack(Oxygen, 3)), GENERATE_SMALL_TINY);
     public static SimpleDustMaterial Massicot = new SimpleDustMaterial(25, "massicot", 0xFFDD55, DULL, of(new MaterialStack(Lead, 1), new MaterialStack(Oxygen, 1)), 0);
     public static SimpleDustMaterial Ferrosilite = new SimpleDustMaterial(26, "ferrosilite", 0x97632A, DULL, of(new MaterialStack(Iron, 1), new MaterialStack(Silicon, 1), new MaterialStack(Oxygen, 3)), 0);
-
+    public static SimpleDustMaterial MetalMixture = new SimpleDustMaterial(27, "metal_mixture", 0x502d16, METALLIC, of(), GENERATE_SMALL_TINY | DISABLE_DECOMPOSITION);
 
     /**
      * Organic chemistry
