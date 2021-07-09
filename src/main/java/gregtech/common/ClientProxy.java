@@ -31,11 +31,8 @@ import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.init.Items;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ContainerPlayer;
-import net.minecraft.inventory.ContainerWorkbench;
-import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.*;
 import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -151,13 +148,8 @@ public class ClientProxy extends CommonProxy {
         MetaItems.registerModels();
     }
 
-    private static final String[] clearRecipes = new String[]{
-            "quantum_tank",
-            "quantum_chest"
-    };
-
     @SubscribeEvent
-    public static void addTooltip(ItemTooltipEvent event) {
+    public static void addMaterialFormulaHandler(ItemTooltipEvent event) {
         ItemStack itemStack = event.getItemStack();
 
         // Handles Item tooltips
@@ -190,32 +182,48 @@ public class ClientProxy extends CommonProxy {
             if (chemicalFormula != null && !chemicalFormula.isEmpty())
                 event.getToolTip().add(1, ChatFormatting.GRAY.toString() + chemicalFormula);
         }
+    }
 
+    private static final String[] clearRecipes = new String[]{
+            "quantum_tank",
+            "quantum_chest"
+    };
+
+    @SubscribeEvent
+    public static void addNBTClearingTooltip(ItemTooltipEvent event) {
         // Quantum Tank/Chest NBT Clearing Recipe Tooltip
         final EntityPlayer player = event.getEntityPlayer();
-        InventoryCrafting inv = null;
         if (player != null) {
+            InventoryCrafting inv = null;
+            InventoryCraftResult result = null;
 
-            if (player.openContainer instanceof ContainerWorkbench)
+            if (player.openContainer instanceof ContainerWorkbench) {
                 inv = ((ContainerWorkbench) player.openContainer).craftMatrix;
-            else if (player.openContainer instanceof ContainerPlayer)
+                result = ((ContainerWorkbench) player.openContainer).craftResult;
+            } else if (player.openContainer instanceof ContainerPlayer) {
                 inv = ((ContainerPlayer) player.openContainer).craftMatrix;
+                result = ((ContainerPlayer) player.openContainer).craftResult;
+            }
 
             if (inv != null) {
-                boolean foundSelf = false;
-                for (int i = 0; i < inv.getSizeInventory(); i++) {
-                    if (ItemStack.areItemsEqual(inv.getStackInSlot(i), event.getItemStack())) {
-                        foundSelf = true;
-                        break;
-                    }
-                }
+                ItemStack stackResult = result.getStackInSlot(0);
 
-                if (foundSelf) {
-                    String unlocalizedName = event.getItemStack().getUnlocalizedName();
-                    for (String key : clearRecipes) {
-                        if (unlocalizedName.contains(key)) {
-                            event.getToolTip().add(I18n.format("gregtech.universal.clear_nbt_recipe.tooltip"));
-                            break;
+                if (stackResult == event.getItemStack()) {
+                    if (!stackResult.isEmpty() && ItemStack.areItemsEqual(stackResult, event.getItemStack())) {
+                        String unlocalizedName = stackResult.getTranslationKey();
+                        for (String key : clearRecipes) {
+                            if (unlocalizedName.contains(key)) {
+
+                                for (int i = 0; i < inv.getSizeInventory(); i++) {
+                                    ItemStack craftStack = inv.getStackInSlot(i);
+                                    if (!craftStack.isEmpty()) {
+                                        if (!craftStack.isItemEqual(stackResult) || !craftStack.hasTagCompound())
+                                            return;
+                                    }
+                                }
+                                event.getToolTip().add(I18n.format("gregtech.universal.clear_nbt_recipe.tooltip"));
+                                break;
+                            }
                         }
                     }
                 }
