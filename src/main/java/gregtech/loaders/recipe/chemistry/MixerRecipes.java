@@ -96,7 +96,7 @@ public class MixerRecipes {
             .input(dust, Copper, 3)
             .fluidInputs(Oxygen.getFluid(7000))
             .output(dust, YttriumBariumCuprate, 13)
-            .EUt(8).duration(8000).buildAndRegister();
+            .EUt(8).duration(800).buildAndRegister();
 
         for (DustMaterial dustMaterial : new DustMaterial[]{Talc, Soapstone, Redstone}) {
             MIXER_RECIPES.recipeBuilder()
