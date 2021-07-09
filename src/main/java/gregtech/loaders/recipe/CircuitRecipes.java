@@ -149,7 +149,7 @@ public class CircuitRecipes {
         CUTTER_RECIPES.recipeBuilder().duration(900).EUt(96)  .input(RANDOM_ACCESS_MEMORY_WAFER)              .output(RANDOM_ACCESS_MEMORY, 32)             .buildAndRegister();
         CUTTER_RECIPES.recipeBuilder().duration(900).EUt(1920).input(QBIT_CENTRAL_PROCESSING_UNIT_WAFER)      .output(QBIT_CENTRAL_PROCESSING_UNIT, 4)      .buildAndRegister();
         CUTTER_RECIPES.recipeBuilder().duration(900).EUt(120) .input(ULTRA_LOW_POWER_INTEGRATED_CIRCUIT_WAFER).output(ULTRA_LOW_POWER_INTEGRATED_CIRCUIT, 6).buildAndRegister();
-        CUTTER_RECIPES.recipeBuilder().duration(900).EUt(480) .input(LOW_POWER_INTEGRATED_CIRCUIT_WAFER)      .output(POWER_INTEGRATED_CIRCUIT, 4)          .buildAndRegister();
+        CUTTER_RECIPES.recipeBuilder().duration(900).EUt(480) .input(LOW_POWER_INTEGRATED_CIRCUIT_WAFER)      .output(LOW_POWER_INTEGRATED_CIRCUIT, 4)      .buildAndRegister();
         CUTTER_RECIPES.recipeBuilder().duration(900).EUt(1920).input(POWER_INTEGRATED_CIRCUIT_WAFER)          .output(POWER_INTEGRATED_CIRCUIT, 4)          .buildAndRegister();
         CUTTER_RECIPES.recipeBuilder().duration(900).EUt(7680).input(HIGH_POWER_INTEGRATED_CIRCUIT_WAFER)     .output(HIGH_POWER_INTEGRATED_CIRCUIT, 2)     .buildAndRegister();
         CUTTER_RECIPES.recipeBuilder().duration(900).EUt(192) .input(NOR_MEMORY_CHIP_WAFER)                   .output(NOR_MEMORY_CHIP, 16)                  .buildAndRegister();
