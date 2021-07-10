@@ -94,15 +94,18 @@ public class MetaTileEntityQuantumChest extends MetaTileEntity implements ITiere
         if (!getWorld().isRemote) {
             if (itemsStoredInside < maxStoredItems) {
                 ItemStack inputStack = importItems.getStackInSlot(0);
-                if (!inputStack.isEmpty() && (itemStack.isEmpty() || areItemStackIdentical(itemStack, inputStack))) {
-                    int amountOfItemsToInsert = (int) Math.min(inputStack.getCount(), maxStoredItems - itemsStoredInside);
-                    if (this.itemsStoredInside == 0L || itemStack.isEmpty()) {
-                        this.itemStack = GTUtility.copyAmount(1, inputStack);
+                ItemStack outputStack = exportItems.getStackInSlot(0);
+                if (outputStack.isEmpty() || outputStack.isItemEqual(inputStack)) {
+                    if (!inputStack.isEmpty() && (itemStack.isEmpty() || areItemStackIdentical(itemStack, inputStack))) {
+                        int amountOfItemsToInsert = (int) Math.min(inputStack.getCount(), maxStoredItems - itemsStoredInside);
+                        if (this.itemsStoredInside == 0L || itemStack.isEmpty()) {
+                            this.itemStack = GTUtility.copyAmount(1, inputStack);
+                        }
+                        inputStack.shrink(amountOfItemsToInsert);
+                        importItems.setStackInSlot(0, inputStack);
+                        this.itemsStoredInside += amountOfItemsToInsert;
+                        markDirty();
                     }
-                    inputStack.shrink(amountOfItemsToInsert);
-                    importItems.setStackInSlot(0, inputStack);
-                    this.itemsStoredInside += amountOfItemsToInsert;
-                    markDirty();
                 }
             }
             if (itemsStoredInside > 0 && !itemStack.isEmpty()) {
