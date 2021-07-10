@@ -3,7 +3,7 @@ package gregtech.api.recipes.recipeproperties;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 
-public class FusionEUToStartProperty extends RecipeProperty<Integer>{
+public class FusionEUToStartProperty extends RecipeProperty<Long>{
 
 
     private static final String KEY = "eu_to_start";
@@ -11,7 +11,7 @@ public class FusionEUToStartProperty extends RecipeProperty<Integer>{
     private static FusionEUToStartProperty INSTANCE;
 
     private FusionEUToStartProperty() {
-        super(KEY, Integer.class);
+        super(KEY, Long.class);
     }
 
     public static FusionEUToStartProperty getInstance() {
