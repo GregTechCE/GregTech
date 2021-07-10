@@ -2291,7 +2291,7 @@ gregtech.machine.quantum_chest.iv.name=Black Hole-Quantum Chest III
 gregtech.machine.quantum_tank.tooltip=Compact place to store all your fluids.
 gregtech.machine.quantum_tank.capacity=Fluid Capacity: %,d mb
 gregtech.machine.quantum_tank.tooltip.name=Fluid Stored: §b%s
-gregtech.machine.quantum_tank.tooltip.count=Fluid Amount: §e%,d
+gregtech.machine.quantum_tank.tooltip.count=Fluid Amount: §e%,d mb
 
 gregtech.machine.quantum_tank.mv.name=Basic Quantum Tank
 gregtech.machine.quantum_tank.hv.name=Advanced Quantum Tank
