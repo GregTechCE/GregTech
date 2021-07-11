@@ -74,6 +74,7 @@ public abstract class SteamBoiler extends MetaTileEntity {
         BRONZE_SLOT_BACKGROUND_TEXTURE = getGuiTexture("slot_%s");
         SLOT_FURNACE_BACKGROUND = getGuiTexture("slot_%s_furnace_background");
         this.containerInventory = new ItemStackHandler(2);
+        this.setPaintingColor(0xFFFFFF);
     }
 
     @SideOnly(Side.CLIENT)
