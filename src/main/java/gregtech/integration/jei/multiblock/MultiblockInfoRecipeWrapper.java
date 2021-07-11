@@ -35,6 +35,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.Tuple;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextFormatting;
@@ -351,11 +352,12 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
             MetaTileEntity mte = GregTechAPI.META_TILE_ENTITY_REGISTRY.getObjectById(tooltipBlockStack.getItemDamage());
             if(mte instanceof IMultiblockAbilityPart) {
                 MultiblockAbility ability = ((IMultiblockAbilityPart) mte).getAbility();
-                Map<MultiblockAbility, List<String>> abilityTooltipMap = infoPage.getAbilityTooltipMap();
+                Map<MultiblockAbility, List<Tuple<String, TextFormatting>>> abilityTooltipMap = infoPage.getAbilityTooltipMap();
                 if(abilityTooltipMap.containsKey(ability)) {
-                    List<String> tooltips = abilityTooltipMap.get(ability);
+                    List<Tuple<String, TextFormatting>> tooltips = abilityTooltipMap.get(ability);
                     for(int i = 0; i < tooltips.size(); i++) {
-                        tooltip.add(i + 1, TextFormatting.GREEN + I18n.format(tooltips.get(i)));
+                        //Start at i+1 due to ItemStack name
+                        tooltip.add(i + 1, tooltips.get(i).getSecond() + I18n.format(tooltips.get(i).getFirst()));
                     }
                 }
             }
@@ -368,11 +370,11 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
         MetaTileEntity mte = GregTechAPI.META_TILE_ENTITY_REGISTRY.getObjectById(itemStack.getItemDamage());
         if(mte instanceof IMultiblockAbilityPart) {
             MultiblockAbility ability = ((IMultiblockAbilityPart) mte).getAbility();
-            Map<MultiblockAbility, List<String>> abilityTooltipMap = infoPage.getAbilityTooltipMap();
+            Map<MultiblockAbility, List<Tuple<String, TextFormatting>>> abilityTooltipMap = infoPage.getAbilityTooltipMap();
             if(abilityTooltipMap.containsKey(ability)) {
-                List<String> tooltips = abilityTooltipMap.get(ability);
+                List<Tuple<String, TextFormatting>> tooltips = abilityTooltipMap.get(ability);
                 for(int i = 0; i < tooltips.size(); i++) {
-                    tooltip.add(i + 1, TextFormatting.GREEN + I18n.format(tooltips.get(i)));
+                    tooltip.add(i + 1, tooltips.get(i).getSecond() + I18n.format(tooltips.get(i).getFirst()));
                 }
             }
         }
