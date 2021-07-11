@@ -1,9 +1,13 @@
 package gregtech.integration.jei.multiblock;
 
-import com.google.common.collect.Maps;
-import gregtech.api.metatileentity.multiblock.MultiblockAbility;
+import gregtech.api.GTValues;
 import gregtech.api.metatileentity.multiblock.MultiblockControllerBase;
+import gregtech.api.util.ItemStackHashStrategy;
+import gregtech.common.metatileentities.MetaTileEntities;
+import it.unimi.dsi.fastutil.Hash;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenCustomHashMap;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.text.TextFormatting;
 
@@ -13,7 +17,9 @@ import java.util.stream.Stream;
 
 public abstract class MultiblockInfoPage {
 
-    private Map<MultiblockAbility, List<Tuple<String, TextFormatting>>> abilityTooltips;
+    private final Hash.Strategy<ItemStack> strategy = ItemStackHashStrategy.comparingAllButCount();
+
+    private Map<ItemStack, List<Tuple<String, TextFormatting>>> abilityTooltips = new Object2ObjectOpenCustomHashMap<>(strategy);
 
     public abstract MultiblockControllerBase getController();
 
@@ -37,10 +43,9 @@ public abstract class MultiblockInfoPage {
      * Gets the Map containing all tooltips for MultiblockAbilities. Will generate the map if it does not exist
      * @return - The Map containing Tooltips and Formatting for specific MultiblockAbilities
      */
-    public Map<MultiblockAbility, List<Tuple<String, TextFormatting>>> getAbilityTooltipMap() {
+    public Map<ItemStack, List<Tuple<String, TextFormatting>>> getAbilityTooltipMap() {
         // Generate on first use
-        if (this.abilityTooltips == null) {
-            this.abilityTooltips = Maps.newHashMap();
+        if (this.abilityTooltips.size() == 0) {
             generateAbilityTooltips();
         }
         return this.abilityTooltips;
@@ -50,30 +55,33 @@ public abstract class MultiblockInfoPage {
      * Contains the default tooltips that will be applied to all MultiblockAbilities
      */
     protected void generateAbilityTooltips() {
-        addAbilityTooltip(MultiblockAbility.EXPORT_ITEMS, new Tuple<>("gregtech.multiblock.preview.any_hatch", TextFormatting.GREEN));
-        addAbilityTooltip(MultiblockAbility.IMPORT_ITEMS, new Tuple<>("gregtech.multiblock.preview.any_hatch", TextFormatting.GREEN));
-        addAbilityTooltip(MultiblockAbility.EXPORT_FLUIDS, new Tuple<>("gregtech.multiblock.preview.any_hatch", TextFormatting.GREEN));
-        addAbilityTooltip(MultiblockAbility.IMPORT_FLUIDS, new Tuple<>("gregtech.multiblock.preview.any_hatch", TextFormatting.GREEN));
+
+        for(int i  = 0; i < GTValues.V.length; i++) {
+            addAbilityTooltip(MetaTileEntities.ITEM_EXPORT_BUS[i].getStackForm(), new Tuple<>("gregtech.multiblock.preview.any_hatch", TextFormatting.GREEN));
+            addAbilityTooltip(MetaTileEntities.ITEM_IMPORT_BUS[i].getStackForm(), new Tuple<>("gregtech.multiblock.preview.any_hatch", TextFormatting.GREEN));
+            addAbilityTooltip(MetaTileEntities.FLUID_EXPORT_HATCH[i].getStackForm(), new Tuple<>("gregtech.multiblock.preview.any_hatch", TextFormatting.GREEN));
+            addAbilityTooltip(MetaTileEntities.FLUID_IMPORT_HATCH[i].getStackForm(), new Tuple<>("gregtech.multiblock.preview.any_hatch", TextFormatting.GREEN));
+        }
     }
 
     /**
      * A Helper method for adding tooltips to MultiblockAbilities. Can be called if {@link MultiblockInfoPage#generateAbilityTooltips()} is not overridden
      * Will add tooltips to MultiblockAbilities with existing tooltips
-     * @param ability - The MultiblockAbility to add a Tooltip too
+     * @param itemStack - The MultiblockAbility to add a Tooltip too
      * @param tooltip - The tooltip String and TextFormatting to be added
      */
-    protected void addAbilityTooltip(MultiblockAbility ability, Tuple<String, TextFormatting> tooltip) {
+    protected void addAbilityTooltip(ItemStack itemStack, Tuple<String, TextFormatting> tooltip) {
 
-        List<Tuple<String, TextFormatting>> tooltipList = this.abilityTooltips.getOrDefault(ability, null);
+        List<Tuple<String, TextFormatting>> tooltipList = this.abilityTooltips.getOrDefault(itemStack, null);
 
         if(tooltipList == null) {
             List<Tuple<String, TextFormatting>> tooltipToAdd = new ArrayList<>();
             tooltipToAdd.add(tooltip);
-            this.abilityTooltips.put(ability, tooltipToAdd);
+            this.abilityTooltips.put(itemStack, tooltipToAdd);
         }
         else {
             tooltipList.add(tooltip);
-            this.abilityTooltips.put(ability, tooltipList);
+            this.abilityTooltips.put(itemStack, tooltipList);
 
         }
     }

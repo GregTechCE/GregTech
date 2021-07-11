@@ -4,12 +4,9 @@ import codechicken.lib.raytracer.CuboidRayTraceResult;
 import codechicken.lib.raytracer.IndexedCuboid6;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Vector3;
-import gregtech.api.GregTechAPI;
 import gregtech.api.gui.GuiTextures;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
-import gregtech.api.metatileentity.multiblock.IMultiblockAbilityPart;
-import gregtech.api.metatileentity.multiblock.MultiblockAbility;
 import gregtech.api.metatileentity.multiblock.MultiblockControllerBase;
 import gregtech.api.render.scene.SceneRenderCallback;
 import gregtech.api.render.scene.WorldSceneRenderer;
@@ -349,16 +346,12 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
                     tooltip.set(k, TextFormatting.GRAY + tooltip.get(k));
                 }
             }
-            MetaTileEntity mte = GregTechAPI.META_TILE_ENTITY_REGISTRY.getObjectById(tooltipBlockStack.getItemDamage());
-            if(mte instanceof IMultiblockAbilityPart) {
-                MultiblockAbility ability = ((IMultiblockAbilityPart) mte).getAbility();
-                Map<MultiblockAbility, List<Tuple<String, TextFormatting>>> abilityTooltipMap = infoPage.getAbilityTooltipMap();
-                if(abilityTooltipMap.containsKey(ability)) {
-                    List<Tuple<String, TextFormatting>> tooltips = abilityTooltipMap.get(ability);
-                    for(int i = 0; i < tooltips.size(); i++) {
-                        //Start at i+1 due to ItemStack name
-                        tooltip.add(i + 1, tooltips.get(i).getSecond() + I18n.format(tooltips.get(i).getFirst()));
-                    }
+            Map<ItemStack, List<Tuple<String, TextFormatting>>> abilityTooltipMap = infoPage.getAbilityTooltipMap();
+            if(abilityTooltipMap.containsKey(tooltipBlockStack)) {
+                List<Tuple<String, TextFormatting>> tooltips = abilityTooltipMap.get(tooltipBlockStack);
+                for(int i = 0; i < tooltips.size(); i++) {
+                    //Start at i+1 due to ItemStack name
+                    tooltip.add(i + 1, tooltips.get(i).getSecond() + I18n.format(tooltips.get(i).getFirst()));
                 }
             }
             return tooltip;
@@ -367,15 +360,11 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
     }
 
     public void addAbilityPartTooltip(int slotIndex, boolean input, ItemStack itemStack, List<String> tooltip) {
-        MetaTileEntity mte = GregTechAPI.META_TILE_ENTITY_REGISTRY.getObjectById(itemStack.getItemDamage());
-        if(mte instanceof IMultiblockAbilityPart) {
-            MultiblockAbility ability = ((IMultiblockAbilityPart) mte).getAbility();
-            Map<MultiblockAbility, List<Tuple<String, TextFormatting>>> abilityTooltipMap = infoPage.getAbilityTooltipMap();
-            if(abilityTooltipMap.containsKey(ability)) {
-                List<Tuple<String, TextFormatting>> tooltips = abilityTooltipMap.get(ability);
-                for(int i = 0; i < tooltips.size(); i++) {
-                    tooltip.add(i + 1, tooltips.get(i).getSecond() + I18n.format(tooltips.get(i).getFirst()));
-                }
+        Map<ItemStack, List<Tuple<String, TextFormatting>>> abilityTooltipMap = infoPage.getAbilityTooltipMap();
+        if(abilityTooltipMap.containsKey(itemStack)) {
+            List<Tuple<String, TextFormatting>> tooltips = abilityTooltipMap.get(itemStack);
+            for(int i = 0; i < tooltips.size(); i++) {
+                tooltip.add(i + 1, tooltips.get(i).getSecond() + I18n.format(tooltips.get(i).getFirst()));
             }
         }
     }
