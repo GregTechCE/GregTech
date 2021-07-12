@@ -2955,6 +2955,8 @@ gregtech.multiblock.preview.any_hatch=Any tier hatch can be used to form the str
 gregtech.multiblock.preview.limit=Minimum limit %d
 gregtech.multiblock.preview.limit_per_layer=Only %d per layer
 gregtech.multiblock.preview.only=Only %s allowed
+gregtech.multiblock.preview.only_location=Only allowed at %s
+gregtech.multiblock.preview.location.b_c=Bottom Center
 
 gregtech.multiblock.blast_furnace.max_temperature=Max Temperature: %sK
 gregtech.multiblock.multi_furnace.heating_coil_level=Heating Coil Level: %s
