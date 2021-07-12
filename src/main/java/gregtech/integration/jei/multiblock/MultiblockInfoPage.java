@@ -8,7 +8,9 @@ import it.unimi.dsi.fastutil.Hash;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenCustomHashMap;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Tuple;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 
 import java.util.*;
@@ -19,7 +21,9 @@ public abstract class MultiblockInfoPage {
 
     private final Hash.Strategy<ItemStack> strategy = ItemStackHashStrategy.comparingAllButCount();
 
-    private Map<ItemStack, List<Tuple<String, TextFormatting>>> abilityTooltips = new Object2ObjectOpenCustomHashMap<>(strategy);
+    private Map<ItemStack, List<ITextComponent>> blockTooltips = new Object2ObjectOpenCustomHashMap<>(strategy);
+
+    private static final ITextComponent defaultText = new TextComponentTranslation("gregtech.multiblock.preview.any_hatch").setStyle(new Style().setColor(TextFormatting.GREEN));
 
     public abstract MultiblockControllerBase getController();
 
@@ -40,48 +44,50 @@ public abstract class MultiblockInfoPage {
     }
 
     /**
-     * Gets the Map containing all tooltips for MultiblockAbilities. Will generate the map if it does not exist
-     * @return - The Map containing Tooltips and Formatting for specific MultiblockAbilities
+     * Gets the Map containing all tooltips for Blocks that have had tooltips applied.
+     * Will generate the map if it does not exist
+     * @return - The Map containing Tooltips and Formatting for specific Blocks
      */
-    public Map<ItemStack, List<Tuple<String, TextFormatting>>> getAbilityTooltipMap() {
+    public Map<ItemStack, List<ITextComponent>> getBlockTooltipMap() {
         // Generate on first use
-        if (this.abilityTooltips.size() == 0) {
-            generateAbilityTooltips();
+        if (this.blockTooltips.size() == 0) {
+            generateBlockTooltips();
         }
-        return this.abilityTooltips;
+        return this.blockTooltips;
     }
 
     /**
-     * Contains the default tooltips that will be applied to all MultiblockAbilities
+     * Contains the default tooltips that will be applied to all default Blocks
      */
-    protected void generateAbilityTooltips() {
+    protected void generateBlockTooltips() {
 
         for(int i  = 0; i < GTValues.V.length; i++) {
-            addAbilityTooltip(MetaTileEntities.ITEM_EXPORT_BUS[i].getStackForm(), new Tuple<>("gregtech.multiblock.preview.any_hatch", TextFormatting.GREEN));
-            addAbilityTooltip(MetaTileEntities.ITEM_IMPORT_BUS[i].getStackForm(), new Tuple<>("gregtech.multiblock.preview.any_hatch", TextFormatting.GREEN));
-            addAbilityTooltip(MetaTileEntities.FLUID_EXPORT_HATCH[i].getStackForm(), new Tuple<>("gregtech.multiblock.preview.any_hatch", TextFormatting.GREEN));
-            addAbilityTooltip(MetaTileEntities.FLUID_IMPORT_HATCH[i].getStackForm(), new Tuple<>("gregtech.multiblock.preview.any_hatch", TextFormatting.GREEN));
+            addBlockTooltip(MetaTileEntities.ITEM_EXPORT_BUS[i].getStackForm(), defaultText);
+            addBlockTooltip(MetaTileEntities.ITEM_IMPORT_BUS[i].getStackForm(),  defaultText);
+            addBlockTooltip(MetaTileEntities.FLUID_EXPORT_HATCH[i].getStackForm(),  defaultText);
+            addBlockTooltip(MetaTileEntities.FLUID_IMPORT_HATCH[i].getStackForm(),  defaultText);
         }
     }
 
     /**
-     * A Helper method for adding tooltips to MultiblockAbilities. Can be called if {@link MultiblockInfoPage#generateAbilityTooltips()} is not overridden
+     * A Helper method for adding tooltips to Blocks in the multiblock preview screen.
+     * Can be called if {@link MultiblockInfoPage#generateBlockTooltips()} is not overridden
      * Will add tooltips to MultiblockAbilities with existing tooltips
-     * @param itemStack - The MultiblockAbility to add a Tooltip too
-     * @param tooltip - The tooltip String and TextFormatting to be added
+     * @param itemStack - The ItemStack form of the Block to add a Tooltip too
+     * @param tooltip - An ITextComponent object consisting of the tooltip and format to add to the block
      */
-    protected void addAbilityTooltip(ItemStack itemStack, Tuple<String, TextFormatting> tooltip) {
+    protected void addBlockTooltip(ItemStack itemStack, ITextComponent tooltip) {
 
-        List<Tuple<String, TextFormatting>> tooltipList = this.abilityTooltips.getOrDefault(itemStack, null);
+        List<ITextComponent> tooltipList = this.blockTooltips.getOrDefault(itemStack, null);
 
         if(tooltipList == null) {
-            List<Tuple<String, TextFormatting>> tooltipToAdd = new ArrayList<>();
+            List<ITextComponent> tooltipToAdd = new ArrayList<>();
             tooltipToAdd.add(tooltip);
-            this.abilityTooltips.put(itemStack, tooltipToAdd);
+            this.blockTooltips.put(itemStack, tooltipToAdd);
         }
         else {
             tooltipList.add(tooltip);
-            this.abilityTooltips.put(itemStack, tooltipList);
+            this.blockTooltips.put(itemStack, tooltipList);
 
         }
     }
