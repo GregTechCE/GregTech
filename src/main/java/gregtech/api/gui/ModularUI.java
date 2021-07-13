@@ -90,15 +90,6 @@ public final class ModularUI implements ISizeProvider {
     }
 
     public static Builder defaultBuilder() {
-        return defaultBuilder(GuiTextures.LOGO);
-    }
-
-    public static Builder defaultBuilder(TextureArea logo) {
-        return new Builder(GuiTextures.BACKGROUND, 176, 166)
-                .image(151, 62, 17, 17, logo);
-    }
-
-    public static Builder defaultBuilderNoLogo() {
         return new Builder(GuiTextures.BACKGROUND, 176, 166);
     }
 
@@ -169,10 +160,6 @@ public final class ModularUI implements ISizeProvider {
 
         public Builder image(int x, int y, int width, int height, TextureArea area) {
             return widget(new ImageWidget(x, y, width, height, area));
-        }
-
-        public Builder defaultLogo(int x, int y) {
-            return widget(new ImageWidget(x, y, 17, 17, GuiTextures.LOGO));
         }
 
         public Builder dynamicLabel(int x, int y, Supplier<String> text, int color) {

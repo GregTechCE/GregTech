@@ -380,7 +380,7 @@ public class MetaTileEntityLockedSafe extends MetaTileEntity implements IFastRen
     @Override
     protected ModularUI createUI(EntityPlayer entityPlayer) {
         DoubleSupplier supplier = () -> 0.2 + (unlockProgress / (MAX_UNLOCK_PROGRESS * 1.0)) * 0.8;
-        ModularUI.Builder builder = ModularUI.defaultBuilderNoLogo()
+        ModularUI.Builder builder = ModularUI.defaultBuilder()
             .widget(new ProgressWidget(supplier, 5, 5, 166, 74,
                 GuiTextures.PROGRESS_BAR_UNLOCK,
                 MoveType.VERTICAL_INVERTED))

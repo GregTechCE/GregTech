@@ -283,9 +283,9 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
         if (exportFluids != null && exportItems != null) {
             int totalSlots = exportFluids.getTanks() + exportItems.getSlots();
             if (totalSlots >= 9) { // 9th slot will overlap the logo
-                ModularUI.Builder builder = ModularUI.defaultBuilderNoLogo();
+                ModularUI.Builder builder = ModularUI.defaultBuilder();
                 addInventoryWidgets(builder, () -> 0.0, importItems, exportItems, importFluids, exportFluids);
-                return builder.defaultLogo(151, 62 + (totalSlots / 3 - 2) * 14);
+                return builder;
             }
         }
         return createUITemplate(() -> 0.0, importItems, exportItems, importFluids, exportFluids);

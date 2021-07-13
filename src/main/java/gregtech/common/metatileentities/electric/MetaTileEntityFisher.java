@@ -72,7 +72,6 @@ public class MetaTileEntityFisher extends TieredMetaTileEntity {
             }
         }
 
-        builder.defaultLogo(151, 18 + 18 * rowSize + 12 - 22);
         builder.bindPlayerInventory(entityPlayer.inventory, GuiTextures.SLOT, 7, 18 + 18 * rowSize + 12);
         return builder.build(getHolder(), entityPlayer);
     }
