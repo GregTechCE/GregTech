@@ -280,28 +280,16 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
     }
 
     public ModularUI.Builder createJeiUITemplate(IItemHandlerModifiable importItems, IItemHandlerModifiable exportItems, FluidTankList importFluids, FluidTankList exportFluids) {
-        if (exportFluids != null && exportItems != null) {
-            int totalSlots = exportFluids.getTanks() + exportItems.getSlots();
-            if (totalSlots >= 9) { // 9th slot will overlap the logo
-                ModularUI.Builder builder = ModularUI.defaultBuilder();
-                addInventoryWidgets(builder, () -> 0.0, importItems, exportItems, importFluids, exportFluids);
-                return builder;
-            }
-        }
         return createUITemplate(() -> 0.0, importItems, exportItems, importFluids, exportFluids);
     }
 
     //this DOES NOT include machine control widgets or binds player inventory
     public ModularUI.Builder createUITemplate(DoubleSupplier progressSupplier, IItemHandlerModifiable importItems, IItemHandlerModifiable exportItems, FluidTankList importFluids, FluidTankList exportFluids) {
         ModularUI.Builder builder = ModularUI.defaultBuilder();
-        addInventoryWidgets(builder, progressSupplier, importItems, exportItems, importFluids, exportFluids);
-        return builder;
-    }
-
-    private void addInventoryWidgets(ModularUI.Builder builder, DoubleSupplier progressSupplier, IItemHandlerModifiable importItems, IItemHandlerModifiable exportItems, FluidTankList importFluids, FluidTankList exportFluids) {
         builder.widget(new ProgressWidget(progressSupplier, 77, 22, 21, 20, progressBarTexture, moveType));
         addInventorySlotGroup(builder, importItems, importFluids, false);
         addInventorySlotGroup(builder, exportItems, exportFluids, true);
+        return builder;
     }
 
     protected void addInventorySlotGroup(ModularUI.Builder builder, IItemHandlerModifiable itemHandler, FluidTankList fluidHandler, boolean isOutputs) {

@@ -284,9 +284,9 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
 
     public String[] getAvailableOverclockingTiers() {
         final int maxTier = getOverclockingTier(getMaxVoltage());
-        final String[] result = new String[maxTier + 1];
+        final String[] result = new String[maxTier + 2];
         for (int i = 0; i < maxTier + 1; ++i) {
-            result[i] = GTValues.VN[i];
+            result[i + 1] = GTValues.VN[i];
         }
         result[0] = "gregtech.gui.overclock.off";
         return result;
@@ -415,11 +415,12 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
     }
 
     // The overclocking tier
+    // it is 1 greater than the index into GTValues.V since here the "0 tier" represents 0 EU or no overclock
     public int getOverclockTier() {
         if (this.overclockVoltage == 0) {
             return 0;
         }
-        return getOverclockingTier(this.overclockVoltage);
+        return 1 + getOverclockingTier(this.overclockVoltage);
     }
 
     public void setOverclockTier(final int tier) {
@@ -427,7 +428,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
             setOverclockVoltage(0);
             return;
         }
-        setOverclockVoltage(getVoltageByTier(tier));
+        setOverclockVoltage(getVoltageByTier(tier - 1));
     }
 
     @Override
