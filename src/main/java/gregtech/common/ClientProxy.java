@@ -211,8 +211,10 @@ public class ClientProxy extends CommonProxy {
                 if (stackResult == event.getItemStack()) {
                     if (!stackResult.isEmpty() && ItemStack.areItemsEqual(stackResult, event.getItemStack())) {
                         String unlocalizedName = stackResult.getTranslationKey();
+                        //noinspection ConstantConditions
+                        String namespace = stackResult.getItem().getRegistryName().getNamespace();
                         for (String key : clearRecipes) {
-                            if (unlocalizedName.contains(key)) {
+                            if (unlocalizedName.contains(key) && namespace.equals(GTValues.MODID)) {
 
                                 for (int i = 0; i < inv.getSizeInventory(); i++) {
                                     ItemStack craftStack = inv.getStackInSlot(i);
