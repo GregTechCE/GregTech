@@ -320,7 +320,7 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity im
 
     protected ModularUI.Builder createGuiTemplate(EntityPlayer player) {
         ModularUI.Builder builder = workable.recipeMap.createUITemplate(workable::getProgressPercent, importItems, exportItems, importFluids, exportFluids)
-            .widget(new LabelWidget(5, 5, getMetaFullName()))
+            .widget(new LabelWidget(7, 5, getMetaFullName()))
             .widget(new DischargerSlotWidget(chargerInventory, 0, 79, 62)
                 .setBackgroundTexture(GuiTextures.SLOT, GuiTextures.CHARGER_OVERLAY))
             .widget(new ImageWidget(79, 42, 18, 18, GuiTextures.INDICATOR_NO_ENERGY)
@@ -328,7 +328,7 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity im
             .bindPlayerInventory(player.inventory);
 
         int leftButtonStartX = 7;
-        int rightButtonStartX = 176 - 7 - 24;
+        int rightButtonStartX = 176 - 7 - 45;
         if (workable.recipeMap instanceof RecipeMapWithConfigButton) {
             leftButtonStartX += ((RecipeMapWithConfigButton) workable.recipeMap).getLeftButtonOffset();
             rightButtonStartX -= ((RecipeMapWithConfigButton) workable.recipeMap).getRightButtonOffset();
@@ -344,11 +344,13 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity im
             builder.widget(new ToggleButtonWidget(leftButtonStartX, 62, 18, 18,
                 GuiTextures.BUTTON_FLUID_OUTPUT, this::isAutoOutputFluids, this::setAutoOutputFluids)
                 .setTooltipText("gregtech.gui.fluid_auto_output.tooltip"));
+            leftButtonStartX += 18;
         }
 
-        builder.widget(new CycleButtonWidget(rightButtonStartX, 60, 24, 20,
+        builder.widget(new CycleButtonWidget(leftButtonStartX, 62, 18, 18,
                 workable.getAvailableOverclockingTiers(), workable::getOverclockTier, workable::setOverclockTier)
-                .setTooltipHoverString("gregtech.gui.overclock.description"));
+                .setTooltipHoverString("gregtech.gui.overclock.description")
+                .setButtonTexture(GuiTextures.BUTTON_OVERCLOCK));
 
         return builder;
     }
