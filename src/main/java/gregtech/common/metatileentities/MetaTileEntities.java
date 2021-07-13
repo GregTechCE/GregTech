@@ -358,6 +358,7 @@ public class MetaTileEntities {
             FORGE_HAMMER[11] = GregTechAPI.registerMetaTileEntity(438, new MetaTileEntityHammer(gregtechId("forge_hammer.umv"), RecipeMaps.FORGE_HAMMER_RECIPES, Textures.FORGE_HAMMER_OVERLAY, 12, true));
             FORGE_HAMMER[12] = GregTechAPI.registerMetaTileEntity(439, new MetaTileEntityHammer(gregtechId("forge_hammer.uxv"), RecipeMaps.FORGE_HAMMER_RECIPES, Textures.FORGE_HAMMER_OVERLAY, 13, true));
         }
+
         // Forming Press, IDs 440-454
         registerSimpleMetaTileEntity(FORMING_PRESS, 440, "forming_press", RecipeMaps.FORMING_PRESS_RECIPES, Textures.FORMING_PRESS_OVERLAY,
                 ConfigHolder.U.machines.midTierFormingPresses, ConfigHolder.U.machines.highTierFormingPresses);
@@ -674,7 +675,7 @@ public class MetaTileEntities {
             TUNGSTENSTEEL_CRATE = GregTechAPI.registerMetaTileEntity(1616, new MetaTileEntityCrate(gregtechId("crate.tungstensteel"), Materials.TungstenSteel, 168));
         }
 
-        // Misc, IDs 1625-1699
+        // Misc, IDs 1625-1999
         TESLA_COIL = new MetaTileEntityTeslaCoil(gregtechId("tesla_coil"));
         GregTechAPI.registerMetaTileEntity(1625, TESLA_COIL);
         LOCKED_SAFE = GregTechAPI.registerMetaTileEntity(1626, new MetaTileEntityLockedSafe(gregtechId("locked_safe")));
