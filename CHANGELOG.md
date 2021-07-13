@@ -1,6 +1,6 @@
 ## Changelog
 
-### 1.16.2
+### 1.17.0
 * Fix many small GUI issues (#1574) - dan
 * Add clarification tooltips to blocks in the multiblock preview (#1584) - ALongStringOfNumbers
 * Allow Quantum Chests/Tanks to Keep Inventory on Break (#1555) - dan
