@@ -3524,6 +3524,8 @@ gregtech.multiblock.preview.limit_per_layer=Only %d per layer
 gregtech.multiblock.preview.only=Only %s allowed
 gregtech.multiblock.preview.only_location=Only allowed at %s
 gregtech.multiblock.preview.location.b_c=Bottom Center
+gregtech.multiblock.preview.primitive_pump.hatch=Only Pump Hatch, ULV Hatch, or LV Hatch allowed
+gregtech.multiblock.preview.location_end=very end
 
 gregtech.multiblock.blast_furnace.max_temperature=Max Temperature: %sK
 gregtech.multiblock.multi_furnace.heating_coil_level=Heating Coil Level: %s
