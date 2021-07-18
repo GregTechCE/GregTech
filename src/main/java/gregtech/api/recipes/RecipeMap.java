@@ -288,7 +288,14 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
     }
 
     public ModularUI.Builder createJeiUITemplate(IItemHandlerModifiable importItems, IItemHandlerModifiable exportItems, FluidTankList importFluids, FluidTankList exportFluids) {
-        return createUITemplate(() -> 0.0, importItems, exportItems, importFluids, exportFluids);
+        return createUITemplate(this::jeiProgressBar, importItems, exportItems, importFluids, exportFluids);
+    }
+
+    private double timer = 0;
+    private double jeiProgressBar() {
+        timer += 0.0005;
+        if (timer > 1.0) timer = 0.0;
+        return timer;
     }
 
     //this DOES NOT include machine control widgets or binds player inventory
