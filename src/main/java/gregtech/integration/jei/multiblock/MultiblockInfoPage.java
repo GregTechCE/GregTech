@@ -63,7 +63,7 @@ public abstract class MultiblockInfoPage {
      */
     protected void generateBlockTooltips() {
 
-        for(int i  = 0; i < GTValues.V.length; i++) {
+        for(int i  = 0; i < GTValues.UHV + 1; i++) {
             addBlockTooltip(MetaTileEntities.ITEM_EXPORT_BUS[i].getStackForm(), defaultText);
             addBlockTooltip(MetaTileEntities.ITEM_IMPORT_BUS[i].getStackForm(),  defaultText);
             addBlockTooltip(MetaTileEntities.FLUID_EXPORT_HATCH[i].getStackForm(),  defaultText);
