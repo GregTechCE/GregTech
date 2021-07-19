@@ -192,6 +192,7 @@ public class ConfigHolder {
         public boolean registerRecipesForMiningHammers = true;
 
         @Config.Comment("Divisor for Recipe Duration per Overclock. This will be removed eventually, once a value is chosen. Default: 2.0")
+        @Config.RangeDouble(min = 2.0, max = 3.0)
         public double overclockDivisor = 2.0;
 
         public static class GT5U {
