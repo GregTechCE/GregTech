@@ -1794,7 +1794,6 @@ recipemap.thermal_centrifuge.name=Thermal Centrifuge
 recipemap.extractor.name=Extractor
 recipemap.recycler.name=Recycler
 recipemap.furnace.name=Furnace
-recipemap.microwave.name=Microwave
 recipemap.scanner.name=Scanner
 recipemap.rockbreaker.name=Rock Breaker
 recipemap.byproductlist.name=Ore Byproduct List
@@ -1804,8 +1803,6 @@ recipemap.assembler.name=Assembler
 recipemap.press.name=Forming Press
 recipemap.macerator.name=Pulverization
 recipemap.unpackager.name=Unpackager
-recipemap.fluid_canner.name=Fluid Canning Machine
-recipemap.plasma_arc_furnace.name=Plasma Arc Furnace
 recipemap.arc_furnace.name=Arc Furnace
 recipemap.sifter.name=Sifter
 recipemap.laser_engraver.name=Precision Laser Engraver
@@ -1819,7 +1816,6 @@ recipemap.fluid_heater.name=Fluid Heater
 recipemap.distillery.name=Distillery
 recipemap.fermenter.name=Fermenter
 recipemap.fluid_solidifier.name=Fluid Solidifier
-recipemap.fluid_extractor.name=Fluid Extractor
 recipemap.packager.name=Packager
 recipemap.fusion_reactor.name=Fusion Reactor
 recipemap.fusion_reactor.value=Start: %s EU
@@ -1843,7 +1839,6 @@ recipemap.cutting_saw.name=Cutting Saw
 recipemap.slicer.name=Slicer
 recipemap.extruder.name=Extruder
 recipemap.hammer.name=Hammer
-recipemap.uuamplifier.name=UU Amplifier
 recipemap.forming_press.name=Forming Press
 recipemap.forge_hammer.name=Forge Hammer
 recipemap.compressor.name=Compressor
@@ -1854,7 +1849,6 @@ recipemap.gas_turbine.name=Gas Turbine
 recipemap.steam_turbine.name=Steam Turbine
 recipemap.semi_fluid_generator.name=Semi Fluid Fuels
 recipemap.plasma_generator.name=Plasma Generator
-recipemap.cluster_mill.name=Cluster Mill
 recipemap.circuit_assembler.name=Circuit Assembler
 
 behaviour.hoe=Can till dirt
@@ -2254,14 +2248,6 @@ gregtech.machine.alloy_smelter.uiv.name=High-Tech Alloy Smelter III
 gregtech.machine.alloy_smelter.umv.name=High-Tech Alloy Smelter IV
 gregtech.machine.alloy_smelter.uxv.name=Ultimate Alloy Smelter
 
-gregtech.machine.amplifab.tooltip=Extracting UU Amplifier
-
-gregtech.machine.amplifab.lv.name=Basic Amplifabricator
-gregtech.machine.amplifab.mv.name=Advanced Amplifabricator
-gregtech.machine.amplifab.hv.name=Advanced Amplifabricator II
-gregtech.machine.amplifab.ev.name=Advanced Amplifabricator III
-gregtech.machine.amplifab.iv.name=Elite Amplifabricator
-
 gregtech.machine.arc_furnace.tooltip=Who needs a Blast Furnace?
 
 gregtech.machine.arc_furnace.lv.name=Basic Arc Furnace
@@ -2342,7 +2328,8 @@ gregtech.machine.brewery.uiv.name=High-Tech Brewery III
 gregtech.machine.brewery.umv.name=High-Tech Brewery IV
 gregtech.machine.brewery.uxv.name=Ultimate Brewery
 
-gregtech.machine.canner.tooltip=Immobile Food Canning Machine GTA4
+gregtech.machine.canner.tooltip=Puts Fluids into and out of Containers. Now with Items!
+gregtech.machine.canner.jei_description=You can fill and empty any fluid containers with the Fluid Canner (e.g. Buckets or Fluid Cells)
 
 gregtech.machine.canner.lv.name=Basic Canning Machine
 gregtech.machine.canner.mv.name=Advanced Canning Machine
@@ -2486,7 +2473,7 @@ gregtech.machine.electromagnetic_separator.uiv.name=High-Tech Electromagnetic Se
 gregtech.machine.electromagnetic_separator.umv.name=High-Tech Electromagnetic Separator IV
 gregtech.machine.electromagnetic_separator.uxv.name=Ultimate Electromagnetic Separator
 
-gregtech.machine.extractor.tooltip=Dejuicer-Device of Doom - D123
+gregtech.machine.extractor.tooltip=Dejuicer-Device of Doom - D123. Now with Fluids!
 
 gregtech.machine.extractor.lv.name=Basic Extractor
 gregtech.machine.extractor.mv.name=Advanced Extractor
@@ -2533,38 +2520,6 @@ gregtech.machine.fermenter.uev.name=High-Tech Fermenter II
 gregtech.machine.fermenter.uiv.name=High-Tech Fermenter III
 gregtech.machine.fermenter.umv.name=High-Tech Fermenter IV
 gregtech.machine.fermenter.uxv.name=Ultimate Fermenter
-
-gregtech.machine.fluid_canner.tooltip=Puts Fluids into and out of Containers
-
-gregtech.machine.fluid_canner.lv.name=Basic Fluid Canner
-gregtech.machine.fluid_canner.mv.name=Advanced Fluid Canner
-gregtech.machine.fluid_canner.hv.name=Advanced Fluid Canner II
-gregtech.machine.fluid_canner.ev.name=Advanced Fluid Canner III
-gregtech.machine.fluid_canner.iv.name=Elite Fluid Canner
-gregtech.machine.fluid_canner.luv.name=Elite Fluid Canner II
-gregtech.machine.fluid_canner.zpm.name=Elite Fluid Canner III
-gregtech.machine.fluid_canner.uv.name=Elite Fluid Canner IV
-gregtech.machine.fluid_canner.uhv.name=High-Tech Fluid Canner
-gregtech.machine.fluid_canner.uev.name=High-Tech Fluid Canner II
-gregtech.machine.fluid_canner.uiv.name=High-Tech Fluid Canner III
-gregtech.machine.fluid_canner.umv.name=High-Tech Fluid Canner IV
-gregtech.machine.fluid_canner.uxv.name=Ultimate Fluid Canner
-
-gregtech.machine.fluid_extractor.tooltip=Extracting Fluids from Items
-
-gregtech.machine.fluid_extractor.lv.name=Basic Fluid Extractor
-gregtech.machine.fluid_extractor.mv.name=Advanced Fluid Extractor
-gregtech.machine.fluid_extractor.hv.name=Advanced Fluid Extractor II
-gregtech.machine.fluid_extractor.ev.name=Advanced Fluid Extractor III
-gregtech.machine.fluid_extractor.iv.name=Elite Fluid Extractor
-gregtech.machine.fluid_extractor.luv.name=Elite Fluid Extractor II
-gregtech.machine.fluid_extractor.zpm.name=Elite Fluid Extractor III
-gregtech.machine.fluid_extractor.uv.name=Elite Fluid Extractor IV
-gregtech.machine.fluid_extractor.uhv.name=High-Tech Fluid Extractor
-gregtech.machine.fluid_extractor.uev.name=High-Tech Fluid Extractor II
-gregtech.machine.fluid_extractor.uiv.name=High-Tech Fluid Extractor III
-gregtech.machine.fluid_extractor.umv.name=High-Tech Fluid Extractor IV
-gregtech.machine.fluid_extractor.uxv.name=Ultimate Fluid Extractor
 
 gregtech.machine.fluid_heater.tooltip=Heating up your Fluids
 
@@ -2646,22 +2601,6 @@ gregtech.machine.lathe.uiv.name=High-Tech Lathe III
 gregtech.machine.lathe.umv.name=High-Tech Lathe IV
 gregtech.machine.lathe.uxv.name=Ultimate Lathe
 
-gregtech.machine.microwave.tooltip=Did you really read the instruction Manual?
-
-gregtech.machine.microwave.lv.name=Basic Microwave
-gregtech.machine.microwave.mv.name=Advanced Microwave
-gregtech.machine.microwave.hv.name=Advanced Microwave II
-gregtech.machine.microwave.ev.name=Advanced Microwave III
-gregtech.machine.microwave.iv.name=Elite Microwave
-gregtech.machine.microwave.luv.name=Elite Microwave II
-gregtech.machine.microwave.zpm.name=Elite Microwave III
-gregtech.machine.microwave.uv.name=Elite Microwave IV
-gregtech.machine.microwave.uhv.name=High-Tech Microwave
-gregtech.machine.microwave.uev.name=High-Tech Microwave II
-gregtech.machine.microwave.uiv.name=High-Tech Microwave III
-gregtech.machine.microwave.umv.name=High-Tech Microwave IV
-gregtech.machine.microwave.uxv.name=Ultimate Microwave
-
 gregtech.machine.mixer.tooltip=Will it Blend?
 
 gregtech.machine.mixer.lv.name=Basic Mixer
@@ -2725,22 +2664,6 @@ gregtech.machine.unpacker.uev.name=High-Tech Unpacker II
 gregtech.machine.unpacker.uiv.name=High-Tech Unpacker III
 gregtech.machine.unpacker.umv.name=High-Tech Unpacker IV
 gregtech.machine.unpacker.uxv.name=Ultimate Unpacker
-
-gregtech.machine.plasma_arc_furnace.tooltip=My days are numbered...
-
-gregtech.machine.plasma_arc_furnace.lv.name=Basic Plasma Arc Furnace
-gregtech.machine.plasma_arc_furnace.mv.name=Advanced Plasma Arc Furnace
-gregtech.machine.plasma_arc_furnace.hv.name=Advanced Plasma Arc Furnace II
-gregtech.machine.plasma_arc_furnace.ev.name=Advanced Plasma Arc Furnace III
-gregtech.machine.plasma_arc_furnace.iv.name=Elite Plasma Arc Furnace
-gregtech.machine.plasma_arc_furnace.luv.name=Elite Plasma Arc Furnace II
-gregtech.machine.plasma_arc_furnace.zpm.name=Elite Plasma Arc Furnace III
-gregtech.machine.plasma_arc_furnace.uv.name=Elite Plasma Arc Furnace IV
-gregtech.machine.plasma_arc_furnace.uhv.name=High-Tech Plasma Arc Furnace
-gregtech.machine.plasma_arc_furnace.uev.name=High-Tech Plasma Arc Furnace II
-gregtech.machine.plasma_arc_furnace.uiv.name=High-Tech Plasma Arc Furnace III
-gregtech.machine.plasma_arc_furnace.umv.name=High-Tech Plasma Arc Furnace IV
-gregtech.machine.plasma_arc_furnace.uxv.name=Ultimate Plasma Arc Furnace
 
 gregtech.machine.polarizer.tooltip=Bipolarising your Magnets
 
@@ -2821,22 +2744,6 @@ gregtech.machine.wiremill.uev.name=High-Tech Wiremill II
 gregtech.machine.wiremill.uiv.name=High-Tech Wiremill III
 gregtech.machine.wiremill.umv.name=High-Tech Wiremill IV
 gregtech.machine.wiremill.uxv.name=Ultimate Wiremill
-
-gregtech.machine.cluster_mill.tooltip=Motor Singularity
-
-gregtech.machine.cluster_mill.lv.name=Basic Cluster Mill
-gregtech.machine.cluster_mill.mv.name=Advanced Cluster Mill
-gregtech.machine.cluster_mill.hv.name=Advanced Cluster Mill II
-gregtech.machine.cluster_mill.ev.name=Advanced Cluster Mill III
-gregtech.machine.cluster_mill.iv.name=Elite Cluster Mill
-gregtech.machine.cluster_mill.luv.name=Elite Cluster Mill II
-gregtech.machine.cluster_mill.zpm.name=Elite Cluster Mill III
-gregtech.machine.cluster_mill.uv.name=Elite Cluster Mill IV
-gregtech.machine.cluster_mill.uhv.name=High-Tech Cluster Mill
-gregtech.machine.cluster_mill.uev.name=High-Tech Cluster Mill II
-gregtech.machine.cluster_mill.uiv.name=High-Tech Cluster Mill III
-gregtech.machine.cluster_mill.umv.name=High-Tech Cluster Mill IV
-gregtech.machine.cluster_mill.uxv.name=Ultimate Cluster Mill
 
 gregtech.machine.circuit_assembler.tooltip=Pick-n-Place all over the place
 
@@ -3061,10 +2968,6 @@ gregtech.machine.air_collector.luv.name=Atmosphere Collector II
 gregtech.machine.air_collector.tooltip=Collects air from adjacent blocks at the expense of energy
 gregtech.machine.air_collector.collection_speed=Produces %,d L of Air every %,d ticks
 gregtech.machine.air_collector.jei_description=The Air Collector collects air from adjacent blocks for a little bit of EU
-
-#Tesla Coil
-gregtech.machine.tesla_coil.name=Tesla Coil
-gregtech.machine.tesla_coil.description=Damages all living entities within 7 blocks range/nConsumes 2500 EU for 1 damage point/nInternal buffer Capacity: §e256k EU
 
 #Fisher
 gregtech.machine.fisher.lv.name=Basic Fisher
