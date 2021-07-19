@@ -191,6 +191,9 @@ public class ConfigHolder {
         @Config.RequiresMcRestart
         public boolean registerRecipesForMiningHammers = true;
 
+        @Config.Comment("Divisor for Recipe Duration per Overclock. This will be removed eventually, once a value is chosen. Default: 2.0")
+        public double overclockDivisor = 2.0;
+
         public static class GT5U {
 
             @Config.Comment("Enable an extra ZPM and UV Battery (this also makes the Ultimate Battery harder to make). Default: false")
