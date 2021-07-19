@@ -116,8 +116,11 @@ public class PartsRecipeHandler {
 
     public static void processFineWire(OrePrefix fineWirePrefix, IngotMaterial material) {
         ItemStack fineWireStack = OreDictUnifier.get(fineWirePrefix, material);
-        ModHandler.addShapelessRecipe(String.format("fine_wire_%s", material.toString()),
-            fineWireStack, 'x', new UnificationEntry(OrePrefix.foil, material));
+
+        if (!OreDictUnifier.get(foil, material).isEmpty())
+            ModHandler.addShapelessRecipe(String.format("fine_wire_%s", material.toString()),
+                fineWireStack, 'x', new UnificationEntry(OrePrefix.foil, material));
+
         if (material.cableProperties != null) {
             RecipeMaps.WIREMILL_RECIPES.recipeBuilder()
                 .input(OrePrefix.wireGtSingle, material)
