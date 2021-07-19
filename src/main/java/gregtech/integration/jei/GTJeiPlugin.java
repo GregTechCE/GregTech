@@ -145,11 +145,6 @@ public class GTJeiPlugin implements IModPlugin {
             }
         }
 
-        for (MetaTileEntity breweryTile : MetaTileEntities.BREWERY) {
-            if (breweryTile == null) continue;
-            registry.addRecipeCatalyst(breweryTile.getStackForm(), VanillaRecipeCategoryUid.BREWING);
-        }
-
         String semiFluidMapId = GTValues.MODID + ":" + RecipeMaps.SEMI_FLUID_GENERATOR_FUELS.getUnlocalizedName();
         registry.addRecipeCatalyst(MetaTileEntities.LARGE_BRONZE_BOILER.getStackForm(), semiFluidMapId);
         registry.addRecipeCatalyst(MetaTileEntities.LARGE_STEEL_BOILER.getStackForm(), semiFluidMapId);
