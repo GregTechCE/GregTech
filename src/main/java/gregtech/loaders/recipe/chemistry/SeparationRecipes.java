@@ -456,7 +456,7 @@ public class SeparationRecipes {
         FLUID_EXTRACTION_RECIPES.recipeBuilder().duration(128).EUt(4)
                 .inputs(new ItemStack(Items.COAL, 1, 1))
                 .chancedOutput(dust, Ash, 1000, 200)
-                .fluidOutputs(Creosote.getFluid(100))
+                .fluidOutputs(WoodTar.getFluid(100))
                 .buildAndRegister();
 
         FLUID_EXTRACTION_RECIPES.recipeBuilder().duration(16).EUt(4)
