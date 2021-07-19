@@ -1850,6 +1850,7 @@ recipemap.steam_turbine.name=Steam Turbine
 recipemap.semi_fluid_generator.name=Semi Fluid Fuels
 recipemap.plasma_generator.name=Plasma Generator
 recipemap.circuit_assembler.name=Circuit Assembler
+recipemap.mass_fabricator.name=Mass Fabricator
 
 behaviour.hoe=Can till dirt
 behaviour.soft_hammer=Activates and Deactivates Machines
@@ -2754,6 +2755,54 @@ gregtech.machine.circuit_assembler.ev.name=Advanced Circuit Assembler III
 gregtech.machine.circuit_assembler.iv.name=Elite Circuit Assembler
 gregtech.machine.circuit_assembler.luv.name=Elite Circuit Assembler II
 gregtech.machine.circuit_assembler.zpm.name=Elite Circuit Assembler III
+
+gregtech.machine.mass_fabricator.tooltip=UUM = Matter * Fabrication Squared
+
+gregtech.machine.mass_fabricator.lv.name=Basic Mass Fabricator
+gregtech.machine.mass_fabricator.mv.name=Advanced Mass Fabricator
+gregtech.machine.mass_fabricator.hv.name=Advanced Mass Fabricator II
+gregtech.machine.mass_fabricator.ev.name=Advanced Mass Fabricator III
+gregtech.machine.mass_fabricator.iv.name=Elite Mass Fabricator
+gregtech.machine.mass_fabricator.luv.name=Elite Mass Fabricator II
+gregtech.machine.mass_fabricator.zpm.name=Elite Mass Fabricator III
+gregtech.machine.mass_fabricator.uv.name=Elite Mass Fabricator IV
+gregtech.machine.mass_fabricator.uhv.name=High-Tech Mass Fabricator
+gregtech.machine.mass_fabricator.uev.name=High-Tech Mass Fabricator II
+gregtech.machine.mass_fabricator.uiv.name=High-Tech Mass Fabricator III
+gregtech.machine.mass_fabricator.umv.name=High-Tech Mass Fabricator IV
+gregtech.machine.mass_fabricator.uxv.name=Ultimate Mass Fabricator
+
+gregtech.machine.replicator.tooltip=Producing the Purest of Elements
+
+gregtech.machine.replicator.lv.name=Basic Replicator
+gregtech.machine.replicator.mv.name=Advanced Replicator
+gregtech.machine.replicator.hv.name=Advanced Replicator II
+gregtech.machine.replicator.ev.name=Advanced Replicator III
+gregtech.machine.replicator.iv.name=Elite Replicator
+gregtech.machine.replicator.luv.name=Elite Replicator II
+gregtech.machine.replicator.zpm.name=Elite Replicator III
+gregtech.machine.replicator.uv.name=Elite Replicator IV
+gregtech.machine.replicator.uhv.name=High-Tech Replicator
+gregtech.machine.replicator.uev.name=High-Tech Replicator II
+gregtech.machine.replicator.uiv.name=High-Tech Replicator III
+gregtech.machine.replicator.umv.name=High-Tech Replicator IV
+gregtech.machine.replicator.uxv.name=Ultimate Replicator
+
+gregtech.machine.scanner.tooltip=Scans Materials and other things
+
+gregtech.machine.scanner.lv.name=Basic Scanner
+gregtech.machine.scanner.mv.name=Advanced Scanner
+gregtech.machine.scanner.hv.name=Advanced Scanner II
+gregtech.machine.scanner.ev.name=Advanced Scanner III
+gregtech.machine.scanner.iv.name=Elite Scanner
+gregtech.machine.scanner.luv.name=Elite Scanner II
+gregtech.machine.scanner.zpm.name=Elite Scanner III
+gregtech.machine.scanner.uv.name=Elite Scanner IV
+gregtech.machine.scanner.uhv.name=High-Tech Scanner
+gregtech.machine.scanner.uev.name=High-Tech Scanner II
+gregtech.machine.scanner.uiv.name=High-Tech Scanner III
+gregtech.machine.scanner.umv.name=High-Tech Scanner IV
+gregtech.machine.scanner.uxv.name=Ultimate Scanner
 
 gregtech.machine.infinite_emitter.name=Infinite GT Energy Unit Emitter
 gregtech.machine.infinite_emitter.tooltip=§fYou just need §5C§dr§4e§ca§et§ai§bv§3e §7m§1o§5d§de§f to use this

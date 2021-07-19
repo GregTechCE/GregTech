@@ -299,6 +299,9 @@ public class ConfigHolder {
             public boolean midTierMacerators = false;
             public boolean midTierUnpackers = false;
             public boolean midTierWiremills = false;
+            public boolean midTierMassFabricators = false;
+            public boolean midTierReplicators = false;
+            public boolean midTierScanners = false;
 
             @Config.Comment("Set these to true to enable UHV-UXV tiers of machines. THESE WILL HAVE NO RECIPES BY DEFAULT WITHOUT GREGICALITY! Default (all): false")
             public boolean highTierAlloySmelter = false;
@@ -335,6 +338,9 @@ public class ConfigHolder {
             public boolean highTierMacerators = false;
             public boolean highTierUnpackers = false;
             public boolean highTierWiremills = false;
+            public boolean highTierMassFabricators = false;
+            public boolean highTierReplicators = false;
+            public boolean highTierScanners = false;
         }
     }
 }

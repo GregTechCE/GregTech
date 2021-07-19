@@ -95,6 +95,9 @@ public class MetaTileEntities {
     public static SimpleMachineMetaTileEntity[] THERMAL_CENTRIFUGE = new SimpleMachineMetaTileEntity[GTValues.V.length - 1];
     public static SimpleMachineMetaTileEntity[] WIREMILL = new SimpleMachineMetaTileEntity[GTValues.V.length - 1];
     public static SimpleMachineMetaTileEntity[] CIRCUIT_ASSEMBLER = new SimpleMachineMetaTileEntity[GTValues.UV];
+    public static SimpleMachineMetaTileEntity[] MASS_FABRICATOR = new SimpleMachineMetaTileEntity[GTValues.V.length - 1];
+    public static SimpleMachineMetaTileEntity[] REPLICATOR = new SimpleMachineMetaTileEntity[GTValues.V.length - 1];
+    public static SimpleMachineMetaTileEntity[] SCANNER = new SimpleMachineMetaTileEntity[GTValues.V.length - 1];
 
     //GENERATORS SECTION
     public static SimpleGeneratorMetaTileEntity[] COMBUSTION_GENERATOR = new SimpleGeneratorMetaTileEntity[4];
@@ -313,9 +316,13 @@ public class MetaTileEntities {
         registerSimpleMetaTileEntity(FERMENTER, 350, "fermenter", RecipeMaps.FERMENTING_RECIPES, Textures.FERMENTER_OVERLAY,
                 ConfigHolder.U.machines.midTierFermenters, ConfigHolder.U.machines.highTierFermenters);
 
-        // Free Range, IDs 365-379
+        // Mass Fabricator, IDs 365-379
+        registerSimpleMetaTileEntity(MASS_FABRICATOR, 365, "mass_fabricator", RecipeMaps.MASS_FABRICATOR_RECIPES, Textures.MASS_FABRICATOR_OVERLAY,
+                ConfigHolder.U.machines.midTierMassFabricators, ConfigHolder.U.machines.highTierMassFabricators);
 
-        // Free Range, IDs 380-394
+        // Replicator, IDs 380-394
+        registerSimpleMetaTileEntity(REPLICATOR, 380, "replicator", RecipeMaps.REPLICATOR_RECIPES, Textures.REPLICATOR_OVERLAY,
+                ConfigHolder.U.machines.midTierReplicators, ConfigHolder.U.machines.highTierReplicators);
 
         // Fluid Heater, IDs 395-409
         registerSimpleMetaTileEntity(FLUID_HEATER, 395, "fluid_heater", RecipeMaps.FLUID_HEATER_RECIPES, Textures.FLUID_HEATER_OVERLAY,
@@ -337,7 +344,9 @@ public class MetaTileEntities {
         registerSimpleMetaTileEntity(LATHE, 455, "lathe", RecipeMaps.LATHE_RECIPES, Textures.LATHE_OVERLAY,
                 ConfigHolder.U.machines.midTierLathes, ConfigHolder.U.machines.highTierLathes);
 
-        // Free Range, IDs 470-484
+        // Scanner, IDs 470-484
+        registerSimpleMetaTileEntity(SCANNER, 470, "scanner", RecipeMaps.SCANNER_RECIPES, Textures.SCANNER_OVERLAY,
+                ConfigHolder.U.machines.midTierScanners, ConfigHolder.U.machines.highTierScanners);
 
         // Mixer, IDs 485-499
         registerSimpleMetaTileEntity(MIXER, 485, "mixer", RecipeMaps.MIXER_RECIPES, Textures.MIXER_OVERLAY,

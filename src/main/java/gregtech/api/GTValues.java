@@ -143,5 +143,8 @@ public class GTValues {
             ConfigHolder.U.machines.highTierThermalCentrifuges ||
             ConfigHolder.U.machines.highTierMacerators ||
             ConfigHolder.U.machines.highTierUnpackers ||
-            ConfigHolder.U.machines.highTierWiremills;
+            ConfigHolder.U.machines.highTierWiremills ||
+            ConfigHolder.U.machines.highTierMassFabricators ||
+            ConfigHolder.U.machines.highTierReplicators ||
+            ConfigHolder.U.machines.highTierScanners;
 }

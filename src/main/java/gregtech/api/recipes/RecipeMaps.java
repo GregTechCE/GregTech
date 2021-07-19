@@ -669,6 +669,29 @@ public class RecipeMaps {
             .setProgressBar(GuiTextures.PROGRESS_BAR_CIRCUIT_ASSEMBLER, ProgressWidget.MoveType.HORIZONTAL);
 
     @ZenProperty
+    public static final RecipeMap<SimpleRecipeBuilder> MASS_FABRICATOR_RECIPES = new RecipeMap<>("mass_fabricator", 0, 1, 0, 0, 0, 1, 1, 2, new SimpleRecipeBuilder())
+            .setSlotOverlay(false, false, GuiTextures.ATOMIC_OVERLAY_1)
+            .setSlotOverlay(false, true, GuiTextures.ATOMIC_OVERLAY_2)
+            .setSlotOverlay(true, true, GuiTextures.POSITIVE_MATTER_OVERLAY)
+            .setSlotOverlay(true, true, true, GuiTextures.NEUTRAL_MATTER_OVERLAY)
+            .setProgressBar(GuiTextures.PROGRESS_BAR_MASS_FAB, MoveType.HORIZONTAL);
+
+    @ZenProperty
+    public static final RecipeMap<SimpleRecipeBuilder> REPLICATOR_RECIPES = new RecipeMap<>("replicator", 1, 1, 0, 1, 1, 2, 0, 1, new SimpleRecipeBuilder())
+            .setSlotOverlay(false, false, GuiTextures.DATA_ORB_OVERLAY)
+            .setSlotOverlay(true, false, GuiTextures.ATOMIC_OVERLAY_1)
+            .setSlotOverlay(true, true, GuiTextures.ATOMIC_OVERLAY_2)
+            .setSlotOverlay(false, true, GuiTextures.NEUTRAL_MATTER_OVERLAY)
+            .setSlotOverlay(false, true, true, GuiTextures.POSITIVE_MATTER_OVERLAY)
+            .setProgressBar(GuiTextures.PROGRESS_BAR_REPLICATOR, MoveType.HORIZONTAL);
+
+    @ZenProperty
+    public static final RecipeMap<SimpleRecipeBuilder> SCANNER_RECIPES = new RecipeMap<>("scanner", 0, 2, 1, 1, 0, 1, 0, 0, new SimpleRecipeBuilder())
+            .setSlotOverlay(false, false, GuiTextures.DATA_ORB_OVERLAY)
+            .setSlotOverlay(false, false, true, GuiTextures.SCANNER_OVERLAY)
+            .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW, MoveType.HORIZONTAL);
+
+    @ZenProperty
     public static final FuelRecipeMap COMBUSTION_GENERATOR_FUELS = new FuelRecipeMap("combustion_generator");
 
 
