@@ -828,6 +828,13 @@ public class ReactorRecipes {
             .duration(480).EUt(120).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
+                .fluidInputs(NitricAcid.getFluid(8000))
+                .fluidInputs(Ethenone.getFluid(1000))
+                .fluidOutputs(Tetranitromethane.getFluid(2000))
+                .fluidOutputs(Water.getFluid(5000))
+                .duration(480).EUt(120).buildAndRegister();
+
+        CHEMICAL_RECIPES.recipeBuilder()
             .notConsumable(new IntCircuitIngredient(3))
             .fluidInputs(Oxygen.getFluid(7000))
             .fluidInputs(Ammonia.getFluid(2000))
