@@ -423,6 +423,15 @@ public class Materials {
     public static SimpleFluidMaterial EnrichedUraniumHexafluoride = new SimpleFluidMaterial(137, "enriched_uranium_hexafluoride", 0x4bf52a, GAS, of(new MaterialStack(Uranium235, 1), new MaterialStack(Fluorine, 6)), DISABLE_DECOMPOSITION).setFormula("UF6");
     public static SimpleFluidMaterial DepletedUraniumHexafluoride = new SimpleFluidMaterial(138, "depleted_uranium_hexafluoride", 0x74ba66, GAS, of(new MaterialStack(Uranium238, 1), new MaterialStack(Fluorine, 6)), DISABLE_DECOMPOSITION).setFormula("UF6");
 
+    // HOG
+    public static SimpleFluidMaterial RawGasoline = new SimpleFluidMaterial(139, "raw_gasoline", 0xFF6400, FLUID, of(), DISABLE_DECOMPOSITION);
+    public static SimpleFluidMaterial Gasoline = new SimpleFluidMaterial(140, "gasoline", 0xFFA500, FLUID, of(), DISABLE_DECOMPOSITION);
+    public static SimpleFluidMaterial NitrousOxide = new SimpleFluidMaterial(141, "nitrous_oxide", 0x7DC8FF, FLUID, of(new MaterialStack(Nitrogen, 2), new MaterialStack(Oxygen, 1)), 0);
+    public static SimpleFluidMaterial Octane = new SimpleFluidMaterial(142, "octane", 0xFFFFFF, FLUID, of(new MaterialStack(Carbon, 8), new MaterialStack(Hydrogen, 18)), DISABLE_DECOMPOSITION);
+    public static SimpleFluidMaterial EthylTertButylEther = new SimpleFluidMaterial(143, "ethyl_tertbutyl_ether", 0xFFFFFF, FLUID, of(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 14), new MaterialStack(Oxygen, 1)), DISABLE_DECOMPOSITION);
+    public static SimpleFluidMaterial HighOctaneGasoline = new SimpleFluidMaterial(144, "gasoline_premium", 0xFFA500, FLUID, of(), DISABLE_DECOMPOSITION);
+    public static SimpleFluidMaterial Nitrobenzene = new SimpleFluidMaterial(145, "nitrobenzene", 0x704936, FLUID, of(), DISABLE_DECOMPOSITION);
+
     public static SimpleDustMaterial SodiumHydroxide = new SimpleDustMaterial(1, "sodium_hydroxide", 0x003380, DULL, of(new MaterialStack(Sodium, 1), new MaterialStack(Oxygen, 1), new MaterialStack(Hydrogen, 1)), GENERATE_SMALL_TINY);
     public static SimpleDustMaterial MagnesiumChloride = new SimpleDustMaterial(2, "magnesium_chloride", 0xD40D5C, DULL, of(new MaterialStack(Magnesium, 1), new MaterialStack(Chlorine, 2)), GENERATE_SMALL_TINY);
     public static SimpleDustMaterial RawRubber = new SimpleDustMaterial(3, "raw_rubber", 0xCCC789, DULL, of(new MaterialStack(Carbon, 5), new MaterialStack(Hydrogen, 8)), GENERATE_SMALL_TINY | DISABLE_DECOMPOSITION);

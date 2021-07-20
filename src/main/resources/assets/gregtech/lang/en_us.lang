@@ -1582,6 +1582,14 @@ material.uranium_hexafluoride=Uranium Hexafluoride
 material.enriched_uranium_hexafluoride=Enriched Uranium Hexafluoride
 material.depleted_uranium_hexafluoride=Depleted Uranium Hexafluoride
 
+material.raw_gasoline=Raw Gasoline
+material.gasoline=Gasoline
+material.nitrous_oxide=Nitrous Oxide
+material.octane=Octane
+material.ethyl_tertbutyl_ether=Ethyl Tert-Butyl Ether
+material.gasoline_premium=High Octane Gasoline
+material.nitrobenzene=Nitrobenzene
+
 item.nether_quartz.oreNetherrack=Nether Quartz Ore
 item.gunpowder.dustTiny=Tiny Pile of Gunpowder
 item.gunpowder.dustSmall=Small Pile of Gunpowder
