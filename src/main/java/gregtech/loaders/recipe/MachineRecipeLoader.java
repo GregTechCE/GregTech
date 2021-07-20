@@ -437,7 +437,7 @@ public class MachineRecipeLoader {
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
             .duration(4096).EUt(4096)
             .inputs(MetaItems.ENERGY_LAPOTRONIC_ORB2.getStackForm(8))
-            .input(OrePrefix.plate, Materials.Darmstadtium, 16)
+            .input(OrePrefix.plate, Materials.Neutronium, 16)
             .outputs(MetaItems.ZPM2.getStackForm())
             .buildAndRegister();
 
@@ -501,7 +501,7 @@ public class MachineRecipeLoader {
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(16).input(OrePrefix.plate, Materials.Chrome, 8).outputs(MetaBlocks.MACHINE_CASING.getItemVariant(MachineCasingType.LuV)).circuitMeta(8).duration(50).buildAndRegister();
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(16).input(OrePrefix.plate, Materials.Iridium, 8).outputs(MetaBlocks.MACHINE_CASING.getItemVariant(MachineCasingType.ZPM)).circuitMeta(8).duration(50).buildAndRegister();
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(16).input(OrePrefix.plate, Materials.Osmium, 8).outputs(MetaBlocks.MACHINE_CASING.getItemVariant(MachineCasingType.UV)).circuitMeta(8).duration(50).buildAndRegister();
-        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(16).input(OrePrefix.plate, Materials.Darmstadtium, 8).outputs(MetaBlocks.MACHINE_CASING.getItemVariant(MachineCasingType.UHV)).circuitMeta(8).duration(50).buildAndRegister();
+        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(16).input(OrePrefix.plate, Materials.Neutronium, 8).outputs(MetaBlocks.MACHINE_CASING.getItemVariant(MachineCasingType.MAX)).circuitMeta(8).duration(50).buildAndRegister();
 
         for (CoilType coilType : CoilType.values()) {
             if (coilType.getMaterial() != null) {
@@ -948,7 +948,6 @@ public class MachineRecipeLoader {
         FLUID_SOLIDFICATION_RECIPES.recipeBuilder().duration(12).EUt(4).notConsumable(SHAPE_MOLD_BLOCK).fluidInputs(Glowstone.getFluid(L * 4)).outputs(new ItemStack(Blocks.GLOWSTONE)).buildAndRegister();
         FLUID_SOLIDFICATION_RECIPES.recipeBuilder().duration(12).EUt(4).notConsumable(SHAPE_MOLD_BLOCK).fluidInputs(Glass.getFluid(L)).outputs(new ItemStack(Blocks.GLASS)).buildAndRegister();
 
-        FLUID_SOLIDFICATION_RECIPES.recipeBuilder().duration(12).EUt(4).notConsumable(SHAPE_MOLD_PLATE).fluidInputs(Glass.getFluid(L)).output(plate, Glass).buildAndRegister();
         FLUID_SOLIDFICATION_RECIPES.recipeBuilder().duration(128).EUt(16).notConsumable(SHAPE_MOLD_ANVIL).fluidInputs(Iron.getFluid(L * 31)).outputs(new ItemStack(Blocks.ANVIL)).buildAndRegister();
         FLUID_SOLIDFICATION_RECIPES.recipeBuilder().duration(128).EUt(16).notConsumable(SHAPE_MOLD_ANVIL).fluidInputs(WroughtIron.getFluid(L * 31)).outputs(new ItemStack(Blocks.ANVIL)).buildAndRegister();
         FLUID_SOLIDFICATION_RECIPES.recipeBuilder().duration(100).EUt(16).notConsumable(SHAPE_MOLD_BALL).fluidInputs(Toluene.getFluid(100)).output(GELLED_TOLUENE).buildAndRegister();
