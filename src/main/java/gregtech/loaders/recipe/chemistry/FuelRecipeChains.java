@@ -3,8 +3,8 @@ package gregtech.loaders.recipe.chemistry;
 import gregtech.api.recipes.ingredients.IntCircuitIngredient;
 
 import static gregtech.api.recipes.RecipeMaps.CHEMICAL_RECIPES;
-import static gregtech.api.unification.material.Materials.*;
 import static gregtech.api.recipes.RecipeMaps.LARGE_CHEMICAL_RECIPES;
+import static gregtech.api.unification.material.Materials.*;
 
 public class FuelRecipeChains {
 
@@ -35,7 +35,7 @@ public class FuelRecipeChains {
                 .buildAndRegister();
 
         // Ethyl Tert-Butyl Ether
-        LARGE_CHEMICAL_RECIPES.recipeBuilder().EUt(480).duration(400)
+        CHEMICAL_RECIPES.recipeBuilder().EUt(480).duration(400)
                 .fluidInputs(Butene.getFluid(1000))
                 .fluidInputs(Ethanol.getFluid(1000))
                 .fluidOutputs(EthylTertButylEther.getFluid(1000))
