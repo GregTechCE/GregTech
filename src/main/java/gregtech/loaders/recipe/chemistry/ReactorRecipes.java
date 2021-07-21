@@ -385,7 +385,7 @@ public class ReactorRecipes {
         CHEMICAL_RECIPES.recipeBuilder()
             .fluidInputs(NitrationMixture.getFluid(3000))
             .fluidInputs(Glycerol.getFluid(1000))
-            .fluidOutputs(Glyceryl.getFluid(1000))
+            .fluidOutputs(GlycerylTrinitrate.getFluid(1000))
             .fluidOutputs(DilutedSulfuricAcid.getFluid(3000))
             .duration(180).EUt(30).buildAndRegister();
 
@@ -1088,7 +1088,7 @@ public class ReactorRecipes {
         CHEMICAL_RECIPES.recipeBuilder()
                 .input(Items.PAPER)
                 .input(Items.STRING)
-                .fluidInputs(Glyceryl.getFluid(500))
+                .fluidInputs(GlycerylTrinitrate.getFluid(500))
                 .output(MetaItems.DYNAMITE)
                 .duration(160).EUt(4).buildAndRegister();
     }
