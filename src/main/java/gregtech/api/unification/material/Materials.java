@@ -234,7 +234,7 @@ public class Materials {
     public static GemMaterial Coke = new GemMaterial(193, "coke", 0x666666, LIGNITE, 1, of(new MaterialStack(Carbon, 1)), FLAMMABLE | NO_SMELTING | NO_SMASHING | MORTAR_GRINDABLE);
 
 
-    public static IngotMaterial SolderingAlloy = new IngotMaterial(194, "soldering_alloy", 0xDCDCE6, DULL, 1, of(new MaterialStack(Tin, 9), new MaterialStack(Antimony, 1)), EXT_METAL | GENERATE_FINE_WIRE, null);
+    public static IngotMaterial SolderingAlloy = new IngotMaterial(194, "soldering_alloy", 0x9696A0, DULL, 1, of(new MaterialStack(Tin, 9), new MaterialStack(Antimony, 1)), EXT_METAL | GENERATE_FINE_WIRE, null);
     public static DustMaterial Spessartine = new DustMaterial(195, "spessartine", 0xFF6464, DULL, 2, of(new MaterialStack(Aluminium, 2), new MaterialStack(Manganese, 3), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 12)), GENERATE_ORE);
     public static DustMaterial Sphalerite = new DustMaterial(196, "sphalerite", 0xFFFFFF, DULL, 1, of(new MaterialStack(Zinc, 1), new MaterialStack(Sulfur, 1)), GENERATE_ORE | INDUCTION_SMELTING_LOW_OUTPUT | DISABLE_DECOMPOSITION);
     public static IngotMaterial StainlessSteel = new IngotMaterial(197, "stainless_steel", 0xC8C8DC, SHINY, 2, of(new MaterialStack(Iron, 6), new MaterialStack(Chrome, 1), new MaterialStack(Manganese, 1), new MaterialStack(Nickel, 1)), EXT2_METAL | GENERATE_RING | GENERATE_ROTOR | GENERATE_SMALL_GEAR | GENERATE_FRAME | GENERATE_LONG_ROD, null, 7.0F, 4.0f, 480, 1700);
