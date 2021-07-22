@@ -176,20 +176,8 @@ public class ClientProxy extends CommonProxy {
             "quantum_chest",
             "super_chest",
             "super_tank",
-            "drum.wood",
-            "drum.bronze",
-            "drum.steel",
-            "drum.aluminium",
-            "drum.stainless_steel",
-            "drum.titanium",
-            "drum.tungstensteel",
-            "wooden_tank",
-            "bronze_tank",
-            "aluminium_tank",
-            "stainless_steel_tan",
-            "titanium_tank",
-            "tungstensteel_tank"
-
+            "drum.",
+            "_tank",
     };
 
     @SubscribeEvent
