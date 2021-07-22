@@ -109,7 +109,7 @@ public enum OrePrefix {
     toolHeadDrill("Drill Tips", M * 4, null, MaterialIconType.toolHeadDrill, ENABLE_UNIFICATION, isToolMaterial), // made of 4 Ingots.
     toolHeadChainsaw("Chainsaw Tips", M * 2, null, MaterialIconType.toolHeadChainsaw, ENABLE_UNIFICATION, isToolMaterial), // made of 2 Ingots.
     toolHeadWrench("Wrench Tips", M * 4, null, MaterialIconType.toolHeadWrench, ENABLE_UNIFICATION, isToolMaterial), // made of 4 Ingots.
-    turbineBlade("Turbine Blades", M * 5, null, MaterialIconType.turbineBlade, ENABLE_UNIFICATION, isToolMaterial), // made of 5 Ingots.
+    turbineBlade("Turbine Blades", M * 10, null, MaterialIconType.turbineBlade, ENABLE_UNIFICATION, isToolMaterial), // made of 5 Ingots.
 
     glass("Glasses", -1, Materials.Glass, null, SELF_REFERENCING | DISALLOW_RECYCLING, null),
     paneGlass("Glass Panes", -1, MarkerMaterials.Color.Colorless, null, SELF_REFERENCING | DISALLOW_RECYCLING, null),
