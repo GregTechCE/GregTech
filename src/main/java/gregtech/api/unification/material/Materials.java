@@ -943,5 +943,14 @@ public class Materials {
         Polytetrafluoroethylene.setFluidPipeProperties(600, 80, true);
         Polybenzimidazole.setFluidPipeProperties(1000, 100, true);
         Potin.setFluidPipeProperties(2000, 96, true);
+
+        Tin.setItemPipeProperties(4096, 0.5f);
+        Brass.setItemPipeProperties(2048, 1);
+        Electrum.setItemPipeProperties(1024, 2);
+        Platinum.setItemPipeProperties(512, 4);
+        Osmium.setItemPipeProperties(256, 8);
+        Cobalt.setItemPipeProperties(2400, 2);
+        Aluminium.setItemPipeProperties(1680, 2);
+        FluxedElectrum.setItemPipeProperties(128, 12);
     }
 }
