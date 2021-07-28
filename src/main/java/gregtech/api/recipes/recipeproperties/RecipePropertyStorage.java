@@ -54,23 +54,6 @@ public class RecipePropertyStorage {
     }
 
     /**
-     * Stores all {@link RecipeProperty} with values in provided {@link Map}
-     *
-     * @param recipeProperties {@link Map} of {@link RecipeProperty} and values
-     * @return <code>true</code> if store of all succeeds; otherwise <code>false</code>
-     */
-    public boolean store(Map<RecipeProperty<?>, Object> recipeProperties) {
-        boolean success = true;
-        for (Map.Entry<RecipeProperty<?>, Object> recipePropertyEntry : recipeProperties.entrySet()) {
-            if (!store(recipePropertyEntry.getKey(), recipePropertyEntry.getValue())) {
-                success = false;
-            }
-        }
-
-        return success;
-    }
-
-    /**
      * Provides information how many {@link RecipeProperty} are stored
      *
      * @return number of stored {@link RecipeProperty}

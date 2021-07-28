@@ -303,12 +303,8 @@ public class Recipe {
         return recipePropertyStorage.getRawRecipePropertyValue(key);
     }
 
-    public boolean setProperty(Map<RecipeProperty<?>, Object> propertyMap) {
-        return recipePropertyStorage.store(propertyMap);
-    }
-
     public boolean setProperty(RecipeProperty<?> property, Object value) {
-        return setProperty(ImmutableMap.of(property, value));
+        return recipePropertyStorage.store(property, value);
     }
 
     public Set<Map.Entry<RecipeProperty<?>, Object>> getPropertyValues() {
