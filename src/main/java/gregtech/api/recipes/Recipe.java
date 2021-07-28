@@ -1,6 +1,7 @@
 package gregtech.api.recipes;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import gregtech.api.capability.IMultipleTankHandler;
 import gregtech.api.recipes.recipeproperties.RecipeProperty;
 import gregtech.api.recipes.recipeproperties.RecipePropertyStorage;
@@ -291,18 +292,40 @@ public class Recipe {
         return hasValidInputs;
     }
 
-    //region RecipeProperties
-
-    /**
-     * Provides full access to {@link RecipePropertyStorage} for this Recipe
-     * @return RecipePropertyStorage
-     */
-    public RecipePropertyStorage getRecipePropertyStorage(){
-        return recipePropertyStorage;
+    ///////////////////////////////////////////////////////////
+    //               Property Helper Methods                 //
+    ///////////////////////////////////////////////////////////
+    public <T> T getProperty(RecipeProperty<T> property, T defaultValue) {
+        return recipePropertyStorage.getRecipePropertyValue(property, defaultValue);
     }
 
-    //endregion RecipeProperties
+    public Object getPropertyRaw(String key) {
+        return recipePropertyStorage.getRawRecipePropertyValue(key);
+    }
 
+    public boolean setProperty(Map<RecipeProperty<?>, Object> propertyMap) {
+        return recipePropertyStorage.store(propertyMap);
+    }
+
+    public boolean setProperty(RecipeProperty<?> property, Object value) {
+        return setProperty(ImmutableMap.of(property, value));
+    }
+
+    public Set<Map.Entry<RecipeProperty<?>, Object>> getPropertyValues() {
+        return recipePropertyStorage.getRecipeProperties();
+    }
+
+    public Set<String> getPropertyKeys() {
+        return recipePropertyStorage.getRecipePropertyKeys();
+    }
+
+    public int getPropertyCount() {
+        return recipePropertyStorage.getSize();
+    }
+
+    ///////////////////////////////////////////////////////////
+    //                   Chanced Output                      //
+    ///////////////////////////////////////////////////////////
     public static class ChanceEntry {
         private final ItemStack itemStack;
         private final int chance;
