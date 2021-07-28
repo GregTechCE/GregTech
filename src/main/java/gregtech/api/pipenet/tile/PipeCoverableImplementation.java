@@ -323,13 +323,8 @@ public class PipeCoverableImplementation implements ICoverable {
     }
 
     @Override
-    public long getTimer() {
-        return holder.getTickTimer();
-    }
-
-    @Override
     public long getOffsetTimer() {
-        return getTimer();
+        return holder.getTickTimer();
     }
 
     @Override
