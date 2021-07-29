@@ -1,5 +1,6 @@
 package gregtech.integration.jei.utils;
 
+import gregtech.api.util.LocalisationUtils;
 import gregtech.loaders.recipe.CustomItemReturnShapedOreRecipeRecipe;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.gui.IGuiItemStackGroup;
@@ -12,7 +13,6 @@ import mezz.jei.startup.ForgeModIdHelper;
 import mezz.jei.util.Translator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
@@ -69,7 +69,7 @@ public class CustomItemReturnRecipeWrapper extends ShapedOreRecipeWrapper implem
 
             if (slotIndex != craftOutputSlot) {
                 if (customRecipe.shouldItemReturn(ingredient)) {
-                    tooltip.add(I18n.format("gregtech.recipe.not_consumed"));
+                    tooltip.add(LocalisationUtils.format("gregtech.recipe.not_consumed"));
                 }
             }
         });

@@ -1,9 +1,9 @@
 package gregtech.common.tools;
 
 import gregtech.api.recipes.RecipeMaps;
+import gregtech.api.util.LocalisationUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
@@ -85,6 +85,6 @@ public class ToolHardHammer extends ToolBase {
 
     @Override
     public void addInformation(ItemStack stack, List<String> lines, boolean isAdvanced) {
-        lines.add(I18n.format("metaitem.tool.tooltip.hammer.extra_drop"));
+        lines.add(LocalisationUtils.format("metaitem.tool.tooltip.hammer.extra_drop"));
     }
 }

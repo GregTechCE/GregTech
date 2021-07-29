@@ -6,13 +6,13 @@ import gregtech.api.gui.Widget;
 import gregtech.api.gui.resources.SizedTextureArea;
 import gregtech.api.gui.resources.TextureArea;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.LocalisationUtils;
 import gregtech.api.util.Position;
 import gregtech.api.util.Size;
 import gregtech.api.util.function.BooleanConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.IStringSerializable;
@@ -85,7 +85,7 @@ public class CycleButtonWidget extends Widget {
             buttonTexture.drawSubArea(pos.x, pos.y, size.width, size.height, 0.0, 0.0, 1.0, 1.0);
         }
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-        String text = I18n.format(optionNames[currentOption]);
+        String text = LocalisationUtils.format(optionNames[currentOption]);
         fontRenderer.drawString(text,
             pos.x + size.width / 2 - fontRenderer.getStringWidth(text) / 2,
             pos.y + size.height / 2 - fontRenderer.FONT_HEIGHT / 2 + 1, textColor);
@@ -105,7 +105,7 @@ public class CycleButtonWidget extends Widget {
         } else if (isHovered) {
             long timeSinceHover = System.currentTimeMillis() - hoverStartTime;
             if (timeSinceHover > 1000L && tooltipHoverString != null) {
-                List<String> hoverList = Arrays.asList(I18n.format(tooltipHoverString).split("/n"));
+                List<String> hoverList = Arrays.asList(LocalisationUtils.format(tooltipHoverString).split("/n"));
                 drawHoveringText(ItemStack.EMPTY, hoverList, 300, mouseX, mouseY);
             }
         }

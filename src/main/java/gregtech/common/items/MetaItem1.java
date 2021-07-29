@@ -15,11 +15,11 @@ import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.unification.stack.MaterialStack;
+import gregtech.api.util.LocalisationUtils;
 import gregtech.api.util.RandomPotionEffect;
 import gregtech.common.items.behaviors.*;
 import net.minecraft.block.BlockCauldron;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Items;
@@ -548,7 +548,7 @@ public class MetaItem1 extends MaterialMetaItem {
     @Override
     protected void addMaterialTooltip(ItemStack itemStack, OrePrefix prefix, Material material, List<String> lines, ITooltipFlag tooltipFlag) {
         if (prefix == OrePrefix.dustImpure || prefix == OrePrefix.dustPure) {
-            lines.add(I18n.format("metaitem.dust.tooltip.purify"));
+            lines.add(LocalisationUtils.format("metaitem.dust.tooltip.purify"));
         }
     }
 

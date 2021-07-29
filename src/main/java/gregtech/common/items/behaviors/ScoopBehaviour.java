@@ -6,7 +6,7 @@ import forestry.api.lepidopterology.IEntityButterfly;
 import gregtech.api.GTValues;
 import gregtech.api.items.metaitem.stats.IItemBehaviour;
 import gregtech.api.util.GTUtility;
-import net.minecraft.client.resources.I18n;
+import gregtech.api.util.LocalisationUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -49,6 +49,6 @@ public class ScoopBehaviour implements IItemBehaviour {
 
     @Override
     public void addInformation(ItemStack itemStack, List<String> lines) {
-        lines.add(I18n.format("behaviour.scoop"));
+        lines.add(LocalisationUtils.format("behaviour.scoop"));
     }
 }

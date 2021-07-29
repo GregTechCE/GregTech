@@ -23,10 +23,10 @@ import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.util.ByteBufUtils;
 import gregtech.api.util.FluidTooltipUtil;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.LocalisationUtils;
 import gregtech.api.util.WatchedFluidTank;
 import gregtech.common.ConfigHolder;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -674,13 +674,13 @@ public class MetaTileEntityTank extends MetaTileEntity implements IFastRenderMet
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, boolean advanced) {
-        tooltip.add(I18n.format("gregtech.universal.tooltip.fluid_storage_capacity", tankSize));
-        tooltip.add(I18n.format("gregtech.machine.fluid_tank.max_multiblock", maxSizeHorizontal, maxSizeVertical, maxSizeHorizontal));
+        tooltip.add(LocalisationUtils.format("gregtech.universal.tooltip.fluid_storage_capacity", tankSize));
+        tooltip.add(LocalisationUtils.format("gregtech.machine.fluid_tank.max_multiblock", maxSizeHorizontal, maxSizeVertical, maxSizeHorizontal));
         NBTTagCompound tagCompound = stack.getTagCompound();
         if (tagCompound != null && tagCompound.hasKey("Fluid", NBT.TAG_COMPOUND)) {
             FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(tagCompound.getCompoundTag("Fluid"));
             if (fluidStack != null) {
-                tooltip.add(I18n.format("gregtech.machine.fluid_tank.fluid", fluidStack.amount, fluidStack.getLocalizedName()));
+                tooltip.add(LocalisationUtils.format("gregtech.machine.fluid_tank.fluid", fluidStack.amount, fluidStack.getLocalizedName()));
             }
             String formula = FluidTooltipUtil.getFluidTooltip(fluidStack);
             if (formula != null)

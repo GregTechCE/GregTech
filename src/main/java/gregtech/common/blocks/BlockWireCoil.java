@@ -3,9 +3,9 @@ package gregtech.common.blocks;
 import gregtech.api.unification.material.MarkerMaterials.Tier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.Material;
+import gregtech.api.util.LocalisationUtils;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLiving.SpawnPlacementType;
 import net.minecraft.item.ItemStack;
@@ -40,12 +40,12 @@ public class BlockWireCoil extends VariantBlock<BlockWireCoil.CoilType> {
         IBlockState stackState = itemBlock.getBlockState(itemStack);
         CoilType coilType = getState(stackState);
 
-        lines.add(I18n.format("tile.wire_coil.tooltip_ebf"));
-        lines.add(I18n.format("tile.wire_coil.tooltip_heat", coilType.coilTemperature));
+        lines.add(LocalisationUtils.format("tile.wire_coil.tooltip_ebf"));
+        lines.add(LocalisationUtils.format("tile.wire_coil.tooltip_heat", coilType.coilTemperature));
         lines.add("");
-        lines.add(I18n.format("tile.wire_coil.tooltip_smelter"));
-        lines.add(I18n.format("tile.wire_coil.tooltip_level", coilType.level));
-        lines.add(I18n.format("tile.wire_coil.tooltip_discount", coilType.energyDiscount));
+        lines.add(LocalisationUtils.format("tile.wire_coil.tooltip_smelter"));
+        lines.add(LocalisationUtils.format("tile.wire_coil.tooltip_level", coilType.level));
+        lines.add(LocalisationUtils.format("tile.wire_coil.tooltip_discount", coilType.energyDiscount));
     }
 
     @Override

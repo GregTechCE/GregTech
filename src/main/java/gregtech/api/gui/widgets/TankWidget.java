@@ -7,12 +7,12 @@ import gregtech.api.gui.igredient.IIngredientSlot;
 import gregtech.api.gui.resources.RenderUtil;
 import gregtech.api.gui.resources.TextureArea;
 import gregtech.api.util.FluidTooltipUtil;
+import gregtech.api.util.LocalisationUtils;
 import gregtech.api.util.Position;
 import gregtech.api.util.Size;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -143,22 +143,22 @@ public class TankWidget extends Widget implements IIngredientSlot {
                 if (formula != null && !formula.isEmpty())
                     tooltips.add(ChatFormatting.GRAY.toString() + formula);
 
-                tooltips.add(I18n.format("gregtech.fluid.amount", lastFluidInTank.amount, lastTankCapacity));
-                tooltips.add(I18n.format("gregtech.fluid.temperature", fluid.getTemperature(lastFluidInTank)));
-                tooltips.add(I18n.format(fluid.isGaseous(lastFluidInTank) ? "gregtech.fluid.state_gas" : "gregtech.fluid.state_liquid"));
+                tooltips.add(LocalisationUtils.format("gregtech.fluid.amount", lastFluidInTank.amount, lastTankCapacity));
+                tooltips.add(LocalisationUtils.format("gregtech.fluid.temperature", fluid.getTemperature(lastFluidInTank)));
+                tooltips.add(LocalisationUtils.format(fluid.isGaseous(lastFluidInTank) ? "gregtech.fluid.state_gas" : "gregtech.fluid.state_liquid"));
             } else {
-                tooltips.add(I18n.format("gregtech.fluid.empty"));
-                tooltips.add(I18n.format("gregtech.fluid.amount", 0, lastTankCapacity));
+                tooltips.add(LocalisationUtils.format("gregtech.fluid.empty"));
+                tooltips.add(LocalisationUtils.format("gregtech.fluid.amount", 0, lastTankCapacity));
             }
             if (allowClickFilling) {
                 tooltips.add(""); //add empty line to separate things
-                tooltips.add(I18n.format("gregtech.fluid.click_to_fill"));
-                tooltips.add(I18n.format("gregtech.fluid.click_to_fill.shift"));
+                tooltips.add(LocalisationUtils.format("gregtech.fluid.click_to_fill"));
+                tooltips.add(LocalisationUtils.format("gregtech.fluid.click_to_fill.shift"));
             }
             if (allowClickEmptying) {
                 tooltips.add(""); //add empty line to separate things
-                tooltips.add(I18n.format("gregtech.fluid.click_to_empty"));
-                tooltips.add(I18n.format("gregtech.fluid.click_to_empty.shift"));
+                tooltips.add(LocalisationUtils.format("gregtech.fluid.click_to_empty"));
+                tooltips.add(LocalisationUtils.format("gregtech.fluid.click_to_empty.shift"));
             }
             drawHoveringText(ItemStack.EMPTY, tooltips, 300, mouseX, mouseY);
             GlStateManager.color(1.0f, 1.0f, 1.0f);

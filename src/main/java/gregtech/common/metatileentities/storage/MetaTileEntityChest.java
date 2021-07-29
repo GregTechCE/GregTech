@@ -18,8 +18,8 @@ import gregtech.api.recipes.ModHandler;
 import gregtech.api.render.Textures;
 import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.LocalisationUtils;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -307,6 +307,6 @@ public class MetaTileEntityChest extends MetaTileEntity implements IFastRenderMe
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, boolean advanced) {
-        tooltip.add(I18n.format("gregtech.universal.tooltip.item_storage_capacity", rowSize * amountOfRows));
+        tooltip.add(LocalisationUtils.format("gregtech.universal.tooltip.item_storage_capacity", rowSize * amountOfRows));
     }
 }

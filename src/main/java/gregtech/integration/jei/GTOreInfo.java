@@ -2,6 +2,7 @@ package gregtech.integration.jei;
 
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.Material;
+import gregtech.api.util.LocalisationUtils;
 import gregtech.api.worldgen.config.OreDepositDefinition;
 import gregtech.api.worldgen.filler.BlockFiller;
 import gregtech.api.worldgen.filler.FillerEntry;
@@ -13,7 +14,6 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.biome.Biome;
@@ -239,8 +239,8 @@ public class GTOreInfo implements IRecipeWrapper {
         else if(slotIndex == 1) {
             //Only add the special tooltip to the Material rock piles
             if(veinPopulator instanceof SurfaceRockPopulator) {
-                tooltip.add(I18n.format("gregtech.jei.ore.surface_rock_1"));
-                tooltip.add(I18n.format("gregtech.jei.ore.surface_rock_2"));
+                tooltip.add(LocalisationUtils.format("gregtech.jei.ore.surface_rock_1"));
+                tooltip.add(LocalisationUtils.format("gregtech.jei.ore.surface_rock_2"));
             }
         }
         else {
@@ -275,10 +275,10 @@ public class GTOreInfo implements IRecipeWrapper {
             if(!(entry.getValue() == weight)) {
                 //Cannot Spawn
                 if(entry.getValue() <= 0) {
-                    tooltip.add(I18n.format("gregtech.jei.ore.biome_weighting_no_spawn", entry.getKey().getBiomeName()));
+                    tooltip.add(LocalisationUtils.format("gregtech.jei.ore.biome_weighting_no_spawn", entry.getKey().getBiomeName()));
                 }
                 else {
-                    tooltip.add(I18n.format("gregtech.jei.ore.biome_weighting", entry.getKey().getBiomeName(), entry.getValue()));
+                    tooltip.add(LocalisationUtils.format("gregtech.jei.ore.biome_weighting", entry.getKey().getBiomeName(), entry.getValue()));
                 }
             }
         }

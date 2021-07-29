@@ -3,10 +3,10 @@ package gregtech.integration.jei.multiblock;
 import gregtech.api.GTValues;
 import gregtech.api.metatileentity.multiblock.MultiblockControllerBase;
 import gregtech.api.util.ItemStackHashStrategy;
+import gregtech.api.util.LocalisationUtils;
 import gregtech.common.metatileentities.MetaTileEntities;
 import it.unimi.dsi.fastutil.Hash;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenCustomHashMap;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
@@ -39,7 +39,7 @@ public abstract class MultiblockInfoPage {
 
         return Stream.of("gregtech.multiblock.preview.tilt", "gregtech.multiblock.preview.zoom",
                 "gregtech.multiblock.preview.pan", "gregtech.multiblock.preview.move", "gregtech.multiblock.preview.reset")
-                .map(I18n::format)
+                .map(LocalisationUtils::format)
                 .collect(Collectors.toList());
     }
 

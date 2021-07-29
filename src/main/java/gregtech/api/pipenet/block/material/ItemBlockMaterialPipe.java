@@ -14,7 +14,6 @@ public class ItemBlockMaterialPipe<PipeType extends Enum<PipeType> & IMaterialPi
 
     @SuppressWarnings("unchecked")
     @Override
-    @SideOnly(Side.CLIENT)
     public String getItemStackDisplayName(ItemStack stack) {
         PipeType pipeType = blockPipe.getItemPipeType(stack);
         Material material = ((BlockMaterialPipe<PipeType, NodeDataType, ?>) blockPipe).getItemMaterial(stack);

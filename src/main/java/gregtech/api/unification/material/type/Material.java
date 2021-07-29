@@ -9,7 +9,7 @@ import gregtech.api.unification.material.MaterialIconSet;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.GTControlledRegistry;
 import gregtech.api.util.GTLog;
-import net.minecraft.client.resources.I18n;
+import gregtech.api.util.LocalisationUtils;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import stanhebben.zenscript.annotations.*;
@@ -381,10 +381,9 @@ public abstract class Material implements Comparable<Material> {
         return "material." + toString();
     }
 
-    @SideOnly(Side.CLIENT)
     @ZenGetter("localizedName")
     public String getLocalizedName() {
-        return I18n.format(getUnlocalizedName());
+        return LocalisationUtils.format(getUnlocalizedName());
     }
 
     @Override

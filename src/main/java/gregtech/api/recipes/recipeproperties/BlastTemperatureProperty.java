@@ -1,8 +1,8 @@
 package gregtech.api.recipes.recipeproperties;
 
 import gregtech.api.unification.material.type.Material;
+import gregtech.api.util.LocalisationUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
 import org.apache.commons.lang3.Validate;
 
 import java.util.Map;
@@ -29,7 +29,7 @@ public class BlastTemperatureProperty extends RecipeProperty<Integer> {
 
     @Override
     public void drawInfo(Minecraft minecraft, int x, int y, int color, Object value) {
-        minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.blast_furnace_temperature",
+        minecraft.fontRenderer.drawString(LocalisationUtils.format("gregtech.recipe.blast_furnace_temperature",
                 value, getMinTierForTemperature(castValue(value))), x, y, color);
     }
 
@@ -41,7 +41,7 @@ public class BlastTemperatureProperty extends RecipeProperty<Integer> {
                 if (mapValue instanceof Material) {
                     name = ((Material) mapValue).getLocalizedName();
                 } else if (mapValue instanceof String) {
-                    name = I18n.format((String) mapValue);
+                    name = LocalisationUtils.format((String) mapValue);
                 }
             }
         }

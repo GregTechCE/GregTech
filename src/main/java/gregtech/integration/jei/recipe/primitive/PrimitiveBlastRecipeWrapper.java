@@ -4,11 +4,11 @@ import com.google.common.collect.ImmutableList;
 import gregtech.api.recipes.CountableIngredient;
 import gregtech.api.recipes.recipes.PrimitiveBlastFurnaceRecipe;
 import gregtech.api.unification.OreDictUnifier;
+import gregtech.api.util.LocalisationUtils;
 import gregtech.common.metatileentities.multi.MetaTileEntityPrimitiveBlastFurnace;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
@@ -50,7 +50,7 @@ public class PrimitiveBlastRecipeWrapper implements IRecipeWrapper {
 
 	@Override
 	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
-		minecraft.fontRenderer.drawString(I18n.format("gregtech.recipe.duration", this.recipe.getDuration() / 20f), 0, 55, 0x111111);
+		minecraft.fontRenderer.drawString(LocalisationUtils.format("gregtech.recipe.duration", this.recipe.getDuration() / 20f), 0, 55, 0x111111);
 	}
 
 }
