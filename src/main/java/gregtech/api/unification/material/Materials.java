@@ -584,7 +584,7 @@ public class Materials {
     public static IngotMaterial HSSE = new IngotMaterial(367, "hsse", 0x336600, METALLIC, 4, of(new MaterialStack(HSSG, 6), new MaterialStack(Cobalt, 1), new MaterialStack(Manganese, 1), new MaterialStack(Silicon, 1)), EXT2_METAL | GENERATE_RING | GENERATE_ROTOR | GENERATE_SMALL_GEAR | GENERATE_LONG_ROD | GENERATE_FRAME, null, 10.0F, 8.0f, 5120, 5000);
     public static IngotMaterial HSSS = new IngotMaterial(368, "hsss", 0x660033, METALLIC, 4, of(new MaterialStack(HSSG, 6), new MaterialStack(Iridium, 2), new MaterialStack(Osmium, 1)), EXT2_METAL | GENERATE_GEAR | GENERATE_SMALL_GEAR, null, 15.0F, 7.0f, 3000, 5000);
     public static IngotMaterial DiamericiumTitanium = new IngotMaterial(369, "diamericium_titanium", 0x755280, METALLIC, 4, of(new MaterialStack(Americium, 2), new MaterialStack(Titanium, 1)), EXT2_METAL, null, 6.0F, 6.0F, 2200, 10400);
-    public static IngotMaterial Potin = new IngotMaterial(370, "potin", 0xC99781, MaterialIconSet.METALLIC, 6, of(new MaterialStack(Lead, 2), new MaterialStack(Bronze, 2), new MaterialStack(Tin, 1)), EXT2_METAL, null);
+    public static IngotMaterial Potin = new IngotMaterial(370, "potin", 0xc99781, MaterialIconSet.METALLIC, 6, of(new MaterialStack(Lead, 2), new MaterialStack(Bronze, 2), new MaterialStack(Tin, 1)), EXT2_METAL, null);
 
     /**
      * Fantasy materials
@@ -934,29 +934,53 @@ public class Materials {
         FluxedElectrum.setCableProperties(GTValues.V[8], 3, 2);
         DiamericiumTitanium.setCableProperties(GTValues.V[10], 8, 16);
 
-        Copper.setFluidPipeProperties(1000, 10, true);
-        Bronze.setFluidPipeProperties(2000, 20, true);
-        Steel.setFluidPipeProperties(2500, 40, true);
-        StainlessSteel.setFluidPipeProperties(3000, 60, true);
-        Titanium.setFluidPipeProperties(5000, 80, true);
-        TungstenSteel.setFluidPipeProperties(7500, 100, true);
+        Copper.setFluidPipeProperties(1696, 10, true);
+        Lead.setFluidPipeProperties(1200, 15, true);
+        Bronze.setFluidPipeProperties(1696, 20, true);
+        WroughtIron.setFluidPipeProperties(2387, 30, true);
+        Aluminium.setFluidPipeProperties(1166, 35, true);
+        Gold.setFluidPipeProperties(1671, 35, true);
+        TinAlloy.setFluidPipeProperties(1572, 38, true);
+        Invar.setFluidPipeProperties(2395, 40, true);
+        Steel.setFluidPipeProperties(2557, 40, true);
+        Chrome.setFluidPipeProperties(2725, 40, true);
+        StainlessSteel.setFluidPipeProperties(2428, 60, true);
+        Titanium.setFluidPipeProperties(2426, 80, true);
+        Tungsten.setFluidPipeProperties(4618, 90, true);
+        Potin.setFluidPipeProperties(2023, 96, true);
+        VanadiumSteel.setFluidPipeProperties(2073, 100, true);
+        TungstenSteel.setFluidPipeProperties(7568, 100, true);
+        TungstenCarbide.setFluidPipeProperties(7568, 125, true);
+        Iridium.setFluidPipeProperties(3398, 140, true);
         NiobiumTitanium.setFluidPipeProperties(2900, 150, true);
-        Naquadah.setFluidPipeProperties(19000, 1500, true);
-        Ultimet.setFluidPipeProperties(1500, 12000, true);
-        
-        Rubber.setFluidPipeProperties(150, 30, true);
+        Europium.setFluidPipeProperties(7780, 1200, true);
+        Naquadah.setFluidPipeProperties(19200, 1500, true);
+        Duranium.setFluidPipeProperties(100000, 2000, true);
+        Neutronium.setFluidPipeProperties(1000000, 2800, true);
+
         Polyethylene.setFluidPipeProperties(350, 60, true);
         Polytetrafluoroethylene.setFluidPipeProperties(600, 80, true);
         Polybenzimidazole.setFluidPipeProperties(1000, 100, true);
-        Potin.setFluidPipeProperties(2000, 96, true);
 
         Tin.setItemPipeProperties(4096, 0.5f);
+        Cobalt.setItemPipeProperties(2560, 2);
         Brass.setItemPipeProperties(2048, 1);
+        CobaltBrass.setItemPipeProperties(2048, 1);
+        Nickel.setItemPipeProperties(2048, 1);
+        Cupronickel.setItemPipeProperties(2048, 1);
         Electrum.setItemPipeProperties(1024, 2);
+        SterlingSilver.setItemPipeProperties(1024, 2);
+        RoseGold.setItemPipeProperties(1024, 2);
+        Magnalium.setItemPipeProperties(1024, 2);
+        BlackBronze.setItemPipeProperties(1024, 2);
         Platinum.setItemPipeProperties(512, 4);
         Osmium.setItemPipeProperties(256, 8);
-        Cobalt.setItemPipeProperties(2400, 2);
-        Aluminium.setItemPipeProperties(1680, 2);
-        FluxedElectrum.setItemPipeProperties(128, 12);
+        FluxedElectrum.setItemPipeProperties(128, 16);
+        Ultimet.setItemPipeProperties(128, 16);
+        Osmiridium.setItemPipeProperties(64, 32);
+        Americium.setItemPipeProperties(64, 64);
+        DiamericiumTitanium.setItemPipeProperties(32, 128);
+
+        PolyvinylChloride.setItemPipeProperties(512, 4);
     }
 }

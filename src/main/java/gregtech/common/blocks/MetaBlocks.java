@@ -220,7 +220,7 @@ public class MetaBlocks {
             }
         }
         for (BlockFluidPipe pipe : FLUID_PIPES) {
-            pipe.addPipeMaterial(Materials.Wood, new FluidPipeProperties(310, 20, false));
+            pipe.addPipeMaterial(Materials.Wood, new FluidPipeProperties(310, 5, false));
         }
         for (BlockCable cable : CABLES) {
             cable.addCableMaterial(MarkerMaterials.Tier.Superconductor, new WireProperties(Integer.MAX_VALUE, 4, 0));
