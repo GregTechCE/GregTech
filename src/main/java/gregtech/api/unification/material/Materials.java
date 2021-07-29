@@ -245,7 +245,7 @@ public class Materials {
     public static GemMaterial Topaz = new GemMaterial(203, "topaz", 0xFF8000, GEM_HORIZONTAL, 3, of(new MaterialStack(Aluminium, 2), new MaterialStack(Silicon, 1), new MaterialStack(Fluorine, 2), new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 6)), STD_GEM | NO_SMASHING | NO_SMELTING | HIGH_SIFTER_OUTPUT, null, 7.0F, 2.0f, 256);
     public static DustMaterial Tungstate = new DustMaterial(204, "tungstate", 0x373223, DULL, 3, of(new MaterialStack(Tungsten, 1), new MaterialStack(Lithium, 2), new MaterialStack(Oxygen, 4)), GENERATE_ORE | DECOMPOSITION_REQUIRES_HYDROGEN, null);
     public static IngotMaterial Ultimet = new IngotMaterial(205, "ultimet", 0xB4B4E6, SHINY, 4, of(new MaterialStack(Cobalt, 5), new MaterialStack(Chrome, 2), new MaterialStack(Nickel, 1), new MaterialStack(Molybdenum, 1)), EXT2_METAL, null, 9.0F, 4.0f, 2048, 2700);
-    public static DustMaterial Uraninite = new DustMaterial(206, "uraninite", 0x232323, METALLIC, 3, of(new MaterialStack(Uranium238, 1), new MaterialStack(Oxygen, 2)), GENERATE_ORE | DISABLE_DECOMPOSITION).setFormula("UO2");
+    public static DustMaterial Uraninite = new DustMaterial(206, "uraninite", 0x232323, METALLIC, 3, of(new MaterialStack(Uranium238, 1), new MaterialStack(Oxygen, 2)), GENERATE_ORE | DISABLE_DECOMPOSITION).setFormula("UO2", true);
     public static DustMaterial Uvarovite = new DustMaterial(207, "uvarovite", 0xB4FFB4, DIAMOND, 2, of(new MaterialStack(Calcium, 3), new MaterialStack(Chrome, 2), new MaterialStack(Silicon, 3), new MaterialStack(Oxygen, 12)), 0);
     public static IngotMaterial VanadiumGallium = new IngotMaterial(208, "vanadium_gallium", 0x80808C, SHINY, 2, of(new MaterialStack(Vanadium, 3), new MaterialStack(Gallium, 1)), STD_METAL | GENERATE_FOIL | GENERATE_ROD, null, 4500);
     public static IngotMaterial WroughtIron = new IngotMaterial(209, "wrought_iron", 0xC8B4B4, METALLIC, 2, of(new MaterialStack(Iron, 1)), EXT2_METAL | MORTAR_GRINDABLE | GENERATE_RING | GENERATE_LONG_ROD | DISABLE_DECOMPOSITION, null, 6.0F, 3.5f, 384);
@@ -427,7 +427,7 @@ public class Materials {
     public static SimpleFluidMaterial NaturalGas = new SimpleFluidMaterial("natural_gas", 0xFFFFFF, GAS, of(), STATE_GAS | GENERATE_FLUID_BLOCK);
     public static SimpleFluidMaterial DiphenylIsophtalate = new SimpleFluidMaterial("diphenyl_isophthalate", 0x246E57, DULL, of(new MaterialStack(Carbon, 20), new MaterialStack(Hydrogen, 14), new MaterialStack(Oxygen, 4)), DISABLE_DECOMPOSITION);
     public static SimpleFluidMaterial PhthalicAcid = new SimpleFluidMaterial("phthalic_acid", 0xD1D1D1, FLUID, of(new MaterialStack(Carbon, 8), new MaterialStack(Hydrogen, 6), new MaterialStack(Oxygen, 4)), GENERATE_FLUID_BLOCK | DISABLE_DECOMPOSITION);
-    public static SimpleFluidMaterial Dimethylbenzene = new SimpleFluidMaterial("dimethylbenzene", 0x669C40, FLUID, of(new MaterialStack(Carbon, 8), new MaterialStack(Hydrogen, 10)), DISABLE_DECOMPOSITION).setFormula("C6H4(CH3)2");
+    public static SimpleFluidMaterial Dimethylbenzene = new SimpleFluidMaterial("dimethylbenzene", 0x669C40, FLUID, of(new MaterialStack(Carbon, 8), new MaterialStack(Hydrogen, 10)), DISABLE_DECOMPOSITION).setFormula("C6H4(CH3)2", true);
     public static SimpleFluidMaterial Diaminobenzidine = new SimpleFluidMaterial("diaminobenzidine", 0x337D59, DULL, of(new MaterialStack(Carbon, 12), new MaterialStack(Hydrogen, 14), new MaterialStack(Nitrogen, 4)), DISABLE_DECOMPOSITION);
     public static SimpleFluidMaterial Dichlorobenzidine = new SimpleFluidMaterial("dichlorobenzidine", 0xA1DEA6, DULL, of(new MaterialStack(Carbon, 12), new MaterialStack(Hydrogen, 10), new MaterialStack(Chlorine, 2), new MaterialStack(Nitrogen, 2)), DISABLE_DECOMPOSITION);
     public static SimpleFluidMaterial Nitrochlorobenzene = new SimpleFluidMaterial("nitrochlorobenzene", 0x8FB51A, DULL, of(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 4), new MaterialStack(Chlorine, 1), new MaterialStack(Nitrogen, 1), new MaterialStack(Oxygen, 2)), DISABLE_DECOMPOSITION);
@@ -439,9 +439,9 @@ public class Materials {
     public static SimpleFluidMaterial FermentedBacterialSludge = new SimpleFluidMaterial("fermented_bacterial_sludge", 0x32CD32, FLUID, of(), 0);
     public static SimpleFluidMaterial Mutagen = new SimpleFluidMaterial("mutagen", 0x00FF7F, FLUID, of(), 0);
     public static SimpleFluidMaterial GelatinMixture = new SimpleFluidMaterial("gelatin_mixture", 0x588BAE, FLUID, of(), 0);
-    public static SimpleFluidMaterial UraniumHexafluoride = new SimpleFluidMaterial("uranium_hexafluoride", 0x42d126, GAS, of(new MaterialStack(Uranium238, 1), new MaterialStack(Fluorine, 6)), DISABLE_DECOMPOSITION | STATE_GAS).setFormula("UF6");
-    public static SimpleFluidMaterial EnrichedUraniumHexafluoride = new SimpleFluidMaterial("enriched_uranium_hexafluoride", 0x4bf52a, GAS, of(new MaterialStack(Uranium235, 1), new MaterialStack(Fluorine, 6)), DISABLE_DECOMPOSITION | STATE_GAS).setFormula("UF6");
-    public static SimpleFluidMaterial DepletedUraniumHexafluoride = new SimpleFluidMaterial("depleted_uranium_hexafluoride", 0x74ba66, GAS, of(new MaterialStack(Uranium238, 1), new MaterialStack(Fluorine, 6)), DISABLE_DECOMPOSITION | STATE_GAS).setFormula("UF6");
+    public static SimpleFluidMaterial UraniumHexafluoride = new SimpleFluidMaterial("uranium_hexafluoride", 0x42d126, GAS, of(new MaterialStack(Uranium238, 1), new MaterialStack(Fluorine, 6)), DISABLE_DECOMPOSITION | STATE_GAS).setFormula("UF6", true);
+    public static SimpleFluidMaterial EnrichedUraniumHexafluoride = new SimpleFluidMaterial("enriched_uranium_hexafluoride", 0x4bf52a, GAS, of(new MaterialStack(Uranium235, 1), new MaterialStack(Fluorine, 6)), DISABLE_DECOMPOSITION | STATE_GAS).setFormula("UF6", true);
+    public static SimpleFluidMaterial DepletedUraniumHexafluoride = new SimpleFluidMaterial("depleted_uranium_hexafluoride", 0x74ba66, GAS, of(new MaterialStack(Uranium238, 1), new MaterialStack(Fluorine, 6)), DISABLE_DECOMPOSITION | STATE_GAS).setFormula("UF6", true);
 
     // HOG
     public static SimpleFluidMaterial RawGasoline = new SimpleFluidMaterial("raw_gasoline", 0xFF6400, FLUID, of(), DISABLE_DECOMPOSITION);
@@ -451,6 +451,12 @@ public class Materials {
     public static SimpleFluidMaterial EthylTertButylEther = new SimpleFluidMaterial("ethyl_tertbutyl_ether", 0xFFFFFF, FLUID, of(new MaterialStack(Carbon, 6), new MaterialStack(Hydrogen, 14), new MaterialStack(Oxygen, 1)), DISABLE_DECOMPOSITION);
     public static SimpleFluidMaterial HighOctaneGasoline = new SimpleFluidMaterial("gasoline_premium", 0xFFA500, FLUID, of(), DISABLE_DECOMPOSITION);
     public static SimpleFluidMaterial Nitrobenzene = new SimpleFluidMaterial("nitrobenzene", 0x704936, FLUID, of(), DISABLE_DECOMPOSITION);
+
+    // COAL GAS
+    public static SimpleFluidMaterial CoalGas = new SimpleFluidMaterial("coal_gas", 0x333333, GAS, of(), DISABLE_DECOMPOSITION); // todo lang, color
+    public static SimpleFluidMaterial CoalTar = new SimpleFluidMaterial("coal_tar", 0x1A1A1A, FLUID, of(), DISABLE_DECOMPOSITION);
+    public static SimpleFluidMaterial Ethylbenzene = new SimpleFluidMaterial("ethylbenzene", 0xFFFFFF, FLUID, of(new MaterialStack(Carbon, 8), new MaterialStack(Hydrogen, 10)), DISABLE_DECOMPOSITION).setFormula("C6H5CH2CH3", true);
+    public static SimpleFluidMaterial Naphthalene = new SimpleFluidMaterial("naphthalene", 0xF4F4D7, FLUID, of(new MaterialStack(Carbon, 10), new MaterialStack(Hydrogen, 8)), DISABLE_DECOMPOSITION);
 
     /**
      * Organic chemistry
@@ -552,7 +558,7 @@ public class Materials {
     public static DustMaterial Vermiculite = new DustMaterial(341, "vermiculite", 0xC8B40F, METALLIC, 2, of(new MaterialStack(Iron, 3), new MaterialStack(Aluminium, 4), new MaterialStack(Silicon, 4), new MaterialStack(Hydrogen, 2), new MaterialStack(Water, 4), new MaterialStack(Oxygen, 12)), 0);
     public static DustMaterial Bentonite = new DustMaterial(342, "bentonite", 0xF5D7D2, ROUGH, 2, of(new MaterialStack(Sodium, 1), new MaterialStack(Magnesium, 6), new MaterialStack(Silicon, 12), new MaterialStack(Hydrogen, 4), new MaterialStack(Water, 5), new MaterialStack(Oxygen, 36)), GENERATE_ORE);
     public static DustMaterial FullersEarth = new DustMaterial(343, "fullers_earth", 0xA0A078, FINE, 2, of(new MaterialStack(Magnesium, 1), new MaterialStack(Silicon, 4), new MaterialStack(Hydrogen, 1), new MaterialStack(Water, 4), new MaterialStack(Oxygen, 11)), 0);
-    public static DustMaterial Pitchblende = new DustMaterial(344, "pitchblende", 0xC8D200, DULL, 3, of(new MaterialStack(Uraninite, 3), new MaterialStack(Thorium, 1), new MaterialStack(Lead, 1)), GENERATE_ORE | DECOMPOSITION_BY_CENTRIFUGING).setFormula("(UO2)3ThPb");
+    public static DustMaterial Pitchblende = new DustMaterial(344, "pitchblende", 0xC8D200, DULL, 3, of(new MaterialStack(Uraninite, 3), new MaterialStack(Thorium, 1), new MaterialStack(Lead, 1)), GENERATE_ORE | DECOMPOSITION_BY_CENTRIFUGING).setFormula("(UO2)3ThPb", true);
     public static GemMaterial Monazite = new GemMaterial(345, "monazite", 0x324632, DIAMOND, 1, of(new MaterialStack(RareEarth, 1), new MaterialStack(Phosphate, 1)), GENERATE_ORE | NO_SMASHING | NO_SMELTING | CRYSTALLISABLE);
     public static DustMaterial Malachite = new DustMaterial(346, "malachite", 0x055F05, DULL, 2, of(new MaterialStack(Copper, 2), new MaterialStack(Carbon, 1), new MaterialStack(Hydrogen, 2), new MaterialStack(Oxygen, 5)), GENERATE_ORE | INDUCTION_SMELTING_LOW_OUTPUT);
     public static DustMaterial Mirabilite = new DustMaterial(347, "mirabilite", 0xF0FAD2, DULL, 2, of(new MaterialStack(Sodium, 2), new MaterialStack(Sulfur, 1), new MaterialStack(Water, 10), new MaterialStack(Oxygen, 4)), 0);

@@ -1614,6 +1614,11 @@ material.ethyl_tertbutyl_ether=Ethyl Tert-Butyl Ether
 material.gasoline_premium=High Octane Gasoline
 material.nitrobenzene=Nitrobenzene
 
+material.coal_gas=Coal Gas
+material.coal_tar=Coal Tar
+material.ethylbenzene=Ethylbenzene
+material.naphthalene=Naphthalene
+
 item.nether_quartz.oreNetherrack=Nether Quartz Ore
 item.gunpowder.dustTiny=Tiny Pile of Gunpowder
 item.gunpowder.dustSmall=Small Pile of Gunpowder
