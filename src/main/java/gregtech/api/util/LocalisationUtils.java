@@ -7,36 +7,46 @@ public class LocalisationUtils {
 
     /**
      * @deprecated
-     * This function should only be used when localisation is needed on the server.
-     * Helper function that automatically calls `net.minecraft.client.resources.I18n.format` when called on client
+     * This function calls `net.minecraft.client.resources.I18n.format` when called on client
      * or `net.minecraft.util.text.translation.I18n.translateToLocalFormatted` when called on server.
-     * @param p_format_0_ passed to the underlying format function as first parameter
-     * @param p_format_1_ passed to the underlying format function as second parameter
+     * <ul>
+     *  <li>It is intended that translations should be done using `I18n` on the client.</li>
+     *  <li>For setting up translations on the server you should use `TextComponentTranslatable`.</li>
+     *  <li>`LocalisationUtils` is only for cases where some kind of translation is required on the server and there is no client/player in context.</li>
+     *  <li>`LocalisationUtils` is "best effort" and will probably only work properly with en-us.</li>
+     * </ul>
+     * @param localisationKey the localisation key passed to the underlying format function
+     * @param substitutions the substitutions passed to the underlying format function
      * @return the localized string.
      */
     @Deprecated
-    public static String format(String p_format_0_, Object... p_format_1_) {
+    public static String format(String localisationKey, Object... substitutions) {
         if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) {
-            return net.minecraft.util.text.translation.I18n.translateToLocalFormatted(p_format_0_, p_format_1_);
+            return net.minecraft.util.text.translation.I18n.translateToLocalFormatted(localisationKey, substitutions);
         } else {
-            return net.minecraft.client.resources.I18n.format(p_format_0_, p_format_1_);
+            return net.minecraft.client.resources.I18n.format(localisationKey, substitutions);
         }
     }
 
     /**
      * @deprecated
-     * This function should only be used when localisation is needed on the server.
-     * Helper function that automatically calls `net.minecraft.client.resources.I18n.hasKey` when called on client
+     * This function calls `net.minecraft.client.resources.I18n.hasKey` when called on client
      * or `net.minecraft.util.text.translation.I18n.canTranslate` when called on server.
-     * @param p_hasKey_0_ passed to the underlying hasKey function as first parameter
-     * @return the localized string.
+     * <ul>
+     *  <li>It is intended that translations should be done using `I18n` on the client.</li>
+     *  <li>For setting up translations on the server you should use `TextComponentTranslatable`.</li>
+     *  <li>`LocalisationUtils` is only for cases where some kind of translation is required on the server and there is no client/player in context.</li>
+     *  <li>`LocalisationUtils` is "best effort" and will probably only work properly with en-us.</li>
+     * </ul>
+     * @param localisationKey the localisation key passed to the underlying hasKey function
+     * @return a boolean indicating if the given localisation key has localisations
      */
     @Deprecated
-    public static boolean hasKey(String p_hasKey_0_) {
+    public static boolean hasKey(String localisationKey) {
         if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) {
-            return net.minecraft.util.text.translation.I18n.canTranslate(p_hasKey_0_);
+            return net.minecraft.util.text.translation.I18n.canTranslate(localisationKey);
         } else {
-            return net.minecraft.client.resources.I18n.hasKey(p_hasKey_0_);
+            return net.minecraft.client.resources.I18n.hasKey(localisationKey);
         }
     }
 
