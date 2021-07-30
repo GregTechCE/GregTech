@@ -19,9 +19,9 @@ import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.TieredMetaTileEntity;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.LocalisationUtils;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -291,10 +291,10 @@ public class MetaTileEntityPump extends TieredMetaTileEntity {
     @Override
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, boolean advanced) {
         int maxPumpRange = getMaxPumpRange();
-        tooltip.add(LocalisationUtils.format("gregtech.machine.pump.tooltip_range", maxPumpRange, maxPumpRange));
-        tooltip.add(LocalisationUtils.format("gregtech.machine.pump.tooltip_speed", getPumpingCycleLength()));
-        tooltip.add(LocalisationUtils.format("gregtech.universal.tooltip.voltage_in", energyContainer.getInputVoltage(), GTValues.VN[getTier()]));
-        tooltip.add(LocalisationUtils.format("gregtech.universal.tooltip.energy_storage_capacity", energyContainer.getEnergyCapacity()));
-        tooltip.add(LocalisationUtils.format("gregtech.universal.tooltip.fluid_storage_capacity", exportFluids.getTankAt(0).getCapacity()));
+        tooltip.add(I18n.format("gregtech.machine.pump.tooltip_range", maxPumpRange, maxPumpRange));
+        tooltip.add(I18n.format("gregtech.machine.pump.tooltip_speed", getPumpingCycleLength()));
+        tooltip.add(I18n.format("gregtech.universal.tooltip.voltage_in", energyContainer.getInputVoltage(), GTValues.VN[getTier()]));
+        tooltip.add(I18n.format("gregtech.universal.tooltip.energy_storage_capacity", energyContainer.getEnergyCapacity()));
+        tooltip.add(I18n.format("gregtech.universal.tooltip.fluid_storage_capacity", exportFluids.getTankAt(0).getCapacity()));
     }
 }

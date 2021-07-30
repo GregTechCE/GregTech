@@ -25,6 +25,7 @@ import gregtech.api.util.LocalisationUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
@@ -471,6 +472,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public String getItemStackDisplayName(ItemStack stack) {
         if (stack.getItemDamage() >= metaItemOffset) {
             T item = getItem(stack);
@@ -498,13 +500,13 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         T item = getItem(itemStack);
         if (item == null) return;
         String unlocalizedTooltip = "metaitem." + item.unlocalizedName + ".tooltip";
-        if (LocalisationUtils.hasKey(unlocalizedTooltip)) {
-            lines.addAll(Arrays.asList(LocalisationUtils.format(unlocalizedTooltip).split("/n")));
+        if (I18n.hasKey(unlocalizedTooltip)) {
+            lines.addAll(Arrays.asList(I18n.format(unlocalizedTooltip).split("/n")));
         }
 
         IElectricItem electricItem = itemStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
         if (electricItem != null) {
-            lines.add(LocalisationUtils.format("metaitem.generic.electric_item.tooltip",
+            lines.add(I18n.format("metaitem.generic.electric_item.tooltip",
                 electricItem.getCharge(),
                 electricItem.getMaxCharge(),
                 GTValues.VN[electricItem.getTier()]));
@@ -516,11 +518,11 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             IFluidTankProperties fluidTankProperties = fluidHandler.getTankProperties()[0];
             FluidStack fluid = fluidTankProperties.getContents();
             if (fluid != null) {
-                lines.add(LocalisationUtils.format("metaitem.generic.fluid_container.tooltip",
+                lines.add(I18n.format("metaitem.generic.fluid_container.tooltip",
                     fluid.amount,
                     fluidTankProperties.getCapacity(),
                     fluid.getLocalizedName()));
-            } else lines.add(LocalisationUtils.format("metaitem.generic.fluid_container.tooltip_empty"));
+            } else lines.add(I18n.format("metaitem.generic.fluid_container.tooltip_empty"));
         }
 
         for (IItemBehaviour behaviour : getBehaviours(itemStack)) {

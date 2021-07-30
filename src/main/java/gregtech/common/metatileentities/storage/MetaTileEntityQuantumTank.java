@@ -18,8 +18,8 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.render.Textures;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.LocalisationUtils;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -165,12 +165,12 @@ public class MetaTileEntityQuantumTank extends MetaTileEntity implements ITiered
     @Override
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, boolean advanced) {
         super.addInformation(stack, player, tooltip, advanced);
-        tooltip.add(LocalisationUtils.format("gregtech.machine.quantum_tank.capacity", maxFluidCapacity));
+        tooltip.add(I18n.format("gregtech.machine.quantum_tank.capacity", maxFluidCapacity));
         NBTTagCompound compound = stack.getTagCompound();
         if (compound != null && compound.hasKey("FluidName")) {
             FluidStack fluidStack = new FluidStack(FluidRegistry.getFluid(compound.getString("FluidName")), 1000);
-            tooltip.add(LocalisationUtils.format("gregtech.machine.quantum_tank.tooltip.name", fluidStack.getLocalizedName()));
-            tooltip.add(LocalisationUtils.format("gregtech.machine.quantum_tank.tooltip.count", compound.getInteger("Amount")));
+            tooltip.add(I18n.format("gregtech.machine.quantum_tank.tooltip.name", fluidStack.getLocalizedName()));
+            tooltip.add(I18n.format("gregtech.machine.quantum_tank.tooltip.count", compound.getInteger("Amount")));
         }
     }
 

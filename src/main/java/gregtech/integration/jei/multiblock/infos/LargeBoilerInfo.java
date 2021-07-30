@@ -3,11 +3,11 @@ package gregtech.integration.jei.multiblock.infos;
 import com.google.common.collect.Lists;
 import gregtech.api.GTValues;
 import gregtech.api.metatileentity.multiblock.MultiblockControllerBase;
-import gregtech.api.util.LocalisationUtils;
 import gregtech.common.metatileentities.MetaTileEntities;
 import gregtech.common.metatileentities.multi.MetaTileEntityLargeBoiler;
 import gregtech.integration.jei.multiblock.MultiblockInfoPage;
 import gregtech.integration.jei.multiblock.MultiblockShapeInfo;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.EnumFacing;
 
 import java.util.List;
@@ -44,7 +44,7 @@ public class LargeBoilerInfo extends MultiblockInfoPage {
 
     @Override
     public String[] getDescription() {
-        return new String[]{LocalisationUtils.format("gregtech.multiblock.large_boiler.description")};
+        return new String[]{I18n.format("gregtech.multiblock.large_boiler.description")};
     }
 
 }

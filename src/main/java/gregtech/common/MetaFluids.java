@@ -7,9 +7,9 @@ import gregtech.api.unification.material.type.FluidMaterial.MatFlags;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.util.FluidTooltipUtil;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.LocalisationUtils;
 import gregtech.common.blocks.MetaBlocks;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fml.relauncher.Side;
@@ -244,10 +244,11 @@ public class MetaFluids {
         }
 
         @Override
+        @SideOnly(Side.CLIENT)
         public String getLocalizedName(FluidStack stack) {
-            String localizedName = LocalisationUtils.format(getUnlocalizedName());
+            String localizedName = I18n.format(getUnlocalizedName());
             if (state.prefixLocale != null) {
-                return LocalisationUtils.format(state.prefixLocale, localizedName);
+                return I18n.format(state.prefixLocale, localizedName);
             }
             return localizedName;
         }

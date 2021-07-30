@@ -8,6 +8,7 @@ import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.IngotMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.util.LocalisationUtils;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.MathHelper;
@@ -62,6 +63,7 @@ public abstract class AbstractMaterialPartBehavior implements IItemBehaviour, II
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public String getItemStackDisplayName(ItemStack itemStack, String unlocalizedName) {
         IngotMaterial material = getPartMaterial(itemStack);
         return LocalisationUtils.format(unlocalizedName, material.getLocalizedName());
@@ -72,8 +74,8 @@ public abstract class AbstractMaterialPartBehavior implements IItemBehaviour, II
         IngotMaterial material = getPartMaterial(stack);
         int maxRotorDurability = getPartMaxDurability(stack);
         int rotorDamage = getPartDamage(stack);
-        lines.add(LocalisationUtils.format("metaitem.tool.tooltip.durability", maxRotorDurability - rotorDamage, maxRotorDurability));
-        lines.add(LocalisationUtils.format("metaitem.tool.tooltip.primary_material", material.getLocalizedName(), material.harvestLevel));
+        lines.add(I18n.format("metaitem.tool.tooltip.durability", maxRotorDurability - rotorDamage, maxRotorDurability));
+        lines.add(I18n.format("metaitem.tool.tooltip.primary_material", material.getLocalizedName(), material.harvestLevel));
     }
 
     @Override

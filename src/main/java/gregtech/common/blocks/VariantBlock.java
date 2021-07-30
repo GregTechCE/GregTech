@@ -2,12 +2,12 @@ package gregtech.common.blocks;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.LocalisationUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
@@ -67,12 +67,12 @@ public class VariantBlock<T extends Enum<T> & IStringSerializable> extends Block
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
         //tier less tooltip like: tile.turbine_casing.tooltip
         String unlocalizedVariantTooltip = getTranslationKey() + ".tooltip";
-        if (LocalisationUtils.hasKey(unlocalizedVariantTooltip))
-            tooltip.addAll(Arrays.asList(LocalisationUtils.format(unlocalizedVariantTooltip).split("/n")));
+        if (I18n.hasKey(unlocalizedVariantTooltip))
+            tooltip.addAll(Arrays.asList(I18n.format(unlocalizedVariantTooltip).split("/n")));
         //item specific tooltip: tile.turbine_casing.bronze_gearbox.tooltip
         String unlocalizedTooltip = stack.getTranslationKey() + ".tooltip";
-        if (LocalisationUtils.hasKey(unlocalizedTooltip))
-            tooltip.addAll(Arrays.asList(LocalisationUtils.format(unlocalizedTooltip).split("/n")));
+        if (I18n.hasKey(unlocalizedTooltip))
+            tooltip.addAll(Arrays.asList(I18n.format(unlocalizedTooltip).split("/n")));
     }
 
     @Override

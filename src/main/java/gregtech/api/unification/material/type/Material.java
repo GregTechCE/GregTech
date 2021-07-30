@@ -382,6 +382,7 @@ public abstract class Material implements Comparable<Material> {
     }
 
     @ZenGetter("localizedName")
+    @SuppressWarnings("deprecation")
     public String getLocalizedName() {
         return LocalisationUtils.format(getUnlocalizedName());
     }

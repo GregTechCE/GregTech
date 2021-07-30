@@ -2,11 +2,11 @@ package gregtech.api.gui.widgets.tab;
 
 import com.google.common.collect.Lists;
 import gregtech.api.gui.resources.TextureArea;
-import gregtech.api.util.LocalisationUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.client.config.GuiUtils;
 
@@ -32,7 +32,7 @@ public class ItemTabInfo implements ITabInfo {
 
     @Override
     public void renderHoverText(int posX, int posY, int xSize, int ySize, int guiWidth, int guiHeight, boolean isSelected, int mouseX, int mouseY) {
-        String localizedText = LocalisationUtils.format(nameLocale);
+        String localizedText = I18n.format(nameLocale);
         Minecraft mc = Minecraft.getMinecraft();
         ScaledResolution resolution = new ScaledResolution(mc);
         GuiUtils.drawHoveringText(Lists.newArrayList(localizedText), mouseX, mouseY,

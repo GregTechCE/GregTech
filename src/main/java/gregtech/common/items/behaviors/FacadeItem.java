@@ -21,6 +21,7 @@ import java.util.Objects;
 public class FacadeItem implements IItemNameProvider, ISubItemHandler {
 
     @Override
+    @SuppressWarnings("deprecation")
     public String getItemStackDisplayName(ItemStack itemStack, String unlocalizedName) {
         ItemStack facadeStack = getFacadeStack(itemStack);
         String name = facadeStack.getItem().getItemStackDisplayName(facadeStack);

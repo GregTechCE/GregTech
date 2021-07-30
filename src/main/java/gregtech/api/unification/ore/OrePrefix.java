@@ -8,8 +8,7 @@ import gregtech.api.unification.material.type.*;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.LocalisationUtils;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.apache.commons.lang3.Validate;
 
 import javax.annotation.Nullable;
@@ -442,6 +441,7 @@ public enum OrePrefix {
         currentProcessingPrefix.set(null);
     }
 
+    @SuppressWarnings("deprecation")
     public String getLocalNameForItem(Material material) {
         String specfiedUnlocalized = "item." + material.toString() + "." + this.name();
         if (LocalisationUtils.hasKey(specfiedUnlocalized)) return LocalisationUtils.format(specfiedUnlocalized);

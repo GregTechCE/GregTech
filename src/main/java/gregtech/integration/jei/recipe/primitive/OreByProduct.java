@@ -14,10 +14,10 @@ import gregtech.api.unification.material.type.DustMaterial;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.GTUtility;
-import gregtech.api.util.LocalisationUtils;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 
 public class OreByProduct implements IRecipeWrapper {
@@ -126,7 +126,7 @@ public class OreByProduct implements IRecipeWrapper {
 			if (material.washedIn != null)
 				addOreTooltip(tooltip, 1, RecipeMaps.CHEMICAL_BATH_RECIPES.getLocalizedName(), true);
 			else
-				tooltip.add(LocalisationUtils.format("gregtech.jei.ore_by_product_not_obtainable"));
+				tooltip.add(I18n.format("gregtech.jei.ore_by_product_not_obtainable"));
 			break;
 		default:
 			break;
@@ -145,11 +145,11 @@ public class OreByProduct implements IRecipeWrapper {
 		Material byProductMaterial = GTUtility.selectItemInList(byproduct, material, material.oreByProducts,
 				DustMaterial.class);
 		if (!result)
-			tooltip.add(LocalisationUtils.format("gregtech.jei.ore_by_product_from_ore", machine, byProductMaterial.getLocalizedName()));
+			tooltip.add(I18n.format("gregtech.jei.ore_by_product_from_ore", machine, byProductMaterial.getLocalizedName()));
 		else {
 			String oreType = byproduct == 0 ? oreIngredients.get(0).getDisplayName()
 					: oreProcessingSteps.get(byproduct - 1).getDisplayName();
-			tooltip.add(LocalisationUtils.format("gregtech.jei.ore_by_product_from_machine", oreType, machine));
+			tooltip.add(I18n.format("gregtech.jei.ore_by_product_from_machine", oreType, machine));
 		}
 	}
 

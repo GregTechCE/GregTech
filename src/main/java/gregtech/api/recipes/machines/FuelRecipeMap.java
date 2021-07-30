@@ -83,6 +83,7 @@ public class FuelRecipeMap {
     }
 
     @ZenGetter("localizedName")
+    @SuppressWarnings("deprecation")
     public String getLocalizedName() {
         return LocalisationUtils.format("recipemap." + unlocalizedName + ".name");
     }

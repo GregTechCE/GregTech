@@ -7,7 +7,7 @@ import gregtech.api.items.metaitem.stats.IItemBehaviour;
 import gregtech.api.items.metaitem.stats.IItemCapabilityProvider;
 import gregtech.api.items.metaitem.stats.IItemMaxStackSizeProvider;
 import gregtech.api.items.metaitem.stats.IItemComponent;
-import gregtech.api.util.LocalisationUtils;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -115,7 +115,7 @@ public class ElectricStats implements IItemComponent, IItemCapabilityProvider, I
     public void addInformation(ItemStack itemStack, List<String> lines) {
         IElectricItem electricItem = itemStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
         if(electricItem != null && electricItem.canProvideChargeExternally()) {
-            lines.add(LocalisationUtils.format("metaitem.electric.discharge_mode.tooltip"));
+            lines.add(I18n.format("metaitem.electric.discharge_mode.tooltip"));
         }
     }
 

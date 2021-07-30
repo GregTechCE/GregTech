@@ -1,10 +1,10 @@
 package gregtech.common.items.behaviors;
 
-import gregtech.api.util.LocalisationUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStainedGlass;
 import net.minecraft.block.BlockStainedGlassPane;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
@@ -14,8 +14,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
@@ -68,7 +66,7 @@ public class ColorSprayBehaviour extends AbstractUsableBehaviour {
     @Override
     public void addInformation(ItemStack itemStack, List<String> lines) {
         int remainingUses = getUsesLeft(itemStack);
-        lines.add(LocalisationUtils.format("behaviour.paintspray." + this.color.getTranslationKey() + ".tooltip"));
-        lines.add(LocalisationUtils.format("behaviour.paintspray.uses", remainingUses));
+        lines.add(I18n.format("behaviour.paintspray." + this.color.getTranslationKey() + ".tooltip"));
+        lines.add(I18n.format("behaviour.paintspray.uses", remainingUses));
     }
 }

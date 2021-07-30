@@ -2,12 +2,12 @@ package gregtech.api.gui.widgets;
 
 import gregtech.api.gui.IRenderContext;
 import gregtech.api.gui.Widget;
-import gregtech.api.util.LocalisationUtils;
 import gregtech.api.util.Position;
 import gregtech.api.util.Size;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.resources.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -36,7 +36,7 @@ public class LabelWidget extends Widget {
     }
 
     private String getResultText() {
-        return LocalisationUtils.format(text, formatting);
+        return I18n.format(text, formatting);
     }
 
     private void recomputeSize() {

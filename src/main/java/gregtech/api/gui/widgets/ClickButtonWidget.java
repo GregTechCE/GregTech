@@ -5,12 +5,12 @@ import gregtech.api.gui.IRenderContext;
 import gregtech.api.gui.Widget;
 import gregtech.api.gui.resources.SizedTextureArea;
 import gregtech.api.gui.resources.TextureArea;
-import gregtech.api.util.LocalisationUtils;
 import gregtech.api.util.Position;
 import gregtech.api.util.Size;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.network.PacketBuffer;
 import org.lwjgl.input.Mouse;
 
@@ -50,7 +50,7 @@ public class ClickButtonWidget extends Widget {
             buttonTexture.drawSubArea(position.x, position.y, size.width, size.height, 0.0, 0.0, 1.0, 1.0);
         }
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-        String text = LocalisationUtils.format(displayText);
+        String text = I18n.format(displayText);
         fontRenderer.drawString(text,
             position.x + size.width / 2 - fontRenderer.getStringWidth(text) / 2,
             position.y + size.height / 2 - fontRenderer.FONT_HEIGHT / 2, textColor);
