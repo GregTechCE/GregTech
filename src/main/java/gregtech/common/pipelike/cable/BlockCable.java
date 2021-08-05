@@ -2,15 +2,15 @@ package gregtech.common.pipelike.cable;
 
 import com.google.common.base.Preconditions;
 import gregtech.api.capability.GregtechCapabilities;
-import gregtech.api.capability.IEnergyContainer;
 import gregtech.api.capability.tool.ICutterItem;
 import gregtech.api.damagesources.DamageSources;
 import gregtech.api.pipenet.block.material.BlockMaterialPipe;
 import gregtech.api.pipenet.tile.AttachmentType;
 import gregtech.api.pipenet.tile.IPipeTile;
 import gregtech.api.pipenet.tile.TileEntityPipeBase;
-import gregtech.api.unification.material.type.Material;
-import gregtech.api.unification.ore.OrePrefix;
+import gregtech.api.unification.material.MaterialRegistry;
+import gregtech.api.unification.material.properties.WireProperty;
+import gregtech.api.unification.material.Material;
 import gregtech.api.util.GTUtility;
 import gregtech.common.ConfigHolder;
 import gregtech.common.pipelike.cable.net.EnergyNet;
@@ -32,7 +32,6 @@ import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -44,19 +43,19 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class BlockCable extends BlockMaterialPipe<Insulation, WireProperties, WorldENet> implements ITileEntityProvider {
+public class BlockCable extends BlockMaterialPipe<Insulation, WireProperty, WorldENet> implements ITileEntityProvider {
 
-    private final Map<Material, WireProperties> enabledMaterials = new TreeMap<>();
+    private final Map<Material, WireProperty> enabledMaterials = new TreeMap<>();
 
     public BlockCable(Insulation cableType) {
         super(cableType);
         setHarvestLevel("cutter", 1);
     }
 
-    public void addCableMaterial(Material material, WireProperties wireProperties) {
+    public void addCableMaterial(Material material, WireProperty wireProperties) {
         Preconditions.checkNotNull(material, "material");
         Preconditions.checkNotNull(wireProperties, "wireProperties");
-        Preconditions.checkArgument(Material.MATERIAL_REGISTRY.getNameForObject(material) != null, "material is not registered");
+        Preconditions.checkArgument(MaterialRegistry.MATERIAL_REGISTRY.getNameForObject(material) != null, "material is not registered");
         if (!pipeType.orePrefix.isIgnored(material)) {
             this.enabledMaterials.put(material, wireProperties);
         }
@@ -72,12 +71,12 @@ public class BlockCable extends BlockMaterialPipe<Insulation, WireProperties, Wo
     }
 
     @Override
-    protected WireProperties createProperties(Insulation insulation, Material material) {
+    protected WireProperty createProperties(Insulation insulation, Material material) {
         return insulation.modifyProperties(enabledMaterials.getOrDefault(material, getFallbackType()));
     }
 
     @Override
-    protected WireProperties getFallbackType() {
+    protected WireProperty getFallbackType() {
         return enabledMaterials.values().iterator().next();
     }
 
@@ -94,7 +93,7 @@ public class BlockCable extends BlockMaterialPipe<Insulation, WireProperties, Wo
     }
 
     @Override
-    public int onPipeToolUsed(ItemStack stack, EnumFacing coverSide, IPipeTile<Insulation, WireProperties> pipeTile, EntityPlayer entityPlayer) {
+    public int onPipeToolUsed(ItemStack stack, EnumFacing coverSide, IPipeTile<Insulation, WireProperty> pipeTile, EntityPlayer entityPlayer) {
         ICutterItem cutterItem = stack.getCapability(GregtechCapabilities.CAPABILITY_CUTTER, null);
         if (cutterItem != null) {
             if (cutterItem.damageItem(DamageValues.DAMAGE_FOR_CUTTER, true)) {
@@ -112,12 +111,12 @@ public class BlockCable extends BlockMaterialPipe<Insulation, WireProperties, Wo
     }
 
     @Override
-    public boolean canPipesConnect(IPipeTile<Insulation, WireProperties> selfTile, EnumFacing side, IPipeTile<Insulation, WireProperties> sideTile) {
+    public boolean canPipesConnect(IPipeTile<Insulation, WireProperty> selfTile, EnumFacing side, IPipeTile<Insulation, WireProperty> sideTile) {
         return true;
     }
 
     @Override
-    public boolean canPipeConnectToBlock(IPipeTile<Insulation, WireProperties> selfTile, EnumFacing side, TileEntity tile) {
+    public boolean canPipeConnectToBlock(IPipeTile<Insulation, WireProperty> selfTile, EnumFacing side, TileEntity tile) {
         return tile != null && tile.getCapability(GregtechCapabilities.CAPABILITY_ENERGY_CONTAINER, side.getOpposite()) != null;
     }
 
@@ -149,7 +148,7 @@ public class BlockCable extends BlockMaterialPipe<Insulation, WireProperties, Wo
     }
 
     @Override
-    public TileEntityPipeBase<Insulation, WireProperties> createNewTileEntity(boolean supportsTicking) {
+    public TileEntityPipeBase<Insulation, WireProperty> createNewTileEntity(boolean supportsTicking) {
         return supportsTicking ? new TileEntityCableTickable() : new TileEntityCable();
     }
 

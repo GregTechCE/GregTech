@@ -17,12 +17,12 @@ import codechicken.lib.vec.uv.IconTransformation;
 import gregtech.api.GTValues;
 import gregtech.api.cover.ICoverable;
 import gregtech.api.pipenet.tile.IPipeTile;
-import gregtech.api.unification.material.type.Material;
+import gregtech.api.unification.material.Material;
+import gregtech.api.unification.material.properties.ItemPipeProperty;
 import gregtech.api.util.GTUtility;
 import gregtech.api.util.ModCompatibility;
 import gregtech.common.pipelike.itempipe.BlockItemPipe;
 import gregtech.common.pipelike.itempipe.ItemBlockItemPipe;
-import gregtech.common.pipelike.itempipe.ItemPipeProperties;
 import gregtech.common.pipelike.itempipe.ItemPipeType;
 import gregtech.common.pipelike.itempipe.tile.TileEntityItemPipe;
 import net.minecraft.block.state.IBlockState;
@@ -152,7 +152,7 @@ public class ItemPipeRenderer implements ICCBlockRenderer, IItemRenderer {
 
     private int getPipeColor(Material material, int insulationColor) {
         if (insulationColor == IPipeTile.DEFAULT_INSULATION_COLOR) {
-            return material.materialRGB;
+            return material.getMaterialRGB();
         } else return insulationColor;
     }
 
@@ -231,7 +231,7 @@ public class ItemPipeRenderer implements ICCBlockRenderer, IItemRenderer {
         renderState.bind(buffer);
         renderState.setPipeline(new Vector3(new Vec3d(pos)).translation(), new IconTransformation(sprite));
         BlockItemPipe blockFluidPipe = (BlockItemPipe) state.getBlock();
-        IPipeTile<ItemPipeType, ItemPipeProperties> tileEntityPipe = blockFluidPipe.getPipeTileEntity(world, pos);
+        IPipeTile<ItemPipeType, ItemPipeProperty> tileEntityPipe = blockFluidPipe.getPipeTileEntity(world, pos);
         if (tileEntityPipe == null) {
             return;
         }
@@ -280,7 +280,7 @@ public class ItemPipeRenderer implements ICCBlockRenderer, IItemRenderer {
         return true;
     }
 
-    public Pair<TextureAtlasSprite, Integer> getParticleTexture(IPipeTile<ItemPipeType, ItemPipeProperties> tileEntity) {
+    public Pair<TextureAtlasSprite, Integer> getParticleTexture(IPipeTile<ItemPipeType, ItemPipeProperty> tileEntity) {
         if (tileEntity == null) {
             return Pair.of(TextureUtils.getMissingSprite(), 0xFFFFFF);
         }
