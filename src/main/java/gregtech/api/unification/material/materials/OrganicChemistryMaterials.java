@@ -4,8 +4,7 @@ import gregtech.api.unification.material.Material;
 
 import static gregtech.api.unification.material.Materials.*;
 import static gregtech.api.unification.material.info.MaterialFlags.*;
-import static gregtech.api.unification.material.info.MaterialIconSet.FINE;
-import static gregtech.api.unification.material.info.MaterialIconSet.SHINY;
+import static gregtech.api.unification.material.info.MaterialIconSet.*;
 
 public class OrganicChemistryMaterials {
     /**
@@ -142,17 +141,19 @@ public class OrganicChemistryMaterials {
 
         Methane = new Material.Builder(1018, "methane")
                 .fluid(Material.FluidType.GAS)
+                .color(0xFF0078).iconSet(GAS)
                 .components(Carbon, 1, Hydrogen, 4)
                 .build();
 
         Epichlorohydrin = new Material.Builder(1019, "epichlorohydrin")
                 .fluid()
+                .color(0x712400)
                 .components(Carbon, 3, Hydrogen, 5, Chlorine, 1, Oxygen, 1)
                 .build();
 
         Monochloramine = new Material.Builder(1020, "monochloramine")
                 .fluid(Material.FluidType.GAS)
-                .color(0x3F9F80).iconSet(FINE)
+                .color(0x3F9F80)
                 .components(Hydrogen, 1, HydrochloricAcid, 1)
                 .build()
                 .setFormula("NH2Cl", true);
@@ -373,6 +374,7 @@ public class OrganicChemistryMaterials {
         SaltWater = new Material.Builder(1053, "salt_water")
                 .fluid()
                 .color(0x0000C8)
+                .flags(DECOMPOSITION_BY_CENTRIFUGING)
                 .components(Salt, 1, Water, 1)
                 .build();
 
@@ -441,12 +443,14 @@ public class OrganicChemistryMaterials {
         Octane = new Material.Builder(1063, "octane")
                 .fluid()
                 .flags(DISABLE_DECOMPOSITION)
+                .color(0x8A0A09)
                 .components(Carbon, 8, Hydrogen, 18)
                 .build();
 
         EthylTertButylEther = new Material.Builder(1064, "ethyl_tertbutyl_ether")
                 .fluid()
                 .flags(DISABLE_DECOMPOSITION)
+                .color(0xB15C06)
                 .components(Carbon, 6, Hydrogen, 14, Oxygen, 1)
                 .build();
 
