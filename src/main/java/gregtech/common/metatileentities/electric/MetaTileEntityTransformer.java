@@ -76,6 +76,9 @@ public class MetaTileEntityTransformer extends TieredMetaTileEntity {
         if (dataId == 100) {
             this.isTransformUp = buf.readBoolean();
         }
+        if (getWorld().isRemote) {
+            scheduleRenderUpdate();
+        }
     }
 
     public boolean isInverted() {
@@ -112,13 +115,11 @@ public class MetaTileEntityTransformer extends TieredMetaTileEntity {
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         super.renderMetaTileEntity(renderState, translation, pipeline);
 
-            //these are swapped to temporarily "fix" the overlay being the opposite the transformer mode
-            SimpleOverlayRenderer otherFacetexture = isTransformUp ? Textures.ENERGY_OUT_MULTI : Textures.ENERGY_IN_MULTI;
-            SimpleOverlayRenderer frontFacetexture = isTransformUp ? Textures.ENERGY_IN_MULTI : Textures.ENERGY_OUT_MULTI;
-            frontFacetexture.renderSided(frontFacing,renderState,translation,PipelineUtil.color(pipeline, GTValues.VC[getTier()]));
+            SimpleOverlayRenderer otherFaceTexture = isTransformUp ? Textures.ENERGY_IN_MULTI : Textures.ENERGY_OUT_MULTI;
+            SimpleOverlayRenderer frontFaceTexture = isTransformUp ? Textures.ENERGY_OUT_MULTI : Textures.ENERGY_IN_MULTI;
+            frontFaceTexture.renderSided(frontFacing,renderState,translation,PipelineUtil.color(pipeline, GTValues.VC[getTier()]));
         Arrays.stream(EnumFacing.values()).filter(f -> f != frontFacing)
-                .forEach((f -> otherFacetexture.renderSided(f,renderState,translation,PipelineUtil.color(pipeline, GTValues.VC[getTier() -1]))));
-
+                .forEach((f -> otherFaceTexture.renderSided(f,renderState,translation,PipelineUtil.color(pipeline, GTValues.VC[getTier() -1]))));
         }
 
 
@@ -145,13 +146,12 @@ public class MetaTileEntityTransformer extends TieredMetaTileEntity {
                 setTransformUp(false);
                 playerIn.sendMessage(new TextComponentTranslation("gregtech.machine.transformer.message_transform_down",
                     energyContainer.getInputVoltage(), energyContainer.getInputAmperage(), energyContainer.getOutputVoltage(), energyContainer.getOutputAmperage()));
-                return true;
             } else {
                 setTransformUp(true);
                 playerIn.sendMessage(new TextComponentTranslation("gregtech.machine.transformer.message_transform_up",
                     energyContainer.getInputVoltage(), energyContainer.getInputAmperage(), energyContainer.getOutputVoltage(), energyContainer.getOutputAmperage()));
-                return true;
             }
+            return true;
         }
         return false;
     }
