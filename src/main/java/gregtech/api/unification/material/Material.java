@@ -381,6 +381,11 @@ public class Material implements Comparable<Material> {
          */
         private final List<MaterialStack> composition = new ArrayList<>();
 
+        /*
+         * Temporary value to use to determine how to calculate default RGB
+         */
+        private boolean averageRGB = false;
+
         /**
          * Constructs a {@link Material}. This Builder replaces the old constructors, and
          * no longer uses a class hierarchy, instead using a {@link MaterialProperties} system.
@@ -593,13 +598,18 @@ public class Material implements Comparable<Material> {
 
         /**
          * Set the Color of this Material.<br>
-         * Defaults to 0xFFFFFF if {@link MaterialInfo#componentList} is empty, otherwise
-         * will be the average of all Material colors in the Component List.
+         * Defaults to 0xFFFFFF unless {@link Builder#colorAverage()} was called, where
+         * it will be a weighted average of the components of the Material.
          *
          * @param color The RGB-formatted Color.
          */
         public Builder color(int color) {
             this.materialInfo.color = color;
+            return this;
+        }
+
+        public Builder colorAverage() {
+            this.averageRGB = true;
             return this;
         }
 
@@ -770,7 +780,7 @@ public class Material implements Comparable<Material> {
 
         public Material build() {
             materialInfo.componentList = ImmutableList.copyOf(composition);
-            materialInfo.verifyInfo(properties);
+            materialInfo.verifyInfo(properties, averageRGB);
             return new Material(materialInfo, properties, flags);
         }
     }
@@ -828,7 +838,7 @@ public class Material implements Comparable<Material> {
             this.name = name;
         }
 
-        private void verifyInfo(MaterialProperties p) {
+        private void verifyInfo(MaterialProperties p, boolean averageRGB) {
 
             // Verify IconSet
             if (iconSet == null) {
@@ -847,14 +857,14 @@ public class Material implements Comparable<Material> {
 
             // Verify MaterialRGB
             if (color == -1) {
-                if (componentList.isEmpty() || p.hasProperty(PropertyKey.FLUID))
+                if (!averageRGB || componentList.isEmpty())
                     color = 0xFFFFFF;
                 else {
                     long colorTemp = 0;
                     int divisor = 0;
                     for (MaterialStack stack : componentList) {
-                        colorTemp += stack.material.getMaterialRGB();
-                        divisor++;
+                        colorTemp += stack.material.getMaterialRGB() * stack.amount;
+                        divisor += stack.amount;
                     }
                     color = (int) (colorTemp / divisor);
                 }
