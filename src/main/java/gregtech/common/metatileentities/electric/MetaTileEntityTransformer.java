@@ -75,8 +75,6 @@ public class MetaTileEntityTransformer extends TieredMetaTileEntity {
         super.receiveCustomData(dataId, buf);
         if (dataId == 100) {
             this.isTransformUp = buf.readBoolean();
-        }
-        if (getWorld().isRemote) {
             scheduleRenderUpdate();
         }
     }
