@@ -34,7 +34,8 @@ public enum MaterialIconSet {
     GEM_HORIZONTAL,
     GEM_VERTICAL,
     PAPER,
-    NETHERSTAR;
+    NETHERSTAR,
+    BRIGHT;
 
     @ZenGetter("name")
     public String getName() {

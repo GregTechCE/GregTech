@@ -22,14 +22,14 @@ public class FirstDegreeMaterials {
                 .build();
 
         Andradite = new Material.Builder(251, "andradite")
-                .dust(1)
-                .color(0x967800).iconSet(ROUGH)
+                .gem(1)
+                .color(0x967800).iconSet(RUBY)
                 .components(Calcium, 3, Iron, 2, Silicon, 3, Oxygen, 12)
                 .build();
 
         AnnealedCopper = new Material.Builder(252, "annealed_copper")
                 .ingot().fluid()
-                .color(0xFF7814).iconSet(SHINY)
+                .color(0xFF8D3B).iconSet(BRIGHT)
                 .flags(EXT2_METAL, MORTAR_GRINDABLE)
                 .components(Copper, 1)
                 .cableProperties(GTValues.V[1], 1, 1)
@@ -64,7 +64,7 @@ public class FirstDegreeMaterials {
 
         BlueTopaz = new Material.Builder(257, "blue_topaz")
                 .gem(3).ore()
-                .color(0x0000FF).iconSet(GEM_HORIZONTAL)
+                .color(0x7B96DC).iconSet(GEM_HORIZONTAL)
                 .flags(NO_SMASHING, NO_SMELTING, HIGH_SIFTER_OUTPUT)
                 .components(Aluminium, 2, Silicon, 1, Fluorine, 2, Hydrogen, 2, Oxygen, 6)
                 .toolStats(7.0f, 3.0f, 256)
@@ -242,8 +242,8 @@ public class FirstDegreeMaterials {
                 .build();
 
         Grossular = new Material.Builder(282, "grossular")
-                .dust(1).ore(6, 1)
-                .color(0xC86400).iconSet(ROUGH)
+                .gem(1).ore(6, 1)
+                .color(0xC86400).iconSet(RUBY)
                 .components(Calcium, 3, Aluminium, 2, Silicon, 3, Oxygen, 12)
                 .build();
 
@@ -445,8 +445,8 @@ public class FirstDegreeMaterials {
                 .build();
 
         Pyrope = new Material.Builder(308, "pyrope")
-                .dust().ore(4, 1)
-                .color(0x783264).iconSet(METALLIC)
+                .gem().ore(4, 1)
+                .color(0x783264).iconSet(RUBY)
                 .components(Aluminium, 2, Magnesium, 3, Silicon, 3, Oxygen, 12)
                 .build();
 
@@ -535,8 +535,8 @@ public class FirstDegreeMaterials {
                 .build();
 
         Spessartine = new Material.Builder(321, "spessartine")
-                .dust().ore(2, 1)
-                .color(0xFF6464)
+                .gem().ore(2, 1)
+                .color(0xFF6464).iconSet(RUBY)
                 .components(Aluminium, 2, Manganese, 3, Silicon, 3, Oxygen, 12)
                 .build();
 
@@ -632,8 +632,8 @@ public class FirstDegreeMaterials {
                 .setFormula("UO2", true);
 
         Uvarovite = new Material.Builder(333, "uvarovite")
-                .dust()
-                .color(0xB4FFB4).iconSet(DIAMOND)
+                .gem()
+                .color(0xB4ffB4).iconSet(RUBY)
                 .components(Calcium, 3, Chrome, 2, Silicon, 3, Oxygen, 12)
                 .build();
 
@@ -858,8 +858,8 @@ public class FirstDegreeMaterials {
                 .build();
 
         Realgar = new Material.Builder(365, "realgar")
-                .dust(2)
-                .color(0x8C6464)
+                .gem()
+                .color(0x9D2123).iconSet(EMERALD)
                 .flags(DECOMPOSITION_BY_CENTRIFUGING)
                 .components(Arsenic, 4, Sulfur, 4)
                 .build();
@@ -978,8 +978,8 @@ public class FirstDegreeMaterials {
                 .build();
 
         Malachite = new Material.Builder(385, "malachite")
-                .dust().ore()
-                .color(0x055F05)
+                .gem().ore()
+                .color(0x055F05).iconSet(LAPIS)
                 .components(Copper, 2, Carbon, 1, Hydrogen, 2, Oxygen, 5)
                 .build();
 
@@ -1015,7 +1015,7 @@ public class FirstDegreeMaterials {
 
         Kaolinite = new Material.Builder(391, "kaolinite")
                 .dust()
-                .color(0xF3EBEB)
+                .color(0xf5EBEB).iconSet(METALLIC)
                 .components(Aluminium, 2, Silicon, 2, Hydrogen, 4, Oxygen, 9)
                 .build();
 

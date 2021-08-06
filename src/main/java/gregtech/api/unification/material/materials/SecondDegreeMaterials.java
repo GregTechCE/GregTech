@@ -154,7 +154,7 @@ public class SecondDegreeMaterials {
 
         Marble = new Material.Builder(2018, "marble")
                 .dust(1)
-                .color(0xC8C8C8).iconSet(FINE)
+                .color(0xC8C8C8).iconSet(ROUGH)
                 .flags(NO_SMASHING, DECOMPOSITION_BY_CENTRIFUGING)
                 .components(Magnesium, 1, Calcite, 7)
                 .build();

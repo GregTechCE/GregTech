@@ -52,7 +52,7 @@ public class HigherDegreeMaterials {
 
         Basalt = new Material.Builder(2512, "basalt")
                 .dust(1)
-                .color(0x1E1414).iconSet(ROUGH)
+                .color(0x3C3232).iconSet(ROUGH)
                 .flags(NO_SMASHING, DECOMPOSITION_BY_CENTRIFUGING)
                 .components(Olivine, 1, Calcite, 3, Flint, 8, DarkAsh, 4)
                 .build();

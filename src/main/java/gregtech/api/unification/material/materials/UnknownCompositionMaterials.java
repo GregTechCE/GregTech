@@ -272,7 +272,7 @@ public class UnknownCompositionMaterials {
 
         Netherrack = new Material.Builder(1604, "netherrack")
                 .dust(1)
-                .color(0xC80000)
+                .color(0xC80000).iconSet(METALLIC)
                 .flags(NO_SMASHING, FLAMMABLE)
                 .build();
 
@@ -327,7 +327,7 @@ public class UnknownCompositionMaterials {
 
         Cocoa = new Material.Builder(1614, "cocoa")
                 .dust(0)
-                .color(0xBE5F00).iconSet(FINE)
+                .color(0x643200).iconSet(FINE)
                 .build();
 
         Wheat = new Material.Builder(1615, "wheat")

@@ -52,6 +52,7 @@ public class ElementMaterials {
 
         Arsenic = new Material.Builder(6, "arsenic")
                 .dust()
+                .color(0x676756)
                 .element(Elements.As)
                 .build();
 
@@ -63,7 +64,7 @@ public class ElementMaterials {
 
         Barium = new Material.Builder(8, "barium")
                 .ingot().fluid()
-                .iconSet(METALLIC)
+                .color(0x83824C).iconSet(METALLIC)
                 .element(Elements.Ba)
                 .build();
 
@@ -107,7 +108,7 @@ public class ElementMaterials {
 
         Caesium = new Material.Builder(15, "caesium")
                 .ingot()
-                .iconSet(METALLIC)
+                .color(0x80620B).iconSet(METALLIC)
                 .element(Elements.Cs)
                 .build();
 
@@ -287,7 +288,7 @@ public class ElementMaterials {
 
         Gold = new Material.Builder(41, "gold")
                 .ingot().fluid().ore()
-                .color(0xFFFF1E).iconSet(SHINY)
+                .color(0xFFE650).iconSet(SHINY)
                 .flags(EXT2_METAL, GENERATE_RING, MORTAR_GRINDABLE, EXCLUDE_BLOCK_CRAFTING_BY_HAND_RECIPES)
                 .element(Elements.Au)
                 .cableProperties(GTValues.V[3], 2, 2)
@@ -331,7 +332,7 @@ public class ElementMaterials {
 
         Indium = new Material.Builder(48, "indium")
                 .ingot().fluid()
-                .color(0x400080).iconSet(METALLIC)
+                .color(0x400080).iconSet(SHINY)
                 .element(Elements.In)
                 .build();
 
@@ -369,7 +370,7 @@ public class ElementMaterials {
 
         Lanthanum = new Material.Builder(53, "lanthanum")
                 .ingot().fluid()
-                .iconSet(METALLIC)
+                .color(0x5D7575).iconSet(METALLIC)
                 .element(Elements.La)
                 .blastTemp(1193)
                 .build();
@@ -411,7 +412,7 @@ public class ElementMaterials {
 
         Magnesium = new Material.Builder(59, "magnesium")
                 .ingot().fluid()
-                .color(0xE1C8C8).iconSet(METALLIC)
+                .color(0xFFC8C8).iconSet(METALLIC)
                 .element(Elements.Mg)
                 .build();
 
@@ -619,7 +620,7 @@ public class ElementMaterials {
 
         Radium = new Material.Builder(88, "radium")
                 .ingot().fluid()
-                .color(0xFFC840).iconSet(SHINY)
+                .color(0xFFFFCD).iconSet(SHINY)
                 .element(Elements.Ra)
                 .build();
 
@@ -632,7 +633,7 @@ public class ElementMaterials {
 
         Rhodium = new Material.Builder(90, "rhodium")
                 .ingot().fluid()
-                .color(0xF4F4F4).iconSet(METALLIC)
+                .color(0xF4F4F4).iconSet(SHINY)
                 .flags(EXT2_METAL)
                 .element(Elements.Rh)
                 .blastTemp(2237)
@@ -646,14 +647,14 @@ public class ElementMaterials {
 
         Rubidium = new Material.Builder(92, "rubidium")
                 .ingot().fluid()
-                .color(0xF01E1E).iconSet(METALLIC)
+                .color(0xF01E1E).iconSet(SHINY)
                 .flags(STD_METAL)
                 .element(Elements.Rb)
                 .build();
 
         Ruthenium = new Material.Builder(93, "ruthenium")
                 .ingot().fluid()
-                .color(0x646464).iconSet(METALLIC)
+                .color(0x9B9B9B).iconSet(SHINY)
                 .flags(EXT2_METAL)
                 .element(Elements.Ru)
                 .blastTemp(2607)
@@ -733,7 +734,7 @@ public class ElementMaterials {
 
         Tantalum = new Material.Builder(104, "tantalum")
                 .ingot().fluid()
-                .iconSet(METALLIC)
+                .color(0x78788c).iconSet(METALLIC)
                 .flags(STD_METAL, GENERATE_FOIL)
                 .element(Elements.Ta)
                 .build();
@@ -856,7 +857,7 @@ public class ElementMaterials {
 
         Ytterbium = new Material.Builder(120, "ytterbium")
                 .ingot().fluid()
-                .iconSet(METALLIC)
+                .color(0xA7A7A7).iconSet(METALLIC)
                 .flags(STD_METAL)
                 .element(Elements.Yb)
                 .blastTemp(1097)
@@ -880,7 +881,7 @@ public class ElementMaterials {
 
         Zirconium = new Material.Builder(123, "zirconium")
                 .ingot(6).fluid()
-                .color(0xE0E1E1).iconSet(METALLIC)
+                .color(0xC8FFFF).iconSet(METALLIC)
                 .flags(EXT2_METAL)
                 .element(Elements.Zr)
                 .build();
@@ -898,7 +899,7 @@ public class ElementMaterials {
 
         NaquadahEnriched = new Material.Builder(125, "naquadah_enriched")
                 .ingot(4).fluid().ore()
-                .color(0x323232).iconSet(METALLIC)
+                .color(0x3C3C3C).iconSet(METALLIC)
                 .flags(EXT_METAL, GENERATE_FOIL)
                 .element(Elements.Nq1)
                 .toolStats(6.0f, 4.0f, 1280)
@@ -932,7 +933,7 @@ public class ElementMaterials {
 
         Duranium = new Material.Builder(129, "duranium")
                 .ingot(5).fluid()
-                .iconSet(METALLIC)
+                .color(0x4BAFAF).iconSet(METALLIC)
                 .flags(EXT_METAL, GENERATE_FOIL)
                 .element(Elements.Dr)
                 .toolStats(16.0f, 5.0f, 5120)
