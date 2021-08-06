@@ -4,7 +4,7 @@ import gregtech.api.pipenet.Node;
 import gregtech.api.pipenet.PipeNet;
 import gregtech.api.pipenet.WorldPipeNet;
 import gregtech.api.util.PerTickLongCounter;
-import gregtech.api.unification.material.properties.WireProperty;
+import gregtech.api.unification.material.properties.WireProperties;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -15,12 +15,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Stack;
 
-public class EnergyNet extends PipeNet<WireProperty> {
+public class EnergyNet extends PipeNet<WireProperties> {
 
     private final PerTickLongCounter currentAmperageCounter = new PerTickLongCounter(0L);
     private final PerTickLongCounter currentMaxVoltageCounter = new PerTickLongCounter(0L);
 
-    protected EnergyNet(WorldPipeNet<WireProperty, EnergyNet> world) {
+    protected EnergyNet(WorldPipeNet<WireProperties, EnergyNet> world) {
         super(world);
     }
 
@@ -43,7 +43,7 @@ public class EnergyNet extends PipeNet<WireProperty> {
     public List<RoutePath> computePatches(BlockPos startPos) {
         ArrayList<RoutePath> readyPaths = new ArrayList<>();
         RoutePath currentPath = new RoutePath();
-        Node<WireProperty> firstNode = getNodeAt(startPos);
+        Node<WireProperties> firstNode = getNodeAt(startPos);
         currentPath.path.put(startPos, firstNode.data);
         readyPaths.add(currentPath.cloneAndCompute(startPos));
         HashSet<BlockPos> observedSet = new HashSet<>();
@@ -54,7 +54,7 @@ public class EnergyNet extends PipeNet<WireProperty> {
         while (true) {
             for (EnumFacing facing : EnumFacing.VALUES) {
                 currentPos.move(facing);
-                Node<WireProperty> secondNode = getNodeAt(currentPos);
+                Node<WireProperties> secondNode = getNodeAt(currentPos);
                 if (secondNode != null && canNodesConnect(firstNode, facing, secondNode, this) && !observedSet.contains(currentPos)) {
                     BlockPos immutablePos = currentPos.toImmutable();
                     observedSet.add(immutablePos);
@@ -82,17 +82,17 @@ public class EnergyNet extends PipeNet<WireProperty> {
 
 
     @Override
-    protected void writeNodeData(WireProperty nodeData, NBTTagCompound tagCompound) {
+    protected void writeNodeData(WireProperties nodeData, NBTTagCompound tagCompound) {
         tagCompound.setInteger("voltage", nodeData.voltage);
         tagCompound.setInteger("amperage", nodeData.amperage);
         tagCompound.setInteger("loss", nodeData.lossPerBlock);
     }
 
     @Override
-    protected WireProperty readNodeData(NBTTagCompound tagCompound) {
+    protected WireProperties readNodeData(NBTTagCompound tagCompound) {
         int voltage = tagCompound.getInteger("voltage");
         int amperage = tagCompound.getInteger("amperage");
         int lossPerBlock = tagCompound.getInteger("loss");
-        return new WireProperty(voltage, amperage, lossPerBlock);
+        return new WireProperties(voltage, amperage, lossPerBlock);
     }
 }

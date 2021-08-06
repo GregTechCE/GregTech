@@ -7,10 +7,8 @@ import gregtech.api.recipes.ingredients.IntCircuitIngredient;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.Material;
-import gregtech.api.unification.material.properties.BlastProperty;
-import gregtech.api.unification.material.properties.MaterialProperties;
 import gregtech.api.unification.material.properties.PropertyKey;
-import gregtech.api.unification.material.properties.WireProperty;
+import gregtech.api.unification.material.properties.WireProperties;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTUtility;
@@ -57,7 +55,7 @@ public class WireRecipeHandler {
         OrePrefix.cableGtSingle, OrePrefix.cableGtDouble, OrePrefix.cableGtQuadruple, OrePrefix.cableGtOctal, OrePrefix.cableGtHex
     };
 
-    public static void processWireSingle(OrePrefix wirePrefix, Material material, WireProperty property) {
+    public static void processWireSingle(OrePrefix wirePrefix, Material material, WireProperties property) {
         RecipeMaps.EXTRUDER_RECIPES.recipeBuilder()
             .input(OrePrefix.ingot, material)
             .notConsumable(MetaItems.SHAPE_EXTRUDER_WIRE)
@@ -80,7 +78,7 @@ public class WireRecipeHandler {
         }
     }
 
-    public static void generateWireRecipe(OrePrefix wirePrefix, Material material, WireProperty property) {
+    public static void generateWireRecipe(OrePrefix wirePrefix, Material material, WireProperties property) {
         int cableAmount = (int) (wirePrefix.materialAmount * 2 / M);
         OrePrefix cablePrefix = OrePrefix.valueOf("cable" + wirePrefix.name().substring(4));
         ItemStack cableStack = OreDictUnifier.get(cablePrefix, material);
@@ -129,7 +127,7 @@ public class WireRecipeHandler {
     }
 
 
-    public static void generateWireCombiningRecipe(OrePrefix wirePrefix, Material material, WireProperty property) {
+    public static void generateWireCombiningRecipe(OrePrefix wirePrefix, Material material, WireProperties property) {
         int wireIndex = ArrayUtils.indexOf(WIRE_DOUBLING_ORDER, wirePrefix);
 
         if (wireIndex < WIRE_DOUBLING_ORDER.length - 1) {
@@ -155,7 +153,7 @@ public class WireRecipeHandler {
         }
     }
 
-    public static void generateCableCombiningRecipe(OrePrefix cablePrefix, Material material, WireProperty property) {
+    public static void generateCableCombiningRecipe(OrePrefix cablePrefix, Material material, WireProperties property) {
         int cableIndex = ArrayUtils.indexOf(CABLE_DOUBLING_ORDER, cablePrefix);
 
         if (cableIndex < CABLE_DOUBLING_ORDER.length - 1) {
@@ -184,7 +182,7 @@ public class WireRecipeHandler {
     /**
      * Wire compression Material Handler
      */
-    private static void processWireCompression(OrePrefix prefix, Material material, WireProperty property) {
+    private static void processWireCompression(OrePrefix prefix, Material material, WireProperties property) {
         for(int startTier = 0; startTier < 4; startTier++) {
             for (int i = 1; i < 5 - startTier; i++) {
                 PACKER_RECIPES.recipeBuilder()
@@ -212,7 +210,7 @@ public class WireRecipeHandler {
         return Math.max(36, 144 / (1 + insulationDiscount));
     }
 
-    public static boolean isManualInsulatedCable(WireProperty property) {
+    public static boolean isManualInsulatedCable(WireProperties property) {
         return GTUtility.getTierByVoltage(property.voltage) <= 1;
     }
 

@@ -2,13 +2,13 @@ package gregtech.api.unification.material.properties;
 
 import java.util.Objects;
 
-public class FluidPipeProperty implements IMaterialProperty<FluidPipeProperty> {
+public class FluidPipeProperties implements IMaterialProperty<FluidPipeProperties> {
 
     public final int maxFluidTemperature;
     public final int throughput;
     public final boolean gasProof;
 
-    public FluidPipeProperty(int maxFluidTemperature, int throughput, boolean gasProof) {
+    public FluidPipeProperties(int maxFluidTemperature, int throughput, boolean gasProof) {
         this.maxFluidTemperature = maxFluidTemperature;
         this.throughput = throughput;
         this.gasProof = gasProof;
@@ -17,7 +17,7 @@ public class FluidPipeProperty implements IMaterialProperty<FluidPipeProperty> {
     /**
      * Default property constructor.
      */
-    public FluidPipeProperty() {
+    public FluidPipeProperties() {
         this(300, 1, false);
     }
 
@@ -35,8 +35,8 @@ public class FluidPipeProperty implements IMaterialProperty<FluidPipeProperty> {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof FluidPipeProperty)) return false;
-        FluidPipeProperty that = (FluidPipeProperty) o;
+        if (!(o instanceof FluidPipeProperties)) return false;
+        FluidPipeProperties that = (FluidPipeProperties) o;
         return maxFluidTemperature == that.maxFluidTemperature &&
             throughput == that.throughput;
     }

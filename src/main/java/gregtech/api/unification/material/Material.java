@@ -747,17 +747,17 @@ public class Material implements Comparable<Material> {
         }
 
         public Builder cableProperties(long voltage, int amperage, int loss) {
-            properties.setProperty(PropertyKey.WIRE, new WireProperty((int) voltage, amperage, loss));
+            properties.setProperty(PropertyKey.WIRE, new WireProperties((int) voltage, amperage, loss));
             return this;
         }
 
         public Builder fluidPipeProperties(int maxTemp, int throughput, boolean gasProof) {
-            properties.setProperty(PropertyKey.FLUID_PIPE, new FluidPipeProperty(maxTemp, throughput, gasProof));
+            properties.setProperty(PropertyKey.FLUID_PIPE, new FluidPipeProperties(maxTemp, throughput, gasProof));
             return this;
         }
 
         public Builder itemPipeProperties(int priority, float stacksPerSec) {
-            properties.setProperty(PropertyKey.ITEM_PIPE, new ItemPipeProperty(priority, stacksPerSec));
+            properties.setProperty(PropertyKey.ITEM_PIPE, new ItemPipeProperties(priority, stacksPerSec));
             return this;
         }
 

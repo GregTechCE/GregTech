@@ -11,7 +11,7 @@ import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Material;
 import gregtech.api.unification.material.MaterialRegistry;
 import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.material.properties.FluidPipeProperty;
+import gregtech.api.unification.material.properties.FluidPipeProperties;
 import gregtech.api.unification.material.properties.PropertyKey;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.ore.StoneType;
@@ -212,7 +212,7 @@ public class MetaBlocks {
             }
         }
         for (BlockFluidPipe pipe : FLUID_PIPES) {
-            pipe.addPipeMaterial(Materials.Wood, new FluidPipeProperty(310, 5, false));
+            pipe.addPipeMaterial(Materials.Wood, new FluidPipeProperties(310, 5, false));
         }
         for (BlockCable cable : CABLES) {
 //            cable.addCableMaterial(MarkerMaterials.Tier.Superconductor, new WireProperty(Integer.MAX_VALUE, 4, 0)); todo fix

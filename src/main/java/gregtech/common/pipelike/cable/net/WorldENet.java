@@ -1,10 +1,10 @@
 package gregtech.common.pipelike.cable.net;
 
 import gregtech.api.pipenet.WorldPipeNet;
-import gregtech.api.unification.material.properties.WireProperty;
+import gregtech.api.unification.material.properties.WireProperties;
 import net.minecraft.world.World;
 
-public class WorldENet extends WorldPipeNet<WireProperty, EnergyNet> {
+public class WorldENet extends WorldPipeNet<WireProperties, EnergyNet> {
 
     private static final String DATA_ID_BASE = "gregtech.e_net";
 

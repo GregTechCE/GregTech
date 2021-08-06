@@ -33,7 +33,7 @@ public class PipeRecipeHandler {
         OrePrefix.pipeLargeRestrictive.addProcessingHandler(PropertyKey.ITEM_PIPE, PipeRecipeHandler::processRestrictivePipe);
     }
 
-    private static void processRestrictivePipe(OrePrefix pipePrefix, Material material, ItemPipeProperty property) {
+    private static void processRestrictivePipe(OrePrefix pipePrefix, Material material, ItemPipeProperties property) {
         OrePrefix unrestrictive;
         switch (pipePrefix) {
             case pipeSmallRestrictive: unrestrictive = OrePrefix.pipeSmallItem; break;

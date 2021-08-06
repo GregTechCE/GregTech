@@ -2,7 +2,7 @@ package gregtech.api.unification.material.properties;
 
 import java.util.Objects;
 
-public class ItemPipeProperty implements IMaterialProperty<ItemPipeProperty> {
+public class ItemPipeProperties implements IMaterialProperty<ItemPipeProperties> {
 
     /**
      * Items will try to take the path with the lowest priority
@@ -14,7 +14,7 @@ public class ItemPipeProperty implements IMaterialProperty<ItemPipeProperty> {
      */
     public final float transferRate;
 
-    public ItemPipeProperty(int priority, float transferRate) {
+    public ItemPipeProperties(int priority, float transferRate) {
         this.priority = priority;
         this.transferRate = transferRate;
     }
@@ -22,7 +22,7 @@ public class ItemPipeProperty implements IMaterialProperty<ItemPipeProperty> {
     /**
      * Default property constructor.
      */
-    public ItemPipeProperty() {
+    public ItemPipeProperties() {
         this(1, 0.25f);
     }
 
@@ -41,7 +41,7 @@ public class ItemPipeProperty implements IMaterialProperty<ItemPipeProperty> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ItemPipeProperty that = (ItemPipeProperty) o;
+        ItemPipeProperties that = (ItemPipeProperties) o;
         return priority == that.priority && Float.compare(that.transferRate, transferRate) == 0;
     }
 

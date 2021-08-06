@@ -4,7 +4,7 @@ import gregtech.api.pipenet.MonolithicPipeNet;
 import gregtech.api.pipenet.Node;
 import gregtech.api.pipenet.PipeNet;
 import gregtech.api.pipenet.WorldPipeNet;
-import gregtech.api.unification.material.properties.FluidPipeProperty;
+import gregtech.api.unification.material.properties.FluidPipeProperties;
 import gregtech.common.pipelike.fluidpipe.tile.TileEntityFluidPipe;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,11 +19,11 @@ import net.minecraftforge.fluids.FluidTank;
 import java.util.Map;
 import java.util.Random;
 
-public class FluidPipeNet extends MonolithicPipeNet<FluidPipeProperty> {
+public class FluidPipeNet extends MonolithicPipeNet<FluidPipeProperties> {
 
     private final FluidNetTank fluidNetTank = new FluidNetTank(this);
 
-    public FluidPipeNet(WorldPipeNet<FluidPipeProperty, FluidPipeNet> world) {
+    public FluidPipeNet(WorldPipeNet<FluidPipeProperties, FluidPipeNet> world) {
         super(world);
     }
 
@@ -76,7 +76,7 @@ public class FluidPipeNet extends MonolithicPipeNet<FluidPipeProperty> {
     }
 
     @Override
-    protected void transferNodeData(Map<BlockPos, Node<FluidPipeProperty>> transferredNodes, PipeNet<FluidPipeProperty> parentNet1) {
+    protected void transferNodeData(Map<BlockPos, Node<FluidPipeProperties>> transferredNodes, PipeNet<FluidPipeProperties> parentNet1) {
         super.transferNodeData(transferredNodes, parentNet1);
         FluidPipeNet parentNet = (FluidPipeNet) parentNet1;
         FluidStack parentFluid = parentNet.getFluidNetTank().getFluid();
@@ -110,7 +110,7 @@ public class FluidPipeNet extends MonolithicPipeNet<FluidPipeProperty> {
     }
 
     @Override
-    protected boolean areNodesCustomContactable(FluidPipeProperty first, FluidPipeProperty second, PipeNet<FluidPipeProperty> secondNodeNet) {
+    protected boolean areNodesCustomContactable(FluidPipeProperties first, FluidPipeProperties second, PipeNet<FluidPipeProperties> secondNodeNet) {
         FluidPipeNet fluidPipeNet = (FluidPipeNet) secondNodeNet;
         return super.areNodesCustomContactable(first, second, secondNodeNet) &&
                 (secondNodeNet == null || getFluidNetTank().getFluid() == null || fluidPipeNet.getFluidNetTank().getFluid() == null ||
@@ -118,18 +118,18 @@ public class FluidPipeNet extends MonolithicPipeNet<FluidPipeProperty> {
     }
 
     @Override
-    protected void writeNodeData(FluidPipeProperty nodeData, NBTTagCompound tagCompound) {
+    protected void writeNodeData(FluidPipeProperties nodeData, NBTTagCompound tagCompound) {
         tagCompound.setInteger("max_temperature", nodeData.maxFluidTemperature);
         tagCompound.setInteger("throughput", nodeData.throughput);
         tagCompound.setBoolean("gas_proof", nodeData.gasProof);
     }
 
     @Override
-    protected FluidPipeProperty readNodeData(NBTTagCompound tagCompound) {
+    protected FluidPipeProperties readNodeData(NBTTagCompound tagCompound) {
         int maxTemperature = tagCompound.getInteger("max_temperature");
         int throughput = tagCompound.getInteger("throughput");
         boolean gasProof = tagCompound.getBoolean("gas_proof");
-        return new FluidPipeProperty(maxTemperature, throughput, gasProof);
+        return new FluidPipeProperties(maxTemperature, throughput, gasProof);
     }
 
     @Override
