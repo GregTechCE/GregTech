@@ -42,6 +42,7 @@ public class TreeChopTask implements Task {
         this.startBlockPos = startPos.toImmutable();
         this.currentPos.setPos(startPos);
         this.woodBlockPos.add(startPos.toImmutable());
+        this.visitedBlockPos.add(startPos.toImmutable());
         this.world = world;
         this.itemStack = toolStack.copy();
         this.player = player;
