@@ -52,7 +52,7 @@ public class MetaFluids {
     public static final ResourceLocation FLUID_GEM_HORIZONTAL_TEXTURE = new ResourceLocation(
             GTValues.MODID, "blocks/material_sets/gem_horizontal/fluid");
     public static final ResourceLocation FLUID_GEM_VERTICAL_TEXTURE = new ResourceLocation(
-            GTValues.MODID, "blocks/material_sets/vertical/fluid");
+            GTValues.MODID, "blocks/material_sets/gem_vertical/fluid");
     public static final ResourceLocation FLUID_GLASS_TEXTURE = new ResourceLocation(
             GTValues.MODID, "blocks/material_sets/glass/fluid");
     public static final ResourceLocation FLUID_LAPIS_TEXTURE = new ResourceLocation(
