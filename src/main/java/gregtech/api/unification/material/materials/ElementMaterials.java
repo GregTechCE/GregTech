@@ -236,6 +236,7 @@ public class ElementMaterials {
                 .iconSet(METALLIC)
                 .flags(STD_METAL, GENERATE_ROD)
                 .element(Elements.Eu)
+                .cableProperties(GTValues.V[GTValues.UHV], 2, 32)
                 .fluidPipeProperties(7780, 1200, true)
                 .blastTemp(1099)
                 .build();

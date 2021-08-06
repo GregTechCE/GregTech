@@ -37,7 +37,7 @@ public class MetaTileEntities {
 
     //HULLS
     public static MetaTileEntityHull[] HULL = new MetaTileEntityHull[GTValues.V.length];
-    public static MetaTileEntityTransformer[] TRANSFORMER = new MetaTileEntityTransformer[GTValues.V.length - 2]; // no ULV, no MAX
+    public static MetaTileEntityTransformer[] TRANSFORMER = new MetaTileEntityTransformer[GTValues.V.length - 1]; // no ULV, no MAX
     public static MetaTileEntityBatteryBuffer[][] BATTERY_BUFFER = new MetaTileEntityBatteryBuffer[GTValues.V.length][];
     public static MetaTileEntityCharger[] CHARGER = new MetaTileEntityCharger[GTValues.V.length];
 
@@ -467,9 +467,9 @@ public class MetaTileEntities {
 
         // Transformer, IDs 1300-1314
         endPos = GTValues.HT ? TRANSFORMER.length : Math.min(TRANSFORMER.length, GTValues.UV);
-        for (int i = 1; i <= endPos; i++) {
+        for (int i = 0; i <= endPos; i++) {
             MetaTileEntityTransformer transformer = new MetaTileEntityTransformer(gregtechId("transformer." + GTValues.VN[i].toLowerCase()), i);
-            TRANSFORMER[i - 1] = GregTechAPI.registerMetaTileEntity(1300 + (i - 1), transformer);
+            TRANSFORMER[i] = GregTechAPI.registerMetaTileEntity(1300 + (i), transformer);
         }
 
         // Battery Buffer, IDs 1315-1374
