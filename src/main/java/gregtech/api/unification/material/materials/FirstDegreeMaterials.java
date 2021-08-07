@@ -32,7 +32,7 @@ public class FirstDegreeMaterials {
                 .color(0xFF8D3B).iconSet(BRIGHT)
                 .flags(EXT2_METAL, MORTAR_GRINDABLE)
                 .components(Copper, 1)
-                .cableProperties(GTValues.V[1], 1, 1)
+                .cableProperties(GTValues.V[2], 1, 1)
                 .build();
         Copper.getProperty(PropertyKey.INGOT).setArcSmeltingInto(AnnealedCopper);
 
