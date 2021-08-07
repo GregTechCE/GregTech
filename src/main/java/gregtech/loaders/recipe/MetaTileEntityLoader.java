@@ -421,15 +421,6 @@ public class MetaTileEntityLoader {
         registerMachineRecipe(MetaTileEntities.AIR_COLLECTOR, "WFW", "PHP", "WCW", 'W', Blocks.IRON_BARS, 'F', MetaItems.ITEM_FILTER, 'P', PUMP, 'H', HULL, 'C', CIRCUIT);
         registerMachineRecipe(MetaTileEntities.ITEM_COLLECTOR, "MRM", "RHR", "CWC", 'M', MOTOR, 'R', ROTOR, 'H', HULL, 'C', CIRCUIT, 'W', CABLE);
         registerMachineRecipe(MetaTileEntities.BLOCK_BREAKER, "MGM", "CHC", "WSW", 'M', MOTOR, 'H', HULL, 'C', CIRCUIT, 'W', CABLE, 'S', Blocks.CHEST, 'G', GRINDER);
-        
-        ModHandler.addShapelessRecipe("small_wooden_chest", MetaTileEntities.SMALL_WOODEN_CHEST.getStackForm(8), "chest", 's');
-        ModHandler.addShapelessRecipe("wooden_chest", MetaTileEntities.WOODEN_CHEST.getStackForm(), "chest", 'r');
-        ModHandler.addShapedRecipe("bronze_chest", MetaTileEntities.BRONZE_CHEST.getStackForm(), "XXX", "X X", "XXX", 'X', new UnificationEntry(OrePrefix.plate, Materials.Bronze));
-        ModHandler.addShapedRecipe("steel_chest", MetaTileEntities.STEEL_CHEST.getStackForm(), "XXX", "X X", "XXX", 'X', new UnificationEntry(OrePrefix.plate, Materials.Steel));
-        ModHandler.addShapedRecipe("aluminium_chest", MetaTileEntities.ALUMINIUM_CHEST.getStackForm(), "XXX", "X X", "XXX", 'X', new UnificationEntry(OrePrefix.plate, Materials.Aluminium));
-        ModHandler.addShapedRecipe("stainless_steel_chest", MetaTileEntities.STAINLESS_STEEL_CHEST.getStackForm(), "XXX", "X X", "XXX", 'X', new UnificationEntry(OrePrefix.plate, Materials.StainlessSteel));
-        ModHandler.addShapedRecipe("titanium_chest", MetaTileEntities.TITANIUM_CHEST.getStackForm(), "XXX", "X X", "XXX", 'X', new UnificationEntry(OrePrefix.plate, Materials.Titanium));
-        ModHandler.addShapedRecipe("tungsten_steel_chest", MetaTileEntities.TUNGSTENSTEEL_CHEST.getStackForm(), "XXX", "X X", "XXX", 'X', new UnificationEntry(OrePrefix.plate, Materials.TungstenSteel));
 
         if (ConfigHolder.U.registerCrates) {
             ModHandler.addShapedRecipe("wooden_crate", MetaTileEntities.WOODEN_CRATE.getStackForm(), "RPR", "PsP", "RPR", 'P', "plankWood", 'R', new UnificationEntry(OrePrefix.screw, Materials.Iron));
@@ -457,11 +448,11 @@ public class MetaTileEntityLoader {
         }
 
         // Super / Quantum Chests
-        ModHandler.addShapedRecipe("super_chest_lv", MetaTileEntities.QUANTUM_CHEST[0].getStackForm(), "CPC", "PFP", "CPC", 'C', new UnificationEntry(OrePrefix.circuit, Tier.Basic), 'P', new UnificationEntry(OrePrefix.plate, Materials.Steel), 'F', MetaTileEntities.STEEL_CHEST.getStackForm());
-        ModHandler.addShapedRecipe("super_chest_mv", MetaTileEntities.QUANTUM_CHEST[1].getStackForm(), "CPC", "PFP", "CPC", 'C', new UnificationEntry(OrePrefix.circuit, Tier.Good), 'P', new UnificationEntry(OrePrefix.plate, Materials.Aluminium), 'F', MetaTileEntities.ALUMINIUM_CHEST.getStackForm());
-        ModHandler.addShapedRecipe("super_chest_hv", MetaTileEntities.QUANTUM_CHEST[2].getStackForm(), "CPC", "PFP", "CGC", 'C', new UnificationEntry(OrePrefix.circuit, Tier.Advanced), 'P', new UnificationEntry(OrePrefix.plate, Materials.StainlessSteel), 'F', MetaTileEntities.STAINLESS_STEEL_CHEST.getStackForm(), 'G', MetaItems.FIELD_GENERATOR_LV.getStackForm());
-        ModHandler.addShapedRecipe("super_chest_ev", MetaTileEntities.QUANTUM_CHEST[3].getStackForm(), "CPC", "PFP", "CGC", 'C', new UnificationEntry(OrePrefix.circuit, Tier.Extreme), 'P', new UnificationEntry(OrePrefix.plate, Materials.Titanium), 'F', MetaTileEntities.TITANIUM_CHEST.getStackForm(), 'G', MetaItems.FIELD_GENERATOR_MV.getStackForm());
-        ModHandler.addShapedRecipe("super_chest_iv", MetaTileEntities.QUANTUM_CHEST[4].getStackForm(), "CPC", "PFP", "CGC", 'C', new UnificationEntry(OrePrefix.circuit, Tier.Elite), 'P', new UnificationEntry(OrePrefix.plate, Materials.TungstenSteel), 'F', MetaTileEntities.TUNGSTENSTEEL_CHEST.getStackForm(), 'G', MetaItems.FIELD_GENERATOR_HV.getStackForm());
+        ModHandler.addShapedRecipe("super_chest_lv", MetaTileEntities.QUANTUM_CHEST[0].getStackForm(), "CPC", "PFP", "CPC", 'C', new UnificationEntry(OrePrefix.circuit, Tier.Basic), 'P', new UnificationEntry(OrePrefix.plate, Materials.Steel), 'F', MetaTileEntities.STEEL_CRATE.getStackForm());
+        ModHandler.addShapedRecipe("super_chest_mv", MetaTileEntities.QUANTUM_CHEST[1].getStackForm(), "CPC", "PFP", "CPC", 'C', new UnificationEntry(OrePrefix.circuit, Tier.Good), 'P', new UnificationEntry(OrePrefix.plate, Materials.Aluminium), 'F', MetaTileEntities.ALUMINIUM_CRATE.getStackForm());
+        ModHandler.addShapedRecipe("super_chest_hv", MetaTileEntities.QUANTUM_CHEST[2].getStackForm(), "CPC", "PFP", "CGC", 'C', new UnificationEntry(OrePrefix.circuit, Tier.Advanced), 'P', new UnificationEntry(OrePrefix.plate, Materials.StainlessSteel), 'F', MetaTileEntities.STAINLESS_STEEL_CRATE.getStackForm(), 'G', MetaItems.FIELD_GENERATOR_LV.getStackForm());
+        ModHandler.addShapedRecipe("super_chest_ev", MetaTileEntities.QUANTUM_CHEST[3].getStackForm(), "CPC", "PFP", "CGC", 'C', new UnificationEntry(OrePrefix.circuit, Tier.Extreme), 'P', new UnificationEntry(OrePrefix.plate, Materials.Titanium), 'F', MetaTileEntities.TITANIUM_CRATE.getStackForm(), 'G', MetaItems.FIELD_GENERATOR_MV.getStackForm());
+        ModHandler.addShapedRecipe("super_chest_iv", MetaTileEntities.QUANTUM_CHEST[4].getStackForm(), "CPC", "PFP", "CGC", 'C', new UnificationEntry(OrePrefix.circuit, Tier.Elite), 'P', new UnificationEntry(OrePrefix.plate, Materials.TungstenSteel), 'F', MetaTileEntities.TUNGSTENSTEEL_CRATE.getStackForm(), 'G', MetaItems.FIELD_GENERATOR_HV.getStackForm());
 
         ModHandler.addShapedRecipe("quantum_chest_iv", MetaTileEntities.QUANTUM_CHEST[5].getStackForm(), "CPC", "PHP", "CFC", 'C', new UnificationEntry(OrePrefix.circuit, Tier.Elite), 'P', new UnificationEntry(OrePrefix.plateDense, Materials.TungstenSteel), 'F', MetaItems.FIELD_GENERATOR_EV.getStackForm(), 'H', MetaTileEntities.HULL[5].getStackForm());
         ModHandler.addShapedRecipe("quantum_chest_luv", MetaTileEntities.QUANTUM_CHEST[6].getStackForm(), "CPC", "PHP", "CFC", 'C', new UnificationEntry(OrePrefix.circuit, Tier.Master), 'P', new UnificationEntry(OrePrefix.plateDense, Materials.Chrome), 'F', MetaItems.FIELD_GENERATOR_IV.getStackForm(), 'H', MetaTileEntities.HULL[6].getStackForm());

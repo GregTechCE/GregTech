@@ -2047,16 +2047,6 @@ itemGroup.gregtech.main=GregTech
 itemGroup.gregtech.materials=Materials (GT)
 itemGroup.gregtech.ores=Ores (GT)
 
-# Chests
-gregtech.machine.small_wooden_chest.name=Small Wooden Chest
-gregtech.machine.wooden_chest.name=Wooden Chest
-gregtech.machine.bronze_chest.name=Bronze Chest
-gregtech.machine.steel_chest.name=Steel Chest
-gregtech.machine.aluminium_chest.name=Aluminium Chest
-gregtech.machine.stainless_steel_chest.name=Stainless Steel Chest
-gregtech.machine.titanium_chest.name=Titanium Chest
-gregtech.machine.tungstensteel_chest.name=Tungstensteel Chest
-
 # Drums
 gregtech.machine.drum.wood.name=Wooden Barrel
 gregtech.machine.drum.bronze.name=Bronze Drum
