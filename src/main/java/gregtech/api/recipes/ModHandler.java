@@ -362,6 +362,8 @@ public class ModHandler {
                 recipe[i] = ((MetaItem<?>.MetaValueItem) recipe[i]).getStackForm();
             } else if (recipe[i] instanceof Enum) {
                 recipe[i] = ((Enum<?>) recipe[i]).name();
+            } else if (recipe[i] instanceof OrePrefix) {
+                recipe[i] = ((OrePrefix) recipe[i]).name();
             } else if (recipe[i] instanceof UnificationEntry) {
                 recipe[i] = recipe[i].toString();
             } else if (recipe[i] instanceof Character) {
