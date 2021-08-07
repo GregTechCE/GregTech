@@ -16,6 +16,7 @@ import org.apache.commons.lang3.Validate;
 
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 
 import static gregtech.api.GTValues.M;
@@ -23,168 +24,228 @@ import static gregtech.api.unification.material.info.MaterialFlags.*;
 import static gregtech.api.unification.ore.OrePrefix.Conditions.*;
 import static gregtech.api.unification.ore.OrePrefix.Flags.*;
 
-public enum OrePrefix {
+public class OrePrefix {
 
-    ore("Ores", -1, null, MaterialIconType.ore, ENABLE_UNIFICATION, hasOreProperty), // Regular Ore Prefix. Ore -> Material is a Oneway Operation! Introduced by Eloraam
+    private final static Map<String, OrePrefix> PREFIXES = new HashMap<>();
+    private final static AtomicInteger idCounter = new AtomicInteger(0);
 
-    oreGranite("Granite Ores", -1, null, MaterialIconType.ore, ENABLE_UNIFICATION, hasOreProperty), // Regular Ore Prefix. Ore -> Material is a Oneway Operation! Introduced by Eloraam
-    oreDiorite("Diorite Ores", -1, null, MaterialIconType.ore, ENABLE_UNIFICATION, hasOreProperty), // Regular Ore Prefix. Ore -> Material is a Oneway Operation! Introduced by Eloraam
-    oreAndesite("Andesite Ores", -1, null, MaterialIconType.ore, ENABLE_UNIFICATION, hasOreProperty), // Regular Ore Prefix. Ore -> Material is a Oneway Operation! Introduced by Eloraam
+    // Regular Ore Prefix. Ore -> Material is a Oneway Operation! Introduced by Eloraam
+    public static final OrePrefix ore = new OrePrefix("ore", -1, null, MaterialIconType.ore, ENABLE_UNIFICATION, hasOreProperty);
+    public static final OrePrefix oreGranite = new OrePrefix("oreGranite", -1, null, MaterialIconType.ore, ENABLE_UNIFICATION, hasOreProperty);
+    public static final OrePrefix oreDiorite = new OrePrefix("oreDiorite", -1, null, MaterialIconType.ore, ENABLE_UNIFICATION, hasOreProperty);
+    public static final OrePrefix oreAndesite = new OrePrefix("oreAndesite", -1, null, MaterialIconType.ore, ENABLE_UNIFICATION, hasOreProperty);
+    public static final OrePrefix oreBlackgranite = new OrePrefix("oreBlackgranite", -1, null, MaterialIconType.ore, ENABLE_UNIFICATION, hasOreProperty);
+    public static final OrePrefix oreRedgranite = new OrePrefix("oreRedgranite", -1, null, MaterialIconType.ore, ENABLE_UNIFICATION, hasOreProperty);
+    public static final OrePrefix oreMarble = new OrePrefix("oreMarble", -1, null, MaterialIconType.ore, ENABLE_UNIFICATION, hasOreProperty);
+    public static final OrePrefix oreBasalt = new OrePrefix("oreBasalt", -1, null, MaterialIconType.ore, ENABLE_UNIFICATION, hasOreProperty);
 
-    oreBlackgranite("Black Granite Ores", -1, null, MaterialIconType.ore, ENABLE_UNIFICATION, hasOreProperty), // In case of an End-Ores Mod. Ore -> Material is a Oneway Operation!
-    oreRedgranite("Red Granite Ores", -1, null, MaterialIconType.ore, ENABLE_UNIFICATION, hasOreProperty), // In case of an End-Ores Mod. Ore -> Material is a Oneway Operation!
+    // In case of an Sand-Ores Mod. Ore -> Material is a Oneway Operation!
+    public static final OrePrefix oreSand = new OrePrefix("oreSand", -1, null, MaterialIconType.ore, ENABLE_UNIFICATION, null);
+    public static final OrePrefix oreRedSand = new OrePrefix("oreRedSand", -1, null, MaterialIconType.ore, ENABLE_UNIFICATION, null);
+    public static final OrePrefix oreGravel = new OrePrefix("oreGravel", -1, null, MaterialIconType.ore, ENABLE_UNIFICATION, null);
 
-    oreMarble("Marble Ores", -1, null, MaterialIconType.ore, ENABLE_UNIFICATION, hasOreProperty), // In case of an End-Ores Mod. Ore -> Material is a Oneway Operation!
-    oreBasalt("Basalt Ores", -1, null, MaterialIconType.ore, ENABLE_UNIFICATION, hasOreProperty), // In case of an End-Ores Mod. Ore -> Material is a Oneway Operation!
+    // Prefix of the Nether-Ores Mod. Causes Ores to double. Ore -> Material is a Oneway Operation!
+    public static final OrePrefix oreNetherrack = new OrePrefix("oreNetherrack", -1, null, MaterialIconType.ore, ENABLE_UNIFICATION, hasOreProperty);
+    // In case of an End-Ores Mod. Ore -> Material is a Oneway Operation!
+    public static final OrePrefix oreEndstone = new OrePrefix("oreEndstone", -1, null, MaterialIconType.ore, ENABLE_UNIFICATION, hasOreProperty);
 
-    oreSand("Sand Ores", -1, null, MaterialIconType.ore, ENABLE_UNIFICATION, null), // In case of an Sand-Ores Mod. Ore -> Material is a Oneway Operation!
-    oreRedSand("Red Sand Ores", -1, null, MaterialIconType.ore, ENABLE_UNIFICATION, null), // In case of an Sand-Ores Mod. Ore -> Material is a Oneway Operation!
-    oreGravel("Gravel Ores", -1, null, MaterialIconType.ore, ENABLE_UNIFICATION, null), // In case of an Gravel-Ores Mod. Ore -> Material is a Oneway Operation!
+    public static final OrePrefix crushedCentrifuged = new OrePrefix("crushedCentrifuged", -1, null, MaterialIconType.crushedCentrifuged, ENABLE_UNIFICATION, hasOreProperty);
+    public static final OrePrefix crushedPurified = new OrePrefix("crushedPurified", -1, null, MaterialIconType.crushedPurified, ENABLE_UNIFICATION, hasOreProperty);
+    public static final OrePrefix crushed = new OrePrefix("crushed", -1, null, MaterialIconType.crushed, ENABLE_UNIFICATION, hasOreProperty);
 
-    oreNetherrack("Netherrack Ores", -1, null, MaterialIconType.ore, ENABLE_UNIFICATION, hasOreProperty), // Prefix of the Nether-Ores Mod. Causes Ores to double. Ore -> Material is a Oneway Operation!
-    oreEndstone("Endstone Ores", -1, null, MaterialIconType.ore, ENABLE_UNIFICATION, hasOreProperty), // In case of an End-Ores Mod. Ore -> Material is a Oneway Operation!
+    // Introduced by Mekanism
+    public static final OrePrefix shard = new OrePrefix("shard", -1, null, null, ENABLE_UNIFICATION, null);
+    public static final OrePrefix clump = new OrePrefix("clump", -1, null, null, ENABLE_UNIFICATION, null);
+    public static final OrePrefix reduced = new OrePrefix("reduced", -1, null, null, ENABLE_UNIFICATION, null);
+    public static final OrePrefix crystalline = new OrePrefix("crystalline", -1, null, null, ENABLE_UNIFICATION, null);
 
-    crushedCentrifuged("Centrifuged Ores", -1, null, MaterialIconType.crushedCentrifuged, ENABLE_UNIFICATION, hasOreProperty),
-    crushedPurified("Purified Ores", -1, null, MaterialIconType.crushedPurified, ENABLE_UNIFICATION, hasOreProperty),
-    crushed("Crushed Ores", -1, null, MaterialIconType.crushed, ENABLE_UNIFICATION, hasOreProperty),
+    public static final OrePrefix cleanGravel = new OrePrefix("cleanGravel", -1, null, null, ENABLE_UNIFICATION, null);
+    public static final OrePrefix dirtyGravel = new OrePrefix("dirtyGravel", -1, null, null, ENABLE_UNIFICATION, null);
 
-    shard("Crystallised Shards", -1, null, null, ENABLE_UNIFICATION, null), // Introduced by Mekanism
-    clump("Clumps", -1, null, null, ENABLE_UNIFICATION, null),
-    reduced("Reduced Gravels", -1, null, null, ENABLE_UNIFICATION, null),
-    crystalline("Crystallised Metals", -1, null, null, ENABLE_UNIFICATION, null),
+    // A hot Ingot, which has to be cooled down by a Vacuum Freezer.
+    public static final OrePrefix ingotHot = new OrePrefix("ingotHot", M, null, MaterialIconType.ingotHot, ENABLE_UNIFICATION, hasBlastProperty.and(mat -> mat.getProperty(PropertyKey.BLAST).getBlastTemperature() > 1750));
+    // A regular Ingot. Introduced by Eloraam
+    public static final OrePrefix ingot = new OrePrefix("ingot", M, null, MaterialIconType.ingot, ENABLE_UNIFICATION, hasIngotProperty);
 
-    cleanGravel("Clean Gravels", -1, null, null, ENABLE_UNIFICATION, null),
-    dirtyGravel("Dirty Gravels", -1, null, null, ENABLE_UNIFICATION, null),
+    // A regular Gem worth one Dust. Introduced by Eloraam
+    public static final OrePrefix gem = new OrePrefix("gem", M, null, MaterialIconType.gem, ENABLE_UNIFICATION, hasGemProperty);
+    // A regular Gem worth one small Dust. Introduced by TerraFirmaCraft
+    public static final OrePrefix gemChipped = new OrePrefix("gemChipped", M / 4, null, MaterialIconType.gemChipped, ENABLE_UNIFICATION, hasGemProperty);
+    // A regular Gem worth two small Dusts. Introduced by TerraFirmaCraft
+    public static final OrePrefix gemFlawed = new OrePrefix("gemFlawed", M / 2, null, MaterialIconType.gemFlawed, ENABLE_UNIFICATION, hasGemProperty);
+    // A regular Gem worth two Dusts. Introduced by TerraFirmaCraft
+    public static final OrePrefix gemFlawless = new OrePrefix("gemFlawless", M * 2, null, MaterialIconType.gemFlawless, ENABLE_UNIFICATION, hasGemProperty);
+    // A regular Gem worth four Dusts. Introduced by TerraFirmaCraft
+    public static final OrePrefix gemExquisite = new OrePrefix("gemExquisite", M * 4, null, MaterialIconType.gemExquisite, ENABLE_UNIFICATION, hasGemProperty);
 
-    ingotHot("Hot Ingots", M, null, MaterialIconType.ingotHot, ENABLE_UNIFICATION, hasBlastProperty.and(mat -> mat.getProperty(PropertyKey.BLAST).getBlastTemperature() > 1750)), // A hot Ingot, which has to be cooled down by a Vacuum Freezer.
-    ingot("Ingots", M, null, MaterialIconType.ingot, ENABLE_UNIFICATION, hasIngotProperty), // A regular Ingot. Introduced by Eloraam
+    // 1/4th of a Dust.
+    public static final OrePrefix dustSmall = new OrePrefix("dustSmall", M / 4, null, MaterialIconType.dustSmall, ENABLE_UNIFICATION, hasDustProperty);
+    // 1/9th of a Dust.
+    public static final OrePrefix dustTiny = new OrePrefix("dustTiny", M / 9, null, MaterialIconType.dustTiny, ENABLE_UNIFICATION, hasDustProperty);
+    // Dust with impurities. 1 Unit of Main Material and 1/9 - 1/4 Unit of secondary Material
+    public static final OrePrefix dustImpure = new OrePrefix("dustImpure", M, null, MaterialIconType.dustImpure, ENABLE_UNIFICATION, hasOreProperty);
+    // Pure Dust worth of one Ingot or Gem. Introduced by Alblaka.
+    public static final OrePrefix dustPure = new OrePrefix("dustPure", M, null, MaterialIconType.dustPure, ENABLE_UNIFICATION, hasOreProperty);
+    public static final OrePrefix dust = new OrePrefix("dust", M, null, MaterialIconType.dust, ENABLE_UNIFICATION, hasDustProperty);
 
-    gem("Gemstones", M, null, MaterialIconType.gem, ENABLE_UNIFICATION, hasGemProperty), // A regular Gem worth one Dust. Introduced by Eloraam
-    gemChipped("Chipped Gemstones", M / 4, null, MaterialIconType.gemChipped, ENABLE_UNIFICATION, hasGemProperty), // A regular Gem worth one small Dust. Introduced by TerraFirmaCraft
-    gemFlawed("Flawed Gemstones", M / 2, null, MaterialIconType.gemFlawed, ENABLE_UNIFICATION, hasGemProperty), // A regular Gem worth two small Dusts. Introduced by TerraFirmaCraft
-    gemFlawless("Flawless Gemstones", M * 2, null, MaterialIconType.gemFlawless, ENABLE_UNIFICATION, hasGemProperty), // A regular Gem worth two Dusts. Introduced by TerraFirmaCraft
-    gemExquisite("Exquisite Gemstones", M * 4, null, MaterialIconType.gemExquisite, ENABLE_UNIFICATION, hasGemProperty), // A regular Gem worth four Dusts. Introduced by TerraFirmaCraft
+    // A Nugget. Introduced by Eloraam
+    public static final OrePrefix nugget = new OrePrefix("nugget", M / 9, null, MaterialIconType.nugget, ENABLE_UNIFICATION, hasIngotProperty);
 
-    dustSmall("Small Dusts", M / 4, null, MaterialIconType.dustSmall, ENABLE_UNIFICATION, hasDustProperty), // 1/4th of a Dust.
-    dustTiny("Tiny Dusts", M / 9, null, MaterialIconType.dustTiny, ENABLE_UNIFICATION, hasDustProperty), // 1/9th of a Dust.
-    dustImpure("Impure Dusts", M, null, MaterialIconType.dustImpure, ENABLE_UNIFICATION, hasOreProperty), // Dust with impurities. 1 Unit of Main Material and 1/9 - 1/4 Unit of secondary Material
-    dustPure("Purified Dusts", M, null, MaterialIconType.dustPure, ENABLE_UNIFICATION, hasOreProperty),
-    dust("Dusts", M, null, MaterialIconType.dust, ENABLE_UNIFICATION, hasDustProperty), // Pure Dust worth of one Ingot or Gem. Introduced by Alblaka.
+    // A Plate, but Curved. Introduced by GT6
+    public static final OrePrefix plateCurved = new OrePrefix("plateCurved", M, null, MaterialIconType.plateCurved, ENABLE_UNIFICATION, null);
+    // 9 Plates combined in one Item.
+    public static final OrePrefix plateDense = new OrePrefix("plateDense", M * 9, null, MaterialIconType.plateDense, ENABLE_UNIFICATION, mat -> mat.hasFlag(GENERATE_DENSE) && !mat.hasFlag(NO_SMASHING));
+    // 2 Plates combined in one Item
+    public static final OrePrefix plateDouble = new OrePrefix("plateDouble", M * 2, null, MaterialIconType.plateDouble, ENABLE_UNIFICATION, hasIngotProperty.and(mat -> mat.hasFlag(GENERATE_PLATE) && !mat.hasFlag(NO_SMASHING)));
+    // Regular Plate made of one Ingot/Dust. Introduced by Calclavia
+    public static final OrePrefix plate = new OrePrefix("plate", M, null, MaterialIconType.plate, ENABLE_UNIFICATION, mat -> mat.hasFlag(GENERATE_PLATE));
+    // Compressed Material, worth 1 Unit. Introduced by Galacticraft
+    public static final OrePrefix compressed = new OrePrefix("compressed", M * 2, null, null, ENABLE_UNIFICATION, null);
 
-    nugget("Nuggets", M / 9, null, MaterialIconType.nugget, ENABLE_UNIFICATION, hasIngotProperty), // A Nugget. Introduced by Eloraam
+    // Round made of 1 Nugget
+    public static final OrePrefix round = new OrePrefix("round", M / 9, null, MaterialIconType.round, OrePrefix.Flags.ENABLE_UNIFICATION, mat -> mat.hasFlag(GENERATE_ROUND));
+    // Foil made of 1/4 Ingot/Dust.
+    public static final OrePrefix foil = new OrePrefix("foil", M / 4, null, MaterialIconType.foil, ENABLE_UNIFICATION, mat -> mat.hasFlag(GENERATE_FOIL));
 
-    plateCurved("Curved Plates", M, null, MaterialIconType.plateCurved, ENABLE_UNIFICATION, null),
-    plateDense("Dense Plates", M * 9, null, MaterialIconType.plateDense, ENABLE_UNIFICATION, mat -> mat.hasFlag(GENERATE_DENSE) && !mat.hasFlag(NO_SMASHING)), // 9 Plates combined in one Item.
-    plateDouble("Double Plates", M * 2, null, MaterialIconType.plateDouble, ENABLE_UNIFICATION, hasIngotProperty.and(mat -> mat.hasFlag(GENERATE_PLATE) && !mat.hasFlag(NO_SMASHING))), // 2 Plates combined in one Item
-    plate("Plates", M, null, MaterialIconType.plate, ENABLE_UNIFICATION, mat -> mat.hasFlag(GENERATE_PLATE)), // Regular Plate made of one Ingot/Dust. Introduced by Calclavia
-    compressed("Compressed Materials", M * 2, null, null, ENABLE_UNIFICATION, null), // Compressed Material, worth 1 Unit. Introduced by Galacticraft
+    // Stick made of an Ingot.
+    public static final OrePrefix stickLong = new OrePrefix("stickLong", M, null, MaterialIconType.stickLong, ENABLE_UNIFICATION, mat -> mat.hasFlag(GENERATE_LONG_ROD));
+    // Stick made of half an Ingot. Introduced by Eloraam
+    public static final OrePrefix stick = new OrePrefix("stick", M / 2, null, MaterialIconType.stick, ENABLE_UNIFICATION, mat -> mat.hasFlag(GENERATE_ROD));
 
-    round("Rounds", M / 9, null, MaterialIconType.round, OrePrefix.Flags.ENABLE_UNIFICATION, mat -> mat.hasFlag(GENERATE_ROUND)), // Round made of 1 Nugget
-    foil("Foils", M / 4, null, MaterialIconType.foil, ENABLE_UNIFICATION, mat -> mat.hasFlag(GENERATE_FOIL)), // Foil made of 1/4 Ingot/Dust.
+    // consisting out of 1/8 Ingot or 1/4 Stick.
+    public static final OrePrefix bolt = new OrePrefix("bolt", M / 8, null, MaterialIconType.bolt, ENABLE_UNIFICATION, mat -> mat.hasFlag(GENERATE_BOLT_SCREW));
+    // consisting out of 1/9 Ingot.
+    public static final OrePrefix screw = new OrePrefix("screw", M / 9, null, MaterialIconType.screw, ENABLE_UNIFICATION, mat -> mat.hasFlag(GENERATE_BOLT_SCREW));
+    // consisting out of 1/2 Stick.
+    public static final OrePrefix ring = new OrePrefix("ring", M / 4, null, MaterialIconType.ring, ENABLE_UNIFICATION, mat -> mat.hasFlag(GENERATE_RING));
+    // consisting out of 1 Fine Wire.
+    public static final OrePrefix springSmall = new OrePrefix("springSmall", M / 4, null, MaterialIconType.springSmall, ENABLE_UNIFICATION, mat -> mat.hasFlag(GENERATE_SPRING_SMALL) && !mat.hasFlag(NO_SMASHING));
+    // consisting out of 2 Sticks.
+    public static final OrePrefix spring = new OrePrefix("spring", M, null, MaterialIconType.spring, ENABLE_UNIFICATION, mat -> mat.hasFlag(GENERATE_SPRING) && !mat.hasFlag(NO_SMASHING));
+    // consisting out of 1/8 Ingot or 1/4 Wire.
+    public static final OrePrefix wireFine = new OrePrefix("wireFine", M / 8, null, MaterialIconType.wireFine, ENABLE_UNIFICATION, mat -> mat.hasFlag(GENERATE_FINE_WIRE));
+    // consisting out of 4 Plates, 1 Ring and 1 Screw.
+    public static final OrePrefix rotor = new OrePrefix("rotor", M * 4, null, MaterialIconType.rotor, ENABLE_UNIFICATION, mat -> mat.hasFlag(GENERATE_ROTOR));
+    public static final OrePrefix gearSmall = new OrePrefix("gearSmall", M, null, MaterialIconType.gearSmall, ENABLE_UNIFICATION, mat -> mat.hasFlag(GENERATE_SMALL_GEAR));
+    // Introduced by me because BuildCraft has ruined the gear Prefix...
+    public static final OrePrefix gear = new OrePrefix("gear", M * 4, null, MaterialIconType.gear, ENABLE_UNIFICATION, mat -> mat.hasFlag(GENERATE_GEAR));
+    // 3/4 of a Plate or Gem used to shape a Lens. Normally only used on Transparent Materials.
+    public static final OrePrefix lens = new OrePrefix("lens", (M * 3) / 4, null, MaterialIconType.lens, ENABLE_UNIFICATION, mat -> mat.hasFlag(GENERATE_LENS));
 
-    stickLong("Long Sticks/Rods", M, null, MaterialIconType.stickLong, ENABLE_UNIFICATION, mat -> mat.hasFlag(GENERATE_LONG_ROD)), // Stick made of an Ingot.
-    stick("Sticks/Rods", M / 2, null, MaterialIconType.stick, ENABLE_UNIFICATION, mat -> mat.hasFlag(GENERATE_ROD)), // Stick made of half an Ingot. Introduced by Eloraam
+    // made of 2 Ingots.
+    public static final OrePrefix toolHeadSword = new OrePrefix("toolHeadSword", M * 2, null, MaterialIconType.toolHeadSword, ENABLE_UNIFICATION, hasToolProperty);
+    // made of 3 Ingots.
+    public static final OrePrefix toolHeadPickaxe = new OrePrefix("toolHeadPickaxe", M * 3, null, MaterialIconType.toolHeadPickaxe, ENABLE_UNIFICATION, hasToolProperty);
+    // made of 1 Ingots.
+    public static final OrePrefix toolHeadShovel = new OrePrefix("toolHeadShovel", M, null, MaterialIconType.toolHeadShovel, ENABLE_UNIFICATION, hasToolProperty);
+    // made of 1 Ingots.
+    public static final OrePrefix toolHeadUniversalSpade = new OrePrefix("toolHeadUniversalSpade", M, null, MaterialIconType.toolHeadUniversalSpade, ENABLE_UNIFICATION, hasToolProperty);
+    // made of 3 Ingots.
+    public static final OrePrefix toolHeadAxe = new OrePrefix("toolHeadAxe", M * 3, null, MaterialIconType.toolHeadAxe, ENABLE_UNIFICATION, hasToolProperty);
+    // made of 2 Ingots.
+    public static final OrePrefix toolHeadHoe = new OrePrefix("toolHeadHoe", M * 2, null, MaterialIconType.toolHeadHoe, ENABLE_UNIFICATION, hasToolProperty);
+    // made of 3 Ingots.
+    public static final OrePrefix toolHeadSense = new OrePrefix("toolHeadSense", M * 3, null, MaterialIconType.toolHeadSense, ENABLE_UNIFICATION, hasToolProperty);
+    // made of 2 Ingots.
+    public static final OrePrefix toolHeadFile = new OrePrefix("toolHeadFile", M * 2, null, MaterialIconType.toolHeadFile, ENABLE_UNIFICATION, hasToolProperty);
+    // made of 6 Ingots.
+    public static final OrePrefix toolHeadHammer = new OrePrefix("toolHeadHammer", M * 6, null, MaterialIconType.toolHeadHammer, ENABLE_UNIFICATION, hasToolProperty);
+    // made of 2 Ingots.
+    public static final OrePrefix toolHeadSaw = new OrePrefix("toolHeadSaw", M * 2, null, MaterialIconType.toolHeadSaw, ENABLE_UNIFICATION, hasToolProperty);
+    // made of 4 Ingots.
+    public static final OrePrefix toolHeadBuzzSaw = new OrePrefix("toolHeadBuzzSaw", M * 4, null, MaterialIconType.toolHeadBuzzSaw, ENABLE_UNIFICATION, hasToolProperty);
+    // made of 1 Ingots.
+    public static final OrePrefix toolHeadScrewdriver = new OrePrefix("toolHeadScrewdriver", M, null, MaterialIconType.toolHeadScrewdriver, ENABLE_UNIFICATION, hasToolProperty);
+    // made of 4 Ingots.
+    public static final OrePrefix toolHeadDrill = new OrePrefix("toolHeadDrill", M * 4, null, MaterialIconType.toolHeadDrill, ENABLE_UNIFICATION, hasToolProperty);
+    // made of 2 Ingots.
+    public static final OrePrefix toolHeadChainsaw = new OrePrefix("toolHeadChainsaw", M * 2, null, MaterialIconType.toolHeadChainsaw, ENABLE_UNIFICATION, hasToolProperty);
+    // made of 4 Ingots.
+    public static final OrePrefix toolHeadWrench = new OrePrefix("toolHeadWrench", M * 4, null, MaterialIconType.toolHeadWrench, ENABLE_UNIFICATION, hasToolProperty);
+    // made of 5 Ingots.
+    public static final OrePrefix turbineBlade = new OrePrefix("turbineBlade", M * 10, null, MaterialIconType.turbineBlade, ENABLE_UNIFICATION, hasToolProperty.and(m -> m.hasFlags(GENERATE_BOLT_SCREW, GENERATE_PLATE)));
 
-    bolt("Bolts", M / 8, null, MaterialIconType.bolt, ENABLE_UNIFICATION, mat -> mat.hasFlag(GENERATE_BOLT_SCREW)), // consisting out of 1/8 Ingot or 1/4 Stick.
-    screw("Screws", M / 9, null, MaterialIconType.screw, ENABLE_UNIFICATION, mat -> mat.hasFlag(GENERATE_BOLT_SCREW)), // consisting out of a Bolt.
-    ring("Rings", M / 4, null, MaterialIconType.ring, ENABLE_UNIFICATION, mat -> mat.hasFlag(GENERATE_RING)), // consisting out of 1/2 Stick.
-    springSmall("Small Springs", M / 4, null, MaterialIconType.springSmall, ENABLE_UNIFICATION, mat -> mat.hasFlag(GENERATE_SPRING_SMALL) && !mat.hasFlag(NO_SMASHING)), // consisting out of 1 Fine Wire.
-    spring("Springs", M, null, MaterialIconType.spring, ENABLE_UNIFICATION, mat -> mat.hasFlag(GENERATE_SPRING) && !mat.hasFlag(NO_SMASHING)), // consisting out of 2 Sticks.
-    wireFine("Fine Wires", M / 8, null, MaterialIconType.wireFine, ENABLE_UNIFICATION, mat -> mat.hasFlag(GENERATE_FINE_WIRE)), // consisting out of 1/8 Ingot or 1/4 Wire.
-    rotor("Rotors", M * 4, null, MaterialIconType.rotor, ENABLE_UNIFICATION, mat -> mat.hasFlag(GENERATE_ROTOR)), // consisting out of 4 Plates, 1 Ring and 1 Screw.
-    gearSmall("Small Gears", M, null, MaterialIconType.gearSmall, ENABLE_UNIFICATION, mat -> mat.hasFlag(GENERATE_SMALL_GEAR)),
-    gear("Gears", M * 4, null, MaterialIconType.gear, ENABLE_UNIFICATION, mat -> mat.hasFlag(GENERATE_GEAR)), // Introduced by me because BuildCraft has ruined the gear Prefix...
-    lens("Lenses", (M * 3) / 4, null, MaterialIconType.lens, ENABLE_UNIFICATION, mat -> mat.hasFlag(GENERATE_LENS)), // 3/4 of a Plate or Gem used to shape a Lense. Normally only used on Transparent Materials.
+    public static final OrePrefix glass = new OrePrefix("glass", -1, Materials.Glass, null, SELF_REFERENCING, null);
+    public static final OrePrefix paneGlass = new OrePrefix("paneGlass", -1, MarkerMaterials.Color.Colorless, null, SELF_REFERENCING, null);
+    public static final OrePrefix blockGlass = new OrePrefix("blockGlass", -1, MarkerMaterials.Color.Colorless, null, SELF_REFERENCING, null);
 
-    toolHeadSword("Sword Blades", M * 2, null, MaterialIconType.toolHeadSword, ENABLE_UNIFICATION, hasToolProperty), // made of 2 Ingots.
-    toolHeadPickaxe("Pickaxe Heads", M * 3, null, MaterialIconType.toolHeadPickaxe, ENABLE_UNIFICATION, hasToolProperty), // made of 3 Ingots.
-    toolHeadShovel("Shovel Heads", M, null, MaterialIconType.toolHeadShovel, ENABLE_UNIFICATION, hasToolProperty), // made of 1 Ingots.
-    toolHeadUniversalSpade("Universal Spade Heads", M, null, MaterialIconType.toolHeadUniversalSpade, ENABLE_UNIFICATION, hasToolProperty), // made of 1 Ingots.
-    toolHeadAxe("Axe Heads", M * 3, null, MaterialIconType.toolHeadAxe, ENABLE_UNIFICATION, hasToolProperty), // made of 3 Ingots.
-    toolHeadHoe("Hoe Heads", M * 2, null, MaterialIconType.toolHeadHoe, ENABLE_UNIFICATION, hasToolProperty), // made of 2 Ingots.
-    toolHeadSense("Sense Blades", M * 3, null, MaterialIconType.toolHeadSense, ENABLE_UNIFICATION, hasToolProperty), // made of 3 Ingots.
-    toolHeadFile("File Heads", M * 2, null, MaterialIconType.toolHeadFile, ENABLE_UNIFICATION, hasToolProperty), // made of 2 Ingots.
-    toolHeadHammer("Hammer Heads", M * 6, null, MaterialIconType.toolHeadHammer, ENABLE_UNIFICATION, hasToolProperty), // made of 6 Ingots.
-    toolHeadSaw("Saw Blades", M * 2, null, MaterialIconType.toolHeadSaw, ENABLE_UNIFICATION, hasToolProperty), // made of 2 Ingots.
-    toolHeadBuzzSaw("Buzzsaw Blades", M * 4, null, MaterialIconType.toolHeadBuzzSaw, ENABLE_UNIFICATION, hasToolProperty), // made of 4 Ingots.
-    toolHeadScrewdriver("Screwdriver Tips", M, null, MaterialIconType.toolHeadScrewdriver, ENABLE_UNIFICATION, hasToolProperty), // made of 1 Ingots.
-    toolHeadDrill("Drill Tips", M * 4, null, MaterialIconType.toolHeadDrill, ENABLE_UNIFICATION, hasToolProperty), // made of 4 Ingots.
-    toolHeadChainsaw("Chainsaw Tips", M * 2, null, MaterialIconType.toolHeadChainsaw, ENABLE_UNIFICATION, hasToolProperty), // made of 2 Ingots.
-    toolHeadWrench("Wrench Tips", M * 4, null, MaterialIconType.toolHeadWrench, ENABLE_UNIFICATION, hasToolProperty), // made of 4 Ingots.
-    turbineBlade("Turbine Blades", M * 10, null, MaterialIconType.turbineBlade, ENABLE_UNIFICATION, hasToolProperty.and(m -> m.hasFlags(GENERATE_BOLT_SCREW, GENERATE_PLATE))), // made of 5 Ingots.
+    // Storage Block consisting out of 9 Ingots/Gems/Dusts. Introduced by CovertJaguar
+    public static final OrePrefix block = new OrePrefix("block", M * 9, null, MaterialIconType.block, ENABLE_UNIFICATION, null);
 
-    glass("Glasses", -1, Materials.Glass, null, SELF_REFERENCING, null),
-    paneGlass("Glass Panes", -1, MarkerMaterials.Color.Colorless, null, SELF_REFERENCING, null),
-    blockGlass("Glass Blocks", -1, MarkerMaterials.Color.Colorless, null, SELF_REFERENCING, null),
+    // Prefix used for Logs. Usually as "logWood". Introduced by Eloraam
+    public static final OrePrefix log = new OrePrefix("log", -1, null, null, 0, null);
+    // Prefix for Planks. Usually "plankWood". Introduced by Eloraam
+    public static final OrePrefix plank = new OrePrefix("plank", -1, null, null, 0, null);
 
-    blockWool("Wool Blocks", -1, MarkerMaterials.Color.Colorless, null, SELF_REFERENCING, null),
-    block("Storage Blocks", M * 9, null, MaterialIconType.block, ENABLE_UNIFICATION, null), // Storage Block consisting out of 9 Ingots/Gems/Dusts. Introduced by CovertJaguar
+    // Prefix to determine which kind of Rock this is.
+    public static final OrePrefix stone = new OrePrefix("stone", -1, Materials.Stone, null, SELF_REFERENCING, null);
+    public static final OrePrefix cobblestone = new OrePrefix("cobblestone", -1, Materials.Stone, null, SELF_REFERENCING, null);
+    // Prefix to determine which kind of Rock this is.
+    public static final OrePrefix rock = new OrePrefix("rock", -1, Materials.Stone, null, SELF_REFERENCING, null);
+    // Cobblestone Prefix for all Cobblestones.
+    public static final OrePrefix stoneCobble = new OrePrefix("stoneCobble", -1, Materials.Stone, null, SELF_REFERENCING, null);
 
-    log("Logs", -1, null, null, 0, null), // Prefix used for Logs. Usually as "logWood". Introduced by Eloraam
-    plank("Planks", -1, null, null, 0, null), // Prefix for Planks. Usually "plankWood". Introduced by Eloraam
+    public static final OrePrefix frameGt = new OrePrefix("frameGt", (long) (M * 1.375), null, null, ENABLE_UNIFICATION, material -> material.hasFlag(GENERATE_FRAME));
 
-    stone("Stones", -1, Materials.Stone, null, SELF_REFERENCING, null), // Prefix to determine which kind of Rock this is.
-    cobblestone("Cobblestones", -1, Materials.Stone, null, SELF_REFERENCING, null),
-    rock("Rocks", -1, Materials.Stone, null, SELF_REFERENCING, null), // Prefix to determine which kind of Rock this is.
-    stoneCobble("Cobblestones", -1, Materials.Stone, null, SELF_REFERENCING, null), // Cobblestone Prefix for all Cobblestones.
+    public static final OrePrefix pipeTinyFluid = new OrePrefix("pipeTinyFluid", M / 2, null, MaterialIconType.pipeTiny, ENABLE_UNIFICATION, null);
+    public static final OrePrefix pipeSmallFluid = new OrePrefix("pipeSmallFluid", M, null, MaterialIconType.pipeSmall, ENABLE_UNIFICATION, null);
+    public static final OrePrefix pipeNormalFluid = new OrePrefix("pipeNormalFluid", M * 3, null, MaterialIconType.pipeMedium, ENABLE_UNIFICATION, null);
+    public static final OrePrefix pipeLargeFluid = new OrePrefix("pipeLargeFluid", M * 6, null, MaterialIconType.pipeLarge, ENABLE_UNIFICATION, null);
+    public static final OrePrefix pipeHugeFluid = new OrePrefix("pipeHugeFluid", M * 12, null, MaterialIconType.pipeHuge, ENABLE_UNIFICATION, null);
 
-    frameGt("Frame Boxes", (long) (M * 1.375), null, null, ENABLE_UNIFICATION, material -> material.hasFlag(GENERATE_FRAME)),
+    public static final OrePrefix pipeTinyItem = new OrePrefix("pipeTinyItem", M / 2, null, MaterialIconType.pipeTiny, ENABLE_UNIFICATION, null);
+    public static final OrePrefix pipeSmallItem = new OrePrefix("pipeSmallItem", M, null, MaterialIconType.pipeSmall, ENABLE_UNIFICATION, null);
+    public static final OrePrefix pipeNormalItem = new OrePrefix("pipeNormalItem", M * 3, null, MaterialIconType.pipeMedium, ENABLE_UNIFICATION, null);
+    public static final OrePrefix pipeLargeItem = new OrePrefix("pipeLargeItem", M * 6, null, MaterialIconType.pipeLarge, ENABLE_UNIFICATION, null);
+    public static final OrePrefix pipeHugeItem = new OrePrefix("pipeHugeItem", M * 12, null, MaterialIconType.pipeHuge, ENABLE_UNIFICATION, null);
 
-    pipeTinyFluid("Tiny Fluid Pipes", M / 2, null, MaterialIconType.pipeTiny, ENABLE_UNIFICATION, null),
-    pipeSmallFluid("Small Fluid Pipes", M, null, MaterialIconType.pipeSmall, ENABLE_UNIFICATION, null),
-    pipeNormalFluid("Normal Fluid Pipes", M * 3, null, MaterialIconType.pipeMedium, ENABLE_UNIFICATION, null),
-    pipeLargeFluid("Large Fluid Pipes", M * 6, null, MaterialIconType.pipeLarge, ENABLE_UNIFICATION, null),
-    pipeHugeFluid("Huge Fluid Pipes", M * 12, null, MaterialIconType.pipeHuge, ENABLE_UNIFICATION, null),
+    public static final OrePrefix pipeSmallRestrictive = new OrePrefix("pipeSmallRestrictive", M, null, MaterialIconType.pipeSmall, ENABLE_UNIFICATION, null);
+    public static final OrePrefix pipeNormalRestrictive = new OrePrefix("pipeNormalRestrictive", M * 3, null, MaterialIconType.pipeMedium, ENABLE_UNIFICATION, null);
+    public static final OrePrefix pipeLargeRestrictive = new OrePrefix("pipeLargeRestrictive", M * 6, null, MaterialIconType.pipeLarge, ENABLE_UNIFICATION, null);
 
-    pipeTinyItem("Tiny Item Pipes", M / 2, null, MaterialIconType.pipeTiny, ENABLE_UNIFICATION, null),
-    pipeSmallItem("Small Item Pipes", M, null, MaterialIconType.pipeSmall, ENABLE_UNIFICATION, null),
-    pipeNormalItem("Normal Item Pipes", M * 3, null, MaterialIconType.pipeMedium, ENABLE_UNIFICATION, null),
-    pipeLargeItem("Large Item Pipes", M * 6, null, MaterialIconType.pipeLarge, ENABLE_UNIFICATION, null),
-    pipeHugeItem("Huge Item Pipes", M * 12, null, MaterialIconType.pipeHuge, ENABLE_UNIFICATION, null),
+    public static final OrePrefix wireGtHex = new OrePrefix("wireGtHex", M * 8, null, null, ENABLE_UNIFICATION, null);
+    public static final OrePrefix wireGtOctal = new OrePrefix("wireGtOctal", M * 4, null, null, ENABLE_UNIFICATION, null);
+    public static final OrePrefix wireGtQuadruple = new OrePrefix("wireGtQuadruple", M * 2, null, null, ENABLE_UNIFICATION, null);
+    public static final OrePrefix wireGtDouble = new OrePrefix("wireGtDouble", M, null, null, ENABLE_UNIFICATION, null);
+    public static final OrePrefix wireGtSingle = new OrePrefix("wireGtSingle", M / 2, null, null, ENABLE_UNIFICATION, null);
 
-    pipeSmallRestrictive("Small Restrictive Item Pipes", M, null, MaterialIconType.pipeSmall, ENABLE_UNIFICATION, null),
-    pipeNormalRestrictive("Normal Restrictive Item Pipes", M * 3, null, MaterialIconType.pipeMedium, ENABLE_UNIFICATION, null),
-    pipeLargeRestrictive("Large Restrictive Item Pipes", M * 6, null, MaterialIconType.pipeLarge, ENABLE_UNIFICATION, null),
+    public static final OrePrefix cableGtHex = new OrePrefix("cableGtHex", M * 8, null, null, ENABLE_UNIFICATION, null);
+    public static final OrePrefix cableGtOctal = new OrePrefix("cableGtOctal", M * 4, null, null, ENABLE_UNIFICATION, null);
+    public static final OrePrefix cableGtQuadruple = new OrePrefix("cableGtQuadruple", M * 2, null, null, ENABLE_UNIFICATION, null);
+    public static final OrePrefix cableGtDouble = new OrePrefix("cableGtDouble", M, null, null, ENABLE_UNIFICATION, null);
+    public static final OrePrefix cableGtSingle = new OrePrefix("cableGtSingle", M / 2, null, null, ENABLE_UNIFICATION, null);
 
-    wireGtHex("Hex wires", M * 8, null, null, ENABLE_UNIFICATION, null),
-    wireGtOctal("Octal wires", M * 4, null, null, ENABLE_UNIFICATION, null),
-    wireGtQuadruple("Quadruple wires", M * 2, null, null, ENABLE_UNIFICATION, null),
-    wireGtDouble("Double wires", M, null, null, ENABLE_UNIFICATION, null),
-    wireGtSingle("Single wires", M / 2, null, null, ENABLE_UNIFICATION, null),
-
-    cableGtHex("Hex cables", M * 8, null, null, ENABLE_UNIFICATION, null),
-    cableGtOctal("Octal cables", M * 4, null, null, ENABLE_UNIFICATION, null),
-    cableGtQuadruple("Quadruple cables", M * 2, null, null, ENABLE_UNIFICATION, null),
-    cableGtDouble("Double cables", M, null, null, ENABLE_UNIFICATION, null),
-    cableGtSingle("Single cables", M / 2, null, null, ENABLE_UNIFICATION, null),
-
-    craftingLens("Crafting Ingredients", -1, null, null, 0, null), // Special Prefix used mainly for the Crafting Handler.
-    dye("Dyes", -1, null, null, 0, null), // Used for the 16 dyes. Introduced by Eloraam
+    // Special Prefix used mainly for the Crafting Handler.
+    public static final OrePrefix craftingLens = new OrePrefix("craftingLens", -1, null, null, 0, null);
+    // Used for the 16 dyes. Introduced by Eloraam
+    public static final OrePrefix dye = new OrePrefix("dye", -1, null, null, 0, null);
 
     /**
      * Electric Components.
      *
      * @see MarkerMaterials.Tier
      */
-    batterySingleUse("Single Use Batteries", -1, null, null, 0, null),
-    battery("Reusable Batteries", -1, null, null, 0, null), // Introduced by Calclavia
-    circuit("Circuits", -1, null, null, ENABLE_UNIFICATION, null), // Introduced by Calclavia
-    chipset("Chipsets", -1, null, null, ENABLE_UNIFICATION, null), // Introduced by Buildcraft
-    component("Components", -1, null, null, ENABLE_UNIFICATION, null),
+    public static final OrePrefix batterySingleUse = new OrePrefix("batterySingleUse", -1, null, null, 0, null);
+    // Introduced by Calclavia
+    public static final OrePrefix battery = new OrePrefix("battery", -1, null, null, 0, null);
+    // Introduced by Calclavia
+    public static final OrePrefix circuit = new OrePrefix("circuit", -1, null, null, ENABLE_UNIFICATION, null);
+    // Introduced by Buildcraft
+    public static final OrePrefix chipset = new OrePrefix("chipset", -1, null, null, ENABLE_UNIFICATION, null);
+    public static final OrePrefix component = new OrePrefix("component", -1, null, null, ENABLE_UNIFICATION, null);
 
-    // Used for Gregification Addon
+    // Used for Gregification Addon TODO Don't do these here post De-Enum
 
     // Ex Nihilo Compat
-    oreChunk("Ore Chunk", -1, null, MaterialIconType.oreChunk, ENABLE_UNIFICATION, null),
-    oreEnderChunk("Ore Chunk", -1, null, MaterialIconType.oreEnderChunk, ENABLE_UNIFICATION, null),
-    oreNetherChunk("Ore Chunk", -1, null, MaterialIconType.oreNetherChunk, ENABLE_UNIFICATION, null),
-    oreSandyChunk("Ore Chunk", -1, null, MaterialIconType.oreSandyChunk, ENABLE_UNIFICATION, null),
+    public static final OrePrefix oreChunk = new OrePrefix("oreChunk", -1, null, MaterialIconType.oreChunk, ENABLE_UNIFICATION, null);
+    public static final OrePrefix oreEnderChunk = new OrePrefix("oreEnderChunk", -1, null, MaterialIconType.oreEnderChunk, ENABLE_UNIFICATION, null);
+    public static final OrePrefix oreNetherChunk = new OrePrefix("oreNetherChunk", -1, null, MaterialIconType.oreNetherChunk, ENABLE_UNIFICATION, null);
+    public static final OrePrefix oreSandyChunk = new OrePrefix("oreSandyChunk", -1, null, MaterialIconType.oreSandyChunk, ENABLE_UNIFICATION, null);
 
     // Myst Ag Compat
-    seed("Seed", -1, null, MaterialIconType.seed, ENABLE_UNIFICATION, null),
-    crop("Crop", -1, null, MaterialIconType.crop, ENABLE_UNIFICATION, null),
-    essence("Essence", -1, null, MaterialIconType.essence, ENABLE_UNIFICATION, null),
-    ;
+    public static final OrePrefix seed = new OrePrefix("seed", -1, null, MaterialIconType.seed, ENABLE_UNIFICATION, null);
+    public static final OrePrefix crop = new OrePrefix("crop", -1, null, MaterialIconType.crop, ENABLE_UNIFICATION, null);
+    public static final OrePrefix essence = new OrePrefix("essence", -1, null, MaterialIconType.essence, ENABLE_UNIFICATION, null);
 
     public static final String DUST_REGULAR = "dustRegular";
 
@@ -330,7 +391,8 @@ public enum OrePrefix {
         gemExquisite.setIgnored(material);
     }
 
-    public final String categoryName;
+    public final String name;
+    public final int id;
 
     public final boolean isUnificationEnabled;
     public final boolean isSelfReferencing;
@@ -360,8 +422,10 @@ public enum OrePrefix {
     public final List<MaterialStack> secondaryMaterials = new ArrayList<>();
     public float heatDamage = 0.0F; // Negative for Frost Damage
 
-    OrePrefix(String categoryName, long materialAmount, Material material, MaterialIconType materialIconType, long flags, Predicate<Material> condition) {
-        this.categoryName = categoryName;
+    OrePrefix(String name, long materialAmount, Material material, MaterialIconType materialIconType, long flags, Predicate<Material> condition) {
+        Preconditions.checkArgument(!PREFIXES.containsKey(name), "OrePrefix " + name + " already registered!");
+        this.name = name;
+        this.id = idCounter.getAndIncrement();
         this.materialAmount = materialAmount;
         this.isSelfReferencing = (flags & SELF_REFERENCING) != 0;
         this.isUnificationEnabled = (flags & ENABLE_UNIFICATION) != 0;
@@ -371,6 +435,11 @@ public enum OrePrefix {
             Preconditions.checkNotNull(material, "Material is null for self-referencing OrePrefix");
             this.materialType = material;
         }
+        PREFIXES.put(name, this);
+    }
+
+    public String name() {
+        return this.name;
     }
 
     public void addSecondaryMaterial(MaterialStack secondaryMaterial) {
@@ -409,11 +478,7 @@ public enum OrePrefix {
     }
 
     public static OrePrefix getPrefix(String prefixName, @Nullable OrePrefix replacement) {
-        try {
-            return Enum.valueOf(OrePrefix.class, prefixName);
-        } catch (IllegalArgumentException invalidPrefixName) {
-            return replacement;
-        }
+        return PREFIXES.getOrDefault(prefixName, replacement);
     }
 
     public boolean doGenerateItem(Material material) {
@@ -448,7 +513,7 @@ public enum OrePrefix {
     }
 
     public static void runMaterialHandlers() {
-        for (OrePrefix orePrefix : values()) {
+        for (OrePrefix orePrefix : PREFIXES.values()) {
             orePrefix.runGeneratedMaterialHandlers();
         }
     }
@@ -480,9 +545,9 @@ public enum OrePrefix {
 
     @SideOnly(Side.CLIENT)
     public String getLocalNameForItem(Material material) {
-        String specifiedUnlocalized = "item." + material.toString() + "." + this.name();
+        String specifiedUnlocalized = "item." + material.toString() + "." + this.name;
         if (I18n.hasKey(specifiedUnlocalized)) return I18n.format(specifiedUnlocalized);
-        String unlocalized = "item.material.oreprefix." + this.name();
+        String unlocalized = "item.material.oreprefix." + this.name;
         String matLocalized = material.getLocalizedName();
         String formatted = I18n.format(unlocalized, matLocalized);
         return formatted.equals(unlocalized) ? matLocalized : formatted;
@@ -498,5 +563,15 @@ public enum OrePrefix {
 
     public boolean isMarkerPrefix() {
         return isMarkerPrefix;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof OrePrefix &&
+                ((OrePrefix) o).name.equals(this.name);
+    }
+
+    public static Collection<OrePrefix> values() {
+        return PREFIXES.values();
     }
 }

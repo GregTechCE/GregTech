@@ -35,12 +35,10 @@ public class PipeRecipeHandler {
 
     private static void processRestrictivePipe(OrePrefix pipePrefix, Material material, ItemPipeProperties property) {
         OrePrefix unrestrictive;
-        switch (pipePrefix) {
-            case pipeSmallRestrictive: unrestrictive = OrePrefix.pipeSmallItem; break;
-            case pipeNormalRestrictive: unrestrictive = OrePrefix.pipeNormalItem; break;
-            case pipeLargeRestrictive: unrestrictive = OrePrefix.pipeLargeItem; break;
-            default: return;
-        }
+        if (pipePrefix == OrePrefix.pipeSmallRestrictive) unrestrictive = OrePrefix.pipeSmallItem;
+        else if (pipePrefix == OrePrefix.pipeNormalRestrictive) unrestrictive = OrePrefix.pipeNormalItem;
+        else if (pipePrefix == OrePrefix.pipeLargeRestrictive) unrestrictive = OrePrefix.pipeLargeItem;
+        else return;
 
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
             .input(unrestrictive, material)

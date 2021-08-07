@@ -11,7 +11,6 @@ import gregtech.api.unification.material.info.MaterialIconSet;
 import gregtech.api.unification.material.MaterialRegistry;
 import gregtech.api.unification.material.properties.DustProperty;
 import gregtech.api.unification.material.Material;
-import gregtech.api.unification.material.properties.MaterialProperties;
 import gregtech.api.unification.material.properties.PropertyKey;
 import gregtech.api.unification.ore.OrePrefix;
 import net.minecraft.block.BlockCauldron;
@@ -72,13 +71,12 @@ public class MetaPrefixItem extends StandardMetaItem {
     }
 
     private void registerSpecialOreDict(ItemStack item, Material material, OrePrefix prefix) {
-        switch (prefix) {
-            case dust: OreDictUnifier.registerOre(item, OrePrefix.DUST_REGULAR, material); break;
-            case oreChunk: OreDictUnifier.registerOre(item, OrePrefix.oreGravel.name(), material); break;
-            case oreEnderChunk: OreDictUnifier.registerOre(item, OrePrefix.oreEndstone.name(), material); break;
-            case oreNetherChunk: OreDictUnifier.registerOre(item, OrePrefix.oreNetherrack.name(), material); break;
-            case oreSandyChunk: OreDictUnifier.registerOre(item, OrePrefix.oreSand.name(), material); break;
-        }
+        if (prefix.equals(OrePrefix.dust)) OreDictUnifier.registerOre(item, OrePrefix.DUST_REGULAR, material);
+        else if (prefix.equals(OrePrefix.oreChunk)) OreDictUnifier.registerOre(item, OrePrefix.oreGravel.name(), material);
+        else if (prefix.equals(OrePrefix.oreEnderChunk)) OreDictUnifier.registerOre(item, OrePrefix.oreEndstone.name(), material);
+        else if (prefix.equals(OrePrefix.oreNetherChunk)) OreDictUnifier.registerOre(item, OrePrefix.oreNetherrack.name(), material);
+        else if (prefix.equals(OrePrefix.oreSandyChunk)) OreDictUnifier.registerOre(item, OrePrefix.oreSand.name(), material);
+
         if (material == Materials.Plutonium239) {
             OreDictUnifier.registerOre(item, prefix.name() + material.toCamelCaseString() + "239");
         } else if (material == Materials.Uranium238) {
@@ -123,7 +121,7 @@ public class MetaPrefixItem extends StandardMetaItem {
         for (short metaItem : generatedItems) {
             MaterialIconSet materialIconSet = MaterialRegistry.MATERIAL_REGISTRY.getObjectById(metaItem).getMaterialIconSet();
 
-            short registrationKey = (short) (prefix.ordinal() + materialIconSet.ordinal());
+            short registrationKey = (short) (prefix.id + materialIconSet.ordinal());
             if (!alreadyRegistered.containsKey(registrationKey)) {
                 ResourceLocation resourceLocation = prefix.materialIconType.getItemModelPath(materialIconSet);
                 ModelBakery.registerItemVariants(this, resourceLocation);

@@ -80,7 +80,7 @@ public class WireRecipeHandler {
 
     public static void generateWireRecipe(OrePrefix wirePrefix, Material material, WireProperties property) {
         int cableAmount = (int) (wirePrefix.materialAmount * 2 / M);
-        OrePrefix cablePrefix = OrePrefix.valueOf("cable" + wirePrefix.name().substring(4));
+        OrePrefix cablePrefix = OrePrefix.getPrefix("cable" + wirePrefix.name().substring(4));
         ItemStack cableStack = OreDictUnifier.get(cablePrefix, material);
 
         if (isManualInsulatedCable(property)) {
