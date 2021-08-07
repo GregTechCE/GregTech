@@ -17,7 +17,7 @@ public class FirstDegreeMaterials {
         Almandine = new Material.Builder(250, "almandine")
                 .gem(1).ore(6, 1)
                 .color(0xFF0000)
-                .flags(STD_GEM)
+                .flags(STD_GEM, GENERATE_LENS)
                 .components(Aluminium, 2, Iron, 3, Silicon, 3, Oxygen, 12)
                 .build();
 
@@ -447,6 +447,7 @@ public class FirstDegreeMaterials {
         Pyrope = new Material.Builder(308, "pyrope")
                 .gem().ore(4, 1)
                 .color(0x783264).iconSet(RUBY)
+                .flags(GENERATE_LENS)
                 .components(Aluminium, 2, Magnesium, 3, Silicon, 3, Oxygen, 12)
                 .build();
 
@@ -484,7 +485,7 @@ public class FirstDegreeMaterials {
         Sapphire = new Material.Builder(314, "sapphire")
                 .gem().ore()
                 .color(0x6464C8).iconSet(GEM_VERTICAL)
-                .flags(NO_SMASHING, NO_SMELTING, HIGH_SIFTER_OUTPUT)
+                .flags(NO_SMASHING, NO_SMELTING, HIGH_SIFTER_OUTPUT, GENERATE_LENS)
                 .components(Aluminium, 2, Oxygen, 3)
                 .toolStats(7.5f, 4.0f, 256)
                 .build();
@@ -579,7 +580,7 @@ public class FirstDegreeMaterials {
         Tanzanite = new Material.Builder(326, "tanzanite")
                 .gem().ore(2, 1)
                 .color(0x4000C8).iconSet(GEM_VERTICAL)
-                .flags(EXT_METAL, NO_SMASHING, NO_SMELTING, HIGH_SIFTER_OUTPUT)
+                .flags(EXT_METAL, NO_SMASHING, NO_SMELTING, HIGH_SIFTER_OUTPUT, GENERATE_LENS)
                 .components(Calcium, 2, Aluminium, 3, Silicon, 3, Hydrogen, 1)
                 .toolStats(7.0f, 2.0f, 256)
                 .build();
@@ -601,7 +602,7 @@ public class FirstDegreeMaterials {
         Topaz = new Material.Builder(329, "topaz")
                 .gem(3).ore(2, 1)
                 .color(0xFF8000).iconSet(GEM_HORIZONTAL)
-                .flags(NO_SMASHING, NO_SMELTING, HIGH_SIFTER_OUTPUT)
+                .flags(NO_SMASHING, NO_SMELTING, HIGH_SIFTER_OUTPUT, GENERATE_LENS)
                 .components(Aluminium, 2, Silicon, 1, Fluorine, 1, Hydrogen, 2)
                 .toolStats(7.0f, 2.0f, 256)
                 .build();

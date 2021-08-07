@@ -49,7 +49,7 @@ public class SecondDegreeMaterials {
         Opal = new Material.Builder(2005, "opal")
                 .gem().ore()
                 .color(0x0000FF).iconSet(OPAL)
-                .flags(NO_SMASHING, NO_SMELTING, HIGH_SIFTER_OUTPUT, DECOMPOSITION_BY_CENTRIFUGING)
+                .flags(NO_SMASHING, NO_SMELTING, HIGH_SIFTER_OUTPUT, DECOMPOSITION_BY_CENTRIFUGING, GENERATE_LENS)
                 .components(SiliconDioxide, 1)
                 .toolStats(7.5f, 3.0f, 312)
                 .build();
@@ -57,7 +57,7 @@ public class SecondDegreeMaterials {
         Amethyst = new Material.Builder(2006, "amethyst")
                 .gem(3).ore()
                 .color(0xD232D2).iconSet(RUBY)
-                .flags(NO_SMASHING, NO_SMELTING, HIGH_SIFTER_OUTPUT)
+                .flags(NO_SMASHING, NO_SMELTING, HIGH_SIFTER_OUTPUT, GENERATE_LENS)
                 .components(SiliconDioxide, 4, Iron, 1)
                 .toolStats(7.5f, 3.0f, 312)
                 .build();
