@@ -95,11 +95,11 @@ public class MarkerMaterials {
         //new Material(387, "superconductor", 0xFFFFFF, MaterialIconSet.NONE, of(), 0L, null) {};
         public static Material Infinite = new MarkerMaterial("infinite");
 
-        public static Material UEVCircuit = new MarkerMaterial("uev");
-        public static Material UIVCircuit = new MarkerMaterial("uiv");
+        public static Material Ultra = new MarkerMaterial("ultra");
+        public static Material Insane = new MarkerMaterial("insane");
         public static Material UMVCircuit = new MarkerMaterial("umv");
         public static Material UXVCircuit = new MarkerMaterial("uxv");
-        public static Material MAXCircuit = new MarkerMaterial("max");
+        public static Material Maximum = new MarkerMaterial("maximum");
     }
 
     public static class Component {
