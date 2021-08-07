@@ -4,11 +4,14 @@ import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.RecipeBuilder;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.unification.OreDictUnifier;
+import gregtech.api.unification.material.MarkerMaterial;
 import gregtech.api.unification.material.MarkerMaterials;
 import gregtech.api.unification.material.Material;
 import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.material.properties.*;
-import gregtech.api.unification.material.MarkerMaterial;
+import gregtech.api.unification.material.properties.DustProperty;
+import gregtech.api.unification.material.properties.GemProperty;
+import gregtech.api.unification.material.properties.IngotProperty;
+import gregtech.api.unification.material.properties.PropertyKey;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTUtility;
@@ -107,6 +110,15 @@ public class PartsRecipeHandler {
                 .EUt(24)
                 .circuitMeta(1)
                 .buildAndRegister();
+
+        if (material.hasFlag(NO_SMASHING))
+            RecipeMaps.EXTRUDER_RECIPES.recipeBuilder()
+                .input(ingot, material)
+                .notConsumable(MetaItems.SHAPE_EXTRUDER_FOIL)
+                .output(foilPrefix, material, 4)
+                .duration((int) material.getAverageMass())
+                .EUt(24)
+                .buildAndRegister();
     }
 
     public static void processFineWire(OrePrefix fineWirePrefix, Material material, IngotProperty property) {
@@ -169,11 +181,13 @@ public class PartsRecipeHandler {
             if (gearPrefix == OrePrefix.gearSmall) {
                 ModHandler.addShapedRecipe(String.format("small_gear_%s", material), OreDictUnifier.get(gearSmall, material),
                         " R ", "hPx", " R ", 'R', new UnificationEntry(stick, material), 'P', new UnificationEntry(plate, material));
-                RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder() // todo
-                    .input(OrePrefix.plate, material)
+
+                RecipeMaps.EXTRUDER_RECIPES.recipeBuilder()
+                    .input(OrePrefix.ingot, material)
+                    .notConsumable(MetaItems.SHAPE_EXTRUDER_GEAR_SMALL)
                     .outputs(stack)
-                    .duration(60)
-                    .EUt(6)
+                    .duration((int) material.getAverageMass())
+                    .EUt(material.getBlastTemperature() >= 2800 ? 256 : 64)
                     .buildAndRegister();
             } else {
                 ModHandler.addShapedRecipe(String.format("gear_%s", material), stack,
@@ -381,6 +395,15 @@ public class PartsRecipeHandler {
             .duration((int) Math.max(material.getAverageMass(), 1L))
             .EUt(16)
             .buildAndRegister();
+
+        if (material.getProperties().hasProperty(PropertyKey.INGOT))
+            RecipeMaps.EXTRUDER_RECIPES.recipeBuilder()
+                .input(OrePrefix.ingot, material)
+                .notConsumable(MetaItems.SHAPE_EXTRUDER_ROD_LONG)
+                .outputs(stack)
+                .duration((int) Math.max(material.getAverageMass(), 1L))
+                .EUt(64)
+                .buildAndRegister();
     }
 
     public static void processTurbine(OrePrefix toolPrefix, Material material, IngotProperty property) {

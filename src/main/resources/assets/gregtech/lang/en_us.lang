@@ -198,6 +198,12 @@ metaitem.shape.extruder.gear.name=Extruder Shape (Gear)
 metaitem.shape.extruder.gear.tooltip=Extruder Shape for making Gears
 metaitem.shape.extruder.bottle.name=Extruder Shape (Bottle)
 metaitem.shape.extruder.bottle.tooltip=Extruder Shape for making Bottles
+metaitem.shape.extruder.gear_small.name=Extruder Shape (Small Gear)
+metaitem.shape.extruder.gear_small.tooltip=Extruder Shape for making Small Gears
+metaitem.shape.extruder.foil.name=Extruder Shape (Foil)
+metaitem.shape.extruder.foil.tooltip=Extruder Shape for making Foils from Non-Metals
+metaitem.shape.extruder.rod_long.name=Extruder Shape (Long Rod)
+metaitem.shape.extruder.rod_long.tooltip=Extruder Shape for making Long Rods
 
 metaitem.spray.empty.name=Spray Can (Empty)
 metaitem.spray.empty.tooltip=Can be filled with sprays of various colors
