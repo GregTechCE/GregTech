@@ -15,6 +15,8 @@ import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.GTUtility;
 import net.minecraft.item.ItemStack;
 
+import java.util.List;
+
 import static gregtech.api.unification.material.info.MaterialFlags.HIGH_SIFTER_OUTPUT;
 
 public class OreRecipeHandler {
@@ -296,13 +298,28 @@ public class OreRecipeHandler {
                 1, material, property.getOreByProducts(), Material.class);
         ItemStack dustStack = OreDictUnifier.get(OrePrefix.dust, material);
 
-        if (property.getSeparatedInto() != null) {
-            ItemStack separatedStack = OreDictUnifier.get(OrePrefix.dustSmall, property.getSeparatedInto());
+        if (property.getSeparatedInto() != null && !property.getSeparatedInto().isEmpty()) {
+            List<Material> separatedMaterial = property.getSeparatedInto();
+            ItemStack separatedStack1 = OreDictUnifier.get(OrePrefix.dustSmall, separatedMaterial.get(0));
+            ItemStack separatedStack2;
+            OrePrefix prefix;
+            if(separatedMaterial.size() == 2) {
+                prefix = (separatedMaterial.get(1).getBlastTemperature() == 0 && separatedMaterial.get(1).hasProperty(PropertyKey.INGOT))
+                        ? OrePrefix.nugget : OrePrefix.dustSmall;
+            }
+            else {
+                prefix = (separatedMaterial.get(0).getBlastTemperature() == 0 && separatedMaterial.get(0).hasProperty(PropertyKey.INGOT))
+                        ? OrePrefix.nugget : OrePrefix.dustSmall;
+            }
+            separatedStack2 = OreDictUnifier.get(prefix, separatedMaterial.get(1), prefix == OrePrefix.nugget ? 2 : 1);
+
+
             RecipeMaps.ELECTROMAGNETIC_SEPARATOR_RECIPES.recipeBuilder()
                     .input(purePrefix, material)
                     .outputs(dustStack)
-                    .chancedOutput(separatedStack, 4000, 850)
-                    .duration((int) property.getSeparatedInto().getAverageMass()).EUt(24)
+                    .chancedOutput(separatedStack1, 4000, 850)
+                    .chancedOutput(separatedStack2, 2000, 600)
+                    .duration((int) property.getSeparatedInto().get(0).getAverageMass()).EUt(24)
                     .buildAndRegister();
         }
 
