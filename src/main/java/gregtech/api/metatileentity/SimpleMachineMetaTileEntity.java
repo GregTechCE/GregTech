@@ -319,7 +319,7 @@ public class SimpleMachineMetaTileEntity extends WorkableTieredMetaTileEntity im
     protected ModularUI.Builder createGuiTemplate(EntityPlayer player) {
         RecipeMap<?> workableRecipeMap = workable.recipeMap;
         int yOffset = 0;
-        if (workableRecipeMap.getMaxInputs() > 6 || workableRecipeMap.getMaxFluidInputs() > 6 || workableRecipeMap.getMaxOutputs() > 6 || workableRecipeMap.getMaxFluidOutputs() > 6) {
+        if (workableRecipeMap.getMaxInputs() >= 6 || workableRecipeMap.getMaxFluidInputs() >= 6 || workableRecipeMap.getMaxOutputs() >= 6 || workableRecipeMap.getMaxFluidOutputs() >= 6) {
             yOffset = FONT_HEIGHT;
         }
 
