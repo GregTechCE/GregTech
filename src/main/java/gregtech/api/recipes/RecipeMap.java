@@ -310,7 +310,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
         int startInputsY = 33 - (int) (itemSlotsToDown / 2.0 * 18) + yOffset;
         boolean wasGroupOutput = itemHandler.getSlots() + fluidHandler.getTanks() == 12;
         if (wasGroupOutput && isOutputs) startInputsY -= 9;
-        if (itemHandler.getSlots() + fluidHandler.getTanks() == 8 && !isOutputs) startInputsY -= 9;
+        if (itemHandler.getSlots() == 6 && fluidHandler.getTanks() == 2 && !isOutputs) startInputsY -= 9;
         for (int i = 0; i < itemSlotsToDown; i++) {
             for (int j = 0; j < itemSlotsToLeft; j++) {
                 int slotIndex = i * itemSlotsToLeft + j;
@@ -319,7 +319,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
                 addSlot(builder, x, y, slotIndex, itemHandler, fluidHandler, invertFluids, isOutputs);
             }
         }
-        if (wasGroupOutput) startInputsY += 3;
+        if (wasGroupOutput) startInputsY += 2;
         if (fluidInputsCount > 0 || invertFluids) {
             if (itemSlotsToDown >= fluidInputsCount && itemSlotsToLeft < 3) {
                 int startSpecX = isOutputs ? startInputsX + itemSlotsToLeft * 18 : startInputsX - 18;
