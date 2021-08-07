@@ -263,6 +263,10 @@ public class ConfigHolder {
             @Config.Comment("Enable more challenging recipes for Electric Blast Furnace Coils. Default: true")
             @Config.Name("Enable harder heating coil recipes")
             public boolean harderHeatingCoils = true;
+
+            @Config.Comment("Enable more challenging recipes for Energy Input and Output hatches. Default: false")
+            @Config.Name("Enable harder energy hatch recipes")
+            public boolean harderEnergyHatches = true;
         }
 
         public static class GT6 {

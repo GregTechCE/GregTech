@@ -468,6 +468,16 @@ public final class MetaItems {
 
     public static MetaItem<?>.MetaValueItem BIO_CHAFF;
 
+    public static MetaItem<?>.MetaValueItem VOLTAGE_COIL_ULV;
+    public static MetaItem<?>.MetaValueItem VOLTAGE_COIL_LV;
+    public static MetaItem<?>.MetaValueItem VOLTAGE_COIL_MV;
+    public static MetaItem<?>.MetaValueItem VOLTAGE_COIL_HV;
+    public static MetaItem<?>.MetaValueItem VOLTAGE_COIL_EV;
+    public static MetaItem<?>.MetaValueItem VOLTAGE_COIL_IV;
+    public static MetaItem<?>.MetaValueItem VOLTAGE_COIL_LUV;
+    public static MetaItem<?>.MetaValueItem VOLTAGE_COIL_ZPM;
+    public static MetaItem<?>.MetaValueItem VOLTAGE_COIL_UV;
+
     private static final List<OrePrefix> orePrefixes = new ArrayList<OrePrefix>() {{
         add(OrePrefix.dust);
         add(OrePrefix.dustSmall);

@@ -505,6 +505,17 @@ public class MetaItem1 extends StandardMetaItem {
         CARBON_FIBERS = addItem(355, "carbon.fibers");
         CARBON_MESH = addItem(356, "carbon.mesh");
         CARBON_PLATE = addItem(357, "carbon.plate");
+
+        VOLTAGE_COIL_ULV = addItem(358, "voltage_coil.ulv");
+        VOLTAGE_COIL_LV = addItem(359, "voltage_coil.lv");
+        VOLTAGE_COIL_MV = addItem(360, "voltage_coil.mv");
+        VOLTAGE_COIL_HV = addItem(361, "voltage_coil.hv");
+        VOLTAGE_COIL_EV = addItem(362, "voltage_coil.ev");
+        VOLTAGE_COIL_IV = addItem(363, "voltage_coil.iv");
+        VOLTAGE_COIL_LUV = addItem(364, "voltage_coil.luv");
+        VOLTAGE_COIL_ZPM = addItem(365, "voltage_coil.zpm");
+        VOLTAGE_COIL_UV = addItem(366, "voltage_coil.uv");
+        /* IDs 367-372 (incl.) reserved for UHV-MAX tier voltage coils */
     }
 
     public void registerRecipes() {

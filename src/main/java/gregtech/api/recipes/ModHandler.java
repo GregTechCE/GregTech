@@ -22,6 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -335,7 +336,8 @@ public class ModHandler {
             || ingredient instanceof Block
             || ingredient instanceof String
             || ingredient instanceof Character
-            || ingredient instanceof Boolean)) {
+            || ingredient instanceof Boolean
+            || ingredient instanceof Ingredient)) {
             throw new IllegalArgumentException(ingredient.getClass().getSimpleName() + " type is not suitable for crafting input.");
         }
         return ingredient;

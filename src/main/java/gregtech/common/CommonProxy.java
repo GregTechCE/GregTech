@@ -7,8 +7,8 @@ import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.recipes.crafttweaker.MetaItemBracketHandler;
 import gregtech.api.recipes.recipeproperties.BlastTemperatureProperty;
 import gregtech.api.recipes.recipeproperties.FusionEUToStartProperty;
-import gregtech.api.unification.material.properties.DustProperty;
 import gregtech.api.unification.material.Material;
+import gregtech.api.unification.material.properties.DustProperty;
 import gregtech.api.unification.material.properties.PropertyKey;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.GTLog;
@@ -182,6 +182,7 @@ public class CommonProxy {
         MachineRecipeLoader.init();
         CraftingRecipeLoader.init();
         MetaTileEntityLoader.init();
+        MetaTileEntityMachineRecipeLoader.init();
         RecipeHandlerList.register();
     }
 

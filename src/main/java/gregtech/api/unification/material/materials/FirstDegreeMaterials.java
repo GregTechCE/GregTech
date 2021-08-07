@@ -348,7 +348,7 @@ public class FirstDegreeMaterials {
         NiobiumTitanium = new Material.Builder(296, "niobium_titanium")
                 .ingot().fluid()
                 .color(0x1D1D29)
-                .flags(EXT2_METAL)
+                .flags(EXT2_METAL, GENERATE_SPRING)
                 .components(Niobium, 1, Titanium, 1)
                 .fluidPipeProperties(2900, 150, true)
                 .cableProperties(GTValues.V[6], 4, 2)
@@ -640,7 +640,7 @@ public class FirstDegreeMaterials {
         VanadiumGallium = new Material.Builder(334, "vanadium_gallium")
                 .ingot().fluid()
                 .color(0x80808C).iconSet(SHINY)
-                .flags(STD_METAL, GENERATE_FOIL, GENERATE_ROD)
+                .flags(STD_METAL, GENERATE_FOIL, GENERATE_SPRING)
                 .components(Vanadium, 3, Gallium, 1)
                 .cableProperties(GTValues.V[6], 4, 2)
                 .blastTemp(4500)
@@ -672,7 +672,7 @@ public class FirstDegreeMaterials {
         YttriumBariumCuprate = new Material.Builder(338, "yttrium_barium_cuprate")
                 .ingot().fluid()
                 .color(0x504046).iconSet(METALLIC)
-                .flags(EXT_METAL, GENERATE_FINE_WIRE)
+                .flags(EXT_METAL, GENERATE_FINE_WIRE, GENERATE_SPRING)
                 .components(Yttrium, 1, Barium, 2, Copper, 3, Oxygen, 7)
                 .cableProperties(GTValues.V[6], 4, 4)
                 .build();
@@ -1219,5 +1219,24 @@ public class FirstDegreeMaterials {
                 .flags(DISABLE_DECOMPOSITION)
                 .components(Hydrogen, 2, Oxygen, 1)
                 .build();
+
+        SodiumPotassium = new Material.Builder(422, "sodium_potassium")
+                .fluid()
+                .color(0x64FCB4)
+                .flags(DECOMPOSITION_BY_CENTRIFUGING)
+                .components(Sodium, 1, Potassium, 1)
+                .build();
+
+        SamariumMagnetic = new Material.Builder(423, "samarium_magnetic")
+                .ingot()
+                .color(0xFFFFCD).iconSet(MAGNETIC)
+                .flags(GENERATE_LONG_ROD)
+                .components(Samarium, 1)
+                .ingotSmeltInto(Samarium)
+                .arcSmeltInto(Samarium)
+                .macerateInto(Samarium)
+                .blastTemp(1345)
+                .build();
+        Samarium.getProperty(PropertyKey.INGOT).setMagneticMaterial(SamariumMagnetic);
     }
 }

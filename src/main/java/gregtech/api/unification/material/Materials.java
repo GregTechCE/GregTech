@@ -413,6 +413,8 @@ public class Materials {
     public static Material HydrochloricAcid;
     public static Material Steam;
     public static Material DistilledWater;
+    public static Material SodiumPotassium;
+    public static Material SamariumMagnetic;
 
     /**
      * Organic chemistry

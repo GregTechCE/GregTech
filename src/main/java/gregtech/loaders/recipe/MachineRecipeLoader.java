@@ -305,6 +305,12 @@ public class MachineRecipeLoader {
             .fluidOutputs(Materials.IndiumConcentrate.getFluid(1000))
             .duration(60).EUt(150).buildAndRegister();
 
+        RecipeMaps.MIXER_RECIPES.recipeBuilder()
+            .input(OrePrefix.dust, Materials.Sodium)
+            .input(OrePrefix.dust, Materials.Potassium)
+            .fluidOutputs(Materials.SodiumPotassium.getFluid(1000))
+            .duration(400).EUt(30).buildAndRegister();
+
     }
 
     private static void registerOrganicRecyclingRecipes() {
