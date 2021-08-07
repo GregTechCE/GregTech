@@ -875,30 +875,29 @@ public class MachineRecipeLoader {
     private static void registerNBTRemoval() {
         for (MetaTileEntityQuantumChest chest : MetaTileEntities.QUANTUM_CHEST)
             if (chest != null) {
-                ModHandler.addShapelessRecipe("quantum_chest_nbt_" + chest.getTier() + chest.metaTileEntityId, chest.getStackForm(), chest.getStackForm());
+                ModHandler.addShapelessRecipe("quantum_chest_nbt_" + chest.getTier() + chest.getMetaName(), chest.getStackForm(), chest.getStackForm());
             }
 
         for (MetaTileEntityQuantumTank tank : MetaTileEntities.QUANTUM_TANK)
             if (tank != null) {
-                ModHandler.addShapelessRecipe("quantum_tank_nbt_" + tank.getTier() + tank.metaTileEntityId, tank.getStackForm(), tank.getStackForm());
+                ModHandler.addShapelessRecipe("quantum_tank_nbt_" + tank.getTier() + tank.getMetaName(), tank.getStackForm(), tank.getStackForm());
             }
-        
-        //Drums
-        ModHandler.addShapelessRecipe("drum_nbt_"  + MetaTileEntities.WOODEN_DRUM.metaTileEntityId, MetaTileEntities.WOODEN_DRUM.getStackForm(), MetaTileEntities.WOODEN_DRUM.getStackForm());
-        ModHandler.addShapelessRecipe("drum_nbt_"  + MetaTileEntities.BRONZE_DRUM.metaTileEntityId, MetaTileEntities.BRONZE_DRUM.getStackForm(), MetaTileEntities.BRONZE_DRUM.getStackForm());
-        ModHandler.addShapelessRecipe("drum_nbt_"  + MetaTileEntities.STEEL_DRUM.metaTileEntityId, MetaTileEntities.STEEL_DRUM.getStackForm(), MetaTileEntities.STEEL_DRUM.getStackForm());
-        ModHandler.addShapelessRecipe("drum_nbt_"  + MetaTileEntities.ALUMINIUM_DRUM.metaTileEntityId, MetaTileEntities.ALUMINIUM_DRUM.getStackForm(), MetaTileEntities.ALUMINIUM_DRUM.getStackForm());
-        ModHandler.addShapelessRecipe("drum_nbt_"  + MetaTileEntities.STAINLESS_STEEL_DRUM.metaTileEntityId, MetaTileEntities.STAINLESS_STEEL_DRUM.getStackForm(), MetaTileEntities.STAINLESS_STEEL_DRUM.getStackForm());
-        ModHandler.addShapelessRecipe("drum_nbt_"  + MetaTileEntities.TITANIUM_DRUM.metaTileEntityId, MetaTileEntities.TITANIUM_DRUM.getStackForm(), MetaTileEntities.TITANIUM_DRUM.getStackForm());
-        ModHandler.addShapelessRecipe("drum_nbt_"  + MetaTileEntities.TUNGSTENSTEEL_DRUM.metaTileEntityId, MetaTileEntities.TUNGSTENSTEEL_DRUM.getStackForm(), MetaTileEntities.TUNGSTENSTEEL_DRUM.getStackForm());
-        //Tanks
-        ModHandler.addShapelessRecipe("tank_nbt_"  + MetaTileEntities.WOODEN_TANK.metaTileEntityId, MetaTileEntities.WOODEN_TANK.getStackForm(), MetaTileEntities.WOODEN_TANK.getStackForm());
-        ModHandler.addShapelessRecipe("tank_nbt_"  + MetaTileEntities.BRONZE_TANK.metaTileEntityId, MetaTileEntities.BRONZE_TANK.getStackForm(), MetaTileEntities.BRONZE_TANK.getStackForm());
-        ModHandler.addShapelessRecipe("tank_nbt_"  + MetaTileEntities.STEEL_TANK.metaTileEntityId, MetaTileEntities.STEEL_TANK.getStackForm(), MetaTileEntities.STEEL_TANK.getStackForm());
-        ModHandler.addShapelessRecipe("tank_nbt_"  + MetaTileEntities.ALUMINIUM_TANK.metaTileEntityId, MetaTileEntities.ALUMINIUM_TANK.getStackForm(), MetaTileEntities.ALUMINIUM_TANK.getStackForm());
-        ModHandler.addShapelessRecipe("tank_nbt_"  + MetaTileEntities.STAINLESS_STEEL_TANK.metaTileEntityId, MetaTileEntities.STAINLESS_STEEL_TANK.getStackForm(), MetaTileEntities.STAINLESS_STEEL_TANK.getStackForm());
-        ModHandler.addShapelessRecipe("tank_nbt_"  + MetaTileEntities.TITANIUM_TANK.metaTileEntityId, MetaTileEntities.TITANIUM_TANK.getStackForm(), MetaTileEntities.TITANIUM_TANK.getStackForm());
-        ModHandler.addShapelessRecipe("tank_nbt_"  + MetaTileEntities.TUNGSTENSTEEL_TANK.metaTileEntityId, MetaTileEntities.TUNGSTENSTEEL_TANK.getStackForm(), MetaTileEntities.TUNGSTENSTEEL_TANK.getStackForm());
 
+        //Drums
+        ModHandler.addShapelessRecipe("drum_nbt_wood", MetaTileEntities.WOODEN_DRUM.getStackForm(), MetaTileEntities.WOODEN_DRUM.getStackForm());
+        ModHandler.addShapelessRecipe("drum_nbt_bronze", MetaTileEntities.BRONZE_DRUM.getStackForm(), MetaTileEntities.BRONZE_DRUM.getStackForm());
+        ModHandler.addShapelessRecipe("drum_nbt_steel", MetaTileEntities.STEEL_DRUM.getStackForm(), MetaTileEntities.STEEL_DRUM.getStackForm());
+        ModHandler.addShapelessRecipe("drum_nbt_aluminium", MetaTileEntities.ALUMINIUM_DRUM.getStackForm(), MetaTileEntities.ALUMINIUM_DRUM.getStackForm());
+        ModHandler.addShapelessRecipe("drum_nbt_stainless_steel", MetaTileEntities.STAINLESS_STEEL_DRUM.getStackForm(), MetaTileEntities.STAINLESS_STEEL_DRUM.getStackForm());
+        ModHandler.addShapelessRecipe("drum_nbt_titanium", MetaTileEntities.TITANIUM_DRUM.getStackForm(), MetaTileEntities.TITANIUM_DRUM.getStackForm());
+        ModHandler.addShapelessRecipe("drum_nbt_tungstensteel", MetaTileEntities.TUNGSTENSTEEL_DRUM.getStackForm(), MetaTileEntities.TUNGSTENSTEEL_DRUM.getStackForm());
+        //Tanks
+        ModHandler.addShapelessRecipe("tank_nbt_wood", MetaTileEntities.WOODEN_TANK.getStackForm(), MetaTileEntities.WOODEN_TANK.getStackForm());
+        ModHandler.addShapelessRecipe("tank_nbt_bronze", MetaTileEntities.BRONZE_TANK.getStackForm(), MetaTileEntities.BRONZE_TANK.getStackForm());
+        ModHandler.addShapelessRecipe("tank_nbt_steel", MetaTileEntities.STEEL_TANK.getStackForm(), MetaTileEntities.STEEL_TANK.getStackForm());
+        ModHandler.addShapelessRecipe("tank_nbt_aluminium", MetaTileEntities.ALUMINIUM_TANK.getStackForm(), MetaTileEntities.ALUMINIUM_TANK.getStackForm());
+        ModHandler.addShapelessRecipe("tank_nbt_stainless_steel", MetaTileEntities.STAINLESS_STEEL_TANK.getStackForm(), MetaTileEntities.STAINLESS_STEEL_TANK.getStackForm());
+        ModHandler.addShapelessRecipe("tank_nbt_titanium", MetaTileEntities.TITANIUM_TANK.getStackForm(), MetaTileEntities.TITANIUM_TANK.getStackForm());
+        ModHandler.addShapelessRecipe("tank_nbt_tungstensteel", MetaTileEntities.TUNGSTENSTEEL_TANK.getStackForm(), MetaTileEntities.TUNGSTENSTEEL_TANK.getStackForm());
     }
 }
