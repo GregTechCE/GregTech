@@ -1,5 +1,6 @@
 package gregtech.common.worldgen;
 
+import gregtech.api.GTValues;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.blocks.wood.BlockGregLog.LogVariant;
 import gregtech.common.blocks.wood.BlockGregSapling;
@@ -26,7 +27,11 @@ public class WorldGenRubberTree implements IWorldGenerator {
             !world.provider.isSurfaceWorld()) {
             return; //do not generate in flat worlds, or in non-surface worlds
         }
-        BlockPos randomPos = new BlockPos(chunkX * 16 + 8, 0, chunkZ * 16 + 8);
+        BlockPos randomPos = new BlockPos(
+                chunkX * 16 + GTValues.RNG.nextInt(16),
+                0,
+                chunkZ * 16 + GTValues.RNG.nextInt(16)
+        );
         Biome biome = world.getBiome(randomPos);
 
         if (BiomeDictionary.hasType(biome, Type.COLD) ||

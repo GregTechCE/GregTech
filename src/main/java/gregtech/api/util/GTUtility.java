@@ -3,6 +3,7 @@ package gregtech.api.util;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 import com.google.common.collect.Lists;
+import gregtech.api.GTValues;
 import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.IElectricItem;
 import gregtech.api.capability.IMultipleTankHandler;
@@ -445,6 +446,10 @@ public class GTUtility {
                 return i;
         }
         throw new IllegalArgumentException("Invalid weight");
+    }
+
+    public static <T> int getRandomItem(List<? extends Entry<Integer, T>> randomList, int size) {
+        return getRandomItem(GTValues.RNG, randomList, size);
     }
 
     @Nullable

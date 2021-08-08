@@ -1,5 +1,6 @@
 package gregtech.api;
 
+import gregtech.api.util.XSTR;
 import gregtech.common.ConfigHolder;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.oredict.OreDictionary;
@@ -36,6 +37,8 @@ public class GTValues {
      * The Item WildCard Tag. Even shorter than the "-1" of the past
      */
     public static final short W = OreDictionary.WILDCARD_VALUE;
+
+    public static final XSTR RNG = new XSTR();
 
     /**
      * The Voltage Tiers. Use this Array instead of the old named Voltage Variables
