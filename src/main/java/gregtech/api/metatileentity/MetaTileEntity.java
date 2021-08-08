@@ -61,7 +61,7 @@ import static gregtech.api.util.InventoryUtils.simulateItemStackMerge;
 
 public abstract class MetaTileEntity implements ICoverable {
 
-    public static int DEFAULT_PAINTING_COLOR = ConfigHolder.U.GT5u.defaultPaintingColor;
+    public static final int DEFAULT_PAINTING_COLOR = ConfigHolder.U.GT5u.defaultPaintingColor;
     public static final IndexedCuboid6 FULL_CUBE_COLLISION = new IndexedCuboid6(null, Cuboid6.full);
     public static final String TAG_KEY_PAINTING_COLOR = "PaintingColor";
     public static final String TAG_KEY_FRAGILE = "Fragile";
@@ -79,7 +79,7 @@ public abstract class MetaTileEntity implements ICoverable {
 
     protected IFluidHandler fluidInventory;
 
-    protected List<MTETrait> mteTraits = new ArrayList<>();
+    protected final List<MTETrait> mteTraits = new ArrayList<>();
 
     protected EnumFacing frontFacing = EnumFacing.NORTH;
     protected int paintingColor = DEFAULT_PAINTING_COLOR;

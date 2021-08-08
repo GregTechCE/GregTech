@@ -21,7 +21,7 @@ public class CachedRecipeData {
     private final IRecipe recipe;
     private final ItemStack expectedOutput;
     public final InventoryCrafting inventory = new InventoryCrafting(new DummyContainer(), 3, 3);
-    private Map<ItemStackKey, Integer> requiredItems = new HashMap<>();
+    private final Map<ItemStackKey, Integer> requiredItems = new HashMap<>();
     private boolean ingredientsMatched = false;
     private long lastTickChecked = -1L;
     private boolean recipeValidCache = false;

@@ -18,6 +18,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
 import java.util.Random;
 
 public class BlockGregLog extends BlockLog {
@@ -35,12 +36,13 @@ public class BlockGregLog extends BlockLog {
     }
 
     @Override
-    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
+    public void getSubBlocks(@Nonnull CreativeTabs itemIn, @Nonnull NonNullList<ItemStack> items) {
         for (LogVariant logVariant : LogVariant.values()) {
             items.add(getItem(logVariant));
         }
     }
 
+    @Nonnull
     @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, VARIANT, LOG_AXIS, NATURAL);
@@ -54,6 +56,7 @@ public class BlockGregLog extends BlockLog {
         return new ItemStack(this, amount, variant.ordinal() * 2);
     }
 
+    @Nonnull
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return getDefaultState()
@@ -69,20 +72,22 @@ public class BlockGregLog extends BlockLog {
             (state.getValue(NATURAL) ? 1 : 0);
     }
 
+    @Nonnull
     @Override
     protected ItemStack getSilkTouchDrop(IBlockState state) {
         return new ItemStack(Item.getItemFromBlock(this), 1,
             state.getValue(VARIANT).ordinal());
     }
 
+    @Nonnull
     @Override
-    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+    public ItemStack getPickBlock(IBlockState state, @Nonnull RayTraceResult target, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer player) {
         return new ItemStack(Item.getItemFromBlock(this), 1,
             state.getValue(VARIANT).ordinal());
     }
 
     @Override
-    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+    public void getDrops(@Nonnull NonNullList<ItemStack> drops, @Nonnull IBlockAccess world, @Nonnull BlockPos pos, IBlockState state, int fortune) {
         Random rand = world instanceof World ? ((World) world).rand : RANDOM;
         if (state.getValue(NATURAL)) {
             drops.add(MetaItems.RUBBER_DROP.getStackForm(1 + rand.nextInt(2)));
@@ -100,6 +105,7 @@ public class BlockGregLog extends BlockLog {
             this.name = name;
         }
 
+        @Nonnull
         @Override
         public String getName() {
             return name;

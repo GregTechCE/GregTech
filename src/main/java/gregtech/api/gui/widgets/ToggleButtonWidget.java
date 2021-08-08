@@ -22,8 +22,8 @@ import java.util.function.BooleanSupplier;
 public class ToggleButtonWidget extends Widget {
 
     protected TextureArea buttonTexture;
-    private BooleanSupplier isPressedCondition;
-    private BooleanConsumer setPressedExecutor;
+    private final BooleanSupplier isPressedCondition;
+    private final BooleanConsumer setPressedExecutor;
     private String tooltipText;
     protected boolean isPressed;
 

@@ -29,10 +29,10 @@ import static gregtech.api.gui.impl.ModularUIGui.*;
 public class CycleButtonWidget extends Widget {
 
     protected TextureArea buttonTexture = GuiTextures.VANILLA_BUTTON.getSubArea(0.0, 0.0, 1.0, 0.5);
-    private String[] optionNames;
+    private final String[] optionNames;
     private int textColor = 0xFFFFFF;
-    private IntSupplier currentOptionSupplier;
-    private IntConsumer setOptionExecutor;
+    private final IntSupplier currentOptionSupplier;
+    private final IntConsumer setOptionExecutor;
     private final int RIGHT_MOUSE = 1;
     protected int currentOption;
     protected String tooltipHoverString;

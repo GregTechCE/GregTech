@@ -36,7 +36,7 @@ public class StoneRenderer implements ICCBlockRenderer {
 
     private static final StoneRenderer INSTANCE = new StoneRenderer();
     public static EnumBlockRenderType BLOCK_RENDER_TYPE;
-    private static CCModel[] placeholderModels = new CCModel[1];
+    private static final CCModel[] placeholderModels = new CCModel[1];
 
     public static void preInit() {
         BLOCK_RENDER_TYPE = BlockRenderingRegistry.createRenderType("gt_stone");

@@ -21,6 +21,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -111,7 +112,7 @@ public class MetaTileEntityTESR extends TileEntitySpecialRenderer<MetaTileEntity
     }
 
     @Override
-    public void renderTileEntityFast(MetaTileEntityHolder te, double x, double y, double z, float partialTicks, int destroyStage, float partial, BufferBuilder buffer) {
+    public void renderTileEntityFast(MetaTileEntityHolder te, double x, double y, double z, float partialTicks, int destroyStage, float partial, @Nonnull BufferBuilder buffer) {
         MetaTileEntity metaTileEntity = te.getMetaTileEntity();
         if (metaTileEntity instanceof IFastRenderMetaTileEntity) {
             CCRenderState renderState = CCRenderState.instance();
@@ -124,7 +125,7 @@ public class MetaTileEntityTESR extends TileEntitySpecialRenderer<MetaTileEntity
     }
 
     @Override
-    public boolean isGlobalRenderer(MetaTileEntityHolder te) {
+    public boolean isGlobalRenderer(@Nonnull MetaTileEntityHolder te) {
         if (te instanceof IRenderMetaTileEntity) {
             if (((IRenderMetaTileEntity) te).isGlobalRenderer()) {
                 return true;

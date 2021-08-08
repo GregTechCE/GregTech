@@ -55,8 +55,8 @@ public class MetaTileEntityPump extends TieredMetaTileEntity {
     private static final int EXTRA_PUMP_RANGE = 8;
     private static final int PUMP_SPEED_BASE = 40;
 
-    private Deque<BlockPos> fluidSourceBlocks = new ArrayDeque<>();
-    private Deque<BlockPos> blocksToCheck = new ArrayDeque<>();
+    private final Deque<BlockPos> fluidSourceBlocks = new ArrayDeque<>();
+    private final Deque<BlockPos> blocksToCheck = new ArrayDeque<>();
     private boolean initializedQueue = false;
     private int pumpHeadY;
 

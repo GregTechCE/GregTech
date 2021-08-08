@@ -18,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.SPacketSetSlot;
 
+import javax.annotation.Nonnull;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -28,7 +29,7 @@ public class ModularUIContainer extends Container implements WidgetUIAccess {
     private final ModularUI modularUI;
 
     public boolean accumulateWidgetUpdateData = false;
-    public List<PacketUIWidgetUpdate> accumulatedUpdates = new ArrayList<>();
+    public final List<PacketUIWidgetUpdate> accumulatedUpdates = new ArrayList<>();
 
     public ModularUIContainer(ModularUI modularUI) {
         this.modularUI = modularUI;
@@ -99,13 +100,13 @@ public class ModularUIContainer extends Container implements WidgetUIAccess {
     }
 
     @Override
-    public void onContainerClosed(EntityPlayer playerIn) {
+    public void onContainerClosed(@Nonnull EntityPlayer playerIn) {
         super.onContainerClosed(playerIn);
         modularUI.triggerCloseListeners();
     }
 
     @Override
-    public void addListener(IContainerListener listener) {
+    public void addListener(@Nonnull IContainerListener listener) {
         super.addListener(listener);
         modularUI.guiWidgets.values().forEach(Widget::detectAndSendChanges);
     }
@@ -136,8 +137,9 @@ public class ModularUIContainer extends Container implements WidgetUIAccess {
         }
     }
 
+    @Nonnull
     @Override
-    public ItemStack slotClick(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player) {
+    public ItemStack slotClick(int slotId, int dragType, @Nonnull ClickType clickTypeIn, @Nonnull EntityPlayer player) {
         if (slotId >= 0 && slotId < inventorySlots.size()) {
             Slot slot = getSlot(slotId);
             ItemStack result = slotMap.get(slot).slotClick(dragType, clickTypeIn, player);
@@ -149,7 +151,7 @@ public class ModularUIContainer extends Container implements WidgetUIAccess {
         return super.slotClick(slotId, dragType, clickTypeIn, player);
     }
 
-    private PerTickIntCounter transferredPerTick = new PerTickIntCounter(0);
+    private final PerTickIntCounter transferredPerTick = new PerTickIntCounter(0);
 
     private List<INativeWidget> getShiftClickSlots(ItemStack itemStack, boolean fromContainer) {
         return slotMap.values().stream()
@@ -167,8 +169,9 @@ public class ModularUIContainer extends Container implements WidgetUIAccess {
         return GTUtility.mergeItemStack(itemStack, inventorySlots, simulate);
     }
 
+    @Nonnull
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer player, int index) {
+    public ItemStack transferStackInSlot(@Nonnull EntityPlayer player, int index) {
         Slot slot = inventorySlots.get(index);
         if (!slot.canTakeStack(player)) {
             return ItemStack.EMPTY;
@@ -217,12 +220,12 @@ public class ModularUIContainer extends Container implements WidgetUIAccess {
     }
 
     @Override
-    public boolean canMergeSlot(ItemStack stack, Slot slotIn) {
+    public boolean canMergeSlot(@Nonnull ItemStack stack, @Nonnull Slot slotIn) {
         return slotMap.get(slotIn).canMergeSlot(stack);
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer playerIn) {
+    public boolean canInteractWith(@Nonnull EntityPlayer playerIn) {
         return true;
     }
 
@@ -262,22 +265,23 @@ public class ModularUIContainer extends Container implements WidgetUIAccess {
             super(EMPTY_INVENTORY, 0, -100000, -100000);
         }
 
+        @Nonnull
         @Override
         public ItemStack getStack() {
             return ItemStack.EMPTY;
         }
 
         @Override
-        public void putStack(ItemStack stack) {
+        public void putStack(@Nonnull ItemStack stack) {
         }
 
         @Override
-        public boolean isItemValid(ItemStack stack) {
+        public boolean isItemValid(@Nonnull ItemStack stack) {
             return false;
         }
 
         @Override
-        public boolean canTakeStack(EntityPlayer playerIn) {
+        public boolean canTakeStack(@Nonnull EntityPlayer playerIn) {
             return false;
         }
 

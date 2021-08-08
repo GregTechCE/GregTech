@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public class BlacklistedBlockFiller extends BlockFiller {
 
     private FillerEntry blockStateFiller;
-    private List<IBlockState> blacklist;
+    private final List<IBlockState> blacklist;
 
     public BlacklistedBlockFiller(List<IBlockState> blacklist) {
         this.blacklist = blacklist;

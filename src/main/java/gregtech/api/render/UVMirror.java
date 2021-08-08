@@ -4,10 +4,10 @@ import codechicken.lib.vec.uv.UV;
 import codechicken.lib.vec.uv.UVTransformation;
 
 public class UVMirror extends UVTransformation{
-    public double minU;
-    public double maxU;
-    public double minV;
-    public double maxV;
+    public final double minU;
+    public final double maxU;
+    public final double minV;
+    public final double maxV;
 
     public UVMirror(double minU, double maxU, double minV, double maxV) {
         this.minU = minU;

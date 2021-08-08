@@ -4,6 +4,8 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.IStringSerializable;
 
+import javax.annotation.Nonnull;
+
 public class BlockMineral extends StoneBlock<BlockMineral.MineralVariant> {
 
     public BlockMineral() {
@@ -31,6 +33,7 @@ public class BlockMineral extends StoneBlock<BlockMineral.MineralVariant> {
             this.name = name;
         }
 
+        @Nonnull
         @Override
         public String getName() {
             return this.name;

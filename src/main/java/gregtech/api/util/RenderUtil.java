@@ -9,7 +9,7 @@ import java.util.Stack;
 
 public class RenderUtil {
 
-    private static Stack<int[]> scissorFrameStack = new Stack<>();
+    private static final Stack<int[]> scissorFrameStack = new Stack<>();
 
     public static void useScissor(int x, int y, int width, int height, Runnable codeBlock) {
         pushScissorFrame(x, y, width, height);

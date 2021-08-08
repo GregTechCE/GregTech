@@ -27,7 +27,7 @@ public class PipeCoverableImplementation implements ICoverable {
 
     private final IPipeTile<?, ?> holder;
     private final CoverBehavior[] coverBehaviors = new CoverBehavior[6];
-    private int[] sidedRedstoneInput = new int[6];
+    private final int[] sidedRedstoneInput = new int[6];
 
     public PipeCoverableImplementation(IPipeTile<?, ?> holder) {
         this.holder = holder;

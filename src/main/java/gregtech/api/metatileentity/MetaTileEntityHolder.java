@@ -23,6 +23,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants.NBT;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -80,7 +81,7 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound compound) {
+    public void readFromNBT(@Nonnull NBTTagCompound compound) {
         super.readFromNBT(compound);
         if (compound.hasKey("MetaId", NBT.TAG_STRING)) {
             String metaTileEntityIdRaw = compound.getString("MetaId");
@@ -127,8 +128,9 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
         return null;
     }
 
+    @Nonnull
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+    public NBTTagCompound writeToNBT(@Nonnull NBTTagCompound compound) {
         super.writeToNBT(compound);
         if (metaTileEntity != null) {
             compound.setString("MetaId", metaTileEntity.metaTileEntityId.toString());
@@ -140,14 +142,14 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
     }
 
     @Override
-    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
         Object metaTileEntityValue = metaTileEntity == null ? null : metaTileEntity.getCoverCapability(capability, facing);
         return metaTileEntityValue != null || super.hasCapability(capability, facing);
     }
 
     @Nullable
     @Override
-    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+    public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
         T metaTileEntityValue = metaTileEntity == null ? null : metaTileEntity.getCoverCapability(capability, facing);
         return metaTileEntityValue != null ? metaTileEntityValue : super.getCapability(capability, facing);
     }
@@ -238,19 +240,19 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
     }
 
     @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
+    public boolean shouldRefresh(@Nonnull World world, @Nonnull BlockPos pos, IBlockState oldState, IBlockState newSate) {
         return oldState.getBlock() != newSate.getBlock(); //MetaTileEntityHolder should never refresh (until block changes)
     }
 
     @Override
-    public void rotate(Rotation rotationIn) {
+    public void rotate(@Nonnull Rotation rotationIn) {
         if (metaTileEntity != null) {
             metaTileEntity.setFrontFacing(rotationIn.rotate(metaTileEntity.getFrontFacing()));
         }
     }
 
     @Override
-    public void mirror(Mirror mirrorIn) {
+    public void mirror(@Nonnull Mirror mirrorIn) {
         if (metaTileEntity != null) {
             rotate(mirrorIn.toRotation(metaTileEntity.getFrontFacing()));
         }
@@ -275,6 +277,7 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
         return false;
     }
 
+    @Nonnull
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
         if (metaTileEntity instanceof IRenderMetaTileEntity) {

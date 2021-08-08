@@ -20,7 +20,7 @@ public class ScrollableListWidget extends AbstractWidgetGroup {
     protected int totalListHeight;
     protected int slotHeight;
     protected int scrollOffset;
-    protected int scrollPaneWidth = 10;
+    protected final int scrollPaneWidth = 10;
     protected int lastMouseX;
     protected int lastMouseY;
     protected boolean draggedOnScrollBar;

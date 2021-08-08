@@ -13,7 +13,7 @@ import java.util.*;
 @EventBusSubscriber(modid = GTValues.MODID)
 public class TaskScheduler {
 
-    private static Map<World, List<Task>> tasksPerWorld = new HashMap<>();
+    private static final Map<World, List<Task>> tasksPerWorld = new HashMap<>();
 
     public static void scheduleTask(World world, Task task) {
         if(world.isRemote) {

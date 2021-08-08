@@ -28,6 +28,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import org.apache.commons.lang3.tuple.Pair;
 
+import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -166,9 +167,10 @@ public class BlockItemPipe extends BlockMaterialPipe<ItemPipeType, ItemPipePrope
         }
     }
 
+    @Nonnull
     @Override
     @SideOnly(Side.CLIENT)
-    public EnumBlockRenderType getRenderType(IBlockState state) {
+    public EnumBlockRenderType getRenderType(@Nonnull IBlockState state) {
         return ItemPipeRenderer.BLOCK_RENDER_TYPE;
     }
 

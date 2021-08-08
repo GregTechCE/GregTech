@@ -19,7 +19,7 @@ import java.util.Map.Entry;
 
 public class CraftingSlotWidget extends SlotWidget implements IRecipeTransferHandlerWidget {
 
-    private CraftingRecipeResolver recipeResolver;
+    private final CraftingRecipeResolver recipeResolver;
     private boolean canTakeStack = false;
 
     public CraftingSlotWidget(CraftingRecipeResolver recipeResolver, int slotIndex, int xPosition, int yPosition) {

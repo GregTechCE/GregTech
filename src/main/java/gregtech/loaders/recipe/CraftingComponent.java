@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static gregtech.common.blocks.HermeticCasings.HermeticCasingsType.*;
-import static gregtech.common.blocks.HermeticCasings.HermeticCasingsType.HERMETIC_LV;
 
 public class CraftingComponent {
 

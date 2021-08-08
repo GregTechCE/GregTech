@@ -21,6 +21,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
 import net.minecraftforge.items.ItemStackHandler;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -247,6 +248,7 @@ public class CoverMachineController extends CoverBehavior implements CoverWithUI
         }
 
 
+        @Nonnull
         @Override
         public String getName() {
             return localeName;

@@ -8,7 +8,7 @@ import java.util.function.Supplier;
 
 public class WidgetGroupItemFilter extends AbstractWidgetGroup {
 
-    private Supplier<ItemFilter> itemFilterSupplier;
+    private final Supplier<ItemFilter> itemFilterSupplier;
     private ItemFilter itemFilter;
     private int maxStackSize = 1;
 

@@ -63,7 +63,7 @@ public abstract class SteamBoiler extends MetaTileEntity {
 
     private boolean isBurning;
     private boolean wasBurningAndNeedsUpdate;
-    private ItemStackHandler containerInventory;
+    private final ItemStackHandler containerInventory;
 
     public SteamBoiler(ResourceLocation metaTileEntityId, boolean isHighPressure, OrientedOverlayRenderer renderer, int baseSteamOutput) {
         super(metaTileEntityId);

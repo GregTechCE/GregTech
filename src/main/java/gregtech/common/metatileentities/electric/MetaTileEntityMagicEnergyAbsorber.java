@@ -42,7 +42,7 @@ import java.util.stream.Collectors;
 
 public class MetaTileEntityMagicEnergyAbsorber extends TieredMetaTileEntity {
 
-    private TIntList connectedCrystalsIds = new TIntArrayList();
+    private final TIntList connectedCrystalsIds = new TIntArrayList();
     private boolean hasDragonEggAmplifier = false;
     private boolean isActive = false;
 

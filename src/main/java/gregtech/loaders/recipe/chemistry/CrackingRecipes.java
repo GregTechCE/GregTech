@@ -2,7 +2,6 @@ package gregtech.loaders.recipe.chemistry;
 
 import static gregtech.api.recipes.RecipeMaps.CRACKING_RECIPES;
 import static gregtech.api.unification.material.Materials.*;
-import static gregtech.api.unification.material.Materials.SteamCrackedButadiene;
 
 public class CrackingRecipes {
 

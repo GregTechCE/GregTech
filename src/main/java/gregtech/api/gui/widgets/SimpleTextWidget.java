@@ -20,9 +20,9 @@ import static gregtech.api.gui.impl.ModularUIGui.*;
  */
 public class SimpleTextWidget extends Widget {
 
-    protected String formatLocale;
-    protected int color;
-    protected Supplier<String> textSupplier;
+    protected final String formatLocale;
+    protected final int color;
+    protected final Supplier<String> textSupplier;
     protected String lastText = "";
 
     public SimpleTextWidget(int xPosition, int yPosition, String formatLocale, int color, Supplier<String> textSupplier) {

@@ -55,8 +55,8 @@ import java.util.Random;
 @SideOnly(Side.CLIENT)
 public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer {
 
-    public static ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(new ResourceLocation(GTValues.MODID, "machine"), "normal");
-    public static MetaTileEntityRenderer INSTANCE = new MetaTileEntityRenderer();
+    public static final ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(new ResourceLocation(GTValues.MODID, "machine"), "normal");
+    public static final MetaTileEntityRenderer INSTANCE = new MetaTileEntityRenderer();
     public static EnumBlockRenderType BLOCK_RENDER_TYPE;
 
     public static void preInit() {

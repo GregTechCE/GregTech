@@ -48,8 +48,8 @@ import java.util.List;
 public class MetaTileEntitySteamHatch extends MetaTileEntityMultiblockPart implements IMultiblockAbilityPart<IFluidTank> {
 
     private static final int INVENTORY_SIZE = 64000;
-    private ItemStackHandler containerInventory;
-    private FluidTank steamFluidTank;
+    private final ItemStackHandler containerInventory;
+    private final FluidTank steamFluidTank;
 
     public MetaTileEntitySteamHatch(ResourceLocation metaTileEntityId) {
         super(metaTileEntityId, 0);

@@ -26,6 +26,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
+import javax.annotation.Nonnull;
 import javax.vecmath.Vector3f;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -287,7 +288,7 @@ public class WorldSceneRenderer {
         private final Vector3f maxPos = new Vector3f(Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE);
 
         @Override
-        public boolean setBlockState(BlockPos pos, IBlockState newState, int flags) {
+        public boolean setBlockState(@Nonnull BlockPos pos, IBlockState newState, int flags) {
             if (newState.getBlock() == Blocks.AIR) {
                 renderedBlocks.remove(pos);
             } else {
@@ -302,8 +303,9 @@ public class WorldSceneRenderer {
             return super.setBlockState(pos, newState, flags);
         }
 
+        @Nonnull
         @Override
-        public IBlockState getBlockState(BlockPos pos) {
+        public IBlockState getBlockState(@Nonnull BlockPos pos) {
             if (renderFilter != null && !renderFilter.test(pos))
                 return Blocks.AIR.getDefaultState(); //return air if not rendering this block
             return super.getBlockState(pos);

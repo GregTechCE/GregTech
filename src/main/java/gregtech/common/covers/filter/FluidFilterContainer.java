@@ -16,12 +16,10 @@ import java.util.function.Consumer;
 
 public class FluidFilterContainer implements INBTSerializable<NBTTagCompound> {
 
-    private final IDirtyNotifiable dirtyNotifiable;
     private final ItemStackHandler filterInventory;
     private final FluidFilterWrapper filterWrapper;
 
     public FluidFilterContainer(IDirtyNotifiable dirtyNotifiable) {
-        this.dirtyNotifiable = dirtyNotifiable;
         this.filterWrapper = new FluidFilterWrapper(dirtyNotifiable);
         this.filterInventory = new ItemStackHandler(1) {
             @Override

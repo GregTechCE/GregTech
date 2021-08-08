@@ -21,7 +21,7 @@ import java.util.BitSet;
 
 public class EnergyContainerBatteryBuffer extends MTETrait implements IEnergyContainer {
 
-    private BitSet batterySlotsUsedThisTick = new BitSet();
+    private final BitSet batterySlotsUsedThisTick = new BitSet();
     private final int tier;
 
     public EnergyContainerBatteryBuffer(MetaTileEntity metaTileEntity, int tier) {

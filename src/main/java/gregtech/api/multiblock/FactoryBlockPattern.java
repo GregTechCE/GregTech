@@ -30,7 +30,7 @@ public class FactoryBlockPattern {
     private final List<Predicate<PatternMatchContext>> contextValidators = new ArrayList<>();
     private int aisleHeight;
     private int rowWidth;
-    private RelativeDirection[] structureDir = new RelativeDirection[3];
+    private final RelativeDirection[] structureDir = new RelativeDirection[3];
 
     private FactoryBlockPattern(RelativeDirection charDir, RelativeDirection stringDir, RelativeDirection aisleDir) {
         structureDir[0] = charDir;

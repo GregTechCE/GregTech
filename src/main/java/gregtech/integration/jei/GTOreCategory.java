@@ -17,6 +17,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.world.DimensionType;
 import net.minecraftforge.common.DimensionManager;
 
+import javax.annotation.Nonnull;
 import java.util.*;
 import java.util.function.Supplier;
 
@@ -35,8 +36,8 @@ public class GTOreCategory extends PrimitiveRecipeCategory<GTOreInfo, GTOreInfo>
     protected List<Integer> dimensionIDs;
     protected final int FONT_HEIGHT = Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT;
     protected final Map<Integer, String> namedDimensions = WorldGenRegistry.getNamedDimensions();
-    private Map<DimensionType, IntSortedSet> dimMap =  DimensionManager.getRegisteredDimensions();
-    private Supplier<List<Integer>> dimension = this::getAllRegisteredDimensions;
+    private final Map<DimensionType, IntSortedSet> dimMap =  DimensionManager.getRegisteredDimensions();
+    private final Supplier<List<Integer>> dimension = this::getAllRegisteredDimensions;
     private final int NUM_OF_SLOTS = 5;
     private final int SLOT_WIDTH = 18;
     private final int SLOT_HEIGHT = 18;
@@ -52,7 +53,7 @@ public class GTOreCategory extends PrimitiveRecipeCategory<GTOreInfo, GTOreInfo>
 
 
     @Override
-    public void setRecipe(IRecipeLayout recipeLayout, GTOreInfo recipeWrapper, IIngredients ingredients) {
+    public void setRecipe(IRecipeLayout recipeLayout, GTOreInfo recipeWrapper, @Nonnull IIngredients ingredients) {
 
         IGuiItemStackGroup itemStackGroup = recipeLayout.getItemStacks();
         int baseYPos = 19;
@@ -80,8 +81,9 @@ public class GTOreCategory extends PrimitiveRecipeCategory<GTOreInfo, GTOreInfo>
         definition = recipeWrapper.getDefinition();
     }
 
+    @Nonnull
     @Override
-    public IRecipeWrapper getRecipeWrapper(GTOreInfo recipe) {
+    public IRecipeWrapper getRecipeWrapper(@Nonnull GTOreInfo recipe) {
         return recipe;
     }
 

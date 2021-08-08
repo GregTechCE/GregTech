@@ -35,16 +35,19 @@ public class BlockGregLeaves extends BlockLeaves {
         this.leavesFancy = true;
     }
 
+    @Nonnull
     @Override
     public EnumType getWoodType(int meta) {
         return null;
     }
 
+    @Nonnull
     @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, DECAYABLE, CHECK_DECAY, VARIANT);
     }
 
+    @Nonnull
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return getDefaultState()
@@ -60,8 +63,9 @@ public class BlockGregLeaves extends BlockLeaves {
             state.getValue(VARIANT).ordinal();
     }
 
+    @Nonnull
     @Override
-    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+    public Item getItemDropped(@Nonnull IBlockState state, @Nonnull Random rand, int fortune) {
         return Item.getItemFromBlock(MetaBlocks.SAPLING);
     }
 
@@ -70,13 +74,15 @@ public class BlockGregLeaves extends BlockLeaves {
         return state.getValue(VARIANT).ordinal();
     }
 
+    @Nonnull
     @Override
     protected ItemStack getSilkTouchDrop(IBlockState state) {
         return new ItemStack(this, 1, state.getValue(VARIANT).ordinal());
     }
 
+    @Nonnull
     @Override
-    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
+    public ItemStack getPickBlock(IBlockState state, @Nonnull RayTraceResult target, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer player) {
         return new ItemStack(this, 1, state.getValue(VARIANT).ordinal());
     }
 

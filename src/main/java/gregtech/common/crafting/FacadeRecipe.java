@@ -28,7 +28,7 @@ public class FacadeRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements I
     }
 
     @Override
-    public boolean matches(InventoryCrafting inv, World worldIn) {
+    public boolean matches(@Nonnull InventoryCrafting inv, @Nonnull World worldIn) {
         boolean[] matched = new boolean[ingredients.size()];
         mainLoop: for (int i = 0; i < inv.getSizeInventory(); i++) {
             ItemStack itemStack = inv.getStackInSlot(i);
@@ -65,11 +65,13 @@ public class FacadeRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements I
         return resultStack;
     }
 
+    @Nonnull
     @Override
     public ItemStack getRecipeOutput() {
         return resultStack.copy();
     }
 
+    @Nonnull
     @Override
     public NonNullList<Ingredient> getIngredients() {
         return this.ingredients;
@@ -85,6 +87,7 @@ public class FacadeRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements I
         return true;
     }
 
+    @Nonnull
     @Override
     public String getGroup() {
         return group == null ? "" : group.toString();

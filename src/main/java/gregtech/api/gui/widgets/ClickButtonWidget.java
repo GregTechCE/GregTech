@@ -21,9 +21,9 @@ import static gregtech.api.gui.impl.ModularUIGui.*;
 public class ClickButtonWidget extends Widget {
 
     protected TextureArea buttonTexture = GuiTextures.VANILLA_BUTTON.getSubArea(0.0, 0.0, 1.0, 0.5);
-    protected String displayText;
+    protected final String displayText;
     protected int textColor = 0xFFFFFF;
-    protected Consumer<ClickData> onPressCallback;
+    protected final Consumer<ClickData> onPressCallback;
 
     public ClickButtonWidget(int xPosition, int yPosition, int width, int height, String displayText, Consumer<ClickData> onPressed) {
         super(new Position(xPosition, yPosition), new Size(width, height));

@@ -137,7 +137,7 @@ public class WorldGenRegistry {
 
         List<Path> worldgenFiles = Files.walk(worldgenRootPath)
             .filter(path -> path.toString().endsWith(".json"))
-            .filter(path -> Files.isRegularFile(path))
+            .filter(Files::isRegularFile)
             .collect(Collectors.toList());
 
         for (Path worldgenDefinition : worldgenFiles) {
@@ -179,7 +179,7 @@ public class WorldGenRegistry {
                 GTLog.logger.info("Attempting extraction of standard worldgen definitions from {} to {}",
                     worldgenJarRootPath, worldgenRootPath);
                 List<Path> jarFiles = Files.walk(worldgenJarRootPath)
-                    .filter(jarFile -> Files.isRegularFile(jarFile))
+                    .filter(Files::isRegularFile)
                     .filter(jarPath -> !(jarPath.compareTo(worldgenJarRootPath.resolve("dimensions.json")) == 0))
                     .collect(Collectors.toList());
                 for (Path jarFile : jarFiles) {

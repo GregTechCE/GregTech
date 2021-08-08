@@ -11,7 +11,7 @@ import net.minecraft.world.storage.loot.functions.LootFunction;
 
 public class LootEntryMetaItem extends AbstractItemLootEntry {
 
-    private MetaValueItem metaValueItem;
+    private final MetaValueItem metaValueItem;
 
     protected LootEntryMetaItem(MetaValueItem metaValueItem, int weightIn, int qualityIn, LootFunction[] functionsIn, LootCondition[] conditionsIn, String entryName) {
         super(weightIn, qualityIn, functionsIn, conditionsIn, entryName);

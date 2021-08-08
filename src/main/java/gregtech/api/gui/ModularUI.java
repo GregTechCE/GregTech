@@ -134,11 +134,12 @@ public final class ModularUI implements ISizeProvider {
      */
     public static class Builder {
 
-        private ImmutableBiMap.Builder<Integer, Widget> widgets = ImmutableBiMap.builder();
-        private ImmutableList.Builder<Runnable> openListeners = ImmutableList.builder();
-        private ImmutableList.Builder<Runnable> closeListeners = ImmutableList.builder();
-        private TextureArea background;
-        private int width, height;
+        private final ImmutableBiMap.Builder<Integer, Widget> widgets = ImmutableBiMap.builder();
+        private final ImmutableList.Builder<Runnable> openListeners = ImmutableList.builder();
+        private final ImmutableList.Builder<Runnable> closeListeners = ImmutableList.builder();
+        private final TextureArea background;
+        private final int width;
+        private final int height;
         private int nextFreeWidgetId = 0;
 
         public Builder(TextureArea background, int width, int height) {

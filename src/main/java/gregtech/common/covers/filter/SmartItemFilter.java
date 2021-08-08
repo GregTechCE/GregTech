@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IStringSerializable;
 
+import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -105,7 +106,7 @@ public class SmartItemFilter extends ItemFilter {
         }
     }
 
-    private class ItemAndMetadataAndStackSize {
+    private static class ItemAndMetadataAndStackSize {
         public final ItemAndMetadata itemAndMetadata;
         public final int transferStackSize;
 
@@ -142,6 +143,7 @@ public class SmartItemFilter extends ItemFilter {
             this.recipeMap = recipeMap;
         }
 
+        @Nonnull
         @Override
         public String getName() {
             return localeName;
@@ -161,6 +163,7 @@ public class SmartItemFilter extends ItemFilter {
             this.matchingMode = matchingMode;
         }
 
+        @Nonnull
         @Override
         public String getName() {
             return localeName;

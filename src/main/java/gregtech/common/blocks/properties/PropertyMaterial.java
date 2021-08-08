@@ -7,6 +7,7 @@ import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.Material;
 import net.minecraft.block.properties.PropertyHelper;
 
+import javax.annotation.Nonnull;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -27,13 +28,15 @@ public class PropertyMaterial extends PropertyHelper<Material> {
         return new PropertyMaterial(name, Arrays.asList(allowedValues));
     }
 
+    @Nonnull
     @Override
     public ImmutableList<Material> getAllowedValues() {
         return allowedValues;
     }
 
+    @Nonnull
     @Override
-    public Optional<Material> parseValue(String value) {
+    public Optional<Material> parseValue(@Nonnull String value) {
         Material material = MaterialRegistry.MATERIAL_REGISTRY.getObject(value);
         if (this.allowedValues.contains(material)) {
             return Optional.of(material);
@@ -41,6 +44,7 @@ public class PropertyMaterial extends PropertyHelper<Material> {
         return Optional.of(Materials._NULL);
     }
 
+    @Nonnull
     @Override
     public String getName(Material material) {
         String name = material.toString();

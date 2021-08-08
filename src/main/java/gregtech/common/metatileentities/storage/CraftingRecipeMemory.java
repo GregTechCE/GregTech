@@ -109,7 +109,7 @@ public class CraftingRecipeMemory {
     }
 
     public static class MemorizedRecipe {
-        private ItemStackHandler craftingMatrix = new ItemStackHandler(9);
+        private final ItemStackHandler craftingMatrix = new ItemStackHandler(9);
         private ItemStack recipeResult;
         private boolean recipeLocked = false;
         private int timesUsed = 0;

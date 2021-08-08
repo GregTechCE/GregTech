@@ -54,12 +54,12 @@ import org.lwjgl.opengl.GL11;
 
 public class CableRenderer implements ICCBlockRenderer, IItemRenderer {
 
-    public static ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(new ResourceLocation(GTValues.MODID, "cable"), "normal");
-    public static CableRenderer INSTANCE = new CableRenderer();
+    public static final ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(new ResourceLocation(GTValues.MODID, "cable"), "normal");
+    public static final CableRenderer INSTANCE = new CableRenderer();
     public static EnumBlockRenderType BLOCK_RENDER_TYPE;
-    private static ThreadLocal<BlockFace> blockFaces = ThreadLocal.withInitial(BlockFace::new);
+    private static final ThreadLocal<BlockFace> blockFaces = ThreadLocal.withInitial(BlockFace::new);
 
-    private TextureAtlasSprite[] insulationTextures = new TextureAtlasSprite[6];
+    private final TextureAtlasSprite[] insulationTextures = new TextureAtlasSprite[6];
     private TextureAtlasSprite wireTexture;
 
     public static void preInit() {

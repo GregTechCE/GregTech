@@ -18,7 +18,7 @@ public class SimpleItemFilter extends ItemFilter {
 
     private static final int MAX_MATCH_SLOTS = 9;
 
-    protected ItemStackHandler itemFilterSlots;
+    protected final ItemStackHandler itemFilterSlots;
     protected boolean ignoreDamage = true;
     protected boolean ignoreNBT = true;
 

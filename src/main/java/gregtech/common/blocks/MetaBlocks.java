@@ -61,6 +61,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.ArrayUtils;
 
+import javax.annotation.Nonnull;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.function.BiConsumer;
@@ -108,10 +109,10 @@ public class MetaBlocks {
 
     public static BlockSurfaceRock SURFACE_ROCK;
 
-    public static Map<Material, BlockCompressed> COMPRESSED = new HashMap<>();
-    public static Map<Material, BlockFrame> FRAMES = new HashMap<>();
-    public static Collection<BlockOre> ORES = new HashSet<>();
-    public static Collection<BlockFluidBase> FLUID_BLOCKS = new HashSet<>();
+    public static final Map<Material, BlockCompressed> COMPRESSED = new HashMap<>();
+    public static final Map<Material, BlockFrame> FRAMES = new HashMap<>();
+    public static final Collection<BlockOre> ORES = new HashSet<>();
+    public static final Collection<BlockFluidBase> FLUID_BLOCKS = new HashSet<>();
 
     public static void init() {
         GregTechAPI.MACHINE = MACHINE = new BlockMachine();
@@ -378,32 +379,36 @@ public class MetaBlocks {
     @SideOnly(Side.CLIENT)
     public static void registerStateMappers() {
         ModelLoader.setCustomStateMapper(MACHINE, new DefaultStateMapper() {
+            @Nonnull
             @Override
-            protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+            protected ModelResourceLocation getModelResourceLocation(@Nonnull IBlockState state) {
                 return MetaTileEntityRenderer.MODEL_LOCATION;
             }
         });
 
         for (BlockCable cable : CABLES) {
             ModelLoader.setCustomStateMapper(cable, new DefaultStateMapper() {
+                @Nonnull
                 @Override
-                protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+                protected ModelResourceLocation getModelResourceLocation(@Nonnull IBlockState state) {
                     return CableRenderer.MODEL_LOCATION;
                 }
             });
         }
         for (BlockFluidPipe pipe : FLUID_PIPES) {
             ModelLoader.setCustomStateMapper(pipe, new DefaultStateMapper() {
+                @Nonnull
                 @Override
-                protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+                protected ModelResourceLocation getModelResourceLocation(@Nonnull IBlockState state) {
                     return FluidPipeRenderer.MODEL_LOCATION;
                 }
             });
         }
         for (BlockItemPipe pipe : ITEM_PIPES) {
             ModelLoader.setCustomStateMapper(pipe, new DefaultStateMapper() {
+                @Nonnull
                 @Override
-                protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+                protected ModelResourceLocation getModelResourceLocation(@Nonnull IBlockState state) {
                     return ItemPipeRenderer.MODEL_LOCATION;
                 }
             });

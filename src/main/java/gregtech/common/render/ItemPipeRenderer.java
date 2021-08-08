@@ -55,8 +55,8 @@ import java.util.Map;
 
 public class ItemPipeRenderer implements ICCBlockRenderer, IItemRenderer {
 
-    public static ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(new ResourceLocation(GTValues.MODID, "item_pipe"), "normal");
-    public static ItemPipeRenderer INSTANCE = new ItemPipeRenderer();
+    public static final ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(new ResourceLocation(GTValues.MODID, "item_pipe"), "normal");
+    public static final ItemPipeRenderer INSTANCE = new ItemPipeRenderer();
     public static EnumBlockRenderType BLOCK_RENDER_TYPE;
     private static final ThreadLocal<BlockRenderer.BlockFace> blockFaces = ThreadLocal.withInitial(BlockRenderer.BlockFace::new);
     private final Map<ItemPipeType, PipeTextureInfo> pipeTextures = new HashMap<>();

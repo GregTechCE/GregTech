@@ -15,7 +15,7 @@ public class SimpleFluidFilter extends FluidFilter {
 
     private static final int MAX_FLUID_SLOTS = 9;
 
-    protected FluidStack[] fluidFilterSlots;
+    protected final FluidStack[] fluidFilterSlots;
 
     public SimpleFluidFilter() {
         this.fluidFilterSlots = new FluidStack[MAX_FLUID_SLOTS];

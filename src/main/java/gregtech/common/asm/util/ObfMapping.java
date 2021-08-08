@@ -37,8 +37,8 @@ import net.minecraftforge.fml.common.asm.transformers.deobf.FMLDeobfuscatingRema
 public class ObfMapping extends Remapper {
     
 	//Use when unit testing is a thing.
-    private static boolean isUnitTest = Boolean.getBoolean("ccl.unit_testing");
-    public static ObfRemapper obfMapper = new ObfRemapper();
+    private static final boolean isUnitTest = Boolean.getBoolean("ccl.unit_testing");
+    public static final ObfRemapper obfMapper = new ObfRemapper();
     public static Remapper mcpMapper = null;
     public static final boolean obfuscated;
     
@@ -246,8 +246,8 @@ public class ObfMapping extends Remapper {
     
     public static class ObfRemapper extends Remapper {
     	
-    	private HashMap<String, String> fields = new HashMap<>();
-        private HashMap<String, String> funcs = new HashMap<>();
+    	private final HashMap<String, String> fields = new HashMap<>();
+        private final HashMap<String, String> funcs = new HashMap<>();
         
         @SuppressWarnings("unchecked")
 		public ObfRemapper() {
@@ -315,8 +315,8 @@ public class ObfMapping extends Remapper {
     
     public static class MCPRemapper extends Remapper implements LineProcessor<Void> {
     	
-    	private HashMap<String, String> fields = new HashMap<>();
-        private HashMap<String, String> funcs = new HashMap<>();
+    	private final HashMap<String, String> fields = new HashMap<>();
+        private final HashMap<String, String> funcs = new HashMap<>();
     	
         public MCPRemapper() {
 			File[] mappings = getConfFiles();
@@ -358,7 +358,7 @@ public class ObfMapping extends Remapper {
         }
     	
 		@Override
-		public boolean processLine(@Nonnull String line) throws IOException {
+		public boolean processLine(@Nonnull String line) {
 			int i = line.indexOf(',');
             String srg = line.substring(0, i);
             int i2 = i + 1;

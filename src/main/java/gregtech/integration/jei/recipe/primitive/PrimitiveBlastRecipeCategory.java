@@ -10,6 +10,8 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 
+import javax.annotation.Nonnull;
+
 public class PrimitiveBlastRecipeCategory extends PrimitiveRecipeCategory<PrimitiveBlastFurnaceRecipe, PrimitiveBlastRecipeWrapper> {
 
     protected final IDrawable slot;
@@ -25,8 +27,8 @@ public class PrimitiveBlastRecipeCategory extends PrimitiveRecipeCategory<Primit
 	}
 
 	@Override
-	public void setRecipe(IRecipeLayout recipeLayout, PrimitiveBlastRecipeWrapper recipeWrapper,
-			IIngredients ingredients) {
+	public void setRecipe(IRecipeLayout recipeLayout, @Nonnull PrimitiveBlastRecipeWrapper recipeWrapper,
+                          @Nonnull IIngredients ingredients) {
 		IGuiItemStackGroup itemStackGroup = recipeLayout.getItemStacks();
 		itemStackGroup.init(0, true, 32, 4);
 		itemStackGroup.init(1, true, 32, 22);
@@ -36,8 +38,9 @@ public class PrimitiveBlastRecipeCategory extends PrimitiveRecipeCategory<Primit
 		itemStackGroup.set(ingredients);
 	}
 
-	@Override
-	public IRecipeWrapper getRecipeWrapper(PrimitiveBlastFurnaceRecipe recipe) {
+	@Nonnull
+    @Override
+	public IRecipeWrapper getRecipeWrapper(@Nonnull PrimitiveBlastFurnaceRecipe recipe) {
 		return new PrimitiveBlastRecipeWrapper(recipe);
 	}
 

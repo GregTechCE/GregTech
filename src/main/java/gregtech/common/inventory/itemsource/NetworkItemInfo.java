@@ -10,7 +10,7 @@ public class NetworkItemInfo implements IItemInfo {
 
     private final ItemStackKey itemStackKey;
     private int totalItemAmount = 0;
-    private Map<ItemSource, Integer> inventories = new ConcurrentHashMap<>();
+    private final Map<ItemSource, Integer> inventories = new ConcurrentHashMap<>();
 
     public NetworkItemInfo(ItemStackKey itemStackKey) {
         this.itemStackKey = itemStackKey;

@@ -30,12 +30,12 @@ public abstract class RecipeBuilder<R extends RecipeBuilder<R>> {
 
     protected RecipeMap<R> recipeMap;
 
-    protected List<CountableIngredient> inputs;
-    protected NonNullList<ItemStack> outputs;
-    protected List<ChanceEntry> chancedOutputs;
+    protected final List<CountableIngredient> inputs;
+    protected final NonNullList<ItemStack> outputs;
+    protected final List<ChanceEntry> chancedOutputs;
 
-    protected List<FluidStack> fluidInputs;
-    protected List<FluidStack> fluidOutputs;
+    protected final List<FluidStack> fluidInputs;
+    protected final List<FluidStack> fluidOutputs;
 
     protected int duration, EUt;
     protected boolean hidden = false;

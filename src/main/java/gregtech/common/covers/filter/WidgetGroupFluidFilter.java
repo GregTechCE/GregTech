@@ -8,7 +8,7 @@ import java.util.function.Supplier;
 
 public class WidgetGroupFluidFilter extends AbstractWidgetGroup {
 
-    private Supplier<FluidFilter> itemFilterSupplier;
+    private final Supplier<FluidFilter> itemFilterSupplier;
     private FluidFilter itemFilter;
 
     public WidgetGroupFluidFilter(int yPosition, Supplier<FluidFilter> itemFilterSupplier) {

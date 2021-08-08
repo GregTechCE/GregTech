@@ -24,7 +24,7 @@ import java.util.Map;
 public abstract class FueledMultiblockController extends MultiblockWithDisplayBase {
 
     protected final FuelRecipeMap recipeMap;
-    protected FuelRecipeLogic workableHandler;
+    protected final FuelRecipeLogic workableHandler;
     protected IEnergyContainer energyContainer;
     protected IMultipleTankHandler importFluidHandler;
 

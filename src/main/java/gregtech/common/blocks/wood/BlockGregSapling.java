@@ -24,6 +24,7 @@ import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.event.terraingen.TerrainGen;
 
+import javax.annotation.Nonnull;
 import java.util.Random;
 
 public class BlockGregSapling extends BlockBush implements IGrowable, IPlantable {
@@ -42,11 +43,13 @@ public class BlockGregSapling extends BlockBush implements IGrowable, IPlantable
         setSoundType(SoundType.PLANT);
     }
 
+    @Nonnull
     @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, VARIANT, STAGE);
     }
 
+    @Nonnull
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return getDefaultState()
@@ -65,19 +68,20 @@ public class BlockGregSapling extends BlockBush implements IGrowable, IPlantable
     }
 
     @Override
-    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
+    public void getSubBlocks(@Nonnull CreativeTabs itemIn, @Nonnull NonNullList<ItemStack> items) {
         for (LogVariant logVariant : LogVariant.values()) {
             items.add(new ItemStack(this, 1, logVariant.ordinal()));
         }
     }
 
+    @Nonnull
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+    public AxisAlignedBB getBoundingBox(@Nonnull IBlockState state, @Nonnull IBlockAccess source, @Nonnull BlockPos pos) {
         return SAPLING_AABB;
     }
 
     @Override
-    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+    public void updateTick(World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state, @Nonnull Random rand) {
         if (!worldIn.isRemote) {
             super.updateTick(worldIn, pos, state, rand);
             if (!worldIn.isAreaLoaded(pos, 1))
@@ -89,22 +93,23 @@ public class BlockGregSapling extends BlockBush implements IGrowable, IPlantable
     }
 
     @Override
-    public boolean canGrow(World worldIn, BlockPos pos, IBlockState state, boolean isClient) {
+    public boolean canGrow(@Nonnull World worldIn, @Nonnull BlockPos pos, @Nonnull IBlockState state, boolean isClient) {
         return true;
     }
 
     @Override
-    public boolean canUseBonemeal(World worldIn, Random rand, BlockPos pos, IBlockState state) {
+    public boolean canUseBonemeal(World worldIn, @Nonnull Random rand, @Nonnull BlockPos pos, @Nonnull IBlockState state) {
         return (double) worldIn.rand.nextFloat() < 0.45D;
     }
 
+    @Nonnull
     @Override
-    public EnumPlantType getPlantType(IBlockAccess world, BlockPos pos) {
+    public EnumPlantType getPlantType(@Nonnull IBlockAccess world, @Nonnull BlockPos pos) {
         return EnumPlantType.Plains;
     }
 
     @Override
-    public void grow(World worldIn, Random rand, BlockPos pos, IBlockState state) {
+    public void grow(@Nonnull World worldIn, @Nonnull Random rand, @Nonnull BlockPos pos, IBlockState state) {
         if (state.getValue(STAGE) == 0) {
             worldIn.setBlockState(pos, state.cycleProperty(STAGE), 4);
         } else {
@@ -153,7 +158,7 @@ public class BlockGregSapling extends BlockBush implements IGrowable, IPlantable
         }
 
         @Override
-        protected void setBlockAndNotifyAdequately(World worldIn, BlockPos pos, IBlockState state) {
+        protected void setBlockAndNotifyAdequately(@Nonnull World worldIn, @Nonnull BlockPos pos, IBlockState state) {
             if (state.getBlock() instanceof BlockLeaves) {
                 state = leavesBlock;
             } else if (state.getBlock() instanceof BlockLog) {

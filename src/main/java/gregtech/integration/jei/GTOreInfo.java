@@ -39,8 +39,8 @@ public class GTOreInfo implements IRecipeWrapper {
     private final int weight;
     private final IVeinPopulator veinPopulator;
     private final BlockFiller blockFiller;
-    private List<List<ItemStack>> groupedInputsAsItemStacks = new ArrayList<>();
-    private List<List<ItemStack>> groupedOutputsAsItemStacks = new ArrayList<>();
+    private final List<List<ItemStack>> groupedInputsAsItemStacks = new ArrayList<>();
+    private List<List<ItemStack>> groupedOutputsAsItemStacks;
     private final Function<Biome, Integer> biomeFunction;
 
     public GTOreInfo(OreDepositDefinition definition) {

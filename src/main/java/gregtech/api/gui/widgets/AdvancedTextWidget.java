@@ -18,6 +18,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Mouse;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -34,10 +35,10 @@ public class AdvancedTextWidget extends Widget {
     @SideOnly(Side.CLIENT)
     private WrapScreen wrapScreen;
 
-    protected Consumer<List<ITextComponent>> textSupplier;
+    protected final Consumer<List<ITextComponent>> textSupplier;
     protected BiConsumer<String, ClickData> clickHandler;
     private List<ITextComponent> displayText = new ArrayList<>();
-    private int color;
+    private final int color;
 
     public AdvancedTextWidget(int xPosition, int yPosition, Consumer<List<ITextComponent>> text, int color) {
         super(new Position(xPosition, yPosition), Size.ZERO);
@@ -249,17 +250,17 @@ public class AdvancedTextWidget extends Widget {
     @SideOnly(Side.CLIENT)
     private static class WrapScreen extends GuiScreen {
         @Override
-        public void handleComponentHover(ITextComponent component, int x, int y) {
+        public void handleComponentHover(@Nonnull ITextComponent component, int x, int y) {
             super.handleComponentHover(component, x, y);
         }
 
         @Override
-        public boolean handleComponentClick(ITextComponent component) {
+        public boolean handleComponentClick(@Nonnull ITextComponent component) {
             return super.handleComponentClick(component);
         }
 
         @Override
-        protected void drawHoveringText(List<String> textLines, int x, int y, FontRenderer font) {
+        protected void drawHoveringText(@Nonnull List<String> textLines, int x, int y, @Nonnull FontRenderer font) {
             GuiUtils.drawHoveringText(textLines, x, y, width, height, 256, font);
         }
     }

@@ -28,7 +28,7 @@ public class SliderWidget extends Widget {
     private int sliderWidth = 8;
     private TextureArea backgroundArea = GuiTextures.SLIDER_BACKGROUND;
     private TextureArea sliderIcon = GuiTextures.SLIDER_ICON;
-    private BiFunction<String, Float, String> textSupplier = DEFAULT_TEXT_SUPPLIER;
+    private final BiFunction<String, Float, String> textSupplier = DEFAULT_TEXT_SUPPLIER;
     private int textColor = 0xFFFFFF;
 
     private final float min;

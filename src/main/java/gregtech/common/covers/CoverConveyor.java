@@ -538,6 +538,7 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
             this.localeName = localeName;
         }
 
+        @Nonnull
         @Override
         public String getName() {
             return localeName;

@@ -64,9 +64,7 @@ public class ItemListGridWidget extends ScrollableListWidget {
     private void dispatchOtherSlotShiftClick(INativeWidget clickedSlot) {
         ItemStack stackInSlot = clickedSlot.getHandle().getStack();
         if (!stackInSlot.isEmpty()) {
-            writeClientAction(4, buf -> {
-                buf.writeVarInt(clickedSlot.getHandle().slotNumber);
-            });
+            writeClientAction(4, buf -> buf.writeVarInt(clickedSlot.getHandle().slotNumber));
         }
     }
 

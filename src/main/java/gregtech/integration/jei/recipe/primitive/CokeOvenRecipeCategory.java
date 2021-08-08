@@ -11,6 +11,8 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 
+import javax.annotation.Nonnull;
+
 public class CokeOvenRecipeCategory extends PrimitiveRecipeCategory<CokeOvenRecipe, CokeOvenRecipeWrapper> {
 
     protected final IDrawable slot;
@@ -31,7 +33,7 @@ public class CokeOvenRecipeCategory extends PrimitiveRecipeCategory<CokeOvenReci
 	}
 
 	@Override
-	public void setRecipe(IRecipeLayout recipeLayout, CokeOvenRecipeWrapper recipeWrapper, IIngredients ingredients) {
+	public void setRecipe(IRecipeLayout recipeLayout, @Nonnull CokeOvenRecipeWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
 		IGuiItemStackGroup itemStackGroup = recipeLayout.getItemStacks();
 		IGuiFluidStackGroup fluidStackGroup = recipeLayout.getFluidStacks();
 		itemStackGroup.init(0, true, 32, 19);
@@ -41,8 +43,9 @@ public class CokeOvenRecipeCategory extends PrimitiveRecipeCategory<CokeOvenReci
 		fluidStackGroup.set(ingredients);
 	}
 
-	@Override
-	public IRecipeWrapper getRecipeWrapper(CokeOvenRecipe recipe) {
+	@Nonnull
+    @Override
+	public IRecipeWrapper getRecipeWrapper(@Nonnull CokeOvenRecipe recipe) {
 		return new CokeOvenRecipeWrapper(recipe);
 	}
 

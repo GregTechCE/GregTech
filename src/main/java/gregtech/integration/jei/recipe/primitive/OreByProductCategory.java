@@ -1,11 +1,9 @@
 package gregtech.integration.jei.recipe.primitive;
 
 import gregtech.api.gui.GuiTextures;
-import gregtech.api.recipes.recipes.CokeOvenRecipe;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IDrawableAnimated;
-import mezz.jei.api.gui.IGuiFluidStackGroup;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.gui.IDrawableAnimated.StartDirection;
@@ -13,6 +11,8 @@ import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
+
+import javax.annotation.Nonnull;
 
 public class OreByProductCategory extends PrimitiveRecipeCategory<OreByProduct, OreByProduct>{
 
@@ -34,7 +34,7 @@ public class OreByProductCategory extends PrimitiveRecipeCategory<OreByProduct, 
 	}
 
 	@Override
-	public void setRecipe(IRecipeLayout recipeLayout, OreByProduct recipeWrapper, IIngredients ingredients) {
+	public void setRecipe(IRecipeLayout recipeLayout, OreByProduct recipeWrapper, @Nonnull IIngredients ingredients) {
 		IGuiItemStackGroup itemStackGroup = recipeLayout.getItemStacks();
 		itemStackGroup.init(0, true,  22,  29); //Ore
 		itemStackGroup.init(1, true,  70,  19); //Crushed
@@ -51,8 +51,9 @@ public class OreByProductCategory extends PrimitiveRecipeCategory<OreByProduct, 
 		itemStackGroup.set(ingredients);
 	}
 
-	@Override
-	public IRecipeWrapper getRecipeWrapper(OreByProduct recipe) {
+	@Nonnull
+    @Override
+	public IRecipeWrapper getRecipeWrapper(@Nonnull OreByProduct recipe) {
 		return recipe;
 	}
 

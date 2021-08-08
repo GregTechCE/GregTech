@@ -189,9 +189,7 @@ public class NetworkHandler {
         ));
 
         registerPacket(5, PacketClipboard.class, new PacketCodec<>(
-            (packet, buf) -> {
-                buf.writeString(packet.text);
-            },
+            (packet, buf) -> buf.writeString(packet.text),
             (buf) -> new PacketClipboard(buf.readString(32767))
         ));
 
@@ -235,9 +233,7 @@ public class NetworkHandler {
             ((ICustomParticleBlock) blockState.getBlock()).handleCustomParticle(world, packet.blockPos, particleManager, packet.entityPos, packet.particlesAmount);
         });
 
-        registerClientExecutor(PacketClipboard.class, (packet, handler) -> {
-            ClipboardUtil.copyToClipboard(packet.text);
-        });
+        registerClientExecutor(PacketClipboard.class, (packet, handler) -> ClipboardUtil.copyToClipboard(packet.text));
     }
 
     public static <T extends Packet> void registerPacket(int packetId, Class<T> packetClass, PacketCodec<T> codec) {

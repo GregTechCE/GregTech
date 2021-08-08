@@ -207,9 +207,7 @@ public class ItemListSlotWidget extends Widget {
     private void dispatchSelfShiftClick() {
         IItemInfo itemInfo = gridWidget.getItemInfoAt(index);
         if (itemInfo != null) {
-            writeClientAction(2, buf -> {
-                buf.writeItemStack(itemInfo.getItemStackKey().getItemStackRaw());
-            });
+            writeClientAction(2, buf -> buf.writeItemStack(itemInfo.getItemStackKey().getItemStackRaw()));
         }
     }
 

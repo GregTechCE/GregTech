@@ -14,11 +14,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
 
 import static gregtech.api.unification.ore.StoneType.AFFECTED_BY_GRAVITY;
-import static gregtech.api.unification.ore.StoneType.UNBREAKABLE;
 
 public class StoneTypes {
 
-    public static StoneType STONE = new StoneType(0, "stone", new ResourceLocation("blocks/stone"), SoundType.STONE, OrePrefix.ore, Materials.Stone, "pickaxe", 0,
+    public static final StoneType STONE = new StoneType(0, "stone", new ResourceLocation("blocks/stone"), SoundType.STONE, OrePrefix.ore, Materials.Stone, "pickaxe", 0,
         () -> Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, EnumType.STONE),
         state -> state.getBlock() instanceof BlockStone && state.getValue(BlockStone.VARIANT) == BlockStone.EnumType.STONE);
 

@@ -16,8 +16,8 @@ import java.util.stream.Collectors;
 
 public abstract class TickableWorldPipeNet<NodeDataType, T extends PipeNet<NodeDataType> & ITickable> extends WorldPipeNet<NodeDataType, T> {
 
-    private Map<T, List<ChunkPos>> loadedChunksByPipeNet = new HashMap<>();
-    private List<T> tickingPipeNets = new ArrayList<>();
+    private final Map<T, List<ChunkPos>> loadedChunksByPipeNet = new HashMap<>();
+    private final List<T> tickingPipeNets = new ArrayList<>();
 
     public TickableWorldPipeNet(String name) {
         super(name);

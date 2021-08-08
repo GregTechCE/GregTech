@@ -482,7 +482,7 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase impleme
     public Collection<IFuelInfo> getFuels() {
         if (!isStructureFormed())
             return Collections.emptySet();
-        final LinkedHashMap<Object, IFuelInfo> fuels = new LinkedHashMap<Object, IFuelInfo>();
+        final LinkedHashMap<Object, IFuelInfo> fuels = new LinkedHashMap<>();
         int fluidCapacity = 0; // fluid capacity is all non water tanks
         for (IFluidTank fluidTank : fluidImportInventory.getFluidTanks()) {
             FluidStack fuelStack = fluidTank.drain(Integer.MAX_VALUE, false);
