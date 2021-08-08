@@ -67,7 +67,7 @@ public class LabelWidget extends Widget {
             fontRenderer.drawString(resultText, pos.x, pos.y, color);
         } else {
             fontRenderer.drawString(resultText,
-                pos.x - fontRenderer.getStringWidth(resultText) / 2, pos.y, color);
+                    pos.x - fontRenderer.getStringWidth(resultText) / 2, pos.y, color);
         }
         GlStateManager.color(rColorForOverlay, gColorForOverlay, bColorForOverlay, 1.0F);
     }

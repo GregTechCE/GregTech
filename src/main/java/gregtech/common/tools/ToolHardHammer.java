@@ -23,7 +23,8 @@ import java.util.Set;
 public class ToolHardHammer extends ToolBase {
 
     private static final Set<String> HAMMER_TOOL_CLASSES = new HashSet<String>() {{
-        add("hammer"); add("pickaxe");
+        add("hammer");
+        add("pickaxe");
     }};
 
     @Override
@@ -78,11 +79,11 @@ public class ToolHardHammer extends ToolBase {
         String tool = block.getBlock().getHarvestTool(block);
         ItemStack itemStack = new ItemStack(block.getBlock(), 1, block.getBlock().getMetaFromState(block));
         return (tool != null && (tool.equals("hammer") || tool.equals("pickaxe"))) ||
-            block.getMaterial() == Material.ROCK ||
-            block.getMaterial() == Material.GLASS ||
-            block.getMaterial() == Material.ICE ||
-            block.getMaterial() == Material.PACKED_ICE ||
-            RecipeMaps.FORGE_HAMMER_RECIPES.findRecipe(Long.MAX_VALUE, Collections.singletonList(itemStack), Collections.emptyList(), 0, MatchingMode.DEFAULT) != null;
+                block.getMaterial() == Material.ROCK ||
+                block.getMaterial() == Material.GLASS ||
+                block.getMaterial() == Material.ICE ||
+                block.getMaterial() == Material.PACKED_ICE ||
+                RecipeMaps.FORGE_HAMMER_RECIPES.findRecipe(Long.MAX_VALUE, Collections.singletonList(itemStack), Collections.emptyList(), 0, MatchingMode.DEFAULT) != null;
     }
 
     @Override

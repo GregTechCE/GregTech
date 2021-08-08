@@ -52,17 +52,17 @@ public class ToolSword extends ToolBase {
     public boolean canMineBlock(IBlockState block, ItemStack stack) {
         String tool = block.getBlock().getHarvestTool(block);
         return (tool != null && tool.equals("sword")) ||
-            block.getMaterial() == Material.LEAVES ||
-            block.getMaterial() == Material.GOURD ||
-            block.getMaterial() == Material.VINE ||
-            block.getMaterial() == Material.WEB ||
-            block.getMaterial() == Material.CLOTH ||
-            block.getMaterial() == Material.CARPET ||
-            block.getMaterial() == Material.PLANTS ||
-            block.getMaterial() == Material.CACTUS ||
-            block.getMaterial() == Material.CAKE ||
-            block.getMaterial() == Material.TNT ||
-            block.getMaterial() == Material.SPONGE;
+                block.getMaterial() == Material.LEAVES ||
+                block.getMaterial() == Material.GOURD ||
+                block.getMaterial() == Material.VINE ||
+                block.getMaterial() == Material.WEB ||
+                block.getMaterial() == Material.CLOTH ||
+                block.getMaterial() == Material.CARPET ||
+                block.getMaterial() == Material.PLANTS ||
+                block.getMaterial() == Material.CACTUS ||
+                block.getMaterial() == Material.CAKE ||
+                block.getMaterial() == Material.TNT ||
+                block.getMaterial() == Material.SPONGE;
     }
 
     @Override

@@ -33,7 +33,7 @@ public class CompositeRenderer<T> implements IIngredientRenderer<T> {
 
     public static <T> Builder<T> startBuilder(IIngredientRenderer<T> ingredientRenderer) {
         return startBuilder(ingredientRenderer::getTooltip,
-            ingredientRenderer::getFontRenderer);
+                ingredientRenderer::getFontRenderer);
     }
 
     @Override

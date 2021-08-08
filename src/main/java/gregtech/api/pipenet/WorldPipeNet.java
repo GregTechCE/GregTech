@@ -53,7 +53,7 @@ public abstract class WorldPipeNet<NodeDataType, T extends PipeNet<NodeDataType>
             T pipeNet = getNetFromPos(offsetPos);
             Node<NodeDataType> secondNode = pipeNet == null ? null : pipeNet.getAllNodes().get(offsetPos);
             if (pipeNet != null && pipeNet.canAttachNode(nodeData) &&
-                pipeNet.canNodesConnect(secondNode, facing.getOpposite(), node, null)) {
+                    pipeNet.canNodesConnect(secondNode, facing.getOpposite(), node, null)) {
                 if (myPipeNet == null) {
                     myPipeNet = pipeNet;
                     myPipeNet.addNode(nodePos, node);

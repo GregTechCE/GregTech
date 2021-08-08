@@ -196,7 +196,7 @@ public class MetaTileEntityWorkbench extends MetaTileEntity {
     @Override
     protected ModularUI createUI(EntityPlayer entityPlayer) {
         Builder builder = ModularUI.builder(GuiTextures.BORDERED_BACKGROUND, 176, 221)
-            .bindPlayerInventory(entityPlayer.inventory, 140);
+                .bindPlayerInventory(entityPlayer.inventory, 140);
         builder.label(5, 5, getMetaFullName());
 
         TabGroup tabGroup = new TabGroup(TabLocation.HORIZONTAL_TOP_LEFT, Position.ORIGIN);

@@ -29,7 +29,7 @@ public class OreItemBlock extends ItemBlock {
     @Nonnull
     @Override
     public CreativeTabs[] getCreativeTabs() {
-        return new CreativeTabs[] {CreativeTabs.SEARCH, GregTechAPI.TAB_GREGTECH_ORES};
+        return new CreativeTabs[]{CreativeTabs.SEARCH, GregTechAPI.TAB_GREGTECH_ORES};
     }
 
     @SuppressWarnings("deprecation")

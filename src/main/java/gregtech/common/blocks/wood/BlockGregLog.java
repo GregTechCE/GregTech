@@ -28,9 +28,9 @@ public class BlockGregLog extends BlockLog {
 
     public BlockGregLog() {
         this.setDefaultState(this.blockState.getBaseState()
-            .withProperty(VARIANT, LogVariant.RUBBER_WOOD)
-            .withProperty(LOG_AXIS, BlockLog.EnumAxis.Y)
-            .withProperty(NATURAL, false));
+                .withProperty(VARIANT, LogVariant.RUBBER_WOOD)
+                .withProperty(LOG_AXIS, BlockLog.EnumAxis.Y)
+                .withProperty(NATURAL, false));
         setTranslationKey("gt.log");
         this.setCreativeTab(GregTechAPI.TAB_GREGTECH);
     }
@@ -60,30 +60,30 @@ public class BlockGregLog extends BlockLog {
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return getDefaultState()
-            .withProperty(LOG_AXIS, EnumAxis.values()[meta / 4 % 4])
-            .withProperty(VARIANT, LogVariant.values()[meta % 4 / 2 % LogVariant.values().length])
-            .withProperty(NATURAL, meta % 4 % 2 == 1);
+                .withProperty(LOG_AXIS, EnumAxis.values()[meta / 4 % 4])
+                .withProperty(VARIANT, LogVariant.values()[meta % 4 / 2 % LogVariant.values().length])
+                .withProperty(NATURAL, meta % 4 % 2 == 1);
     }
 
     @Override
     public int getMetaFromState(IBlockState state) {
         return state.getValue(LOG_AXIS).ordinal() * 4 +
-            state.getValue(VARIANT).ordinal() * 2 +
-            (state.getValue(NATURAL) ? 1 : 0);
+                state.getValue(VARIANT).ordinal() * 2 +
+                (state.getValue(NATURAL) ? 1 : 0);
     }
 
     @Nonnull
     @Override
     protected ItemStack getSilkTouchDrop(IBlockState state) {
         return new ItemStack(Item.getItemFromBlock(this), 1,
-            state.getValue(VARIANT).ordinal());
+                state.getValue(VARIANT).ordinal());
     }
 
     @Nonnull
     @Override
     public ItemStack getPickBlock(IBlockState state, @Nonnull RayTraceResult target, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EntityPlayer player) {
         return new ItemStack(Item.getItemFromBlock(this), 1,
-            state.getValue(VARIANT).ordinal());
+                state.getValue(VARIANT).ordinal());
     }
 
     @Override

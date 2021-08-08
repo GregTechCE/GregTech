@@ -86,23 +86,23 @@ public class MiscRecipeLoader {
         }
 
         RecipeMaps.MIXER_RECIPES.recipeBuilder().duration(100).EUt(8)
-            .input(dust, Sugar)
-            .inputs(new ItemStack(Blocks.BROWN_MUSHROOM))
-            .inputs(new ItemStack(Items.SPIDER_EYE))
-            .outputs(new ItemStack(Items.FERMENTED_SPIDER_EYE))
-            .buildAndRegister();
+                .input(dust, Sugar)
+                .inputs(new ItemStack(Blocks.BROWN_MUSHROOM))
+                .inputs(new ItemStack(Items.SPIDER_EYE))
+                .outputs(new ItemStack(Items.FERMENTED_SPIDER_EYE))
+                .buildAndRegister();
 
         RecipeMaps.MIXER_RECIPES.recipeBuilder().duration(100).EUt(8)
-            .input(dust, Sugar)
-            .inputs(new ItemStack(Blocks.RED_MUSHROOM))
-            .inputs(new ItemStack(Items.SPIDER_EYE))
-            .outputs(new ItemStack(Items.FERMENTED_SPIDER_EYE))
-            .buildAndRegister();
+                .input(dust, Sugar)
+                .inputs(new ItemStack(Blocks.RED_MUSHROOM))
+                .inputs(new ItemStack(Items.SPIDER_EYE))
+                .outputs(new ItemStack(Items.FERMENTED_SPIDER_EYE))
+                .buildAndRegister();
 
         RecipeMaps.SIFTER_RECIPES.recipeBuilder().duration(800).EUt(16)
-            .inputs(new ItemStack(Blocks.GRAVEL))
-            .outputs(new ItemStack(Items.FLINT))
-            .buildAndRegister();
+                .inputs(new ItemStack(Blocks.GRAVEL))
+                .outputs(new ItemStack(Items.FLINT))
+                .buildAndRegister();
 
         RecipeMaps.PACKER_RECIPES.recipeBuilder()
                 .inputs(TOOL_MATCHES.getStackForm(16)).input(OrePrefix.plate, Materials.Paper)

@@ -9,7 +9,10 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiUtilRenderComponents;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.text.*;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.util.text.event.ClickEvent.Action;
 import net.minecraft.util.text.event.HoverEvent;
@@ -159,8 +162,8 @@ public class AdvancedTextWidget extends Widget {
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
         int maxTextWidthResult = maxWidthLimit == 0 ? Integer.MAX_VALUE : maxWidthLimit;
         this.displayText = displayText.stream()
-            .flatMap(c -> GuiUtilRenderComponents.splitText(c, maxTextWidthResult, fontRenderer, true, true).stream())
-            .collect(Collectors.toList());
+                .flatMap(c -> GuiUtilRenderComponents.splitText(c, maxTextWidthResult, fontRenderer, true, true).stream())
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -214,7 +217,7 @@ public class AdvancedTextWidget extends Widget {
         ITextComponent textComponent = getTextUnderMouse(mouseX, mouseY);
         if (textComponent != null) {
             if (handleCustomComponentClick(textComponent) ||
-                getWrapScreen().handleComponentClick(textComponent)) {
+                    getWrapScreen().handleComponentClick(textComponent)) {
                 playButtonClickSound();
                 return true;
             }

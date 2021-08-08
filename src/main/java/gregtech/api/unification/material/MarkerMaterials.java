@@ -50,7 +50,7 @@ public class MarkerMaterials {
          * Arrays containing all possible color values (without Colorless!)
          */
         public static final MarkerMaterial[] VALUES = new MarkerMaterial[]{
-            White, Orange, Magenta, LightBlue, Yellow, Lime, Pink, Gray, Silver, Cyan, Purple, Blue, Brown, Green, Red, Black
+                White, Orange, Magenta, LightBlue, Yellow, Lime, Pink, Gray, Silver, Cyan, Purple, Blue, Brown, Green, Red, Black
         };
 
         /**

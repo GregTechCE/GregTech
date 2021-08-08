@@ -11,7 +11,10 @@ import gregtech.api.util.world.DummyWorld;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.BlockRendererDispatcher;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.init.Blocks;
@@ -102,7 +105,7 @@ public class WorldSceneRenderer {
             if (renderFilter != null && !renderFilter.test(pos))
                 continue; //do not render if position is skipped
             IBlockState blockState = world.getBlockState(pos);
-            for(BlockRenderLayer renderLayer : BlockRenderLayer.values()) {
+            for (BlockRenderLayer renderLayer : BlockRenderLayer.values()) {
                 if (!blockState.getBlock().canRenderInLayer(blockState, renderLayer)) continue;
                 ForgeHooksClient.setRenderLayer(renderLayer);
                 dispatcher.renderBlock(blockState, pos, world, bufferBuilder);
@@ -142,7 +145,7 @@ public class WorldSceneRenderer {
     private BlockPos handleMouseHit(Vec2f mousePosition) {
         //read depth of pixel under mouse
         GL11.glReadPixels((int) mousePosition.x, (int) mousePosition.y, 1, 1,
-            GL11.GL_DEPTH_COMPONENT, GL11.GL_FLOAT, PIXEL_DEPTH_BUFFER);
+                GL11.GL_DEPTH_COMPONENT, GL11.GL_FLOAT, PIXEL_DEPTH_BUFFER);
 
         //rewind buffer after write by glReadPixels
         PIXEL_DEPTH_BUFFER.rewind();
@@ -165,7 +168,7 @@ public class WorldSceneRenderer {
 
         //call gluUnProject with retrieved parameters
         GLU.gluUnProject(mousePosition.x, mousePosition.y, pixelDepth,
-            MODELVIEW_MATRIX_BUFFER, PROJECTION_MATRIX_BUFFER, VIEWPORT_BUFFER, OBJECT_POS_BUFFER);
+                MODELVIEW_MATRIX_BUFFER, PROJECTION_MATRIX_BUFFER, VIEWPORT_BUFFER, OBJECT_POS_BUFFER);
 
         //rewind buffers after read by gluUnProject
         VIEWPORT_BUFFER.rewind();

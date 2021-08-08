@@ -58,7 +58,7 @@ public class NetworkItemInfo implements IItemInfo {
     private boolean recomputeItemAmount() {
         int oldTotalItemAmount = totalItemAmount;
         this.totalItemAmount = inventories.values().stream()
-            .mapToInt(Integer::intValue).sum();
+                .mapToInt(Integer::intValue).sum();
         return totalItemAmount != oldTotalItemAmount;
     }
 }

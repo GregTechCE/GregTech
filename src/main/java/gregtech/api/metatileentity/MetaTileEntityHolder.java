@@ -72,8 +72,8 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
     public void scheduleChunkForRenderUpdate() {
         BlockPos pos = getPos();
         getWorld().markBlockRangeForRenderUpdate(
-            pos.getX() - 1, pos.getY() - 1, pos.getZ() - 1,
-            pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1);
+                pos.getX() - 1, pos.getY() - 1, pos.getZ() - 1,
+                pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1);
     }
 
     public void notifyBlockUpdate() {
@@ -114,8 +114,8 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
         //try to lookup by different registry IDs
         if (registeredModIDs == null) {
             registeredModIDs = registry.getKeys().stream()
-                .map(ResourceLocation::getNamespace)
-                .distinct().collect(Collectors.toList());
+                    .map(ResourceLocation::getNamespace)
+                    .distinct().collect(Collectors.toList());
             registeredModIDs.remove(GTValues.MODID);
         }
         for (String registryModId : registeredModIDs) {
@@ -261,11 +261,11 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
     @Override
     public boolean shouldRenderInPass(int pass) {
         if (metaTileEntity == null) return false;
-        for (EnumFacing side: EnumFacing.VALUES){
+        for (EnumFacing side : EnumFacing.VALUES) {
             CoverBehavior cover = metaTileEntity.getCoverAtSide(side);
             if (cover instanceof IFastRenderMetaTileEntity && ((IFastRenderMetaTileEntity) cover).shouldRenderInPass(pass)) {
                 return true;
-            } else if(cover instanceof IRenderMetaTileEntity && ((IRenderMetaTileEntity) cover).shouldRenderInPass(pass)) {
+            } else if (cover instanceof IRenderMetaTileEntity && ((IRenderMetaTileEntity) cover).shouldRenderInPass(pass)) {
                 return true;
             }
         }

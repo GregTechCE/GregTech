@@ -1,9 +1,5 @@
 package gregtech.api.gui.widgets;
 
-import java.awt.Rectangle;
-
-import javax.annotation.Nonnull;
-
 import gregtech.api.gui.INativeWidget;
 import gregtech.api.gui.IRenderContext;
 import gregtech.api.gui.IScissored;
@@ -21,6 +17,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.SlotItemHandler;
+
+import javax.annotation.Nonnull;
+import java.awt.*;
 
 public class SlotWidget extends Widget implements INativeWidget {
 

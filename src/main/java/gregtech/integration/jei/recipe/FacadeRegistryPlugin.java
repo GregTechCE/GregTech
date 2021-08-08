@@ -3,8 +3,8 @@ package gregtech.integration.jei.recipe;
 import com.google.common.collect.Lists;
 import gregtech.api.GTValues;
 import gregtech.api.unification.OreDictUnifier;
-import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.Material;
+import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.common.covers.facade.FacadeHelper;
 import gregtech.common.items.MetaItems;
@@ -67,16 +67,16 @@ public class FacadeRegistryPlugin implements IRecipeRegistryPlugin {
 
     private static List<IRecipeWrapper> createFacadeRecipes(ItemStack itemStack) {
         return Lists.newArrayList(
-            createFacadeRecipe(itemStack, Materials.Aluminium, 5),
-            createFacadeRecipe(itemStack, Materials.WroughtIron, 3),
-            createFacadeRecipe(itemStack, Materials.Iron, 2));
+                createFacadeRecipe(itemStack, Materials.Aluminium, 5),
+                createFacadeRecipe(itemStack, Materials.WroughtIron, 3),
+                createFacadeRecipe(itemStack, Materials.Iron, 2));
     }
 
     private static IRecipeWrapper createFacadeRecipe(ItemStack itemStack, Material material, int facadeAmount) {
         ItemStack itemStackCopy = itemStack.copy();
         itemStackCopy.setCount(facadeAmount);
         return new FacadeRecipeWrapper(new ResourceLocation(GTValues.MODID, "facade_" + material),
-            OreDictUnifier.get(OrePrefix.plate, material), itemStackCopy);
+                OreDictUnifier.get(OrePrefix.plate, material), itemStackCopy);
     }
 
     @Nonnull

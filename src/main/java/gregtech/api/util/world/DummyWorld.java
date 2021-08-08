@@ -16,7 +16,7 @@ import javax.annotation.Nullable;
 public class DummyWorld extends World {
 
     private static final WorldSettings DEFAULT_SETTINGS = new WorldSettings(
-        1L, GameType.SURVIVAL, true, false, WorldType.DEFAULT);
+            1L, GameType.SURVIVAL, true, false, WorldType.DEFAULT);
 
     public static final DummyWorld INSTANCE = new DummyWorld();
 

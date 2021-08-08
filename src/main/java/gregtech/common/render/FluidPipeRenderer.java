@@ -150,7 +150,7 @@ public class FluidPipeRenderer implements ICCBlockRenderer, IItemRenderer {
     }
 
     private int getPipeColor(Material material, int insulationColor) {
-        if(insulationColor == IPipeTile.DEFAULT_INSULATION_COLOR) {
+        if (insulationColor == IPipeTile.DEFAULT_INSULATION_COLOR) {
             return material.getMaterialRGB();
         } else return insulationColor;
     }

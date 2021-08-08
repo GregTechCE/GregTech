@@ -35,8 +35,8 @@ public class BlockGregSapling extends BlockBush implements IGrowable, IPlantable
 
     public BlockGregSapling() {
         this.setDefaultState(this.blockState.getBaseState()
-            .withProperty(VARIANT, LogVariant.RUBBER_WOOD)
-            .withProperty(STAGE, 0));
+                .withProperty(VARIANT, LogVariant.RUBBER_WOOD)
+                .withProperty(STAGE, 0));
         setTranslationKey("gt.sapling");
         setCreativeTab(GregTechAPI.TAB_GREGTECH);
         setHardness(0.0F);
@@ -53,8 +53,8 @@ public class BlockGregSapling extends BlockBush implements IGrowable, IPlantable
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return getDefaultState()
-            .withProperty(VARIANT, LogVariant.values()[meta % 4 % LogVariant.values().length])
-            .withProperty(STAGE, meta / 4 % 2);
+                .withProperty(VARIANT, LogVariant.values()[meta % 4 % LogVariant.values().length])
+                .withProperty(STAGE, meta / 4 % 2);
     }
 
     @Override
@@ -121,10 +121,10 @@ public class BlockGregSapling extends BlockBush implements IGrowable, IPlantable
         if (!TerrainGen.saplingGrowTree(worldIn, rand, pos)) return;
         WorldGenerator worldgenerator;
         IBlockState logState = MetaBlocks.LOG.getDefaultState()
-            .withProperty(BlockGregLog.VARIANT, LogVariant.RUBBER_WOOD)
-            .withProperty(BlockGregLog.NATURAL, true);
+                .withProperty(BlockGregLog.VARIANT, LogVariant.RUBBER_WOOD)
+                .withProperty(BlockGregLog.NATURAL, true);
         IBlockState leavesState = MetaBlocks.LEAVES.getDefaultState()
-            .withProperty(BlockGregLeaves.VARIANT, LogVariant.RUBBER_WOOD);
+                .withProperty(BlockGregLeaves.VARIANT, LogVariant.RUBBER_WOOD);
         if (rand.nextInt(10) == 0) {
             worldgenerator = new WorldGenBigTreeCustom(true, logState, leavesState.withProperty(BlockGregLeaves.CHECK_DECAY, false), BlockGregLog.LOG_AXIS);
         } else {

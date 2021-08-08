@@ -72,10 +72,10 @@ public class StoneRenderer implements ICCBlockRenderer {
         TextureAtlasSprite stoneSprite = TextureUtils.getBlockTexture("stone");
         Material material = ((BlockSurfaceRock) state.getBlock()).getStoneMaterial(world, pos, state);
         int renderingColor = GTUtility.convertRGBtoOpaqueRGBA_CL(material.getMaterialRGB());
-        IVertexOperation[] operations = new IVertexOperation[] {
-            new IconTransformation(stoneSprite),
-            new ColourMultiplier(renderingColor),
-            new TransformationList(translation)};
+        IVertexOperation[] operations = new IVertexOperation[]{
+                new IconTransformation(stoneSprite),
+                new ColourMultiplier(renderingColor),
+                new TransformationList(translation)};
         if (world != null) {
             renderState.setBrightness(world, pos);
         }

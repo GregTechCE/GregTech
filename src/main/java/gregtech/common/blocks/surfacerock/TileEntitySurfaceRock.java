@@ -1,8 +1,8 @@
 package gregtech.common.blocks.surfacerock;
 
+import gregtech.api.unification.material.Material;
 import gregtech.api.unification.material.MaterialRegistry;
 import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.material.Material;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -79,7 +79,7 @@ public class TileEntitySurfaceRock extends TileEntity {
         compound.setString("Material", MaterialRegistry.MATERIAL_REGISTRY.getNameForObject(material));
         NBTTagList tagList = new NBTTagList();
         this.undergroundMaterials.forEach(it ->
-            tagList.appendTag(new NBTTagString(MaterialRegistry.MATERIAL_REGISTRY.getNameForObject(it))));
+                tagList.appendTag(new NBTTagString(MaterialRegistry.MATERIAL_REGISTRY.getNameForObject(it))));
         compound.setTag("UndergroundMaterials", tagList);
         return compound;
     }

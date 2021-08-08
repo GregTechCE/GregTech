@@ -44,7 +44,7 @@ public class BakedModelHandler {
         }
     };
     private static final ItemMeshDefinition SIMPLE_MESH_DEFINITION = (stack) ->
-        getSimpleModelLocation(Block.getBlockFromItem(stack.getItem()));
+            getSimpleModelLocation(Block.getBlockFromItem(stack.getItem()));
 
     private static ModelResourceLocation getSimpleModelLocation(Block block) {
         return new ModelResourceLocation(Block.REGISTRY.getNameForObject(block), "");

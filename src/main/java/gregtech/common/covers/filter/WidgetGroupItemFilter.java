@@ -47,15 +47,15 @@ public class WidgetGroupItemFilter extends AbstractWidgetGroup {
     @Override
     public void readUpdateInfo(int id, PacketBuffer buffer) {
         super.readUpdateInfo(id, buffer);
-        if(id == 2) {
+        if (id == 2) {
             clearAllWidgets();
-            if(buffer.readBoolean()) {
+            if (buffer.readBoolean()) {
                 int filterId = buffer.readVarInt();
                 this.itemFilter = FilterTypeRegistry.createItemFilterById(filterId);
                 this.itemFilter.initUI(this::addWidget);
                 this.itemFilter.setMaxStackSize(maxStackSize);
             }
-        } else if(id == 3) {
+        } else if (id == 3) {
             this.maxStackSize = buffer.readVarInt();
             if (itemFilter != null) {
                 itemFilter.setMaxStackSize(maxStackSize);

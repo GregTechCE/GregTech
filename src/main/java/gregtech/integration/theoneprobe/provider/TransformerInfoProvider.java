@@ -24,7 +24,7 @@ public class TransformerInfoProvider extends ElectricContainerInfoProvider {
         if (tileEntity instanceof MetaTileEntityHolder) {
             MetaTileEntity metaTileEntity = ((MetaTileEntityHolder) tileEntity).getMetaTileEntity();
             if (metaTileEntity instanceof MetaTileEntityTransformer) {
-                MetaTileEntityTransformer mteTransformer = (MetaTileEntityTransformer)metaTileEntity;
+                MetaTileEntityTransformer mteTransformer = (MetaTileEntityTransformer) metaTileEntity;
                 String inputVoltageN = GTValues.VN[GTUtility.getTierByVoltage(capability.getInputVoltage())];
                 String outputVoltageN = GTValues.VN[GTUtility.getTierByVoltage(capability.getOutputVoltage())];
                 long inputAmperage = capability.getInputAmperage();
@@ -39,7 +39,7 @@ public class TransformerInfoProvider extends ElectricContainerInfoProvider {
                     transformInfo = "{*gregtech.top.transform_down*} ";
                 }
                 transformInfo += inputVoltageN + " (" + inputAmperage + "A) -> "
-                               + outputVoltageN + " (" + outputAmperage + "A)";
+                        + outputVoltageN + " (" + outputAmperage + "A)";
                 horizontalPane.text(TextStyleClass.INFO + transformInfo);
 
                 // Input/Output side line
@@ -49,7 +49,7 @@ public class TransformerInfoProvider extends ElectricContainerInfoProvider {
                             + inputVoltageN + " (" + inputAmperage + "A)";
                     horizontalPane.text(TextStyleClass.INFO + transformInfo);
 
-                } else if(capability.outputsEnergy(sideHit)) {
+                } else if (capability.outputsEnergy(sideHit)) {
                     transformInfo = "{*gregtech.top.transform_output*} "
                             + outputVoltageN + " (" + outputAmperage + "A)";
                     horizontalPane.text(TextStyleClass.INFO + transformInfo);

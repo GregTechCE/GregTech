@@ -88,12 +88,12 @@ public class MetaTileEntityRenderer implements ICCBlockRenderer, IItemRenderer {
         renderState.startDrawing(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
         metaTileEntity.setRenderContextStack(stack);
         metaTileEntity.renderMetaTileEntity(renderState, new Matrix4(), new IVertexOperation[0]);
-        if(metaTileEntity instanceof IFastRenderMetaTileEntity) {
+        if (metaTileEntity instanceof IFastRenderMetaTileEntity) {
             ((IFastRenderMetaTileEntity) metaTileEntity).renderMetaTileEntityFast(renderState, new Matrix4(), 0.0f);
         }
         metaTileEntity.setRenderContextStack(null);
         renderState.draw();
-        if(metaTileEntity instanceof IRenderMetaTileEntity) {
+        if (metaTileEntity instanceof IRenderMetaTileEntity) {
             ((IRenderMetaTileEntity) metaTileEntity).renderMetaTileEntityDynamic(0.0, 0.0, 0.0, 0.0f);
         }
         GlStateManager.disableBlend();

@@ -18,9 +18,9 @@ import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.metaitem.stats.IItemComponent;
 import gregtech.api.items.metaitem.stats.IItemContainerItemProvider;
 import gregtech.api.unification.material.Material;
-import gregtech.api.unification.material.info.MaterialIconSet;
 import gregtech.api.unification.material.MaterialRegistry;
 import gregtech.api.unification.material.Materials;
+import gregtech.api.unification.material.info.MaterialIconSet;
 import gregtech.api.unification.material.properties.DustProperty;
 import gregtech.api.unification.material.properties.PropertyKey;
 import gregtech.api.unification.material.properties.ToolProperty;
@@ -270,7 +270,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     public int getHarvestLevel(@Nonnull ItemStack stack, @Nonnull String toolClass, EntityPlayer player, IBlockState blockState) {
         if (blockState == null) {
             GTLog.logger.warn("ToolMetaItem.getHarvestLevel called for tool '{}' without providing IBlockState. Offending stack trace:\n    {}",
-                toolClass, Arrays.stream(Thread.currentThread().getStackTrace()).skip(1).map(StackTraceElement::toString).collect(Collectors.joining("\n    ")));
+                    toolClass, Arrays.stream(Thread.currentThread().getStackTrace()).skip(1).map(StackTraceElement::toString).collect(Collectors.joining("\n    ")));
             return -1;
         }
         T metaToolValueItem = getItem(stack);
@@ -363,7 +363,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             }
             capability.discharge(energyAmount, capability.getTier(), true, false, simulate);
         }
-        if ( capability == null || (capability.getCharge() <= 0 || GTUtility.getRandomIntXSTR(100) <= 4)) {
+        if (capability == null || (capability.getCharge() <= 0 || GTUtility.getRandomIntXSTR(100) <= 4)) {
             T toolMetaItem = getItem(stack);
             if (toolMetaItem == null) {
                 return 0;
@@ -479,20 +479,20 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
 
     public static int getMaterialEnchantability(Material material) {
         if (material.getMaterialIconSet() == MaterialIconSet.SHINY ||
-            material.getMaterialIconSet() == MaterialIconSet.RUBY) {
+                material.getMaterialIconSet() == MaterialIconSet.RUBY) {
             return 33; //all shiny metals have gold enchantability
         } else if (material.getMaterialIconSet() == MaterialIconSet.DULL ||
-            material.getMaterialIconSet() == MaterialIconSet.METALLIC) {
+                material.getMaterialIconSet() == MaterialIconSet.METALLIC) {
             return 21; //dull metals have iron enchantability
         } else if (material.getMaterialIconSet() == MaterialIconSet.GEM_VERTICAL ||
-            material.getMaterialIconSet() == MaterialIconSet.GEM_HORIZONTAL ||
-            material.getMaterialIconSet() == MaterialIconSet.DIAMOND ||
-            material.getMaterialIconSet() == MaterialIconSet.OPAL ||
-            material.getMaterialIconSet() == MaterialIconSet.NETHERSTAR) {
+                material.getMaterialIconSet() == MaterialIconSet.GEM_HORIZONTAL ||
+                material.getMaterialIconSet() == MaterialIconSet.DIAMOND ||
+                material.getMaterialIconSet() == MaterialIconSet.OPAL ||
+                material.getMaterialIconSet() == MaterialIconSet.NETHERSTAR) {
             return 15; //standard gems have diamond enchantability
         } else if (material.getMaterialIconSet() == MaterialIconSet.WOOD ||
-            material.getMaterialIconSet() == MaterialIconSet.ROUGH ||
-            material.getMaterialIconSet() == MaterialIconSet.FINE) {
+                material.getMaterialIconSet() == MaterialIconSet.ROUGH ||
+                material.getMaterialIconSet() == MaterialIconSet.FINE) {
             return 11; //wood and stone has their default enchantability
         }
         return 10; //otherwise return lowest enchantability
@@ -853,7 +853,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
                 for (EnchantmentData enchantmentData : prop.toolEnchantments) {
                     if (enchantments.containsKey(enchantmentData.enchantment)) {
                         int level = Math.min(enchantments.get(enchantmentData.enchantment) + enchantmentData.level,
-                            enchantmentData.enchantment.getMaxLevel());
+                                enchantmentData.enchantment.getMaxLevel());
                         enchantments.put(enchantmentData.enchantment, level);
                     } else {
                         enchantments.put(enchantmentData.enchantment, enchantmentData.level);
@@ -863,7 +863,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             for (EnchantmentData enchantmentData : toolStats.getEnchantments(itemStack)) {
                 if (enchantments.containsKey(enchantmentData.enchantment)) {
                     int level = Math.min(enchantments.get(enchantmentData.enchantment) + enchantmentData.level,
-                        enchantmentData.enchantment.getMaxLevel());
+                            enchantmentData.enchantment.getMaxLevel());
                     enchantments.put(enchantmentData.enchantment, level);
                 } else {
                     enchantments.put(enchantmentData.enchantment, enchantmentData.level);

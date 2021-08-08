@@ -33,7 +33,9 @@ import java.util.stream.Collectors;
 public abstract class ToolDrillLarge<E extends Enum<E> & IDrillMode> extends ToolBase {
 
     private static final Set<String> DRILL_TOOL_CLASSES = new HashSet<String>() {{
-        add("pickaxe"); add("shovel"); add("hammer");
+        add("pickaxe");
+        add("shovel");
+        add("hammer");
     }};
 
     abstract ModeSwitchBehavior<E> getModeSwitchBehavior();
@@ -200,7 +202,7 @@ public abstract class ToolDrillLarge<E extends Enum<E> & IDrillMode> extends Too
             EntityPlayer entityPlayer = (EntityPlayer) entity;
             int damagePerBlockBreak = getToolDamagePerBlockBreak(stack);
             IDrillMode drillMode;
-            if (entityPlayer.isSneaking()  || !canAOEMineBlock(entityPlayer.world.getBlockState(pos), stack)) {
+            if (entityPlayer.isSneaking() || !canAOEMineBlock(entityPlayer.world.getBlockState(pos), stack)) {
                 drillMode = IDrillMode.getSingleBlock();
             } else {
                 drillMode = this.getModeSwitchBehavior().getModeFromItemStack(stack);

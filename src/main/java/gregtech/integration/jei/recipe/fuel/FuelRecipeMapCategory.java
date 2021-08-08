@@ -49,7 +49,7 @@ public class FuelRecipeMapCategory implements IRecipeCategory<GTFuelRecipeWrappe
     @Override
     public void setRecipe(IRecipeLayout recipeLayout, GTFuelRecipeWrapper recipeWrapper, @Nonnull IIngredients ingredients) {
         recipeLayout.getFluidStacks().init(0, true, 52, 24, 16, 16,
-            recipeWrapper.recipe.getRecipeFluid().amount, false, null);
+                recipeWrapper.recipe.getRecipeFluid().amount, false, null);
         recipeLayout.getFluidStacks().set(ingredients);
     }
 

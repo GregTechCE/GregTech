@@ -12,7 +12,11 @@ import java.util.Set;
 public class ToolUniversalSpade extends ToolBase {
 
     private static final Set<String> SPADE_TOOL_CLASSES = new HashSet<String>() {{
-        add("shovel"); add("axe"); add("saw"); add("sword"); add("crowbar");
+        add("shovel");
+        add("axe");
+        add("saw");
+        add("sword");
+        add("crowbar");
     }};
 
     @Override
@@ -44,29 +48,29 @@ public class ToolUniversalSpade extends ToolBase {
     public boolean canMineBlock(IBlockState block, ItemStack stack) {
         String tool = block.getBlock().getHarvestTool(block);
         return (tool != null && (tool.equals("shovel") ||
-            tool.equals("axe") ||
-            tool.equals("saw") ||
-            tool.equals("sword") ||
-            tool.equals("crowbar"))) ||
-            block.getMaterial() == Material.SAND ||
-            block.getMaterial() == Material.GRASS ||
-            block.getMaterial() == Material.GROUND ||
-            block.getMaterial() == Material.SNOW ||
-            block.getMaterial() == Material.CLAY ||
-            block.getMaterial() == Material.CRAFTED_SNOW ||
-            block.getMaterial() == Material.LEAVES ||
-            block.getMaterial() == Material.VINE ||
-            block.getMaterial() == Material.WOOD ||
-            block.getMaterial() == Material.CACTUS ||
-            block.getMaterial() == Material.CIRCUITS ||
-            block.getMaterial() == Material.GOURD ||
-            block.getMaterial() == Material.WEB ||
-            block.getMaterial() == Material.CLOTH ||
-            block.getMaterial() == Material.CARPET ||
-            block.getMaterial() == Material.PLANTS ||
-            block.getMaterial() == Material.CAKE ||
-            block.getMaterial() == Material.TNT ||
-            block.getMaterial() == Material.SPONGE;
+                tool.equals("axe") ||
+                tool.equals("saw") ||
+                tool.equals("sword") ||
+                tool.equals("crowbar"))) ||
+                block.getMaterial() == Material.SAND ||
+                block.getMaterial() == Material.GRASS ||
+                block.getMaterial() == Material.GROUND ||
+                block.getMaterial() == Material.SNOW ||
+                block.getMaterial() == Material.CLAY ||
+                block.getMaterial() == Material.CRAFTED_SNOW ||
+                block.getMaterial() == Material.LEAVES ||
+                block.getMaterial() == Material.VINE ||
+                block.getMaterial() == Material.WOOD ||
+                block.getMaterial() == Material.CACTUS ||
+                block.getMaterial() == Material.CIRCUITS ||
+                block.getMaterial() == Material.GOURD ||
+                block.getMaterial() == Material.WEB ||
+                block.getMaterial() == Material.CLOTH ||
+                block.getMaterial() == Material.CARPET ||
+                block.getMaterial() == Material.PLANTS ||
+                block.getMaterial() == Material.CAKE ||
+                block.getMaterial() == Material.TNT ||
+                block.getMaterial() == Material.SPONGE;
     }
 
     @Override

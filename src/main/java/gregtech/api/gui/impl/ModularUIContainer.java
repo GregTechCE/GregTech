@@ -35,12 +35,12 @@ public class ModularUIContainer extends Container implements WidgetUIAccess {
         this.modularUI = modularUI;
         modularUI.guiWidgets.values().forEach(widget -> widget.setUiAccess(this));
         modularUI.guiWidgets.values().stream()
-            .flatMap(widget -> widget.getNativeWidgets().stream())
-            .forEach(nativeWidget -> {
-                Slot slot = nativeWidget.getHandle();
-                slotMap.put(slot, nativeWidget);
-                addSlotToContainer(slot);
-            });
+                .flatMap(widget -> widget.getNativeWidgets().stream())
+                .forEach(nativeWidget -> {
+                    Slot slot = nativeWidget.getHandle();
+                    slotMap.put(slot, nativeWidget);
+                    addSlotToContainer(slot);
+                });
         modularUI.triggerOpenListeners();
     }
 
@@ -53,13 +53,13 @@ public class ModularUIContainer extends Container implements WidgetUIAccess {
     @Override
     public void notifyWidgetChange() {
         List<INativeWidget> nativeWidgets = modularUI.guiWidgets.values().stream()
-            .flatMap(widget -> widget.getNativeWidgets().stream())
-            .collect(Collectors.toList());
+                .flatMap(widget -> widget.getNativeWidgets().stream())
+                .collect(Collectors.toList());
 
         Set<INativeWidget> removedWidgets = new HashSet<>(slotMap.values());
         removedWidgets.removeAll(nativeWidgets);
-        if(!removedWidgets.isEmpty()) {
-            for(INativeWidget removedWidget : removedWidgets) {
+        if (!removedWidgets.isEmpty()) {
+            for (INativeWidget removedWidget : removedWidgets) {
                 Slot slotHandle = removedWidget.getHandle();
                 this.slotMap.remove(slotHandle);
                 //replace removed slot with empty placeholder to avoid list index shift
@@ -72,16 +72,16 @@ public class ModularUIContainer extends Container implements WidgetUIAccess {
 
         Set<INativeWidget> addedWidgets = new HashSet<>(nativeWidgets);
         addedWidgets.removeAll(slotMap.values());
-        if(!addedWidgets.isEmpty()) {
+        if (!addedWidgets.isEmpty()) {
             int[] emptySlotIndexes = inventorySlots.stream()
-                .filter(it -> it instanceof EmptySlotPlaceholder)
-                .mapToInt(slot -> slot.slotNumber).toArray();
+                    .filter(it -> it instanceof EmptySlotPlaceholder)
+                    .mapToInt(slot -> slot.slotNumber).toArray();
             int currentIndex = 0;
-            for(INativeWidget addedWidget : addedWidgets) {
+            for (INativeWidget addedWidget : addedWidgets) {
                 Slot slotHandle = addedWidget.getHandle();
                 //add or replace empty slot in inventory
                 this.slotMap.put(slotHandle, addedWidget);
-                if(currentIndex < emptySlotIndexes.length) {
+                if (currentIndex < emptySlotIndexes.length) {
                     int slotIndex = emptySlotIndexes[currentIndex++];
                     slotHandle.slotNumber = slotIndex;
                     this.inventorySlots.set(slotIndex, slotHandle);
@@ -155,17 +155,17 @@ public class ModularUIContainer extends Container implements WidgetUIAccess {
 
     private List<INativeWidget> getShiftClickSlots(ItemStack itemStack, boolean fromContainer) {
         return slotMap.values().stream()
-            .filter(it -> it.canMergeSlot(itemStack))
-            .filter(it -> it.getSlotLocationInfo().isPlayerInventory == fromContainer)
-            .sorted(Comparator.comparing(s -> (fromContainer ? -1 : 1) * s.getHandle().slotNumber))
-            .collect(Collectors.toList());
+                .filter(it -> it.canMergeSlot(itemStack))
+                .filter(it -> it.getSlotLocationInfo().isPlayerInventory == fromContainer)
+                .sorted(Comparator.comparing(s -> (fromContainer ? -1 : 1) * s.getHandle().slotNumber))
+                .collect(Collectors.toList());
     }
 
     @Override
     public boolean attemptMergeStack(ItemStack itemStack, boolean fromContainer, boolean simulate) {
         List<Slot> inventorySlots = getShiftClickSlots(itemStack, fromContainer).stream()
-            .map(INativeWidget::getHandle)
-            .collect(Collectors.toList());
+                .map(INativeWidget::getHandle)
+                .collect(Collectors.toList());
         return GTUtility.mergeItemStack(itemStack, inventorySlots, simulate);
     }
 

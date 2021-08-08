@@ -1,8 +1,6 @@
 package gregtech.api.capability.impl;
 
 import gregtech.api.capability.IMultipleTankHandler;
-import gregtech.api.capability.impl.FluidTankList;
-import gregtech.api.capability.impl.ItemHandlerList;
 import gregtech.api.metatileentity.multiblock.IMultiblockPart;
 import gregtech.api.metatileentity.multiblock.MultiblockAbility;
 import gregtech.api.metatileentity.multiblock.MultiblockWithDisplayBase;

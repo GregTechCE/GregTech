@@ -20,11 +20,11 @@ import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.pipenet.block.BlockPipe;
 import gregtech.api.pipenet.tile.AttachmentType;
 import gregtech.api.pipenet.tile.IPipeTile;
+import gregtech.api.render.IBlockAppearance;
 import gregtech.api.render.MetaTileEntityRenderer;
 import gregtech.api.util.GTUtility;
 import gregtech.common.ConfigHolder;
 import gregtech.common.tools.DamageValues;
-import gregtech.api.render.IBlockAppearance;
 import gregtech.integration.ctm.IFacadeWrapper;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -121,8 +121,8 @@ public class BlockMachine extends BlockCustomParticle implements ITileEntityProv
             return state;
 
         return ((IExtendedBlockState) state)
-            .withProperty(HARVEST_TOOL, metaTileEntity.getHarvestTool() == null ? "wrench" : metaTileEntity.getHarvestTool())
-            .withProperty(HARVEST_LEVEL, metaTileEntity.getHarvestLevel());
+                .withProperty(HARVEST_TOOL, metaTileEntity.getHarvestTool() == null ? "wrench" : metaTileEntity.getHarvestTool())
+                .withProperty(HARVEST_LEVEL, metaTileEntity.getHarvestLevel());
     }
 
     @Nonnull
@@ -204,9 +204,9 @@ public class BlockMachine extends BlockCustomParticle implements ITileEntityProv
     public boolean rotateBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing axis) {
         MetaTileEntity metaTileEntity = getMetaTileEntity(world, pos);
         if (metaTileEntity == null ||
-            !metaTileEntity.isValidFrontFacing(axis) ||
-            metaTileEntity.getFrontFacing() == axis ||
-            !metaTileEntity.hasFrontFacing())
+                !metaTileEntity.isValidFrontFacing(axis) ||
+                metaTileEntity.getFrontFacing() == axis ||
+                !metaTileEntity.hasFrontFacing())
             return false;
         metaTileEntity.setFrontFacing(axis);
         return true;
@@ -218,15 +218,15 @@ public class BlockMachine extends BlockCustomParticle implements ITileEntityProv
         MetaTileEntity metaTileEntity = getMetaTileEntity(world, pos);
         if (metaTileEntity == null || !metaTileEntity.hasFrontFacing()) return null;
         return Arrays.stream(EnumFacing.VALUES)
-            .filter(metaTileEntity::isValidFrontFacing)
-            .toArray(EnumFacing[]::new);
+                .filter(metaTileEntity::isValidFrontFacing)
+                .toArray(EnumFacing[]::new);
     }
 
     @Override
     public boolean recolorBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing side, @Nonnull EnumDyeColor color) {
         MetaTileEntity metaTileEntity = getMetaTileEntity(world, pos);
         if (metaTileEntity == null ||
-            metaTileEntity.getPaintingColor() == color.colorValue)
+                metaTileEntity.getPaintingColor() == color.colorValue)
             return false;
         metaTileEntity.setPaintingColor(color.colorValue);
         return true;
@@ -258,9 +258,9 @@ public class BlockMachine extends BlockCustomParticle implements ITileEntityProv
                                 pipePos = rt2.getBlockPos();
                         if (pipePos != null) {
                             Block block = worldIn.getBlockState(pipePos).getBlock();
-                            if(block instanceof BlockPipe) {
+                            if (block instanceof BlockPipe) {
                                 IPipeTile pipeTile = ((BlockPipe<?, ?, ?>) block).getPipeTileEntity(worldIn, pipePos);
-                                if(((BlockPipe<?, ?, ?>) block).canPipeConnectToBlock(pipeTile, facing.getOpposite(), worldIn.getTileEntity(pos))) {
+                                if (((BlockPipe<?, ?, ?>) block).canPipeConnectToBlock(pipeTile, facing.getOpposite(), worldIn.getTileEntity(pos))) {
                                     pipeTile.setConnectionBlocked(AttachmentType.PIPE, facing.getOpposite(), false, false);
                                 }
                             }
@@ -319,7 +319,7 @@ public class BlockMachine extends BlockCustomParticle implements ITileEntityProv
             IScrewdriverItem screwdriver = itemStack.getCapability(GregtechCapabilities.CAPABILITY_SCREWDRIVER, null);
 
             if (screwdriver.damageItem(DamageValues.DAMAGE_FOR_SCREWDRIVER, true) &&
-                metaTileEntity.onCoverScrewdriverClick(playerIn, hand, rayTraceResult)) {
+                    metaTileEntity.onCoverScrewdriverClick(playerIn, hand, rayTraceResult)) {
                 screwdriver.damageItem(DamageValues.DAMAGE_FOR_SCREWDRIVER, false);
                 return true;
             }
@@ -331,7 +331,7 @@ public class BlockMachine extends BlockCustomParticle implements ITileEntityProv
             EnumFacing wrenchDirection = ICoverable.determineGridSideHit(rayTraceResult);
 
             if (wrenchItem.damageItem(DamageValues.DAMAGE_FOR_WRENCH, true) &&
-                metaTileEntity.onWrenchClick(playerIn, hand, wrenchDirection, rayTraceResult)) {
+                    metaTileEntity.onWrenchClick(playerIn, hand, wrenchDirection, rayTraceResult)) {
                 wrenchItem.damageItem(DamageValues.DAMAGE_FOR_WRENCH, false);
                 return true;
             }

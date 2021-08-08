@@ -130,12 +130,11 @@ public class BlockOre extends BlockFalling implements IBlockOre {
     }
 
 
-
     @Override
     public void getSubBlocks(@Nonnull CreativeTabs tab, @Nonnull NonNullList<ItemStack> list) {
-        if(tab == CreativeTabs.SEARCH) {
+        if (tab == CreativeTabs.SEARCH) {
             blockState.getValidStates().forEach(blockState -> list.add(getItem(blockState)));
-        } else if(tab == GregTechAPI.TAB_GREGTECH_ORES) {
+        } else if (tab == GregTechAPI.TAB_GREGTECH_ORES) {
             list.add(getItem(getDefaultState()));
         }
     }

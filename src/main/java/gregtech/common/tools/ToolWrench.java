@@ -38,11 +38,11 @@ public class ToolWrench extends ToolBase {
         Block block = blockState.getBlock();
         String tool = block.getHarvestTool(blockState);
         return (tool != null && tool.equals("wrench"))
-            || blockState.getMaterial() == Material.PISTON
-            || block == Blocks.HOPPER
-            || block == Blocks.DISPENSER
-            || block == Blocks.DROPPER
-            || blockState.getMaterial() == Material.IRON;
+                || blockState.getMaterial() == Material.PISTON
+                || block == Blocks.HOPPER
+                || block == Blocks.DISPENSER
+                || block == Blocks.DROPPER
+                || blockState.getMaterial() == Material.IRON;
     }
 
     @Override

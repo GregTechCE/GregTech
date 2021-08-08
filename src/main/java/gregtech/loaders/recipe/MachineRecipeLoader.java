@@ -83,110 +83,110 @@ public class MachineRecipeLoader {
     private static void registerBendingCompressingRecipes() {
 
         COMPRESSOR_RECIPES.recipeBuilder()
-            .input(OrePrefix.dust, Materials.Fireclay)
-            .outputs(MetaItems.COMPRESSED_FIRECLAY.getStackForm())
-            .duration(100).EUt(2)
-            .buildAndRegister();
+                .input(OrePrefix.dust, Materials.Fireclay)
+                .outputs(MetaItems.COMPRESSED_FIRECLAY.getStackForm())
+                .duration(100).EUt(2)
+                .buildAndRegister();
 
         FORMING_PRESS_RECIPES.recipeBuilder()
-            .duration(100).EUt(16)
-            .notConsumable(MetaItems.SHAPE_MOLD_CREDIT.getStackForm())
-            .input(OrePrefix.plate, Materials.Cupronickel, 1)
-            .outputs(MetaItems.CREDIT_CUPRONICKEL.getStackForm(4))
-            .buildAndRegister();
+                .duration(100).EUt(16)
+                .notConsumable(MetaItems.SHAPE_MOLD_CREDIT.getStackForm())
+                .input(OrePrefix.plate, Materials.Cupronickel, 1)
+                .outputs(MetaItems.CREDIT_CUPRONICKEL.getStackForm(4))
+                .buildAndRegister();
 
         FORMING_PRESS_RECIPES.recipeBuilder()
-            .duration(100).EUt(16)
-            .notConsumable(MetaItems.SHAPE_MOLD_CREDIT.getStackForm())
-            .input(OrePrefix.plate, Materials.Brass, 1)
-            .outputs(MetaItems.COIN_DOGE.getStackForm(4))
-            .buildAndRegister();
+                .duration(100).EUt(16)
+                .notConsumable(MetaItems.SHAPE_MOLD_CREDIT.getStackForm())
+                .input(OrePrefix.plate, Materials.Brass, 1)
+                .outputs(MetaItems.COIN_DOGE.getStackForm(4))
+                .buildAndRegister();
 
         for (MetaItem<?>.MetaValueItem shapeMold : SHAPE_MOLDS) {
             FORMING_PRESS_RECIPES.recipeBuilder()
-                .duration(120).EUt(22)
-                .notConsumable(shapeMold.getStackForm())
-                .inputs(MetaItems.SHAPE_EMPTY.getStackForm())
-                .outputs(shapeMold.getStackForm())
-                .buildAndRegister();
+                    .duration(120).EUt(22)
+                    .notConsumable(shapeMold.getStackForm())
+                    .inputs(MetaItems.SHAPE_EMPTY.getStackForm())
+                    .outputs(shapeMold.getStackForm())
+                    .buildAndRegister();
         }
 
         for (MetaItem<?>.MetaValueItem shapeExtruder : SHAPE_EXTRUDERS) {
             FORMING_PRESS_RECIPES.recipeBuilder()
-                .duration(120).EUt(22)
-                .notConsumable(shapeExtruder.getStackForm())
-                .inputs(MetaItems.SHAPE_EMPTY.getStackForm())
-                .outputs(shapeExtruder.getStackForm())
-                .buildAndRegister();
+                    .duration(120).EUt(22)
+                    .notConsumable(shapeExtruder.getStackForm())
+                    .inputs(MetaItems.SHAPE_EMPTY.getStackForm())
+                    .outputs(shapeExtruder.getStackForm())
+                    .buildAndRegister();
         }
 
         BENDER_RECIPES.recipeBuilder()
-            .circuitMeta(4)
-            .input(OrePrefix.plate, Materials.Steel, 4)
-            .outputs(MetaItems.SHAPE_EMPTY.getStackForm())
-            .duration(180).EUt(12)
-            .buildAndRegister();
+                .circuitMeta(4)
+                .input(OrePrefix.plate, Materials.Steel, 4)
+                .outputs(MetaItems.SHAPE_EMPTY.getStackForm())
+                .duration(180).EUt(12)
+                .buildAndRegister();
 
         BENDER_RECIPES.recipeBuilder()
-            .circuitMeta(12)
-            .input(OrePrefix.plate, Materials.Tin, 2)
-            .outputs(MetaItems.FLUID_CELL.getStackForm())
-            .duration(200).EUt(8)
-            .buildAndRegister();
+                .circuitMeta(12)
+                .input(OrePrefix.plate, Materials.Tin, 2)
+                .outputs(MetaItems.FLUID_CELL.getStackForm())
+                .duration(200).EUt(8)
+                .buildAndRegister();
 
         BENDER_RECIPES.recipeBuilder()
-            .circuitMeta(12)
-            .input(OrePrefix.plate, Materials.Steel)
-            .outputs(MetaItems.FLUID_CELL.getStackForm())
-            .duration(100).EUt(8)
-            .buildAndRegister();
+                .circuitMeta(12)
+                .input(OrePrefix.plate, Materials.Steel)
+                .outputs(MetaItems.FLUID_CELL.getStackForm())
+                .duration(100).EUt(8)
+                .buildAndRegister();
 
         BENDER_RECIPES.recipeBuilder()
-            .circuitMeta(12)
-            .input(OrePrefix.plate, Polytetrafluoroethylene)
-            .outputs(MetaItems.FLUID_CELL.getStackForm(4))
-            .duration(100).EUt(8)
-            .buildAndRegister();
+                .circuitMeta(12)
+                .input(OrePrefix.plate, Polytetrafluoroethylene)
+                .outputs(MetaItems.FLUID_CELL.getStackForm(4))
+                .duration(100).EUt(8)
+                .buildAndRegister();
 
         BENDER_RECIPES.recipeBuilder()
-            .circuitMeta(12)
-            .input(OrePrefix.plate, Polybenzimidazole)
-            .outputs(MetaItems.FLUID_CELL.getStackForm(16))
-            .duration(100).EUt(8)
-            .buildAndRegister();
+                .circuitMeta(12)
+                .input(OrePrefix.plate, Polybenzimidazole)
+                .outputs(MetaItems.FLUID_CELL.getStackForm(16))
+                .duration(100).EUt(8)
+                .buildAndRegister();
 
         EXTRUDER_RECIPES.recipeBuilder()
-            .notConsumable(MetaItems.SHAPE_EXTRUDER_CELL)
-            .input(OrePrefix.ingot, Materials.Tin, 2)
-            .outputs(MetaItems.FLUID_CELL.getStackForm())
-            .duration(128).EUt(30)
-            .buildAndRegister();
+                .notConsumable(MetaItems.SHAPE_EXTRUDER_CELL)
+                .input(OrePrefix.ingot, Materials.Tin, 2)
+                .outputs(MetaItems.FLUID_CELL.getStackForm())
+                .duration(128).EUt(30)
+                .buildAndRegister();
 
         EXTRUDER_RECIPES.recipeBuilder()
-            .notConsumable(MetaItems.SHAPE_EXTRUDER_CELL)
-            .input(OrePrefix.ingot, Materials.Steel)
-            .outputs(MetaItems.FLUID_CELL.getStackForm())
-            .duration(128).EUt(30)
-            .buildAndRegister();
+                .notConsumable(MetaItems.SHAPE_EXTRUDER_CELL)
+                .input(OrePrefix.ingot, Materials.Steel)
+                .outputs(MetaItems.FLUID_CELL.getStackForm())
+                .duration(128).EUt(30)
+                .buildAndRegister();
 
         EXTRUDER_RECIPES.recipeBuilder()
-            .notConsumable(MetaItems.SHAPE_EXTRUDER_CELL)
-            .input(OrePrefix.ingot, Polytetrafluoroethylene)
-            .outputs(MetaItems.FLUID_CELL.getStackForm(4))
-            .duration(128).EUt(30)
-            .buildAndRegister();
+                .notConsumable(MetaItems.SHAPE_EXTRUDER_CELL)
+                .input(OrePrefix.ingot, Polytetrafluoroethylene)
+                .outputs(MetaItems.FLUID_CELL.getStackForm(4))
+                .duration(128).EUt(30)
+                .buildAndRegister();
 
         EXTRUDER_RECIPES.recipeBuilder()
-            .notConsumable(MetaItems.SHAPE_EXTRUDER_CELL)
-            .input(OrePrefix.ingot, Polybenzimidazole)
-            .outputs(MetaItems.FLUID_CELL.getStackForm(16))
-            .duration(128).EUt(30)
-            .buildAndRegister();
+                .notConsumable(MetaItems.SHAPE_EXTRUDER_CELL)
+                .input(OrePrefix.ingot, Polybenzimidazole)
+                .outputs(MetaItems.FLUID_CELL.getStackForm(16))
+                .duration(128).EUt(30)
+                .buildAndRegister();
 
         COMPRESSOR_RECIPES.recipeBuilder()
-            .input(OrePrefix.dust, Materials.NetherQuartz)
-            .output(OrePrefix.plate, Materials.NetherQuartz)
-            .duration(400).EUt(2).buildAndRegister();
+                .input(OrePrefix.dust, Materials.NetherQuartz)
+                .output(OrePrefix.plate, Materials.NetherQuartz)
+                .duration(400).EUt(2).buildAndRegister();
 
         COMPRESSOR_RECIPES.recipeBuilder()
                 .input(OrePrefix.dust, Materials.CertusQuartz)
@@ -238,61 +238,61 @@ public class MachineRecipeLoader {
                 .buildAndRegister();
 
         RecipeMaps.MIXER_RECIPES.recipeBuilder()
-            .input(OrePrefix.dust, Materials.Stone, 1)
-            .fluidInputs(Materials.Lubricant.getFluid(20), Materials.Water.getFluid(4980))
-            .fluidOutputs(Materials.DrillingFluid.getFluid(5000))
-            .duration(64).EUt(16)
-            .buildAndRegister();
+                .input(OrePrefix.dust, Materials.Stone, 1)
+                .fluidInputs(Materials.Lubricant.getFluid(20), Materials.Water.getFluid(4980))
+                .fluidOutputs(Materials.DrillingFluid.getFluid(5000))
+                .duration(64).EUt(16)
+                .buildAndRegister();
 
         RecipeMaps.MIXER_RECIPES.recipeBuilder()
-            .input(OrePrefix.dust, Materials.Clay, 1)
-            .input(OrePrefix.dust, Materials.Stone, 3)
-            .fluidInputs(Materials.Water.getFluid(500))
-            .fluidOutputs(Materials.Concrete.getFluid(576))
-            .duration(20).EUt(16)
-            .buildAndRegister();
+                .input(OrePrefix.dust, Materials.Clay, 1)
+                .input(OrePrefix.dust, Materials.Stone, 3)
+                .fluidInputs(Materials.Water.getFluid(500))
+                .fluidOutputs(Materials.Concrete.getFluid(576))
+                .duration(20).EUt(16)
+                .buildAndRegister();
 
         RecipeMaps.MIXER_RECIPES.recipeBuilder()
-            .inputs(MetaBlocks.CONCRETE.getItemVariant(ConcreteVariant.LIGHT_CONCRETE, ChiselingVariant.NORMAL))
-            .fluidInputs(Materials.Water.getFluid(144))
-            .outputs(MetaBlocks.CONCRETE.getItemVariant(ConcreteVariant.DARK_CONCRETE, ChiselingVariant.NORMAL))
-            .duration(12).EUt(4)
-            .buildAndRegister();
+                .inputs(MetaBlocks.CONCRETE.getItemVariant(ConcreteVariant.LIGHT_CONCRETE, ChiselingVariant.NORMAL))
+                .fluidInputs(Materials.Water.getFluid(144))
+                .outputs(MetaBlocks.CONCRETE.getItemVariant(ConcreteVariant.DARK_CONCRETE, ChiselingVariant.NORMAL))
+                .duration(12).EUt(4)
+                .buildAndRegister();
 
         RecipeMaps.MIXER_RECIPES.recipeBuilder()
-            .duration(64).EUt(16)
-            .fluidInputs(Materials.Water.getFluid(1000))
-            .input("sand", 2)
-            .input(OrePrefix.dust, Materials.Stone, 6)
-            .input(OrePrefix.dust, Materials.Flint)
-            .fluidOutputs(Materials.ConstructionFoam.getFluid(1000))
-            .buildAndRegister();
+                .duration(64).EUt(16)
+                .fluidInputs(Materials.Water.getFluid(1000))
+                .input("sand", 2)
+                .input(OrePrefix.dust, Materials.Stone, 6)
+                .input(OrePrefix.dust, Materials.Flint)
+                .fluidOutputs(Materials.ConstructionFoam.getFluid(1000))
+                .buildAndRegister();
 
         RecipeMaps.MIXER_RECIPES.recipeBuilder()
-            .duration(1200).EUt(16)
-            .input(OrePrefix.dust, Materials.Ruby, 9)
-            .input(OrePrefix.dust, Materials.Redstone, 9)
-            .outputs(MetaItems.ENERGIUM_DUST.getStackForm(9))
-            .buildAndRegister();
+                .duration(1200).EUt(16)
+                .input(OrePrefix.dust, Materials.Ruby, 9)
+                .input(OrePrefix.dust, Materials.Redstone, 9)
+                .outputs(MetaItems.ENERGIUM_DUST.getStackForm(9))
+                .buildAndRegister();
 
         RecipeMaps.AUTOCLAVE_RECIPES.recipeBuilder().inputs(MetaItems.ENERGIUM_DUST.getStackForm(9))
-            .fluidInputs(Materials.Water.getFluid(1800))
-            .outputs(MetaItems.ENERGY_CRYSTAL.getStackForm())
-            .duration(2000).EUt(120)
-            .buildAndRegister();
+                .fluidInputs(Materials.Water.getFluid(1800))
+                .outputs(MetaItems.ENERGY_CRYSTAL.getStackForm())
+                .duration(2000).EUt(120)
+                .buildAndRegister();
 
         RecipeMaps.AUTOCLAVE_RECIPES.recipeBuilder()
-            .inputs(MetaItems.ENERGIUM_DUST.getStackForm(9))
-            .fluidInputs(Materials.DistilledWater.getFluid(1800))
-            .outputs(MetaItems.ENERGY_CRYSTAL.getStackForm())
-            .duration(1500).EUt(120)
-            .buildAndRegister();
+                .inputs(MetaItems.ENERGIUM_DUST.getStackForm(9))
+                .fluidInputs(Materials.DistilledWater.getFluid(1800))
+                .outputs(MetaItems.ENERGY_CRYSTAL.getStackForm())
+                .duration(1500).EUt(120)
+                .buildAndRegister();
 
         RecipeMaps.AUTOCLAVE_RECIPES.recipeBuilder()
-            .input(OrePrefix.dust, Materials.SiliconDioxide)
-            .fluidInputs(Materials.DistilledWater.getFluid(200))
-            .chancedOutput(OreDictUnifier.get(OrePrefix.gem, Materials.Quartzite), 1000, 1000)
-            .duration(1500).EUt(24).buildAndRegister();
+                .input(OrePrefix.dust, Materials.SiliconDioxide)
+                .fluidInputs(Materials.DistilledWater.getFluid(200))
+                .chancedOutput(OreDictUnifier.get(OrePrefix.gem, Materials.Quartzite), 1000, 1000)
+                .duration(1500).EUt(24).buildAndRegister();
 
         //todo find UU-Matter replacement
 //        RecipeMaps.AUTOCLAVE_RECIPES.recipeBuilder()
@@ -302,17 +302,17 @@ public class MachineRecipeLoader {
 //            .duration(72000).EUt(480).buildAndRegister();
 
         RecipeMaps.MIXER_RECIPES.recipeBuilder()
-            .input(OrePrefix.crushedPurified, Materials.Sphalerite)
-            .input(OrePrefix.crushedPurified, Materials.Galena)
-            .fluidInputs(Materials.SulfuricAcid.getFluid(4000))
-            .fluidOutputs(Materials.IndiumConcentrate.getFluid(1000))
-            .duration(60).EUt(150).buildAndRegister();
+                .input(OrePrefix.crushedPurified, Materials.Sphalerite)
+                .input(OrePrefix.crushedPurified, Materials.Galena)
+                .fluidInputs(Materials.SulfuricAcid.getFluid(4000))
+                .fluidOutputs(Materials.IndiumConcentrate.getFluid(1000))
+                .duration(60).EUt(150).buildAndRegister();
 
         RecipeMaps.MIXER_RECIPES.recipeBuilder()
-            .input(OrePrefix.dust, Materials.Sodium)
-            .input(OrePrefix.dust, Materials.Potassium)
-            .fluidOutputs(Materials.SodiumPotassium.getFluid(1000))
-            .duration(400).EUt(30).buildAndRegister();
+                .input(OrePrefix.dust, Materials.Sodium)
+                .input(OrePrefix.dust, Materials.Potassium)
+                .fluidOutputs(Materials.SodiumPotassium.getFluid(1000))
+                .duration(400).EUt(30).buildAndRegister();
 
     }
 
@@ -322,56 +322,56 @@ public class MachineRecipeLoader {
     }
 
     private static final MaterialStack[][] alloySmelterList = {
-        {new MaterialStack(Materials.Copper, 3L), new MaterialStack(Materials.Tin, 1), new MaterialStack(Materials.Bronze, 4L)},
-        {new MaterialStack(Materials.Copper, 3L), new MaterialStack(Materials.Zinc, 1), new MaterialStack(Materials.Brass, 4L)},
-        {new MaterialStack(Materials.Copper, 1), new MaterialStack(Materials.Nickel, 1), new MaterialStack(Materials.Cupronickel, 2L)},
-        {new MaterialStack(Materials.Copper, 1), new MaterialStack(Materials.Redstone, 4L), new MaterialStack(Materials.RedAlloy, 1)},
-        {new MaterialStack(Materials.AnnealedCopper, 3L), new MaterialStack(Materials.Tin, 1), new MaterialStack(Materials.Bronze, 4L)},
-        {new MaterialStack(Materials.AnnealedCopper, 3L), new MaterialStack(Materials.Zinc, 1), new MaterialStack(Materials.Brass, 4L)},
-        {new MaterialStack(Materials.AnnealedCopper, 1), new MaterialStack(Materials.Nickel, 1), new MaterialStack(Materials.Cupronickel, 2L)},
-        {new MaterialStack(Materials.AnnealedCopper, 1), new MaterialStack(Materials.Redstone, 4L), new MaterialStack(Materials.RedAlloy, 1)},
-        {new MaterialStack(Materials.Iron, 1), new MaterialStack(Materials.Tin, 1), new MaterialStack(Materials.TinAlloy, 2L)},
-        {new MaterialStack(Materials.WroughtIron, 1), new MaterialStack(Materials.Tin, 1), new MaterialStack(Materials.TinAlloy, 2L)},
-        {new MaterialStack(Materials.Iron, 2L), new MaterialStack(Materials.Nickel, 1), new MaterialStack(Materials.Invar, 3L)},
-        {new MaterialStack(Materials.WroughtIron, 2L), new MaterialStack(Materials.Nickel, 1), new MaterialStack(Materials.Invar, 3L)},
-        {new MaterialStack(Materials.Tin, 9L), new MaterialStack(Materials.Antimony, 1), new MaterialStack(Materials.SolderingAlloy, 10L)},
-        {new MaterialStack(Materials.Lead, 4L), new MaterialStack(Materials.Antimony, 1), new MaterialStack(Materials.BatteryAlloy, 5L)},
-        {new MaterialStack(Materials.Gold, 1), new MaterialStack(Materials.Silver, 1), new MaterialStack(Materials.Electrum, 2L)},
-        {new MaterialStack(Materials.Magnesium, 1), new MaterialStack(Materials.Aluminium, 2L), new MaterialStack(Materials.Magnalium, 3L)}};
+            {new MaterialStack(Materials.Copper, 3L), new MaterialStack(Materials.Tin, 1), new MaterialStack(Materials.Bronze, 4L)},
+            {new MaterialStack(Materials.Copper, 3L), new MaterialStack(Materials.Zinc, 1), new MaterialStack(Materials.Brass, 4L)},
+            {new MaterialStack(Materials.Copper, 1), new MaterialStack(Materials.Nickel, 1), new MaterialStack(Materials.Cupronickel, 2L)},
+            {new MaterialStack(Materials.Copper, 1), new MaterialStack(Materials.Redstone, 4L), new MaterialStack(Materials.RedAlloy, 1)},
+            {new MaterialStack(Materials.AnnealedCopper, 3L), new MaterialStack(Materials.Tin, 1), new MaterialStack(Materials.Bronze, 4L)},
+            {new MaterialStack(Materials.AnnealedCopper, 3L), new MaterialStack(Materials.Zinc, 1), new MaterialStack(Materials.Brass, 4L)},
+            {new MaterialStack(Materials.AnnealedCopper, 1), new MaterialStack(Materials.Nickel, 1), new MaterialStack(Materials.Cupronickel, 2L)},
+            {new MaterialStack(Materials.AnnealedCopper, 1), new MaterialStack(Materials.Redstone, 4L), new MaterialStack(Materials.RedAlloy, 1)},
+            {new MaterialStack(Materials.Iron, 1), new MaterialStack(Materials.Tin, 1), new MaterialStack(Materials.TinAlloy, 2L)},
+            {new MaterialStack(Materials.WroughtIron, 1), new MaterialStack(Materials.Tin, 1), new MaterialStack(Materials.TinAlloy, 2L)},
+            {new MaterialStack(Materials.Iron, 2L), new MaterialStack(Materials.Nickel, 1), new MaterialStack(Materials.Invar, 3L)},
+            {new MaterialStack(Materials.WroughtIron, 2L), new MaterialStack(Materials.Nickel, 1), new MaterialStack(Materials.Invar, 3L)},
+            {new MaterialStack(Materials.Tin, 9L), new MaterialStack(Materials.Antimony, 1), new MaterialStack(Materials.SolderingAlloy, 10L)},
+            {new MaterialStack(Materials.Lead, 4L), new MaterialStack(Materials.Antimony, 1), new MaterialStack(Materials.BatteryAlloy, 5L)},
+            {new MaterialStack(Materials.Gold, 1), new MaterialStack(Materials.Silver, 1), new MaterialStack(Materials.Electrum, 2L)},
+            {new MaterialStack(Materials.Magnesium, 1), new MaterialStack(Materials.Aluminium, 2L), new MaterialStack(Materials.Magnalium, 3L)}};
 
     private static void registerAlloyRecipes() {
         for (MaterialStack[] stack : alloySmelterList) {
             if (stack[0].material.hasProperty(PropertyKey.INGOT)) {
                 RecipeMaps.ALLOY_SMELTER_RECIPES.recipeBuilder()
-                    .duration((int) stack[2].amount * 50).EUt(16)
-                    .input(OrePrefix.ingot, stack[0].material, (int) stack[0].amount)
-                    .input(OrePrefix.dust, stack[1].material, (int) stack[1].amount)
-                    .outputs(OreDictUnifier.get(OrePrefix.ingot, stack[2].material, (int) stack[2].amount))
-                    .buildAndRegister();
+                        .duration((int) stack[2].amount * 50).EUt(16)
+                        .input(OrePrefix.ingot, stack[0].material, (int) stack[0].amount)
+                        .input(OrePrefix.dust, stack[1].material, (int) stack[1].amount)
+                        .outputs(OreDictUnifier.get(OrePrefix.ingot, stack[2].material, (int) stack[2].amount))
+                        .buildAndRegister();
             }
             if (stack[1].material.hasProperty(PropertyKey.INGOT)) {
                 RecipeMaps.ALLOY_SMELTER_RECIPES.recipeBuilder()
-                    .duration((int) stack[2].amount * 50).EUt(16)
-                    .input(OrePrefix.dust, stack[0].material, (int) stack[0].amount)
-                    .input(OrePrefix.ingot, stack[1].material, (int) stack[1].amount)
-                    .outputs(OreDictUnifier.get(OrePrefix.ingot, stack[2].material, (int) stack[2].amount))
-                    .buildAndRegister();
+                        .duration((int) stack[2].amount * 50).EUt(16)
+                        .input(OrePrefix.dust, stack[0].material, (int) stack[0].amount)
+                        .input(OrePrefix.ingot, stack[1].material, (int) stack[1].amount)
+                        .outputs(OreDictUnifier.get(OrePrefix.ingot, stack[2].material, (int) stack[2].amount))
+                        .buildAndRegister();
             }
             if (stack[0].material.hasProperty(PropertyKey.INGOT)
                     && stack[1].material.hasProperty(PropertyKey.INGOT)) {
                 RecipeMaps.ALLOY_SMELTER_RECIPES.recipeBuilder()
-                    .duration((int) stack[2].amount * 50).EUt(16)
-                    .input(OrePrefix.ingot, stack[0].material, (int) stack[0].amount)
-                    .input(OrePrefix.ingot, stack[1].material, (int) stack[1].amount)
-                    .outputs(OreDictUnifier.get(OrePrefix.ingot, stack[2].material, (int) stack[2].amount))
-                    .buildAndRegister();
+                        .duration((int) stack[2].amount * 50).EUt(16)
+                        .input(OrePrefix.ingot, stack[0].material, (int) stack[0].amount)
+                        .input(OrePrefix.ingot, stack[1].material, (int) stack[1].amount)
+                        .outputs(OreDictUnifier.get(OrePrefix.ingot, stack[2].material, (int) stack[2].amount))
+                        .buildAndRegister();
             }
             RecipeMaps.ALLOY_SMELTER_RECIPES.recipeBuilder()
-                .duration((int) stack[2].amount * 50).EUt(16)
-                .input(OrePrefix.dust, stack[0].material, (int) stack[0].amount)
-                .input(OrePrefix.dust, stack[1].material, (int) stack[1].amount)
-                .outputs(OreDictUnifier.get(OrePrefix.ingot, stack[2].material, (int) stack[2].amount))
-                .buildAndRegister();
+                    .duration((int) stack[2].amount * 50).EUt(16)
+                    .input(OrePrefix.dust, stack[0].material, (int) stack[0].amount)
+                    .input(OrePrefix.dust, stack[1].material, (int) stack[1].amount)
+                    .outputs(OreDictUnifier.get(OrePrefix.ingot, stack[2].material, (int) stack[2].amount))
+                    .buildAndRegister();
         }
 
         COMPRESSOR_RECIPES.recipeBuilder().inputs(MetaItems.INGOT_MIXED_METAL.getStackForm()).outputs(MetaItems.ADVANCED_ALLOY_PLATE.getStackForm()).duration(300).EUt(2).buildAndRegister();
@@ -390,11 +390,11 @@ public class MachineRecipeLoader {
     private static void registerAssemblerRecipes() {
         for (EnumDyeColor dyeColor : EnumDyeColor.values()) {
             CANNER_RECIPES.recipeBuilder()
-                .inputs(MetaItems.SPRAY_EMPTY.getStackForm())
-                .input(getOrdictColorName(dyeColor), 1)
-                .outputs(MetaItems.SPRAY_CAN_DYES[dyeColor.getMetadata()].getStackForm())
-                .EUt(8).duration(200)
-                .buildAndRegister();
+                    .inputs(MetaItems.SPRAY_EMPTY.getStackForm())
+                    .input(getOrdictColorName(dyeColor), 1)
+                    .outputs(MetaItems.SPRAY_CAN_DYES[dyeColor.getMetadata()].getStackForm())
+                    .EUt(8).duration(200)
+                    .buildAndRegister();
         }
 
         //todo fix
@@ -426,7 +426,7 @@ public class MachineRecipeLoader {
                     .EUt(16).duration(800)
                     .buildAndRegister();
 
-            for (FluidStack solder : new FluidStack[]{Tin.getFluid(L), SolderingAlloy.getFluid(L/2)}) {
+            for (FluidStack solder : new FluidStack[]{Tin.getFluid(L), SolderingAlloy.getFluid(L / 2)}) {
                 RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
                         .inputs(new ItemStack(Blocks.LEVER))
                         .input(OrePrefix.plate, material)
@@ -747,106 +747,106 @@ public class MachineRecipeLoader {
     private static void registerRecyclingRecipes() {
 
         MACERATOR_RECIPES.recipeBuilder()
-            .input(stone, Endstone)
-            .output(dust, Endstone)
-            .chancedOutput(dustTiny, Tungstate, 1200, 280)
-            .buildAndRegister();
+                .input(stone, Endstone)
+                .output(dust, Endstone)
+                .chancedOutput(dustTiny, Tungstate, 1200, 280)
+                .buildAndRegister();
 
         MACERATOR_RECIPES.recipeBuilder()
-            .input(stone, Netherrack)
-            .output(dust, Netherrack)
-            .chancedOutput(nugget, Gold, 500, 120)
-            .buildAndRegister();
+                .input(stone, Netherrack)
+                .output(dust, Netherrack)
+                .chancedOutput(nugget, Gold, 500, 120)
+                .buildAndRegister();
 
         MACERATOR_RECIPES.recipeBuilder()
-            .input(stone, Soapstone)
-            .output(dustImpure, Talc)
-            .chancedOutput(dustTiny, Chromite, 1000, 280)
-            .buildAndRegister();
+                .input(stone, Soapstone)
+                .output(dustImpure, Talc)
+                .chancedOutput(dustTiny, Chromite, 1000, 280)
+                .buildAndRegister();
 
         MACERATOR_RECIPES.recipeBuilder()
-            .input(stone, Redrock)
-            .output(dust, Redrock)
-            .chancedOutput(dust, Redrock, 1000, 380)
-            .buildAndRegister();
+                .input(stone, Redrock)
+                .output(dust, Redrock)
+                .chancedOutput(dust, Redrock, 1000, 380)
+                .buildAndRegister();
 
         MACERATOR_RECIPES.recipeBuilder()
-            .input(stone, Marble)
-            .output(dust, Marble)
-            .chancedOutput(dust, Marble, 1000, 380)
-            .buildAndRegister();
+                .input(stone, Marble)
+                .output(dust, Marble)
+                .chancedOutput(dust, Marble, 1000, 380)
+                .buildAndRegister();
 
         MACERATOR_RECIPES.recipeBuilder()
-            .input(stone, Basalt)
-            .output(dust, Basalt)
-            .chancedOutput(dust, Basalt, 1000, 380)
-            .buildAndRegister();
+                .input(stone, Basalt)
+                .output(dust, Basalt)
+                .chancedOutput(dust, Basalt, 1000, 380)
+                .buildAndRegister();
 
         MACERATOR_RECIPES.recipeBuilder()
-            .input(stone, GraniteBlack)
-            .output(dust, GraniteBlack)
-            .chancedOutput(dust, Thorium, 100, 40)
-            .buildAndRegister();
+                .input(stone, GraniteBlack)
+                .output(dust, GraniteBlack)
+                .chancedOutput(dust, Thorium, 100, 40)
+                .buildAndRegister();
 
         MACERATOR_RECIPES.recipeBuilder()
-            .input(stone, GraniteRed)
-            .output(dust, GraniteRed)
-            .chancedOutput(dustSmall, Uranium238, 100, 40)
-            .buildAndRegister();
+                .input(stone, GraniteRed)
+                .output(dust, GraniteRed)
+                .chancedOutput(dustSmall, Uranium238, 100, 40)
+                .buildAndRegister();
 
         MACERATOR_RECIPES.recipeBuilder()
-            .input(stone, Andesite)
-            .output(dust, Andesite)
-            .chancedOutput(dustSmall, Stone, 100, 40)
-            .buildAndRegister();
+                .input(stone, Andesite)
+                .output(dust, Andesite)
+                .chancedOutput(dustSmall, Stone, 100, 40)
+                .buildAndRegister();
 
         MACERATOR_RECIPES.recipeBuilder()
-            .input(stone, Diorite)
-            .output(dust, Diorite)
-            .chancedOutput(dustSmall, Stone, 100, 40)
-            .buildAndRegister();
+                .input(stone, Diorite)
+                .output(dust, Diorite)
+                .chancedOutput(dustSmall, Stone, 100, 40)
+                .buildAndRegister();
 
         MACERATOR_RECIPES.recipeBuilder()
-            .input(stone, Granite)
-            .output(dust, Granite)
-            .chancedOutput(dustSmall, Stone, 100, 40)
-            .buildAndRegister();
+                .input(stone, Granite)
+                .output(dust, Granite)
+                .chancedOutput(dustSmall, Stone, 100, 40)
+                .buildAndRegister();
 
         MACERATOR_RECIPES.recipeBuilder()
-            .inputs(new ItemStack(Items.PORKCHOP))
-            .output(dustSmall, Meat, 6)
-            .output(dustTiny, Bone)
-            .duration(102).EUt(4).buildAndRegister();
+                .inputs(new ItemStack(Items.PORKCHOP))
+                .output(dustSmall, Meat, 6)
+                .output(dustTiny, Bone)
+                .duration(102).EUt(4).buildAndRegister();
 
         MACERATOR_RECIPES.recipeBuilder()
-            .inputs(new ItemStack(Items.FISH, 1, GTValues.W))
-            .output(dustSmall, Meat, 6)
-            .output(dustTiny, Bone)
-            .duration(102).EUt(4).buildAndRegister();
+                .inputs(new ItemStack(Items.FISH, 1, GTValues.W))
+                .output(dustSmall, Meat, 6)
+                .output(dustTiny, Bone)
+                .duration(102).EUt(4).buildAndRegister();
 
         MACERATOR_RECIPES.recipeBuilder()
-            .inputs(new ItemStack(Items.CHICKEN))
-            .output(dust, Meat)
-            .output(dustTiny, Bone)
-            .duration(102).EUt(4).buildAndRegister();
+                .inputs(new ItemStack(Items.CHICKEN))
+                .output(dust, Meat)
+                .output(dustTiny, Bone)
+                .duration(102).EUt(4).buildAndRegister();
 
         MACERATOR_RECIPES.recipeBuilder()
-            .inputs(new ItemStack(Items.BEEF))
-            .output(dustSmall, Meat, 6)
-            .output(dustTiny, Bone)
-            .duration(102).EUt(4).buildAndRegister();
+                .inputs(new ItemStack(Items.BEEF))
+                .output(dustSmall, Meat, 6)
+                .output(dustTiny, Bone)
+                .duration(102).EUt(4).buildAndRegister();
 
         MACERATOR_RECIPES.recipeBuilder()
-            .inputs(new ItemStack(Items.RABBIT))
-            .output(dustSmall, Meat, 6)
-            .output(dustTiny, Bone)
-            .duration(102).EUt(4).buildAndRegister();
+                .inputs(new ItemStack(Items.RABBIT))
+                .output(dustSmall, Meat, 6)
+                .output(dustTiny, Bone)
+                .duration(102).EUt(4).buildAndRegister();
 
         MACERATOR_RECIPES.recipeBuilder()
-            .inputs(new ItemStack(Items.MUTTON))
-            .output(dust, Meat)
-            .output(dustTiny, Bone)
-            .duration(102).EUt(4).buildAndRegister();
+                .inputs(new ItemStack(Items.MUTTON))
+                .output(dust, Meat)
+                .output(dustTiny, Bone)
+                .duration(102).EUt(4).buildAndRegister();
 
 
     }
@@ -867,9 +867,9 @@ public class MachineRecipeLoader {
 
     private static <T extends Enum<T> & IStringSerializable> void registerBrickRecipe(StoneBlock<T> stoneBlock, T normalVariant, T brickVariant) {
         ModHandler.addShapedRecipe(stoneBlock.getRegistryName().getNamespace() + "_" + normalVariant + "_bricks",
-            stoneBlock.getItemVariant(brickVariant, ChiselingVariant.NORMAL, 4),
-            "XX", "XX", 'X',
-            stoneBlock.getItemVariant(normalVariant, ChiselingVariant.NORMAL));
+                stoneBlock.getItemVariant(brickVariant, ChiselingVariant.NORMAL, 4),
+                "XX", "XX", 'X',
+                stoneBlock.getItemVariant(normalVariant, ChiselingVariant.NORMAL));
     }
 
     private static <T extends Enum<T> & IStringSerializable> void registerChiselingRecipes(StoneBlock<T> stoneBlock) {
@@ -878,22 +878,23 @@ public class MachineRecipeLoader {
             if (!isBricksVariant) {
                 ModHandler.addSmeltingRecipe(stoneBlock.getItemVariant(variant, ChiselingVariant.CRACKED), stoneBlock.getItemVariant(variant, ChiselingVariant.NORMAL));
                 FORGE_HAMMER_RECIPES.recipeBuilder().duration(12).EUt(4)
-                    .inputs(stoneBlock.getItemVariant(variant, ChiselingVariant.NORMAL))
-                    .outputs(stoneBlock.getItemVariant(variant, ChiselingVariant.CRACKED))
-                    .buildAndRegister();
+                        .inputs(stoneBlock.getItemVariant(variant, ChiselingVariant.NORMAL))
+                        .outputs(stoneBlock.getItemVariant(variant, ChiselingVariant.CRACKED))
+                        .buildAndRegister();
             } else {
                 ModHandler.addSmeltingRecipe(stoneBlock.getItemVariant(variant, ChiselingVariant.NORMAL), stoneBlock.getItemVariant(variant, ChiselingVariant.CRACKED));
             }
             CHEMICAL_BATH_RECIPES.recipeBuilder().duration(12).EUt(4)
-                .inputs(stoneBlock.getItemVariant(variant, !isBricksVariant ? ChiselingVariant.CRACKED : ChiselingVariant.NORMAL))
-                .fluidInputs(Materials.Water.getFluid(144))
-                .outputs(stoneBlock.getItemVariant(variant, ChiselingVariant.MOSSY))
-                .buildAndRegister();
+                    .inputs(stoneBlock.getItemVariant(variant, !isBricksVariant ? ChiselingVariant.CRACKED : ChiselingVariant.NORMAL))
+                    .fluidInputs(Materials.Water.getFluid(144))
+                    .outputs(stoneBlock.getItemVariant(variant, ChiselingVariant.MOSSY))
+                    .buildAndRegister();
             ModHandler.addShapelessRecipe(stoneBlock.getRegistryName().getPath() + "_chiseling_" + variant,
-                stoneBlock.getItemVariant(variant, ChiselingVariant.CHISELED),
-                stoneBlock.getItemVariant(variant, ChiselingVariant.NORMAL));
+                    stoneBlock.getItemVariant(variant, ChiselingVariant.CHISELED),
+                    stoneBlock.getItemVariant(variant, ChiselingVariant.NORMAL));
         }
     }
+
     private static void registerNBTRemoval() {
         for (MetaTileEntityQuantumChest chest : MetaTileEntities.QUANTUM_CHEST)
             if (chest != null) {

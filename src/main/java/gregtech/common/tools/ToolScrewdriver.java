@@ -38,7 +38,7 @@ public class ToolScrewdriver extends ToolBase {
     public boolean canMineBlock(IBlockState block, ItemStack stack) {
         String tool = block.getBlock().getHarvestTool(block);
         return (tool != null && tool.equals("screwdriver")) ||
-            block.getMaterial() == Material.CIRCUITS;
+                block.getMaterial() == Material.CIRCUITS;
     }
 
     @Override

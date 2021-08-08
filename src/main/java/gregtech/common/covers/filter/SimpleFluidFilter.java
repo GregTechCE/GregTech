@@ -45,9 +45,9 @@ public class SimpleFluidFilter extends FluidFilter {
         for (int i = 0; i < 9; ++i) {
             int index = i;
             widgetGroup.accept((new PhantomFluidWidget(10 + 18 * (i % 3), 18 * (i / 3), 18, 18,
-                () -> getFluidInSlot(index),
-                (newFluid) -> setFluidInSlot(index, newFluid)))
-                .setBackgroundTexture(GuiTextures.SLOT));
+                    () -> getFluidInSlot(index),
+                    (newFluid) -> setFluidInSlot(index, newFluid)))
+                    .setBackgroundTexture(GuiTextures.SLOT));
         }
     }
 

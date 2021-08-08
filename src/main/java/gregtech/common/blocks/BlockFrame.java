@@ -34,8 +34,8 @@ public final class BlockFrame extends Block {
 
     public BlockFrame(Material material) {
         super(ModHandler.isMaterialWood(material) ?
-            net.minecraft.block.material.Material.WOOD :
-            net.minecraft.block.material.Material.IRON);
+                net.minecraft.block.material.Material.WOOD :
+                net.minecraft.block.material.Material.IRON);
         this.frameMaterial = material;
         setTranslationKey("frame");
         setHardness(3.0f);

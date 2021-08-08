@@ -86,6 +86,7 @@ public abstract class MultiblockControllerBase extends MetaTileEntity implements
 
     /**
      * Override this method to change the Controller overlay
+     *
      * @return The overlay to render on the Multiblock Controller
      */
     @Nonnull
@@ -125,7 +126,7 @@ public abstract class MultiblockControllerBase extends MetaTileEntity implements
 
     public static Predicate<BlockWorldState> abilityPartPredicate(MultiblockAbility<?>... allowedAbilities) {
         return tilePredicate((state, tile) -> tile instanceof IMultiblockAbilityPart<?> &&
-            ArrayUtils.contains(allowedAbilities, ((IMultiblockAbilityPart<?>) tile).getAbility()));
+                ArrayUtils.contains(allowedAbilities, ((IMultiblockAbilityPart<?>) tile).getAbility()));
     }
 
     public static Predicate<BlockWorldState> partPredicate(Class<? extends IMultiblockPart> baseClass) {
@@ -167,12 +168,14 @@ public abstract class MultiblockControllerBase extends MetaTileEntity implements
     public Pair<TextureAtlasSprite, Integer> getParticleTexture() {
         return Pair.of(getBaseTexture(null).getParticleSprite(), getPaintingColor());
     }
+
     /**
      * if true allows all hatches to share but energy hatches and rotor holders
      * defualt true
+     *
      * @return
      */
-    public boolean canShare(){
+    public boolean canShare() {
         return true;
 
     }

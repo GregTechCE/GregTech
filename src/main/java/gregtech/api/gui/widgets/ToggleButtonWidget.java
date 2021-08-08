@@ -66,7 +66,7 @@ public class ToggleButtonWidget extends Widget {
 
     @Override
     public void drawInForeground(int mouseX, int mouseY) {
-        if(isMouseOverElement(mouseX, mouseY) && tooltipText != null) {
+        if (isMouseOverElement(mouseX, mouseY) && tooltipText != null) {
             String postfix = isPressed ? ".enabled" : ".disabled";
             String tooltipHoverString = tooltipText + postfix;
             List<String> hoverList = Arrays.asList(I18n.format(tooltipHoverString).split("/n"));

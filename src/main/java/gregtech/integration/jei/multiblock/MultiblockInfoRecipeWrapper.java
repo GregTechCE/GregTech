@@ -349,9 +349,9 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
                 }
             }
             Map<ItemStack, List<ITextComponent>> blockTooltipMap = infoPage.getBlockTooltipMap();
-            if(blockTooltipMap.containsKey(tooltipBlockStack)) {
+            if (blockTooltipMap.containsKey(tooltipBlockStack)) {
                 List<ITextComponent> tooltips = blockTooltipMap.get(tooltipBlockStack);
-                for(int i = 0; i < tooltips.size(); i++) {
+                for (int i = 0; i < tooltips.size(); i++) {
                     //Start at i+1 due to ItemStack name
                     tooltip.add(i + 1, tooltips.get(i).getFormattedText());
                 }
@@ -363,9 +363,9 @@ public class MultiblockInfoRecipeWrapper implements IRecipeWrapper, SceneRenderC
 
     public void addBlockTooltips(int slotIndex, boolean input, ItemStack itemStack, List<String> tooltip) {
         Map<ItemStack, List<ITextComponent>> blockTooltipMap = infoPage.getBlockTooltipMap();
-        if(blockTooltipMap.containsKey(itemStack)) {
+        if (blockTooltipMap.containsKey(itemStack)) {
             List<ITextComponent> tooltips = blockTooltipMap.get(itemStack);
-            for(int i = 0; i < tooltips.size(); i++) {
+            for (int i = 0; i < tooltips.size(); i++) {
                 tooltip.add(i + 1, tooltips.get(i).getFormattedText());
             }
         }

@@ -44,12 +44,12 @@ public class MetaItem1 extends StandardMetaItem {
         CREDIT_NEUTRONIUM = addItem(7, "credit.neutronium");
 
         COIN_GOLD_ANCIENT = addItem(8, "coin.gold.ancient").
-            setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Gold, 907200L)));
+                setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Gold, 907200L)));
         COIN_DOGE = addItem(9, "coin.doge")
-            .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Brass, 907200L)));
+                .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Brass, 907200L)));
         COIN_CHOCOLATE = addItem(10, "coin.chocolate")
-            .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Gold, OrePrefix.foil.materialAmount)))
-            .addComponents(new FoodStats(1, 0.1F, false, true, OreDictUnifier.get(OrePrefix.foil, Materials.Gold), new RandomPotionEffect(MobEffects.SPEED, 200, 1, 10)));
+                .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Gold, OrePrefix.foil.materialAmount)))
+                .addComponents(new FoodStats(1, 0.1F, false, true, OreDictUnifier.get(OrePrefix.foil, Materials.Gold), new RandomPotionEffect(MobEffects.SPEED, 200, 1, 10)));
 
         // Solidifier Shapes: ID 11-30
         SHAPE_EMPTY = addItem(11, "shape.empty");
@@ -362,9 +362,9 @@ public class MetaItem1 extends StandardMetaItem {
         // Power Units: ID 446-459
         POWER_UNIT_LV = addItem(446, "power_unit.lv").addComponents(ElectricStats.createElectricItem(100000L, GTValues.LV)).setMaxStackSize(8);
         POWER_UNIT_MV = addItem(447, "power_unit.mv").addComponents(ElectricStats.createElectricItem(400000L, GTValues.MV)).setMaxStackSize(8);
-        POWER_UNIT_HV = addItem(448, "power_unit.hv") .addComponents(ElectricStats.createElectricItem(1600000L, GTValues.HV)).setMaxStackSize(8);
-        POWER_UNIT_EV = addItem(449, "power_unit.ev") .addComponents(ElectricStats.createElectricItem(6400000L, GTValues.EV)).setMaxStackSize(8);
-        POWER_UNIT_IV = addItem(450, "power_unit.iv") .addComponents(ElectricStats.createElectricItem(25600000L, GTValues.IV)).setMaxStackSize(8);
+        POWER_UNIT_HV = addItem(448, "power_unit.hv").addComponents(ElectricStats.createElectricItem(1600000L, GTValues.HV)).setMaxStackSize(8);
+        POWER_UNIT_EV = addItem(449, "power_unit.ev").addComponents(ElectricStats.createElectricItem(6400000L, GTValues.EV)).setMaxStackSize(8);
+        POWER_UNIT_IV = addItem(450, "power_unit.iv").addComponents(ElectricStats.createElectricItem(25600000L, GTValues.IV)).setMaxStackSize(8);
 
         // Usable Items: ID 460-490
         DYNAMITE = addItem(460, "dynamite").addComponents(new DynamiteBehaviour()).setMaxStackSize(16);
@@ -540,8 +540,8 @@ public class MetaItem1 extends StandardMetaItem {
         ENERGY_LAPOTRONIC_ORB2 = addItem(744, "energy.lapotronicorb2").addComponents(ElectricStats.createRechargeableBattery(1000000000, 6)).setUnificationData(OrePrefix.battery, MarkerMaterials.Tier.Ultimate).setModelAmount(8);
 
         if (ConfigHolder.U.GT5u.enableZPMandUVBats) {
-            ENERGY_LAPOTRONIC_MODULE = addItem(745, "energy.module").addComponents(new IItemComponent[] { ElectricStats.createRechargeableBattery(10000000000L, GTValues.ZPM) }).setModelAmount(8);
-            ENERGY_LAPOTRONIC_CLUSTER = addItem(746, "energy.cluster").addComponents(new IItemComponent[] { ElectricStats.createRechargeableBattery(100000000000L, GTValues.UV) }).setModelAmount(8);
+            ENERGY_LAPOTRONIC_MODULE = addItem(745, "energy.module").addComponents(new IItemComponent[]{ElectricStats.createRechargeableBattery(10000000000L, GTValues.ZPM)}).setModelAmount(8);
+            ENERGY_LAPOTRONIC_CLUSTER = addItem(746, "energy.cluster").addComponents(new IItemComponent[]{ElectricStats.createRechargeableBattery(100000000000L, GTValues.UV)}).setModelAmount(8);
         }
 
         ZERO_POINT_MODULE = addItem(747, "zpm").addComponents(ElectricStats.createBattery(2000000000000L, GTValues.ZPM, false)).setModelAmount(8);

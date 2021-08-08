@@ -249,7 +249,7 @@ public class ModularUIGui extends GuiContainer implements IRenderContext {
     @Override
     protected void mouseClickMove(int mouseX, int mouseY, int clickedMouseButton, long timeSinceLastClick) {
         boolean result = modularUI.guiWidgets.values().stream().anyMatch(widget ->
-            widget.mouseDragged(mouseX, mouseY, clickedMouseButton, timeSinceLastClick));
+                widget.mouseDragged(mouseX, mouseY, clickedMouseButton, timeSinceLastClick));
         if (!result) {
             super.mouseClickMove(mouseX, mouseY, clickedMouseButton, timeSinceLastClick);
         }

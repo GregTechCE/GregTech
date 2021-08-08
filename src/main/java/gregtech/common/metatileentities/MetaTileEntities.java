@@ -554,7 +554,7 @@ public class MetaTileEntities {
         WOODEN_TANK = GregTechAPI.registerMetaTileEntity(1500, new MetaTileEntityTank(gregtechId("wooden_tank"), Materials.Wood, 4000, 1, 3));
         BRONZE_TANK = GregTechAPI.registerMetaTileEntity(1501, new MetaTileEntityTank(gregtechId("bronze_tank"), Materials.Bronze, 8000, 4, 3));
         STEEL_TANK = GregTechAPI.registerMetaTileEntity(1502, new MetaTileEntityTank(gregtechId("steel_tank"), Materials.Steel, 16000, 7, 5));
-        ALUMINIUM_TANK = GregTechAPI.registerMetaTileEntity(1503, new MetaTileEntityTank(gregtechId("aluminium_tank"), Materials.Aluminium , 32000, 8, 5));
+        ALUMINIUM_TANK = GregTechAPI.registerMetaTileEntity(1503, new MetaTileEntityTank(gregtechId("aluminium_tank"), Materials.Aluminium, 32000, 8, 5));
         STAINLESS_STEEL_TANK = GregTechAPI.registerMetaTileEntity(1504, new MetaTileEntityTank(gregtechId("stainless_steel_tank"), Materials.StainlessSteel, 64000, 9, 7));
         TITANIUM_TANK = GregTechAPI.registerMetaTileEntity(1505, new MetaTileEntityTank(gregtechId("titanium_tank"), Materials.Titanium, 128000, 12, 9));
         TUNGSTENSTEEL_TANK = GregTechAPI.registerMetaTileEntity(1506, new MetaTileEntityTank(gregtechId("tungstensteel_tank"), Materials.TungstenSteel, 512000, 16, 9));

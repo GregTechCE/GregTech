@@ -5,9 +5,9 @@ import gregtech.api.damagesources.DamageSources;
 import gregtech.api.pipenet.block.material.BlockMaterialPipe;
 import gregtech.api.pipenet.tile.IPipeTile;
 import gregtech.api.pipenet.tile.TileEntityPipeBase;
+import gregtech.api.unification.material.Material;
 import gregtech.api.unification.material.MaterialRegistry;
 import gregtech.api.unification.material.properties.FluidPipeProperties;
-import gregtech.api.unification.material.Material;
 import gregtech.common.pipelike.fluidpipe.net.FluidPipeNet;
 import gregtech.common.pipelike.fluidpipe.net.WorldFluidPipeNet;
 import gregtech.common.pipelike.fluidpipe.tile.FluidPipeFluidHandler;
@@ -141,7 +141,7 @@ public class BlockFluidPipe extends BlockMaterialPipe<FluidPipeType, FluidPipePr
     public boolean canPushIntoFluidHandler(IPipeTile<FluidPipeType, FluidPipeProperties> selfTileEntity, TileEntity otherTileEntity, IFluidHandler sourceHandler, IFluidHandler destinationHandler) {
         boolean isSourcePipe = sourceHandler instanceof FluidPipeFluidHandler;
         boolean isDestPipe = destinationHandler instanceof FluidPipeFluidHandler;
-        if(isSourcePipe && isDestPipe) {
+        if (isSourcePipe && isDestPipe) {
             float sourceThickness = selfTileEntity.getPipeType().getThickness();
             IPipeTile<FluidPipeType, FluidPipeProperties> otherPipe = getPipeTileEntity(otherTileEntity);
             if (otherPipe == null) {

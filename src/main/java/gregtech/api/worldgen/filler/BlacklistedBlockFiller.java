@@ -40,8 +40,8 @@ public class BlacklistedBlockFiller extends BlockFiller {
     @Method(modid = GTValues.MODID_CT)
     public List<crafttweaker.api.block.IBlockState> ctGetBlacklist() {
         return blacklist.stream()
-            .map(CraftTweakerMC::getBlockState)
-            .collect(Collectors.toList());
+                .map(CraftTweakerMC::getBlockState)
+                .collect(Collectors.toList());
     }
 
     @Override

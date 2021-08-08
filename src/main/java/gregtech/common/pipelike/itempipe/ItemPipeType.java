@@ -35,7 +35,7 @@ public enum ItemPipeType implements IMaterialPipeType<ItemPipeProperties> {
     }
 
     public String getSizeForTexture() {
-        if(!isRestrictive())
+        if (!isRestrictive())
             return name;
         else
             return name.substring(0, name.length() - 12);

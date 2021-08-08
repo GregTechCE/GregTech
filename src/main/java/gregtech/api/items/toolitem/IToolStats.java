@@ -165,7 +165,7 @@ public interface IToolStats {
 
     /**
      * @return The MC tool classes for cross-mod compatibility.
-     *         Default: no tool classes.
+     * Default: no tool classes.
      */
     default Set<String> getToolClasses(ItemStack stack) {
         return Collections.emptySet();

@@ -21,7 +21,8 @@ import java.util.*;
 public class ToolMiningHammer extends ToolBase {
 
     private static final Set<String> HAMMER_TOOL_CLASSES = new HashSet<String>() {{
-        add("pickaxe"); add("hammer");
+        add("pickaxe");
+        add("hammer");
     }};
 
     public enum MiningHammerMode implements ModeSwitchBehavior.ILocalizationKey {
@@ -97,13 +98,13 @@ public class ToolMiningHammer extends ToolBase {
 
     @Override
     public List<BlockPos> getAOEBlocks(ItemStack itemStack, EntityPlayer player, RayTraceResult rayTraceResult) {
-        if(player.isCreative()) {
+        if (player.isCreative()) {
             return Collections.emptyList();
         }
         ArrayList<BlockPos> result = new ArrayList<>();
         BlockPos pos = rayTraceResult.getBlockPos();
         MiningHammerMode miningHammerMode;
-        if(player.isSneaking()) {
+        if (player.isSneaking()) {
             miningHammerMode = MiningHammerMode.SINGLE_BLOCK;
         } else {
             miningHammerMode = MiningHammerMode.THREE_BY_THREE;
@@ -117,7 +118,7 @@ public class ToolMiningHammer extends ToolBase {
                 if (x == 0 && y == 0) continue;
                 BlockPos offsetPos = rotate(pos, x, y, rayTraceResult.sideHit, horizontalFacing);
                 IBlockState blockState = player.world.getBlockState(offsetPos);
-                if(itemStack.canHarvestBlock(blockState)) {
+                if (itemStack.canHarvestBlock(blockState)) {
                     result.add(offsetPos);
                 }
             }
@@ -132,7 +133,7 @@ public class ToolMiningHammer extends ToolBase {
             EnumFacing sideHit = ToolUtility.getSideHit(world, pos, entityPlayer);
             int damagePerBlockBreak = getToolDamagePerBlockBreak(stack);
             MiningHammerMode miningHammerMode;
-            if(entityPlayer.isSneaking()) {
+            if (entityPlayer.isSneaking()) {
                 miningHammerMode = MiningHammerMode.SINGLE_BLOCK;
             } else {
                 miningHammerMode = MiningHammerMode.THREE_BY_THREE;
@@ -160,19 +161,26 @@ public class ToolMiningHammer extends ToolBase {
 
     private static BlockPos rotate(BlockPos origin, int x, int y, EnumFacing sideHit, EnumFacing horizontalFacing) {
         switch (sideHit.getAxis()) {
-            case X: return origin.add(0, y, x);
-            case Z: return origin.add(x, y, 0);
-            case Y: return rotateVertical(origin, x, y, horizontalFacing);
-            default: return BlockPos.ORIGIN;
+            case X:
+                return origin.add(0, y, x);
+            case Z:
+                return origin.add(x, y, 0);
+            case Y:
+                return rotateVertical(origin, x, y, horizontalFacing);
+            default:
+                return BlockPos.ORIGIN;
         }
     }
 
     @SuppressWarnings("SuspiciousNameCombination")
     private static BlockPos rotateVertical(BlockPos origin, int x, int y, EnumFacing horizontalFacing) {
         switch (horizontalFacing.getAxis()) {
-            case X: return origin.add(y, 0, x);
-            case Z: return origin.add(x, 0, y);
-            default: return BlockPos.ORIGIN;
+            case X:
+                return origin.add(y, 0, x);
+            case Z:
+                return origin.add(x, 0, y);
+            default:
+                return BlockPos.ORIGIN;
         }
     }
 

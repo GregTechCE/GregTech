@@ -16,53 +16,53 @@ import java.util.List;
 
 public abstract class PrimitiveRecipeCategory<T, W extends IRecipeWrapper> implements IRecipeCategory<W>, IRecipeWrapperFactory<T> {
 
-	public final String uniqueName;
-	public final String localizedName;
-	protected final IDrawable background;
+    public final String uniqueName;
+    public final String localizedName;
+    protected final IDrawable background;
 
-	public PrimitiveRecipeCategory(String uniqueName, String localKey, IDrawable background, IGuiHelper guiHelper) {
-		this.uniqueName = uniqueName;
-		this.localizedName = I18n.format(localKey);
-		this.background = background;
-	}
+    public PrimitiveRecipeCategory(String uniqueName, String localKey, IDrawable background, IGuiHelper guiHelper) {
+        this.uniqueName = uniqueName;
+        this.localizedName = I18n.format(localKey);
+        this.background = background;
+    }
 
-	@Nullable
-	@Override
-	public IDrawable getIcon() {
-		return null;
-	}
-
-	@Nonnull
+    @Nullable
     @Override
-	public String getUid() {
-		return getModName() + ":" + uniqueName;
-	}
+    public IDrawable getIcon() {
+        return null;
+    }
 
-	@Nonnull
+    @Nonnull
     @Override
-	public String getTitle() {
-		return localizedName;
-	}
+    public String getUid() {
+        return getModName() + ":" + uniqueName;
+    }
 
-	@Nonnull
+    @Nonnull
     @Override
-	public IDrawable getBackground() {
-		return background;
-	}
+    public String getTitle() {
+        return localizedName;
+    }
 
-	@Override
-	public void drawExtras(@Nonnull Minecraft minecraft) {
-	}
-
-	@Nonnull
+    @Nonnull
     @Override
-	public List<String> getTooltipStrings(int mouseX, int mouseY) {
-		return Collections.emptyList();
-	}
+    public IDrawable getBackground() {
+        return background;
+    }
 
-	@Nonnull
     @Override
-	public String getModName() {
-		return GTValues.MODID;
-	}
+    public void drawExtras(@Nonnull Minecraft minecraft) {
+    }
+
+    @Nonnull
+    @Override
+    public List<String> getTooltipStrings(int mouseX, int mouseY) {
+        return Collections.emptyList();
+    }
+
+    @Nonnull
+    @Override
+    public String getModName() {
+        return GTValues.MODID;
+    }
 }

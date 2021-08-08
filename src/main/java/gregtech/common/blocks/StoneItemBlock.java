@@ -32,8 +32,8 @@ public class StoneItemBlock<R extends Enum<R> & IStringSerializable, T extends S
     public String getTranslationKey(@Nonnull ItemStack stack) {
         IBlockState blockState = getBlockState(stack);
         return super.getTranslationKey(stack) + '.' +
-            genericBlock.getVariant(blockState).getName() + "." +
-            genericBlock.getChiselingVariant(blockState).getName();
+                genericBlock.getVariant(blockState).getName() + "." +
+                genericBlock.getChiselingVariant(blockState).getName();
     }
 
 }

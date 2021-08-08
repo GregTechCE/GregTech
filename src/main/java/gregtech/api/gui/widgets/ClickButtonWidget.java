@@ -54,8 +54,8 @@ public class ClickButtonWidget extends Widget {
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
         String text = I18n.format(displayText);
         fontRenderer.drawString(text,
-            position.x + size.width / 2 - fontRenderer.getStringWidth(text) / 2,
-            position.y + size.height / 2 - fontRenderer.FONT_HEIGHT / 2, textColor);
+                position.x + size.width / 2 - fontRenderer.getStringWidth(text) / 2,
+                position.y + size.height / 2 - fontRenderer.FONT_HEIGHT / 2, textColor);
         GlStateManager.color(rColorForOverlay, gColorForOverlay, bColorForOverlay, 1.0F);
     }
 

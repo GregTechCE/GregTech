@@ -16,8 +16,8 @@ public class BlockGranite extends StoneBlock<BlockGranite.GraniteVariant> {
         setSoundType(SoundType.STONE);
         setHarvestLevel("pickaxe", 3);
         setDefaultState(withVariant(
-            GraniteVariant.BLACK_GRANITE,
-            ChiselingVariant.NORMAL));
+                GraniteVariant.BLACK_GRANITE,
+                ChiselingVariant.NORMAL));
     }
 
     public enum GraniteVariant implements IStringSerializable {

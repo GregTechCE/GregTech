@@ -100,8 +100,8 @@ public class CableRenderer implements ICCBlockRenderer, IItemRenderer {
         Material material = blockCable.getItemMaterial(stack);
         if (insulation != null && material != null) {
             renderCableBlock(material, insulation, IPipeTile.DEFAULT_INSULATION_COLOR, renderState, new IVertexOperation[0],
-                1 << EnumFacing.SOUTH.getIndex() | 1 << EnumFacing.NORTH.getIndex() |
-                    1 << (6 + EnumFacing.SOUTH.getIndex()) | 1 << (6 + EnumFacing.NORTH.getIndex()));
+                    1 << EnumFacing.SOUTH.getIndex() | 1 << EnumFacing.NORTH.getIndex() |
+                            1 << (6 + EnumFacing.SOUTH.getIndex()) | 1 << (6 + EnumFacing.NORTH.getIndex()));
         }
         renderState.draw();
         GlStateManager.disableBlend();
@@ -265,7 +265,7 @@ public class CableRenderer implements ICCBlockRenderer, IItemRenderer {
         }
         TextureAtlasSprite atlasSprite;
         int particleColor;
-        if(insulation.insulationLevel == -1) {
+        if (insulation.insulationLevel == -1) {
             atlasSprite = wireTexture;
             particleColor = material.getMaterialRGB();
         } else {

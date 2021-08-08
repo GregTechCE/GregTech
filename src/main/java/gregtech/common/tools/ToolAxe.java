@@ -54,12 +54,12 @@ public class ToolAxe extends ToolBase {
     public boolean canMineBlock(IBlockState block, ItemStack stack) {
         String tool = block.getBlock().getHarvestTool(block);
         return (tool != null && tool.equals("axe")) ||
-            block.getMaterial() == Material.WOOD;
+                block.getMaterial() == Material.WOOD;
     }
 
     @Override
     public boolean onBlockPreBreak(ItemStack stack, BlockPos blockPos, EntityPlayer player) {
-        if(!player.isSneaking()) {
+        if (!player.isSneaking()) {
             return ToolUtility.applyTimberAxe(stack, player.world, blockPos, player);
         }
         return false;

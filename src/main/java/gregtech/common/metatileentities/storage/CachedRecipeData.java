@@ -113,7 +113,7 @@ public class CachedRecipeData {
             //update item in slot, and check that recipe matches and output item is equal to the expected one
             inventory.setInventorySlotContents(slot, itemStack);
             if (recipe.matches(inventory, itemSourceList.getWorld()) &&
-                ItemStack.areItemStacksEqual(expectedOutput, recipe.getCraftingResult(inventory))) {
+                    ItemStack.areItemStacksEqual(expectedOutput, recipe.getCraftingResult(inventory))) {
                 //ingredient matched, attempt to extract it and return if successful
                 if (simulateExtractItem(itemStackKey)) {
                     return true;

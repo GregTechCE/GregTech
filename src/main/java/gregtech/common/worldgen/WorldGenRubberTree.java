@@ -24,7 +24,7 @@ public class WorldGenRubberTree implements IWorldGenerator {
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
         if (world.getWorldType() == WorldType.FLAT ||
-            !world.provider.isSurfaceWorld()) {
+                !world.provider.isSurfaceWorld()) {
             return; //do not generate in flat worlds, or in non-surface worlds
         }
         BlockPos randomPos = new BlockPos(
@@ -35,15 +35,15 @@ public class WorldGenRubberTree implements IWorldGenerator {
         Biome biome = world.getBiome(randomPos);
 
         if (BiomeDictionary.hasType(biome, Type.COLD) ||
-            BiomeDictionary.hasType(biome, Type.HOT) ||
-            BiomeDictionary.hasType(biome, Type.DRY) ||
-            BiomeDictionary.hasType(biome, Type.DEAD) ||
-            BiomeDictionary.hasType(biome, Type.SPOOKY))
+                BiomeDictionary.hasType(biome, Type.HOT) ||
+                BiomeDictionary.hasType(biome, Type.DRY) ||
+                BiomeDictionary.hasType(biome, Type.DEAD) ||
+                BiomeDictionary.hasType(biome, Type.SPOOKY))
             return; //do not generate in inappropriate biomes
 
         int rubberTreeChance = 6;
         if (BiomeDictionary.hasType(biome, Type.SWAMP) ||
-            BiomeDictionary.hasType(biome, Type.WET))
+                BiomeDictionary.hasType(biome, Type.WET))
             rubberTreeChance /= 2; //double chance of spawning in swamp or wet biomes
 
         if (random.nextInt(rubberTreeChance) == 0) {
@@ -56,9 +56,9 @@ public class WorldGenRubberTree implements IWorldGenerator {
                 if (aboveState.getBlock() instanceof BlockLiquid) {
                     return;
                 }
-                
+
                 IBlockState saplingState = sapling.getDefaultState()
-                    .withProperty(BlockGregSapling.VARIANT, LogVariant.RUBBER_WOOD);
+                        .withProperty(BlockGregSapling.VARIANT, LogVariant.RUBBER_WOOD);
                 world.setBlockState(abovePos, saplingState);
                 sapling.generateTree(world, abovePos, saplingState, random);
             }

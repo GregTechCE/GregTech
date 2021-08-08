@@ -146,9 +146,9 @@ public class MetaTileEntityMagicEnergyAbsorber extends TieredMetaTileEntity {
         this.connectedCrystalsIds.clear();
         final double maxDistance = 64 * 64;
         List<EntityEnderCrystal> enderCrystals = Arrays.stream(BiomeEndDecorator.getSpikesForWorld(getWorld()))
-            .flatMap(endSpike -> getWorld().getEntitiesWithinAABB(EntityEnderCrystal.class, endSpike.getTopBoundingBox()).stream())
-            .filter(crystal -> crystal.getDistanceSq(getPos()) < maxDistance)
-            .collect(Collectors.toList());
+                .flatMap(endSpike -> getWorld().getEntitiesWithinAABB(EntityEnderCrystal.class, endSpike.getTopBoundingBox()).stream())
+                .filter(crystal -> crystal.getDistanceSq(getPos()) < maxDistance)
+                .collect(Collectors.toList());
 
         for (EntityEnderCrystal entityEnderCrystal : enderCrystals) {
             BlockPos beamTarget = entityEnderCrystal.getBeamTarget();

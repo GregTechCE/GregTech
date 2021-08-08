@@ -169,7 +169,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
             return metaValueItem.getColorProvider().getItemStackColor(stack, tintIndex);
         }
         IFluidHandlerItem fluidContainerItem = ItemHandlerHelper.copyStackWithSize(stack, 1)
-            .getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+                .getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
         if (tintIndex == 0 && fluidContainerItem != null) {
             FluidStack fluidStack = fluidContainerItem.drain(Integer.MAX_VALUE, false);
             return fluidStack == null ? 0x666666 : RenderUtil.getFluidColor(fluidStack);
@@ -427,7 +427,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         HashMultimap<String, AttributeModifier> modifiers = HashMultimap.create();
         T metaValueItem = getItem(stack);
         if (metaValueItem != null) {
-            for(IItemBehaviour behaviour : getBehaviours(stack)) {
+            for (IItemBehaviour behaviour : getBehaviours(stack)) {
                 modifiers.putAll(behaviour.getAttributeModifiers(slot, stack));
             }
         }
@@ -437,7 +437,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     @Override
     public boolean isEnchantable(@Nonnull ItemStack stack) {
         T metaValueItem = getItem(stack);
-        if(metaValueItem != null) {
+        if (metaValueItem != null) {
             IEnchantabilityHelper helper = metaValueItem.getEnchantabilityHelper();
             return helper != null && helper.isEnchantable(stack);
         }
@@ -447,7 +447,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     @Override
     public int getItemEnchantability(@Nonnull ItemStack stack) {
         T metaValueItem = getItem(stack);
-        if(metaValueItem != null) {
+        if (metaValueItem != null) {
             IEnchantabilityHelper helper = metaValueItem.getEnchantabilityHelper();
             return helper == null ? 0 : helper.getItemEnchantability(stack);
         }
@@ -457,7 +457,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     @Override
     public boolean canApplyAtEnchantingTable(@Nonnull ItemStack stack, @Nonnull Enchantment enchantment) {
         T metaValueItem = getItem(stack);
-        if(metaValueItem != null) {
+        if (metaValueItem != null) {
             IEnchantabilityHelper helper = metaValueItem.getEnchantabilityHelper();
             return helper != null && helper.canApplyAtEnchantingTable(stack, enchantment);
         }
@@ -474,8 +474,8 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     @Override
     public boolean shouldCauseReequipAnimation(@Nonnull ItemStack oldStack, @Nonnull ItemStack newStack, boolean slotChanged) {
         //if item is equal, and old item has electric item capability, remove charge tags to stop reequip animation when charge is altered
-        if(ItemStack.areItemsEqual(oldStack, newStack) && oldStack.hasCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null) &&
-            oldStack.hasTagCompound() && newStack.hasTagCompound()) {
+        if (ItemStack.areItemsEqual(oldStack, newStack) && oldStack.hasCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null) &&
+                oldStack.hasTagCompound() && newStack.hasTagCompound()) {
             oldStack = oldStack.copy();
             newStack = newStack.copy();
             oldStack.getTagCompound().removeTag("Charge");
@@ -498,7 +498,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
                 return item.getNameProvider().getItemStackDisplayName(stack, unlocalizedName);
             }
             IFluidHandlerItem fluidHandlerItem = ItemHandlerHelper.copyStackWithSize(stack, 1)
-                .getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+                    .getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
             if (fluidHandlerItem != null) {
                 FluidStack fluidInside = fluidHandlerItem.drain(Integer.MAX_VALUE, false);
                 return I18n.format(unlocalizedName, fluidInside == null ? I18n.format("metaitem.fluid_cell.empty") : fluidInside.getLocalizedName());
@@ -521,21 +521,21 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         IElectricItem electricItem = itemStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
         if (electricItem != null) {
             lines.add(I18n.format("metaitem.generic.electric_item.tooltip",
-                electricItem.getCharge(),
-                electricItem.getMaxCharge(),
-                GTValues.VN[electricItem.getTier()]));
+                    electricItem.getCharge(),
+                    electricItem.getMaxCharge(),
+                    GTValues.VN[electricItem.getTier()]));
         }
 
         IFluidHandlerItem fluidHandler = ItemHandlerHelper.copyStackWithSize(itemStack, 1)
-            .getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
+                .getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
         if (fluidHandler != null) {
             IFluidTankProperties fluidTankProperties = fluidHandler.getTankProperties()[0];
             FluidStack fluid = fluidTankProperties.getContents();
             if (fluid != null) {
                 lines.add(I18n.format("metaitem.generic.fluid_container.tooltip",
-                    fluid.amount,
-                    fluidTankProperties.getCapacity(),
-                    fluid.getLocalizedName()));
+                        fluid.amount,
+                        fluidTankProperties.getCapacity(),
+                        fluid.getLocalizedName()));
             } else lines.add(I18n.format("metaitem.generic.fluid_container.tooltip_empty"));
         }
 
@@ -734,7 +734,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
                     this.behaviours.add((IItemBehaviour) itemComponent);
                     ((IItemBehaviour) itemComponent).onAddedToItem(this);
                 }
-                if(itemComponent instanceof IEnchantabilityHelper) {
+                if (itemComponent instanceof IEnchantabilityHelper) {
                     this.enchantabilityHelper = (IEnchantabilityHelper) itemComponent;
                 }
                 this.allStats.add(itemComponent);
@@ -890,9 +890,9 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
         @Override
         public String toString() {
             return new ToStringBuilder(this)
-                .append("metaValue", metaValue)
-                .append("unlocalizedName", unlocalizedName)
-                .toString();
+                    .append("metaValue", metaValue)
+                    .append("unlocalizedName", unlocalizedName)
+                    .toString();
         }
     }
 

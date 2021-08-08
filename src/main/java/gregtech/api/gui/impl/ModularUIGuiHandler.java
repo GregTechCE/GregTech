@@ -44,10 +44,10 @@ public class ModularUIGuiHandler implements IAdvancedGuiHandler<ModularUIGui>, I
     @Override
     public IRecipeTransferError transferRecipe(ModularUIContainer container, @Nonnull IRecipeLayout recipeLayout, @Nonnull EntityPlayer player, boolean maxTransfer, boolean doTransfer) {
         Optional<IRecipeTransferHandlerWidget> transferHandler = container.getModularUI()
-            .getFlatVisibleWidgetCollection().stream()
-            .filter(it -> it instanceof IRecipeTransferHandlerWidget)
-            .map(it -> (IRecipeTransferHandlerWidget) it)
-            .findFirst();
+                .getFlatVisibleWidgetCollection().stream()
+                .filter(it -> it instanceof IRecipeTransferHandlerWidget)
+                .map(it -> (IRecipeTransferHandlerWidget) it)
+                .findFirst();
         if (!transferHandler.isPresent()) {
             return transferHelper.createInternalError();
         }

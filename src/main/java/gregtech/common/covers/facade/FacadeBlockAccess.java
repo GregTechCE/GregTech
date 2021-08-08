@@ -94,11 +94,11 @@ public class FacadeBlockAccess implements IBlockAccess {
     @SideOnly(Side.CLIENT)
     public int getCombinedLight(@Nonnull BlockPos pos, int t) {
         if (((side == DOWN && pos.getY() > this.pos.getY()) ||
-            (side == UP && pos.getY() < this.pos.getY()) ||
-            (side == NORTH && pos.getZ() > this.pos.getZ()) ||
-            (side == SOUTH && pos.getZ() < this.pos.getZ()) ||
-            (side == WEST && pos.getX() > this.pos.getX()) ||
-            (side == EAST && pos.getX() < this.pos.getX()))) {
+                (side == UP && pos.getY() < this.pos.getY()) ||
+                (side == NORTH && pos.getZ() > this.pos.getZ()) ||
+                (side == SOUTH && pos.getZ() < this.pos.getZ()) ||
+                (side == WEST && pos.getX() > this.pos.getX()) ||
+                (side == EAST && pos.getX() < this.pos.getX()))) {
             return world.getCombinedLight(this.pos, t);
         }
         return world.getCombinedLight(pos, t);
@@ -119,8 +119,8 @@ public class FacadeBlockAccess implements IBlockAccess {
     public boolean isAirBlock(@Nonnull BlockPos pos) {
         Result action = getAction(pos);
         return action == Result.AIR ||
-            (action == Result.ORIGINAL && world.isAirBlock(pos)) ||
-            (action == Result.COVER && getBlockState(pos).getBlock().isAir(getBlockState(pos), this, pos));
+                (action == Result.ORIGINAL && world.isAirBlock(pos)) ||
+                (action == Result.COVER && getBlockState(pos).getBlock().isAir(getBlockState(pos), this, pos));
     }
 
     @Nonnull
@@ -133,9 +133,9 @@ public class FacadeBlockAccess implements IBlockAccess {
     @Override
     public boolean isSideSolid(BlockPos pos, @Nonnull EnumFacing side, boolean _default) {
         if (pos.getX() < -30000000 ||
-            pos.getZ() < -30000000 ||
-            pos.getX() >= 30000000 ||
-            pos.getZ() >= 30000000) {
+                pos.getZ() < -30000000 ||
+                pos.getX() >= 30000000 ||
+                pos.getZ() >= 30000000) {
             return _default;
         } else {
             return getBlockState(pos).isSideSolid(this, pos, side);

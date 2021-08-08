@@ -36,8 +36,8 @@ public abstract class FueledMultiblockController extends MultiblockWithDisplayBa
 
     protected FuelRecipeLogic createWorkable(long maxVoltage) {
         return new FuelRecipeLogic(this, recipeMap,
-            () -> energyContainer,
-            () -> importFluidHandler, maxVoltage);
+                () -> energyContainer,
+                () -> importFluidHandler, maxVoltage);
     }
 
     @Override
@@ -91,13 +91,13 @@ public abstract class FueledMultiblockController extends MultiblockWithDisplayBa
     protected boolean checkStructureComponents(List<IMultiblockPart> parts, Map<MultiblockAbility<Object>, List<Object>> abilities) {
         //noinspection SuspiciousMethodCalls
         return abilities.containsKey(MultiblockAbility.IMPORT_FLUIDS) &&
-            abilities.containsKey(MultiblockAbility.OUTPUT_ENERGY);
+                abilities.containsKey(MultiblockAbility.OUTPUT_ENERGY);
     }
 
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         super.renderMetaTileEntity(renderState, translation, pipeline);
         this.getFrontOverlay().render(renderState, translation, pipeline, getFrontFacing(),
-            isStructureFormed() && workableHandler.isActive());
+                isStructureFormed() && workableHandler.isActive());
     }
 }

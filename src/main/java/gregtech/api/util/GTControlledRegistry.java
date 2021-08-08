@@ -49,7 +49,7 @@ public class GTControlledRegistry<K, V> extends RegistrySimple<K, V> {
         V objectWithId = getObjectById(id);
         if (objectWithId != null) {
             throw new IllegalArgumentException(String.format("Tried to reassign id %d to %s (%s), but it is already assigned to %s (%s)!",
-                id, value, key, objectWithId, getNameForObject(objectWithId)));
+                    id, value, key, objectWithId, getNameForObject(objectWithId)));
         }
         underlyingIntegerMap.put(value, id);
     }

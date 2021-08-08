@@ -164,8 +164,8 @@ public class FactoryBlockPattern {
 
     public BlockPattern build() {
         return new BlockPattern(makePredicateArray(), makeCountLimitsList(),
-            layerValidators, contextValidators,
-            structureDir, aisleRepetitions.toArray(new int[aisleRepetitions.size()][]));
+                layerValidators, contextValidators,
+                structureDir, aisleRepetitions.toArray(new int[aisleRepetitions.size()][]));
     }
 
     @SuppressWarnings("unchecked")
