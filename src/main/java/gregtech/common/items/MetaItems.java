@@ -51,7 +51,7 @@ public final class MetaItems {
 
     public static MetaItem<?>.MetaValueItem SHAPE_EMPTY;
 
-    public static MetaItem<?>.MetaValueItem[] SHAPE_MOLDS = new MetaValueItem[14];
+    public static MetaItem<?>.MetaValueItem[] SHAPE_MOLDS = new MetaValueItem[13];
     public static MetaItem<?>.MetaValueItem SHAPE_MOLD_PLATE;
     public static MetaItem<?>.MetaValueItem SHAPE_MOLD_GEAR;
     public static MetaItem<?>.MetaValueItem SHAPE_MOLD_CREDIT;
