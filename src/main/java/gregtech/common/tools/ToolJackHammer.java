@@ -21,11 +21,13 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class ToolJackHammer extends ToolDrillLV {
+
+    private static final Set<String> HAMMER_TOOL_CLASSES = new HashSet<String>() {{
+        add("pickaxe"); add("hammer");
+    }};
 
     private static final ModeSwitchBehavior<JackHammerMode> MODE_SWITCH_BEHAVIOR = new ModeSwitchBehavior<>(JackHammerMode.class);
 
@@ -201,5 +203,10 @@ public class ToolJackHammer extends ToolDrillLV {
             case Z: return origin.add(x, 0, y);
             default: return BlockPos.ORIGIN;
         }
+    }
+
+    @Override
+    public Set<String> getToolClasses(ItemStack stack) {
+        return HAMMER_TOOL_CLASSES;
     }
 }

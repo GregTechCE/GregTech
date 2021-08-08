@@ -15,9 +15,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ToolHardHammer extends ToolBase {
+
+    private static final Set<String> HAMMER_TOOL_CLASSES = new HashSet<String>() {{
+        add("hammer"); add("pickaxe");
+    }};
 
     @Override
     public boolean canApplyEnchantment(ItemStack stack, Enchantment enchantment) {
@@ -86,5 +92,10 @@ public class ToolHardHammer extends ToolBase {
     @Override
     public void addInformation(ItemStack stack, List<String> lines, boolean isAdvanced) {
         lines.add(I18n.format("metaitem.tool.tooltip.hammer.extra_drop"));
+    }
+
+    @Override
+    public Set<String> getToolClasses(ItemStack stack) {
+        return HAMMER_TOOL_CLASSES;
     }
 }
