@@ -39,6 +39,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
+import net.minecraftforge.fluids.FluidStack;
 
 import static gregtech.api.GTValues.L;
 import static gregtech.api.recipes.RecipeMaps.*;
@@ -46,6 +47,7 @@ import static gregtech.api.unification.material.Materials.*;
 import static gregtech.api.unification.ore.OrePrefix.*;
 import static gregtech.api.util.DyeUtil.getOrdictColorName;
 import static gregtech.common.items.MetaItems.*;
+import static gregtech.common.metatileentities.MetaTileEntities.WORKBENCH;
 
 public class MachineRecipeLoader {
 
@@ -417,22 +419,57 @@ public class MachineRecipeLoader {
                     .EUt(16).duration(800)
                     .buildAndRegister();
 
-            RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-                    .inputs(new ItemStack(Blocks.LEVER))
-                    .input(OrePrefix.plate, material)
-                    .fluidInputs(Materials.Tin.getFluid(L))
-                    .outputs(MetaItems.COVER_MACHINE_CONTROLLER.getStackForm(1))
-                    .EUt(16).duration(200)
+            ASSEMBLER_RECIPES.recipeBuilder()
+                    .inputs(WORKBENCH.getStackForm())
+                    .input(plate, material)
+                    .outputs(COVER_CRAFTING.getStackForm())
+                    .EUt(16).duration(800)
                     .buildAndRegister();
 
-            RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-                    .inputs(new ItemStack(Blocks.LEVER))
-                    .input(OrePrefix.plate, material)
-                    .fluidInputs(Materials.SolderingAlloy.getFluid(L / 2))
-                    .outputs(MetaItems.COVER_MACHINE_CONTROLLER.getStackForm(1))
-                    .EUt(16).duration(200)
-                    .buildAndRegister();
+            for (FluidStack solder : new FluidStack[]{Tin.getFluid(L), SolderingAlloy.getFluid(L/2)}) {
+                RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
+                        .inputs(new ItemStack(Blocks.LEVER))
+                        .input(OrePrefix.plate, material)
+                        .fluidInputs(solder)
+                        .outputs(MetaItems.COVER_MACHINE_CONTROLLER.getStackForm(1))
+                        .EUt(16).duration(200)
+                        .buildAndRegister();
+
+                ASSEMBLER_RECIPES.recipeBuilder()
+                        .input(cableGtSingle, Copper, 4)
+                        .input(circuit, MarkerMaterials.Tier.Basic)
+                        .input(plate, material)
+                        .fluidInputs(solder)
+                        .outputs(COVER_ENERGY_DETECTOR.getStackForm())
+                        .EUt(16).duration(800)
+                        .buildAndRegister();
+
+                ASSEMBLER_RECIPES.recipeBuilder()
+                        .inputs(new ItemStack(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE))
+                        .input(plate, material)
+                        .fluidInputs(solder)
+                        .outputs(COVER_FLUID_DETECTOR.getStackForm())
+                        .EUt(16).duration(800)
+                        .buildAndRegister();
+
+                ASSEMBLER_RECIPES.recipeBuilder()
+                        .inputs(new ItemStack(Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE))
+                        .input(plate, material)
+                        .fluidInputs(solder)
+                        .outputs(COVER_ITEM_DETECTOR.getStackForm())
+                        .EUt(16).duration(800)
+                        .buildAndRegister();
+            }
         }
+
+        ASSEMBLER_RECIPES.recipeBuilder()
+                .input(plate, Glass)
+                .input(foil, Aluminium, 4)
+                .input(circuit, MarkerMaterials.Tier.Basic)
+                .input(wireFine, Copper, 4)
+                .outputs(COVER_SCREEN.getStackForm())
+                .EUt(16).duration(50)
+                .buildAndRegister();
 
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(16).input(OrePrefix.plate, Materials.WroughtIron, 8).outputs(MetaBlocks.MACHINE_CASING.getItemVariant(MachineCasingType.ULV)).circuitMeta(8).duration(25).buildAndRegister();
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(16).input(OrePrefix.plate, Materials.Steel, 8).outputs(MetaBlocks.MACHINE_CASING.getItemVariant(MachineCasingType.LV)).circuitMeta(8).duration(50).buildAndRegister();
