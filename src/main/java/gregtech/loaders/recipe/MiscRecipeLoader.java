@@ -16,6 +16,8 @@ import net.minecraft.item.ItemStack;
 import static gregtech.api.recipes.RecipeMaps.FORMING_PRESS_RECIPES;
 import static gregtech.api.unification.material.Materials.*;
 import static gregtech.api.unification.ore.OrePrefix.dust;
+import static gregtech.common.items.MetaItems.TOOL_MATCHBOX;
+import static gregtech.common.items.MetaItems.TOOL_MATCHES;
 
 public class MiscRecipeLoader {
 
@@ -101,5 +103,12 @@ public class MiscRecipeLoader {
             .inputs(new ItemStack(Blocks.GRAVEL))
             .outputs(new ItemStack(Items.FLINT))
             .buildAndRegister();
+
+        RecipeMaps.PACKER_RECIPES.recipeBuilder()
+                .inputs(TOOL_MATCHES.getStackForm(16)).input(OrePrefix.plate, Materials.Paper)
+                .outputs(TOOL_MATCHBOX.getStackForm())
+                .duration(64)
+                .EUt(16)
+                .buildAndRegister();
     }
 }

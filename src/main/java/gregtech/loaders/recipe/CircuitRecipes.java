@@ -131,14 +131,14 @@ public class CircuitRecipes {
                 .input(NANO_CENTRAL_PROCESSING_UNIT_WAFER)
                 .input(QUANTUM_EYE, 2)
                 .fluidInputs(GalliumArsenide.getFluid(L * 2))
-                .output(QBIT_CENTRAL_PROCESSING_UNIT_WAFER)
+                .output(QUBIT_CENTRAL_PROCESSING_UNIT_WAFER)
                 .buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder().duration(1200).EUt(1920)
                 .input(NANO_CENTRAL_PROCESSING_UNIT_WAFER)
                 .input(dust, IndiumGalliumPhosphide)
                 .fluidInputs(Radon.getFluid(50))
-                .output(QBIT_CENTRAL_PROCESSING_UNIT_WAFER)
+                .output(QUBIT_CENTRAL_PROCESSING_UNIT_WAFER)
                 .buildAndRegister();
 
         // Wafer cutting
@@ -147,7 +147,7 @@ public class CircuitRecipes {
         CUTTER_RECIPES.recipeBuilder().duration(900).EUt(480) .input(SYSTEM_ON_CHIP_WAFER)                    .output(SYSTEM_ON_CHIP, 6)                    .buildAndRegister();
         CUTTER_RECIPES.recipeBuilder().duration(900).EUt(64)  .input(SIMPLE_SYSTEM_ON_CHIP_WAFER)             .output(SIMPLE_SYSTEM_ON_CHIP, 6)             .buildAndRegister();
         CUTTER_RECIPES.recipeBuilder().duration(900).EUt(96)  .input(RANDOM_ACCESS_MEMORY_WAFER)              .output(RANDOM_ACCESS_MEMORY, 32)             .buildAndRegister();
-        CUTTER_RECIPES.recipeBuilder().duration(900).EUt(1920).input(QBIT_CENTRAL_PROCESSING_UNIT_WAFER)      .output(QBIT_CENTRAL_PROCESSING_UNIT, 4)      .buildAndRegister();
+        CUTTER_RECIPES.recipeBuilder().duration(900).EUt(1920).input(QUBIT_CENTRAL_PROCESSING_UNIT_WAFER)      .output(QUBIT_CENTRAL_PROCESSING_UNIT, 4)      .buildAndRegister();
         CUTTER_RECIPES.recipeBuilder().duration(900).EUt(120) .input(ULTRA_LOW_POWER_INTEGRATED_CIRCUIT_WAFER).output(ULTRA_LOW_POWER_INTEGRATED_CIRCUIT, 6).buildAndRegister();
         CUTTER_RECIPES.recipeBuilder().duration(900).EUt(480) .input(LOW_POWER_INTEGRATED_CIRCUIT_WAFER)      .output(LOW_POWER_INTEGRATED_CIRCUIT, 4)      .buildAndRegister();
         CUTTER_RECIPES.recipeBuilder().duration(900).EUt(1920).input(POWER_INTEGRATED_CIRCUIT_WAFER)          .output(POWER_INTEGRATED_CIRCUIT, 4)          .buildAndRegister();
@@ -1134,7 +1134,7 @@ public class CircuitRecipes {
         // EV
         CIRCUIT_ASSEMBLER_RECIPES.recipeBuilder().EUt(2400).duration(200)
                 .input(EXTREME_CIRCUIT_BOARD)
-                .input(QBIT_CENTRAL_PROCESSING_UNIT)
+                .input(QUBIT_CENTRAL_PROCESSING_UNIT)
                 .input(NANO_CENTRAL_PROCESSING_UNIT)
                 .input(SMD_CAPACITOR, 12)
                 .input(SMD_TRANSISTOR, 12)
@@ -1144,7 +1144,7 @@ public class CircuitRecipes {
 
         CIRCUIT_ASSEMBLER_RECIPES.recipeBuilder().EUt(2400).duration(100)
                 .input(EXTREME_CIRCUIT_BOARD)
-                .input(QBIT_CENTRAL_PROCESSING_UNIT)
+                .input(QUBIT_CENTRAL_PROCESSING_UNIT)
                 .input(NANO_CENTRAL_PROCESSING_UNIT)
                 .input(ADVANCED_SMD_CAPACITOR, 3)
                 .input(ADVANCED_SMD_TRANSISTOR, 3)
