@@ -4,7 +4,12 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 
+import java.util.Collections;
+import java.util.Set;
+
 public class ToolFile extends ToolBase {
+
+    private static final Set<String> FILE_TOOL_CLASSES = Collections.singleton("file");
 
     @Override
     public int getToolDamagePerBlockBreak(ItemStack stack) {
@@ -28,4 +33,8 @@ public class ToolFile extends ToolBase {
             block.getMaterial() == Material.CIRCUITS;
     }
 
+    @Override
+    public Set<String> getToolClasses(ItemStack stack) {
+        return FILE_TOOL_CLASSES;
+    }
 }

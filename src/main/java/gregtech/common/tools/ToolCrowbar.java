@@ -6,7 +6,12 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 
+import java.util.Collections;
+import java.util.Set;
+
 public class ToolCrowbar extends ToolBase {
+
+    private static final Set<String> CROWBAR_TOOL_CLASSES = Collections.singleton("crowbar");
 
     @Override
     public int getToolDamagePerBlockBreak(ItemStack stack) {
@@ -38,5 +43,10 @@ public class ToolCrowbar extends ToolBase {
         String tool = block.getBlock().getHarvestTool(block);
         return (tool != null && tool.equals("crowbar")) ||
             block.getMaterial() == Material.CIRCUITS;
+    }
+
+    @Override
+    public Set<String> getToolClasses(ItemStack stack) {
+        return CROWBAR_TOOL_CLASSES;
     }
 }

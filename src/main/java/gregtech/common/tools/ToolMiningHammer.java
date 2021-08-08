@@ -16,11 +16,13 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class ToolMiningHammer extends ToolBase {
+
+    private static final Set<String> HAMMER_TOOL_CLASSES = new HashSet<String>() {{
+        add("pickaxe"); add("hammer");
+    }};
 
     public enum MiningHammerMode implements ModeSwitchBehavior.ILocalizationKey {
         THREE_BY_THREE("metaitem.drill.mode.three_by_three", 3, 3, 0.75f),
@@ -172,5 +174,10 @@ public class ToolMiningHammer extends ToolBase {
             case Z: return origin.add(x, 0, y);
             default: return BlockPos.ORIGIN;
         }
+    }
+
+    @Override
+    public Set<String> getToolClasses(ItemStack stack) {
+        return HAMMER_TOOL_CLASSES;
     }
 }

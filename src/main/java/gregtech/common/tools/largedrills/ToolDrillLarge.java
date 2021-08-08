@@ -25,10 +25,16 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.FakePlayer;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public abstract class ToolDrillLarge<E extends Enum<E> & IDrillMode> extends ToolBase {
+
+    private static final Set<String> DRILL_TOOL_CLASSES = new HashSet<String>() {{
+        add("pickaxe"); add("shovel"); add("hammer");
+    }};
 
     abstract ModeSwitchBehavior<E> getModeSwitchBehavior();
 
@@ -227,5 +233,10 @@ public abstract class ToolDrillLarge<E extends Enum<E> & IDrillMode> extends Too
     public ItemStack getBrokenStack(ItemStack stack) {
         IElectricItem electricItem = stack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
         return getPowerUnit().getChargedStackWithOverride(electricItem);
+    }
+
+    @Override
+    public Set<String> getToolClasses(ItemStack stack) {
+        return DRILL_TOOL_CLASSES;
     }
 }

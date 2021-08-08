@@ -9,7 +9,12 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
+import java.util.Collections;
+import java.util.Set;
+
 public class ToolWrench extends ToolBase {
+
+    private static final Set<String> WRENCH_TOOL_CLASSES = Collections.singleton("wrench");
 
     @Override
     public float getNormalDamageBonus(EntityLivingBase entity, ItemStack stack, EntityLivingBase attacker) {
@@ -43,5 +48,10 @@ public class ToolWrench extends ToolBase {
     @Override
     public void onStatsAddedToTool(MetaValueItem item) {
         item.addComponents(new WrenchBehaviour(DamageValues.DAMAGE_FOR_WRENCH));
+    }
+
+    @Override
+    public Set<String> getToolClasses(ItemStack stack) {
+        return WRENCH_TOOL_CLASSES;
     }
 }

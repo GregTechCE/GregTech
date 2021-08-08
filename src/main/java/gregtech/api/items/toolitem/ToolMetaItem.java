@@ -770,7 +770,16 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             enchantments.keySet().removeIf(enchantment -> !enchantment.canApply(itemStack));
             return enchantments;
         }
-
     }
 
+    @Override
+    @Nonnull
+    public Set<String> getToolClasses(@Nonnull ItemStack stack) {
+        T metaToolValueItem = getItem(stack);
+        if (metaToolValueItem != null) {
+            IToolStats toolStats = metaToolValueItem.getToolStats();
+            return toolStats.getToolClasses(stack);
+        }
+        return Collections.emptySet();
+    }
 }

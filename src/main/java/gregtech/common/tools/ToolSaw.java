@@ -20,9 +20,15 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 import gregtech.api.items.toolitem.ToolMetaItem;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ToolSaw extends ToolBase {
+
+    private static final Set<String> SAW_TOOL_CLASSES = new HashSet<String>() {{
+        add("axe"); add("saw");
+    }};
 
     @Override
     public boolean canApplyEnchantment(ItemStack stack, Enchantment enchantment) {
@@ -80,6 +86,11 @@ public class ToolSaw extends ToolBase {
             ItemStack dropStack = new ItemStack(item, 1);
             dropList.add(dropStack);
         }
+    }
+
+    @Override
+    public Set<String> getToolClasses(ItemStack stack) {
+        return SAW_TOOL_CLASSES;
     }
 
     /**

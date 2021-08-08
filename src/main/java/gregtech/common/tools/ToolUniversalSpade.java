@@ -6,7 +6,14 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class ToolUniversalSpade extends ToolBase {
+
+    private static final Set<String> SPADE_TOOL_CLASSES = new HashSet<String>() {{
+        add("shovel"); add("axe"); add("saw"); add("sword"); add("crowbar");
+    }};
 
     @Override
     public int getToolDamagePerBlockBreak(ItemStack stack) {
@@ -67,4 +74,8 @@ public class ToolUniversalSpade extends ToolBase {
         item.addComponents(new CrowbarBehaviour(DamageValues.DAMAGE_FOR_UNIVERSAL_SPADE));
     }
 
+    @Override
+    public Set<String> getToolClasses(ItemStack stack) {
+        return SPADE_TOOL_CLASSES;
+    }
 }
