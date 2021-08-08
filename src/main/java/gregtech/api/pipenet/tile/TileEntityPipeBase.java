@@ -8,6 +8,8 @@ import gregtech.api.metatileentity.SyncedTileEntityBase;
 import gregtech.api.pipenet.WorldPipeNet;
 import gregtech.api.pipenet.block.BlockPipe;
 import gregtech.api.pipenet.block.IPipeType;
+import gregtech.api.util.FirstTickScheduler;
+import gregtech.api.util.IFirstTickTask;
 import gregtech.common.ConfigHolder;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -24,7 +26,7 @@ import net.minecraftforge.common.util.Constants.NBT;
 import javax.annotation.Nullable;
 import java.util.function.Consumer;
 
-public abstract class TileEntityPipeBase<PipeType extends Enum<PipeType> & IPipeType<NodeDataType>, NodeDataType> extends SyncedTileEntityBase implements IPipeTile<PipeType, NodeDataType> {
+public abstract class TileEntityPipeBase<PipeType extends Enum<PipeType> & IPipeType<NodeDataType>, NodeDataType> extends SyncedTileEntityBase implements IPipeTile<PipeType, NodeDataType>, IFirstTickTask {
 
     private TIntIntMap openConnectionsMap = new TIntIntHashMap();
     private int openConnections = 0;
@@ -323,6 +325,11 @@ public abstract class TileEntityPipeBase<PipeType extends Enum<PipeType> & IPipe
     @Override
     public void onLoad() {
         super.onLoad();
+        FirstTickScheduler.addTask(this);
+    }
+
+    @Override
+    public void handleFirstTick() {
         this.coverableImplementation.onLoad();
     }
 
