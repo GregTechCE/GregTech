@@ -157,6 +157,9 @@ public class ConfigHolder {
 
         @Config.Comment("Whether to make vanilla tools and armor recipes harder. Excludes flint and steel, and buckets. Default: false")
         public boolean hardToolArmorRecipes = false;
+
+        @Config.Comment("Whether to disable the vanilla Concrete from Powder with Water behavior, forcing the GT recipe. Default: false")
+        public boolean disableConcreteInWorld = false;
     }
 
     public static class NanoSaberConfiguration {
