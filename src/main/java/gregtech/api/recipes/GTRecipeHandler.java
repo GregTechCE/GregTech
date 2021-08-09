@@ -59,7 +59,7 @@ public class GTRecipeHandler {
         if (ConfigHolder.debug) {
             if (wasRemoved)
                 GTLog.logger.info("Removed Recipe for inputs: Items: {} Fluids: {}", itemNames, fluidNames);
-            else GTLog.logger.info("Failed to Remove Recipe for inputs: Items: {} Fluids: {}", itemNames, fluidNames);
+            else GTLog.logger.error("Failed to Remove Recipe for inputs: Items: {} Fluids: {}", itemNames, fluidNames);
         }
         return wasRemoved;
     }

@@ -485,14 +485,15 @@ public class ModHandler {
             if (ItemStack.areItemStacksEqual(input, stack)) {
                 FurnaceRecipes.instance().getSmeltingList().remove(stack);
                 wasRemoved = true;
+                break;
             }
         }
         if (ConfigHolder.debug) {
             if (wasRemoved)
                 GTLog.logger.info("Removed Smelting Recipe for Input: {}", input.getDisplayName());
-            else GTLog.logger.warn("Failed to Remove Smelting Recipe for Input: {}", input.getDisplayName());
+            else GTLog.logger.error("Failed to Remove Smelting Recipe for Input: {}", input.getDisplayName());
         }
-        
+
         return wasRemoved;
     }
 
@@ -502,7 +503,7 @@ public class ModHandler {
         if (ConfigHolder.debug) {
             if (recipesRemoved != 0)
                 GTLog.logger.info("Removed {} Recipe(s) with Output: {}", recipesRemoved, output.getDisplayName());
-            else GTLog.logger.warn("Failed to Remove Recipe with Output: {}", output.getDisplayName());
+            else GTLog.logger.error("Failed to Remove Recipe with Output: {}", output.getDisplayName());
         }
         return recipesRemoved;
     }
@@ -536,7 +537,7 @@ public class ModHandler {
             String recipeName = location.toString();
             if (ForgeRegistries.RECIPES.containsKey(location))
                 GTLog.logger.info("Removed Recipe with Name: {}", recipeName);
-            else GTLog.logger.warn("Failed to Remove Recipe with Name: {}", recipeName);
+            else GTLog.logger.error("Failed to Remove Recipe with Name: {}", recipeName);
         }
         ForgeRegistries.RECIPES.register(new DummyRecipe().setRegistryName(location));
     }
