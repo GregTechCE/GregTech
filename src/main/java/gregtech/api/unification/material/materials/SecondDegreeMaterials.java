@@ -41,7 +41,7 @@ public class SecondDegreeMaterials {
         Olivine = new Material.Builder(2004, "olivine")
                 .gem().ore(2, 1)
                 .color(0x96FF96).iconSet(RUBY)
-                .flags(NO_SMASHING, NO_SMELTING, HIGH_SIFTER_OUTPUT)
+                .flags(NO_SMASHING, NO_SMELTING, HIGH_SIFTER_OUTPUT, GENERATE_PLATE)
                 .components(Magnesium, 2, Iron, 1, SiliconDioxide, 2)
                 .toolStats(7.5f, 3.0f, 312)
                 .build();
@@ -65,7 +65,8 @@ public class SecondDegreeMaterials {
         Lapis = new Material.Builder(2007, "lapis")
                 .gem(1).ore(6, 4)
                 .color(0x4646DC).iconSet(LAPIS)
-                .flags(NO_SMASHING, NO_SMELTING, CRYSTALLIZABLE, NO_WORKING, DECOMPOSITION_BY_ELECTROLYZING, EXCLUDE_BLOCK_CRAFTING_BY_HAND_RECIPES)
+                .flags(NO_SMASHING, NO_SMELTING, CRYSTALLIZABLE, NO_WORKING, DECOMPOSITION_BY_ELECTROLYZING, EXCLUDE_BLOCK_CRAFTING_BY_HAND_RECIPES,
+                        GENERATE_PLATE)
                 .components(Lazurite, 12, Sodalite, 2, Pyrite, 1, Calcite, 1)
                 .build();
 

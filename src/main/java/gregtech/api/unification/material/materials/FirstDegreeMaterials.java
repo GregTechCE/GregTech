@@ -215,7 +215,7 @@ public class FirstDegreeMaterials {
         Emerald = new Material.Builder(278, "emerald")
                 .gem().ore()
                 .color(0x50FF50).iconSet(EMERALD)
-                .flags(NO_SMASHING, NO_SMELTING, HIGH_SIFTER_OUTPUT, EXCLUDE_BLOCK_CRAFTING_BY_HAND_RECIPES)
+                .flags(NO_SMASHING, NO_SMELTING, HIGH_SIFTER_OUTPUT, EXCLUDE_BLOCK_CRAFTING_BY_HAND_RECIPES, GENERATE_PLATE)
                 .components(Beryllium, 3, Aluminium, 2, Silicon, 6, Oxygen, 18)
                 .toolStats(10.0f, 2.0f, 368)
                 .build();
