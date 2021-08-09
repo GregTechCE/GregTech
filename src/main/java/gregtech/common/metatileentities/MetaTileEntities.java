@@ -10,18 +10,25 @@ import gregtech.api.render.OrientedOverlayRenderer;
 import gregtech.api.render.Textures;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.util.GTLog;
-import gregtech.common.ConfigHolder;
 import gregtech.common.metatileentities.electric.*;
-import gregtech.common.metatileentities.electric.multiblockpart.*;
+import gregtech.common.metatileentities.electric.multiblockpart.MetaTileEntityEnergyHatch;
+import gregtech.common.metatileentities.electric.multiblockpart.MetaTileEntityFluidHatch;
+import gregtech.common.metatileentities.electric.multiblockpart.MetaTileEntityItemBus;
+import gregtech.common.metatileentities.electric.multiblockpart.MetaTileEntityRotorHolder;
 import gregtech.common.metatileentities.multi.*;
 import gregtech.common.metatileentities.multi.MetaTileEntityLargeBoiler.BoilerType;
 import gregtech.common.metatileentities.multi.electric.*;
-import gregtech.common.metatileentities.multi.electric.generator.*;
+import gregtech.common.metatileentities.multi.electric.generator.MetaTileEntityLargeCombustionEngine;
+import gregtech.common.metatileentities.multi.electric.generator.MetaTileEntityLargeTurbine;
 import gregtech.common.metatileentities.multi.electric.generator.MetaTileEntityLargeTurbine.TurbineType;
-import gregtech.common.metatileentities.multi.steam.*;
+import gregtech.common.metatileentities.multi.steam.MetaTileEntitySteamGrinder;
+import gregtech.common.metatileentities.multi.steam.MetaTileEntitySteamOven;
 import gregtech.common.metatileentities.steam.*;
-import gregtech.common.metatileentities.steam.boiler.*;
-import gregtech.common.metatileentities.steam.multiblockpart.*;
+import gregtech.common.metatileentities.steam.boiler.SteamCoalBoiler;
+import gregtech.common.metatileentities.steam.boiler.SteamLavaBoiler;
+import gregtech.common.metatileentities.steam.boiler.SteamSolarBoiler;
+import gregtech.common.metatileentities.steam.multiblockpart.MetaTileEntitySteamHatch;
+import gregtech.common.metatileentities.steam.multiblockpart.MetaTileEntitySteamItemBus;
 import gregtech.common.metatileentities.storage.*;
 import net.minecraft.util.ResourceLocation;
 
@@ -97,6 +104,7 @@ public class MetaTileEntities {
     public static final SimpleMachineMetaTileEntity[] MASS_FABRICATOR = new SimpleMachineMetaTileEntity[GTValues.V.length - 1];
     public static final SimpleMachineMetaTileEntity[] REPLICATOR = new SimpleMachineMetaTileEntity[GTValues.V.length - 1];
     public static final SimpleMachineMetaTileEntity[] SCANNER = new SimpleMachineMetaTileEntity[GTValues.V.length - 1];
+    public static final SimpleMachineMetaTileEntity[] GAS_COLLECTOR = new SimpleMachineMetaTileEntity[GTValues.V.length - 1];
 
     //GENERATORS SECTION
     public static final SimpleGeneratorMetaTileEntity[] COMBUSTION_GENERATOR = new SimpleGeneratorMetaTileEntity[4];
@@ -180,7 +188,6 @@ public class MetaTileEntities {
     public static MetaTileEntityWorkbench WORKBENCH;
     public static final MetaTileEntityPump[] PUMP = new MetaTileEntityPump[8];
     public static final MetaTileEntityBlockBreaker[] BLOCK_BREAKER = new MetaTileEntityBlockBreaker[4];
-    public static final MetaTileEntityAirCollector[] AIR_COLLECTOR = new MetaTileEntityAirCollector[6];
     public static final MetaTileEntityItemCollector[] ITEM_COLLECTOR = new MetaTileEntityItemCollector[4];
     public static final MetaTileEntityFisher[] FISHER = new MetaTileEntityFisher[4];
 
@@ -329,7 +336,8 @@ public class MetaTileEntities {
         // Unpacker, IDs 530-544
         registerSimpleMetaTileEntity(UNPACKER, 530, "unpacker", RecipeMaps.UNPACKER_RECIPES, Textures.UNPACKER_OVERLAY);
 
-        // Free Range, IDs 545-559
+        // Gas Collectors, IDs 545-559
+        registerSimpleMetaTileEntity(GAS_COLLECTOR, 545, "gas_collector", RecipeMaps.GAS_COLLECTOR_RECIPES, Textures.GAS_COLLECTOR_OVERLAY, false);
 
         // Polarizer, IDs 560-574
         registerSimpleMetaTileEntity(POLARIZER, 560, "polarizer", RecipeMaps.POLARIZER_RECIPES, Textures.POLARIZER_OVERLAY);
@@ -525,14 +533,6 @@ public class MetaTileEntities {
         PUMP[1] = GregTechAPI.registerMetaTileEntity(1531, new MetaTileEntityPump(gregtechId("pump.mv"), 2));
         PUMP[2] = GregTechAPI.registerMetaTileEntity(1532, new MetaTileEntityPump(gregtechId("pump.hv"), 3));
         PUMP[3] = GregTechAPI.registerMetaTileEntity(1533, new MetaTileEntityPump(gregtechId("pump.ev"), 4));
-
-        // Air Collectors, IDs 1545-1559
-        AIR_COLLECTOR[0] = GregTechAPI.registerMetaTileEntity(1545, new MetaTileEntityAirCollector(gregtechId("air_collector.lv"), 1));
-        AIR_COLLECTOR[1] = GregTechAPI.registerMetaTileEntity(1546, new MetaTileEntityAirCollector(gregtechId("air_collector.mv"), 2));
-        AIR_COLLECTOR[2] = GregTechAPI.registerMetaTileEntity(1547, new MetaTileEntityAirCollector(gregtechId("air_collector.hv"), 3));
-        AIR_COLLECTOR[3] = GregTechAPI.registerMetaTileEntity(1548, new MetaTileEntityAirCollector(gregtechId("air_collector.ev"), 4));
-        AIR_COLLECTOR[4] = GregTechAPI.registerMetaTileEntity(1549, new MetaTileEntityAirCollector(gregtechId("air_collector.iv"), 5));
-        AIR_COLLECTOR[5] = GregTechAPI.registerMetaTileEntity(1550, new MetaTileEntityAirCollector(gregtechId("air_collector.luv"), 6));
 
         // Super / Quantum Chests, IDs 1560-1574
         for (int i = 0; i < 5; i++) {

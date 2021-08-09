@@ -113,9 +113,6 @@ public class ConfigHolder {
     @Config.RequiresMcRestart
     public static int gasTurbineBonusOutput = 6144;
 
-    @Config.Comment("Array of blacklisted dimension IDs in which Air Collector does not work. Default: none")
-    public static int[] airCollectorDimensionBlacklist = new int[]{};
-
     public static class VanillaRecipes {
 
         @Config.Comment("Whether to make glass related recipes harder. Default: true")
