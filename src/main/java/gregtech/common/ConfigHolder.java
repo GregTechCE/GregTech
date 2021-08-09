@@ -113,13 +113,6 @@ public class ConfigHolder {
     @Config.RequiresMcRestart
     public static int gasTurbineBonusOutput = 6144;
 
-    @Config.Comment("If true, powered zero loss wires will damage the player. Default: false")
-    public static boolean doLosslessWiresDamage = false;
-
-    @Config.Comment("If true, lossless cables will have lossy wires. Default: false")
-    @Config.RequiresMcRestart
-    public static boolean doLosslessWiresMakeLossyCables = false;
-
     @Config.Comment("Array of blacklisted dimension IDs in which Air Collector does not work. Default: none")
     public static int[] airCollectorDimensionBlacklist = new int[]{};
 
