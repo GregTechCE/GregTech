@@ -334,7 +334,7 @@ public class ReactorRecipes {
                 .fluidInputs(Water.getFluid(1000))
                 .output(dust, SodiumHydroxide, 3)
                 .fluidOutputs(Hydrogen.getFluid(1000))
-                .duration(40).EUt(8).buildAndRegister();
+                .duration(80).EUt(30).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
                 .notConsumable(new IntCircuitIngredient(1))
@@ -611,7 +611,7 @@ public class ReactorRecipes {
                 .buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
-                .notConsumable(PhosphoricAcid.getFluid(0))
+                .fluidInputs(PhosphoricAcid.getFluid(1000))
                 .fluidInputs(Benzene.getFluid(8000))
                 .fluidInputs(Propene.getFluid(8000))
                 .fluidOutputs(Cumene.getFluid(8000))
