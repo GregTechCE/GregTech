@@ -30,7 +30,7 @@ public class UniversalDistillationRecipeBuilder extends RecipeBuilder<UniversalD
     @Override
     public void buildAndRegister() {
         for (int i = 0; i < fluidOutputs.size(); i++) {
-            IntCircuitRecipeBuilder builder = RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().copy().EUt(this.EUt / 4).circuitMeta(i + 1);
+            IntCircuitRecipeBuilder builder = RecipeMaps.DISTILLERY_RECIPES.recipeBuilder().copy().EUt(Math.max(1, this.EUt / 4)).circuitMeta(i + 1);
 
             int ratio = getRatioForDistillery(this.fluidInputs.get(0), this.fluidOutputs.get(i), this.outputs.size() > 0 ? this.outputs.get(0) : null);
 
@@ -47,7 +47,7 @@ public class UniversalDistillationRecipeBuilder extends RecipeBuilder<UniversalD
             if (shouldDivide && fluidsDivisible)
                 builder.fluidInputs(dividedInputFluid)
                         .fluidOutputs(dividedOutputFluid)
-                        .duration(recipeDuration / ratio);
+                        .duration(Math.max(1, recipeDuration / ratio));
 
             else if (!shouldDivide) {
                 builder.fluidInputs(this.fluidInputs.get(0))
