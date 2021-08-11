@@ -39,7 +39,7 @@ public class ToolWrench extends ToolBase {
     public boolean canMineBlock(IBlockState blockState, ItemStack stack) {
         Block block = blockState.getBlock();
         String tool = block.getHarvestTool(blockState);
-        return (tool != null && tool.equals("wrench"))
+        return (tool != null && WRENCH_TOOL_CLASSES.contains(tool))
                 || blockState.getMaterial() == Material.PISTON
                 || block == Blocks.HOPPER
                 || block == Blocks.DISPENSER
