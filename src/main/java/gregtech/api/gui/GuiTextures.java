@@ -143,6 +143,7 @@ public class GuiTextures {
     public static final TextureArea PROGRESS_BAR_COMPRESS = TextureArea.fullImage("textures/gui/progress_bar/progress_bar_compress.png");
     public static final TextureArea PROGRESS_BAR_CRACKING = TextureArea.fullImage("textures/gui/progress_bar/progress_bar_cracking.png");
     public static final TextureArea PROGRESS_BAR_CRYSTALLIZATION = TextureArea.fullImage("textures/gui/progress_bar/progress_bar_crystallization.png");
+    public static final TextureArea PROGRESS_BAR_DISTILLATION_TOWER = TextureArea.fullImage("textures/gui/progress_bar/progress_bar_distillation_tower.png");
     public static final TextureArea PROGRESS_BAR_EXTRACT = TextureArea.fullImage("textures/gui/progress_bar/progress_bar_extract.png");
     public static final TextureArea PROGRESS_BAR_EXTRUDER = TextureArea.fullImage("textures/gui/progress_bar/progress_bar_extruder.png");
     public static final TextureArea PROGRESS_BAR_FUSION = TextureArea.fullImage("textures/gui/progress_bar/progress_bar_fusion.png");
