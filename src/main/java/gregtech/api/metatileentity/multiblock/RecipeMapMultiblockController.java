@@ -143,15 +143,21 @@ public abstract class RecipeMapMultiblockController extends MultiblockWithDispla
     @Override
     protected boolean checkStructureComponents(List<IMultiblockPart> parts, Map<MultiblockAbility<Object>, List<Object>> abilities) {
         //basically check minimal requirements for inputs count
-        //noinspection SuspiciousMethodCalls
         int itemInputsCount = abilities.getOrDefault(MultiblockAbility.IMPORT_ITEMS, Collections.emptyList())
                 .stream().map(it -> (IItemHandler) it).mapToInt(IItemHandler::getSlots).sum();
-        //noinspection SuspiciousMethodCalls
+        int itemOutputsCount = abilities.getOrDefault(MultiblockAbility.EXPORT_ITEMS, Collections.emptyList())
+                .stream().map(it -> (IItemHandler) it).mapToInt(IItemHandler::getSlots).sum();
+
         int fluidInputsCount = abilities.getOrDefault(MultiblockAbility.IMPORT_FLUIDS, Collections.emptyList()).size();
-        //noinspection SuspiciousMethodCalls
-        return itemInputsCount >= recipeMap.getMinInputs() &&
-                fluidInputsCount >= recipeMap.getMinFluidInputs() &&
-                abilities.containsKey(MultiblockAbility.INPUT_ENERGY);
+        int fluidOutputsCount = abilities.getOrDefault(MultiblockAbility.EXPORT_FLUIDS, Collections.emptyList()).size();
+
+        return abilities.containsKey(MultiblockAbility.INPUT_ENERGY) &&
+                (recipeMap.getMaxFluidInputs() > 0 && recipeMap.getMaxInputs() > 0
+                        || ((recipeMap.getMaxFluidInputs() != 0 || itemInputsCount > 0) &&
+                        (recipeMap.getMaxInputs() != 0 || fluidInputsCount > 0))) &&
+                (recipeMap.getMaxFluidOutputs() > 0 && recipeMap.getMaxOutputs() > 0
+                        || ((recipeMap.getMaxFluidOutputs() != 0 || itemOutputsCount > 0) &&
+                        (recipeMap.getMaxOutputs() != 0 || fluidOutputsCount > 0)));
     }
 
     @Override

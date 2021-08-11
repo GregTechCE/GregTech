@@ -17,8 +17,8 @@ import java.util.List;
 
 public class RecipeMapFluidCanner extends RecipeMap<SimpleRecipeBuilder> {
 
-    public RecipeMapFluidCanner(String unlocalizedName, int minInputs, int maxInputs, int minOutputs, int maxOutputs, int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs, SimpleRecipeBuilder defaultRecipe, boolean isHidden) {
-        super(unlocalizedName, minInputs, maxInputs, minOutputs, maxOutputs, minFluidInputs, maxFluidInputs, minFluidOutputs, maxFluidOutputs, defaultRecipe, isHidden);
+    public RecipeMapFluidCanner(String unlocalizedName, int inputs, int outputs, int fluidInputs, int fluidOutputs, SimpleRecipeBuilder defaultRecipe, boolean isHidden) {
+        super(unlocalizedName, inputs, outputs, fluidInputs, fluidOutputs, defaultRecipe, isHidden);
     }
 
     @Override
