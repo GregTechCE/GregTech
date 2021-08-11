@@ -1080,6 +1080,8 @@ public class FirstDegreeMaterials {
 
         HydrogenSulfide = new Material.Builder(400, "hydrogen_sulfide")
                 .fluid(Material.FluidType.GAS)
+                .flags(DISABLE_DECOMPOSITION)
+                .components(Hydrogen, 2, Sulfur, 1)
                 .build();
 
         NitricAcid = new Material.Builder(401, "nitric_acid")
@@ -1145,6 +1147,7 @@ public class FirstDegreeMaterials {
                 .fluid()
                 .color(0x060B0B)
                 .flags(DECOMPOSITION_BY_ELECTROLYZING)
+                .components(Iron, 1, Chlorine, 3)
                 .build();
 
         UraniumHexafluoride = new Material.Builder(412, "uranium_hexafluoride")
