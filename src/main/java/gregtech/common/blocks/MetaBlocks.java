@@ -185,7 +185,8 @@ public class MetaBlocks {
         StoneType.init();
 
         createGeneratedBlock(
-                material -> material.hasProperty(PropertyKey.DUST) && !OrePrefix.block.isIgnored(material),
+                material -> (material.hasProperty(PropertyKey.INGOT) || material.hasProperty(PropertyKey.GEM))
+                        && !OrePrefix.block.isIgnored(material),
                 MetaBlocks::createCompressedBlock);
 
         for (Material material : MaterialRegistry.MATERIAL_REGISTRY) {
