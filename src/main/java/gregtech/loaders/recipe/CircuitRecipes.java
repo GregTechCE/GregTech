@@ -198,7 +198,7 @@ public class CircuitRecipes {
                 .output(VACUUM_TUBE, 6)
                 .buildAndRegister();
 
-        ALLOY_SMELTER_RECIPES.recipeBuilder().duration(240).EUt(8)
+        ALLOY_SMELTER_RECIPES.recipeBuilder().duration(160).EUt(16)
                 .input(dust, Glass)
                 .notConsumable(SHAPE_MOLD_BALL)
                 .output(GLASS_TUBE)

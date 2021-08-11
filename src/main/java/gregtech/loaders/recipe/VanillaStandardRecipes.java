@@ -128,7 +128,7 @@ public class VanillaStandardRecipes {
                 .outputs(new ItemStack(Blocks.GLASS, 2))
                 .buildAndRegister();
 
-        RecipeMaps.FORMING_PRESS_RECIPES.recipeBuilder().duration(100).EUt(30)
+        RecipeMaps.FORMING_PRESS_RECIPES.recipeBuilder().duration(80).EUt(30)
                 .input(dust, Materials.Glass)
                 .notConsumable(SHAPE_MOLD_BLOCK.getStackForm())
                 .outputs(new ItemStack(Blocks.GLASS, 1))
@@ -158,7 +158,7 @@ public class VanillaStandardRecipes {
                 .outputs(new ItemStack(Blocks.GLASS))
                 .buildAndRegister();
 
-        RecipeMaps.ALLOY_SMELTER_RECIPES.recipeBuilder().duration(200).EUt(16)
+        RecipeMaps.ALLOY_SMELTER_RECIPES.recipeBuilder().duration(120).EUt(16)
                 .input(dust, Materials.Glass)
                 .notConsumable(SHAPE_MOLD_BLOCK.getStackForm())
                 .outputs(new ItemStack(Blocks.GLASS, 1))

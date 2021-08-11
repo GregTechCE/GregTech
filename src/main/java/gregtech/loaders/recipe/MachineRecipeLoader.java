@@ -85,7 +85,7 @@ public class MachineRecipeLoader {
         COMPRESSOR_RECIPES.recipeBuilder()
                 .input(OrePrefix.dust, Materials.Fireclay)
                 .outputs(MetaItems.COMPRESSED_FIRECLAY.getStackForm())
-                .duration(100).EUt(2)
+                .duration(80).EUt(4)
                 .buildAndRegister();
 
         FORMING_PRESS_RECIPES.recipeBuilder()
@@ -383,8 +383,8 @@ public class MachineRecipeLoader {
         ALLOY_SMELTER_RECIPES.recipeBuilder().duration(400).EUt(4).input(OrePrefix.dust, Materials.Glass, 3).inputs(MetaItems.ADVANCED_ALLOY_PLATE.getStackForm()).outputs(MetaBlocks.TRANSPARENT_CASING.getItemVariant(BlockTransparentCasing.CasingType.REINFORCED_GLASS, 4)).buildAndRegister();
         ALLOY_SMELTER_RECIPES.recipeBuilder().duration(400).EUt(4).inputs(new ItemStack(Blocks.GLASS)).inputs(MetaItems.ADVANCED_ALLOY_PLATE.getStackForm()).outputs(MetaBlocks.TRANSPARENT_CASING.getItemVariant(BlockTransparentCasing.CasingType.REINFORCED_GLASS, 4)).buildAndRegister();
 
-        ALLOY_SMELTER_RECIPES.recipeBuilder().duration(10).EUt(8).input(OrePrefix.ingot, Materials.Rubber, 2).notConsumable(MetaItems.SHAPE_MOLD_PLATE).output(OrePrefix.plate, Materials.Rubber).buildAndRegister();
-        ALLOY_SMELTER_RECIPES.recipeBuilder().duration(100).EUt(1).input(OrePrefix.dust, Materials.Sulfur).input(OrePrefix.dust, Materials.RawRubber, 3).output(OrePrefix.ingot, Materials.Rubber).buildAndRegister();
+        ALLOY_SMELTER_RECIPES.recipeBuilder().duration(10).EUt(7).input(OrePrefix.ingot, Materials.Rubber, 2).notConsumable(MetaItems.SHAPE_MOLD_PLATE).output(OrePrefix.plate, Materials.Rubber).buildAndRegister();
+        ALLOY_SMELTER_RECIPES.recipeBuilder().duration(100).EUt(7).input(OrePrefix.dust, Materials.Sulfur).input(OrePrefix.dust, Materials.RawRubber, 3).output(OrePrefix.ingot, Materials.Rubber).buildAndRegister();
     }
 
     private static void registerAssemblerRecipes() {
@@ -648,8 +648,8 @@ public class MachineRecipeLoader {
 
         EXTRACTOR_RECIPES.recipeBuilder()
                 .inputs(RUBBER_DROP.getStackForm())
-                .output(dust, RawRubber, 4)
-                .duration(300).EUt(2)
+                .output(dust, RawRubber, 3)
+                .duration(150).EUt(2)
                 .buildAndRegister();
 
         EXTRACTOR_RECIPES.recipeBuilder().duration(300).EUt(2)
