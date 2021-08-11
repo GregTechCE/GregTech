@@ -47,6 +47,7 @@ public class MetaTileEntities {
     public static SteamCoalBoiler STEAM_BOILER_COAL_BRONZE;
     public static SteamCoalBoiler STEAM_BOILER_COAL_STEEL;
     public static SteamSolarBoiler STEAM_BOILER_SOLAR_BRONZE;
+    public static SteamSolarBoiler STEAM_BOILER_SOLAR_STEEL;
     public static SteamLavaBoiler STEAM_BOILER_LAVA_BRONZE;
     public static SteamLavaBoiler STEAM_BOILER_LAVA_STEEL;
     public static SteamExtractor STEAM_EXTRACTOR_BRONZE;
@@ -200,6 +201,7 @@ public class MetaTileEntities {
         STEAM_BOILER_COAL_STEEL = GregTechAPI.registerMetaTileEntity(2, new SteamCoalBoiler(gregtechId("steam_boiler_coal_steel"), true));
 
         STEAM_BOILER_SOLAR_BRONZE = GregTechAPI.registerMetaTileEntity(3, new SteamSolarBoiler(gregtechId("steam_boiler_solar_bronze"), false));
+        STEAM_BOILER_SOLAR_STEEL = GregTechAPI.registerMetaTileEntity(4, new SteamSolarBoiler(gregtechId("steam_boiler_solar_steel"), true));
 
         STEAM_BOILER_LAVA_BRONZE = GregTechAPI.registerMetaTileEntity(5, new SteamLavaBoiler(gregtechId("steam_boiler_lava_bronze"), false));
         STEAM_BOILER_LAVA_STEEL = GregTechAPI.registerMetaTileEntity(6, new SteamLavaBoiler(gregtechId("steam_boiler_lava_steel"), true));
