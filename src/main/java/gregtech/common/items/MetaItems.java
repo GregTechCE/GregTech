@@ -19,6 +19,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public final class MetaItems {
@@ -587,7 +588,7 @@ public final class MetaItems {
     }
 
     @SuppressWarnings("unused")
-    public static void addOrePrefix(OrePrefix orePrefix) {
-        orePrefixes.add(orePrefix);
+    public static void addOrePrefix(OrePrefix... prefixes) {
+        orePrefixes.addAll(Arrays.asList(prefixes));
     }
 }
