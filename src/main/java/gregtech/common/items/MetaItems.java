@@ -4,6 +4,7 @@ import com.google.common.base.CaseFormat;
 import gregtech.api.items.materialitem.MetaPrefixItem;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.items.metaitem.MetaItem.MetaValueItem;
+import gregtech.api.items.metaitem.MetaOreDictItem;
 import gregtech.api.items.toolitem.ToolMetaItem;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.GTLog;
@@ -533,6 +534,8 @@ public final class MetaItems {
         first.setRegistryName("meta_item_1");
         MetaTool tool = new MetaTool();
         tool.setRegistryName("meta_tool");
+        MetaOreDictItem oreDictItem = new MetaOreDictItem((short) 0);
+        oreDictItem.setRegistryName("meta_oredict_item");
         for (OrePrefix prefix : orePrefixes) {
             String regName = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, prefix.name());
             MetaPrefixItem metaOrePrefix = new MetaPrefixItem(prefix);
