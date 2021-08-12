@@ -162,7 +162,7 @@ public class ElementMaterials {
         Cobalt = new Material.Builder(23, "cobalt")
                 .ingot().fluid().ore()
                 .color(0x5050FA).iconSet(METALLIC)
-                .flags(STD_METAL)
+                .flags(STD_METAL, GENERATE_GEAR)
                 .element(Elements.Co)
                 .toolStats(10.0f, 3.0f, 256)
                 .cableProperties(GTValues.V[1], 2, 2)

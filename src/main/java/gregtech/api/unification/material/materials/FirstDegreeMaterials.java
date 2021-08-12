@@ -641,7 +641,7 @@ public class FirstDegreeMaterials {
         VanadiumGallium = new Material.Builder(334, "vanadium_gallium")
                 .ingot().fluid()
                 .color(0x80808C).iconSet(SHINY)
-                .flags(STD_METAL, GENERATE_FOIL, GENERATE_SPRING)
+                .flags(STD_METAL, GENERATE_FOIL, GENERATE_SPRING, GENERATE_LONG_ROD)
                 .components(Vanadium, 3, Gallium, 1)
                 .cableProperties(GTValues.V[6], 4, 2)
                 .blastTemp(4500)

@@ -44,7 +44,7 @@ public class HigherDegreeMaterials {
         BlueSteel = new Material.Builder(2511, "blue_steel")
                 .ingot().fluid()
                 .color(0x64648C).iconSet(METALLIC)
-                .flags(EXT_METAL, GENERATE_FRAME)
+                .flags(EXT_METAL, GENERATE_FRAME, GENERATE_GEAR)
                 .components(RoseGold, 1, Brass, 1, Steel, 2, BlackSteel, 4)
                 .toolStats(7.5f, 5.0f, 1024)
                 .blastTemp(1400)
