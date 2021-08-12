@@ -34,7 +34,7 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 
 import java.util.List;
 
-import static gregtech.api.multiblock.BlockPattern.RelativeDirection.*;
+import static gregtech.api.util.RelativeDirection.*;
 
 public class MetaTileEntityFusionReactor extends RecipeMapMultiblockController {
 

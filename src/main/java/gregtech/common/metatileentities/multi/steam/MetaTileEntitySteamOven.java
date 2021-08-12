@@ -27,7 +27,6 @@ import net.minecraft.util.math.BlockPos;
 
 public class MetaTileEntitySteamOven extends RecipeMapSteamMultiblockController {
 
-    private static final double CONVERSION_RATE = ConfigHolder.U.multiblockSteamToEU;
     private boolean isActive;
 
     public MetaTileEntitySteamOven(ResourceLocation metaTileEntityId) {

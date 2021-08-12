@@ -25,8 +25,6 @@ import static gregtech.api.render.Textures.SOLID_STEEL_CASING;
 
 public class MetaTileEntitySteamGrinder extends RecipeMapSteamMultiblockController {
 
-    private static final double CONVERSION_RATE = ConfigHolder.U.multiblockSteamToEU;
-
     private static final MultiblockAbility<?>[] ALLOWED_ABILITIES = {
             MultiblockAbility.STEAM_IMPORT_ITEMS, MultiblockAbility.STEAM_EXPORT_ITEMS, MultiblockAbility.STEAM
     };

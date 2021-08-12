@@ -10,7 +10,7 @@ import stanhebben.zenscript.annotations.ZenMethod;
 @ZenClass("mods.gregtech.item.ItemRegistry")
 @ZenRegister
 @SuppressWarnings("unused")
-public class CTItemUtils {
+public class CTItemRegistry {
 
     @ZenMethod("registerItem")
     public static void registerItem(String name, short id, int rgb, String materialIconSet, String orePrefix) {

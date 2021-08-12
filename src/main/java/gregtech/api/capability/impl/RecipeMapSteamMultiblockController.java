@@ -7,6 +7,7 @@ import gregtech.api.metatileentity.multiblock.MultiblockWithDisplayBase;
 import gregtech.api.multiblock.PatternMatchContext;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
+import gregtech.common.ConfigHolder;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
@@ -22,6 +23,8 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class RecipeMapSteamMultiblockController extends MultiblockWithDisplayBase {
+
+    protected static final double CONVERSION_RATE = ConfigHolder.U.multiblockSteamToEU;
 
     public final RecipeMap<?> recipeMap;
     protected SteamMultiblockRecipeLogic recipeMapWorkable;
