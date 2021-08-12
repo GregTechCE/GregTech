@@ -140,6 +140,7 @@ public class GuiTextures {
     public static final TextureArea PROGRESS_BAR_CANNER = TextureArea.fullImage("textures/gui/progress_bar/progress_bar_canner.png");
     public static final TextureArea PROGRESS_BAR_CIRCUIT = TextureArea.fullImage("textures/gui/progress_bar/progress_bar_circuit.png");
     public static final TextureArea PROGRESS_BAR_CIRCUIT_ASSEMBLER = TextureArea.fullImage("textures/gui/progress_bar/progress_bar_circuit_assembler.png");
+    public static final TextureArea PROGRESS_BAR_COKE_OVEN = TextureArea.fullImage("textures/gui/progress_bar/progress_bar_coke_oven.png");
     public static final TextureArea PROGRESS_BAR_COMPRESS = TextureArea.fullImage("textures/gui/progress_bar/progress_bar_compress.png");
     public static final TextureArea PROGRESS_BAR_CRACKING = TextureArea.fullImage("textures/gui/progress_bar/progress_bar_cracking.png");
     public static final TextureArea PROGRESS_BAR_CRYSTALLIZATION = TextureArea.fullImage("textures/gui/progress_bar/progress_bar_crystallization.png");
