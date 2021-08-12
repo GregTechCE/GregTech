@@ -10,14 +10,6 @@ public class ConfigHolder {
     @Config.Name("Unofficial Options")
     public static UnofficialOptions U = new UnofficialOptions();
 
-    @Config.Comment("Whether to enable that Steam Multiblocks use Steel instead of Bronze. Default: false")
-    @Config.RequiresMcRestart
-    public static boolean steelSteamMultiblocks = false;
-
-    @Config.Comment("Steam to EU multiplier for Steam Multiblocks. 1.0 means 1 Steam -> 1 EU. 0.5 means 2 Steam -> 1 EU")
-    @Config.RequiresMcRestart
-    public static double multiblockSteamtoEU = 0.5;
-
     @Config.Comment("Whether to enable more verbose logging. Default: false")
     public static boolean debug = false;
 
@@ -191,9 +183,17 @@ public class ConfigHolder {
         @Config.RequiresMcRestart
         public boolean registerRecipesForMiningHammers = true;
 
-        @Config.Comment("Divisor for Recipe Duration per Overclock. This will be removed eventually, once a value is chosen. Default: 2.0")
+        @Config.Comment("Divisor for Recipe Duration per Overclock. Default: 2.0")
         @Config.RangeDouble(min = 2.0, max = 3.0)
         public double overclockDivisor = 2.0;
+
+        @Config.Comment("Whether to enable that Steam Multiblocks use Steel instead of Bronze. Default: false")
+        @Config.RequiresMcRestart
+        public boolean steelSteamMultiblocks = false;
+
+        @Config.Comment("Steam to EU multiplier for Steam Multiblocks. 1.0 means 1 Steam -> 1 EU. 0.5 means 2 Steam -> 1 EU. Default: 0.5")
+        @Config.RequiresWorldRestart
+        public double multiblockSteamToEU = 0.5;
 
         public static class GT5U {
 
@@ -205,14 +205,12 @@ public class ConfigHolder {
             @Config.RequiresMcRestart
             public boolean replaceUVwithMAXBat = false;
 
-            @Config.Comment("This config requires 'B:Use custom machine tank sizes' = true to take effect. Changes the input tank size to the first value, and out tank size to the second value for nearly every single block machine. Units are millibuckets.")
-            @Config.Name("Custom machine fluid tank sizes")
+            @Config.Comment("This config requires 'B:Use custom machine tank sizes' = true to take effect. Changes the input tank size to the first value, and out tank size to the second value for nearly every single block machine. Units are millibuckets. Default: {64000, 64000}")
             @Config.RangeInt(min = 1)
             @Config.RequiresMcRestart
             public int[] customMachineTankSizes = new int[]{64000, 64000};
 
-            @Config.Comment("This config enables the customization of nearly every single block machine's input and output fluid tank sizes.")
-            @Config.Name("Use custom machine tank sizes")
+            @Config.Comment("This config enables the customization of nearly every single block machine's input and output fluid tank sizes. Default: false")
             @Config.RequiresMcRestart
             public boolean useCustomMachineTankSizes = false;
 
@@ -220,33 +218,32 @@ public class ConfigHolder {
             public boolean requireWrenchForMachines = false;
 
             @Config.Comment("Change the recipe of rods to result in 1 stick and 2 small piles of dusts. Default: false")
+            @Config.RequiresMcRestart
             public boolean harderRods = false;
 
             @Config.Comment("Whether or not to use polymers instead of rare metals for Carbon Fibers. REMOVES THE CHANCED OUTPUT! Default: false")
+            @Config.RequiresMcRestart
             public boolean polymerCarbonFiber = false;
 
             @Config.Comment("The default color to overlay onto machines. \n16777215 (0xFFFFFF in decimal) is no coloring (default), and 13819135 (0xD2DCFF in decimal) is the classic blue from GT5. THIS IS SERVER SIDE!!!")
-            @Config.Name("Default Machine Color")
             @Config.RequiresMcRestart
             public int defaultPaintingColor = 0xFFFFFF;
 
             @Config.Comment("The default color to overlay onto cable insulation. \n7829367 (0x777777 in decimal) is no coloring (default), and 4210752 (0x404040 in decimal) is the classic black from GT5. THIS IS SERVER SIDE!!!")
-            @Config.Name("Default Cable Color")
             @Config.RequiresMcRestart
             public int defaultInsulationColor = 0x777777;
 
             @Config.Comment("Enable temperature based bonuses for the Electric Blast Furnace. Default: true")
-            @Config.Name("Use electric blast furnace temperature bonuses")
             @Config.RequiresMcRestart
             public boolean ebfTemperatureBonuses = true;
 
             @Config.Comment("Enable more challenging recipes for Electric Blast Furnace Coils. Default: true")
-            @Config.Name("Enable harder heating coil recipes")
+            @Config.RequiresMcRestart
             public boolean harderHeatingCoils = true;
 
             @Config.Comment("Enable more challenging recipes for Energy Input and Output hatches. Default: false")
-            @Config.Name("Enable harder energy hatch recipes")
-            public boolean harderEnergyHatches = true;
+            @Config.RequiresMcRestart
+            public boolean harderEnergyHatches = false;
         }
 
         public static class GT6 {
