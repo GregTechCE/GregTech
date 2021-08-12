@@ -586,7 +586,8 @@ public final class MetaItems {
         event.getModelRegistry().putObject(modelResourceLocation, bakedModel);
     }
 
-    private static void addOrePrefix(OrePrefix orePrefix) {
+    @SuppressWarnings("unused")
+    public static void addOrePrefix(OrePrefix orePrefix) {
         orePrefixes.add(orePrefix);
     }
 }
