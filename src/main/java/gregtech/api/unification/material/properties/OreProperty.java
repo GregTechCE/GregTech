@@ -138,5 +138,6 @@ public class OreProperty implements IMaterialProperty<OreProperty> {
                 m.getProperties().ensureSet(PropertyKey.DUST, true);
             }
         }
+        oreByProducts.forEach(m -> m.getProperties().ensureSet(PropertyKey.DUST, true));
     }
 }
