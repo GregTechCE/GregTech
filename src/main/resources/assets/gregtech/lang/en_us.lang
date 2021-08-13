@@ -2704,6 +2704,9 @@ gregtech.machine.ore_washer.uiv.name=High-Tech Ore Washing Plant III
 gregtech.machine.ore_washer.umv.name=High-Tech Ore Washing Plant IV
 gregtech.machine.ore_washer.uxv.name=Ultimate Ore Washing Plant
 
+gregtech.machine.ore_washer.simple.name=Simple Ore Washing Plant
+gregtech.machine.ore_washer.simple.tooltip=It's like an automatic Cauldron for Washing. Grants no Byproducts, but it is fast.
+
 gregtech.machine.packer.tooltip=Puts things into Boxes
 
 gregtech.machine.packer.lv.name=Basic Packager

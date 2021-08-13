@@ -698,6 +698,11 @@ public class RecipeMaps {
             .setSlotOverlay(true, true, GuiTextures.CENTRIFUGE_OVERLAY)
             .setProgressBar(GuiTextures.PROGRESS_BAR_GAS_COLLECTOR, MoveType.HORIZONTAL);
 
+    public static final RecipeMap<SimpleRecipeBuilder> SIMPLE_WASHER_RECIPES = new RecipeMap<>("simple_washer", 1, 1, 1, 1, 1, 1, 0, 0, new SimpleRecipeBuilder(), true)
+            .setSlotOverlay(false, false, GuiTextures.CRUSHED_ORE_OVERLAY)
+            .setSlotOverlay(true, false, GuiTextures.DUST_OVERLAY)
+            .setProgressBar(GuiTextures.PROGRESS_BAR_BATH, MoveType.HORIZONTAL);
+
     @ZenProperty
     public static final FuelRecipeMap COMBUSTION_GENERATOR_FUELS = new FuelRecipeMap("combustion_generator");
 
