@@ -389,6 +389,7 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem COVER_SCREEN;
     public static MetaItem<?>.MetaValueItem COVER_CRAFTING;
     public static MetaItem<?>.MetaValueItem COVER_DRAIN;
+    public static MetaItem<?>.MetaValueItem COVER_INFINITE_WATER;
 
     public static MetaItem<?>.MetaValueItem COVER_SOLAR_PANEL;
     public static MetaItem<?>.MetaValueItem COVER_SOLAR_PANEL_ULV;

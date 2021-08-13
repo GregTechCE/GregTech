@@ -471,6 +471,14 @@ public class MachineRecipeLoader {
                 .EUt(16).duration(50)
                 .buildAndRegister();
 
+        ASSEMBLER_RECIPES.recipeBuilder()
+                .input(ELECTRIC_PUMP_HV, 2)
+                .inputs(new ItemStack(Items.CAULDRON))
+                .input(circuit, MarkerMaterials.Tier.Advanced)
+                .output(COVER_INFINITE_WATER)
+                .EUt(480).duration(200)
+                .buildAndRegister();
+
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(16).input(OrePrefix.plate, Materials.WroughtIron, 8).outputs(MetaBlocks.MACHINE_CASING.getItemVariant(MachineCasingType.ULV)).circuitMeta(8).duration(25).buildAndRegister();
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(16).input(OrePrefix.plate, Materials.Steel, 8).outputs(MetaBlocks.MACHINE_CASING.getItemVariant(MachineCasingType.LV)).circuitMeta(8).duration(50).buildAndRegister();
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(16).input(OrePrefix.plate, Materials.Aluminium, 8).outputs(MetaBlocks.MACHINE_CASING.getItemVariant(MachineCasingType.MV)).circuitMeta(8).duration(50).buildAndRegister();

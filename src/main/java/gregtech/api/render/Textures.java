@@ -143,6 +143,7 @@ public class Textures {
     public static final SimpleOverlayRenderer DETECTOR_ITEM = new SimpleOverlayRenderer("cover/overlay_item_detector");
     public static final SimpleOverlayRenderer CRAFTING = new SimpleOverlayRenderer("cover/overlay_crafting");
     public static final SimpleOverlayRenderer SOLAR_PANEL = new SimpleOverlayRenderer("cover/overlay_solar_panel");
+    public static final SimpleOverlayRenderer INFINITE_WATER = new SimpleOverlayRenderer("cover/overlay_infinite_water");
     public static final SimpleOverlayRenderer ROCK_CRUSHER_OVERLAY = new SimpleOverlayRenderer("overlay/machine/overlay_rock_crusher");
     public static final SimpleOverlayRenderer ROCK_CRUSHER_ACTIVE_OVERLAY = new SimpleOverlayRenderer("overlay/machine/overlay_rock_crusher_active");
     public static final SimpleOverlayRenderer PIPE_OUT_OVERLAY = new SimpleOverlayRenderer("overlay/machine/overlay_pipe_out");
