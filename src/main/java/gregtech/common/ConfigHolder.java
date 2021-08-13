@@ -175,6 +175,10 @@ public class ConfigHolder {
         @Config.Name("GregTech 6 Options")
         public GT6 GT6 = new GT6();
 
+        @Config.Comment("Config category for energy compatibility features")
+        @Config.Name("Energy Compatibility Options")
+        public EnergyCompatibility energyOptions = new EnergyCompatibility();
+
         @Config.Comment("Should recipes for EV and IV Drills be enabled, which may cause large amounts of lag when used on some low-end devices? Default: true")
         @Config.RequiresMcRestart
         public boolean registerRecipesForHighTierDrills = true;
@@ -255,6 +259,16 @@ public class ConfigHolder {
             @Config.Comment("Whether or not to use Plates instead of Ingots for Wrench Recipes. Default: false")
             @Config.RequiresMcRestart
             public boolean plateWrenches = false;
+        }
+
+        public static class EnergyCompatibility {
+
+            @Config.Comment("Enable Native GTEU to Forge Energy (RF and alike) on GT Cables and Wires. Default: true")
+            public boolean nativeEUToFE = true;
+
+            @Config.Comment("GTEU to Forge Energy (RF and alike) ratio. Default: 4 FE to 1 EU")
+            @Config.RangeDouble() // to ensure positive number
+            public double rfRatio = 4;
         }
     }
 }
