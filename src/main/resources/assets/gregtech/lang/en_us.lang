@@ -2980,10 +2980,13 @@ gregtech.machine.battery_buffer.max.16.name=MAX Voltage Battery Buffer
 
 # Transformers
 gregtech.machine.transformer.tooltip_tool_usage=Use Soft Hammer to invert (Starts as Transform Down)
-gregtech.machine.transformer.tooltip_transform_down=Transform Down:
+gregtech.machine.transformer.tooltip_transform_down=Transform Down: §a%dA %dV (%d)§7 -> §a%dA %dV (%d)
 gregtech.machine.transformer.message_transform_down=Transforming Down, In: %dV %dA, Out: %dV %dA
-gregtech.machine.transformer.tooltip_transform_up=Transform Up:
+gregtech.machine.transformer.tooltip_transform_up=Transform Up: §a%dA %dV (%d)§7 -> §a%dA %dV (%d)
 gregtech.machine.transformer.message_transform_up=Transforming Up, In: %dV %dA, Out: %dV %dA
+
+gregtech.machine.transformer_adjustable.tooltip_tool_usage=Use Screwdriver to cycle amperage (Starts as 4 Amps)
+gregtech.machine.transformer_adjustable.message_adjust=Adjusted Hi-Amp to %dV %dA, Lo-Amp to %dV %dA
 
 gregtech.machine.transformer.ulv.name=Ultra Low Voltage Transformer
 gregtech.machine.transformer.lv.name=Low Voltage Transformer
@@ -2999,6 +3002,21 @@ gregtech.machine.transformer.uev.name=UEV Voltage Transformer
 gregtech.machine.transformer.uiv.name=UIV Voltage Transformer
 gregtech.machine.transformer.umv.name=UMV Voltage Transformer
 gregtech.machine.transformer.uxv.name=UXV Voltage Transformer
+
+gregtech.machine.transformer.adjustable.ulv.name=Ultra Low Voltage Adjustable Transformer
+gregtech.machine.transformer.adjustable.lv.name=Low Voltage Adjustable Transformer
+gregtech.machine.transformer.adjustable.mv.name=Medium Voltage Adjustable Transformer
+gregtech.machine.transformer.adjustable.hv.name=High Voltage Adjustable Transformer
+gregtech.machine.transformer.adjustable.ev.name=Extreme Voltage Adjustable Transformer
+gregtech.machine.transformer.adjustable.iv.name=Insane Voltage Adjustable Transformer
+gregtech.machine.transformer.adjustable.luv.name=Ludicrous Voltage Adjustable Transformer
+gregtech.machine.transformer.adjustable.zpm.name=ZPM Voltage Adjustable Transformer
+gregtech.machine.transformer.adjustable.uv.name=Ultimate Voltage Adjustable Transformer
+gregtech.machine.transformer.adjustable.uhv.name=UHV Voltage Adjustable Transformer
+gregtech.machine.transformer.adjustable.uev.name=UEV Voltage Adjustable Transformer
+gregtech.machine.transformer.adjustable.uiv.name=UIV Voltage Adjustable Transformer
+gregtech.machine.transformer.adjustable.umv.name=UMV Voltage Adjustable Transformer
+gregtech.machine.transformer.adjustable.uxv.name=UXV Voltage Adjustable Transformer
 
 # Chargers
 gregtech.machine.charger.ulv.name=Ultra Low Voltage Battery Charger
@@ -3428,6 +3446,24 @@ gregtech.machine.energy_hatch.input.umv.name=UMV Energy Hatch
 gregtech.machine.energy_hatch.input.uxv.name=UXV Energy Hatch
 gregtech.machine.energy_hatch.input.max.name=MAX Energy Hatch
 
+gregtech.machine.energy_hatch.adjustable.input.tooltip=Adjustable Ampere Energy Input for Multiblocks
+
+gregtech.machine.energy_hatch.adjustable.input.ulv.name=ULV Adjustable Energy Hatch
+gregtech.machine.energy_hatch.adjustable.input.lv.name=LV Adjustable Energy Hatch
+gregtech.machine.energy_hatch.adjustable.input.mv.name=MV Adjustable Energy Hatch
+gregtech.machine.energy_hatch.adjustable.input.hv.name=HV Adjustable Energy Hatch
+gregtech.machine.energy_hatch.adjustable.input.ev.name=EV Adjustable Energy Hatch
+gregtech.machine.energy_hatch.adjustable.input.iv.name=IV Adjustable Energy Hatch
+gregtech.machine.energy_hatch.adjustable.input.luv.name=LuV Adjustable Energy Hatch
+gregtech.machine.energy_hatch.adjustable.input.zpm.name=ZPM Adjustable Energy Hatch
+gregtech.machine.energy_hatch.adjustable.input.uv.name=UV Adjustable Energy Hatch
+gregtech.machine.energy_hatch.adjustable.input.uhv.name=UHV Adjustable Energy Hatch
+gregtech.machine.energy_hatch.adjustable.input.uev.name=UEV Adjustable Energy Hatch
+gregtech.machine.energy_hatch.adjustable.input.uiv.name=UIV Adjustable Energy Hatch
+gregtech.machine.energy_hatch.adjustable.input.umv.name=UMV Adjustable Energy Hatch
+gregtech.machine.energy_hatch.adjustable.input.uxv.name=UXV Adjustable Energy Hatch
+gregtech.machine.energy_hatch.adjustable.input.max.name=MAX Adjustable Energy Hatch
+
 gregtech.machine.energy_hatch.output.tooltip=Energy Output for Multiblocks
 
 gregtech.machine.energy_hatch.output.ulv.name=ULV Dynamo Hatch
@@ -3445,6 +3481,26 @@ gregtech.machine.energy_hatch.output.uiv.name=UIV Dynamo Hatch
 gregtech.machine.energy_hatch.output.umv.name=UMV Dynamo Hatch
 gregtech.machine.energy_hatch.output.uxv.name=UXV Dynamo Hatch
 gregtech.machine.energy_hatch.output.max.name=MAX Dynamo Hatch
+
+gregtech.machine.energy_hatch.adjustable.output.tooltip=Adjustable Ampere Energy Output for Multiblocks
+
+gregtech.machine.energy_hatch.adjustable.output.ulv.name=ULV Adjustable Dynamo Hatch
+gregtech.machine.energy_hatch.adjustable.output.lv.name=LV Adjustable Dynamo Hatch
+gregtech.machine.energy_hatch.adjustable.output.mv.name=MV Adjustable Dynamo Hatch
+gregtech.machine.energy_hatch.adjustable.output.hv.name=HV Adjustable Dynamo Hatch
+gregtech.machine.energy_hatch.adjustable.output.ev.name=EV Adjustable Dynamo Hatch
+gregtech.machine.energy_hatch.adjustable.output.iv.name=IV Adjustable Dynamo Hatch
+gregtech.machine.energy_hatch.adjustable.output.luv.name=LuV Adjustable Dynamo Hatch
+gregtech.machine.energy_hatch.adjustable.output.zpm.name=ZPM Adjustable Dynamo Hatch
+gregtech.machine.energy_hatch.adjustable.output.uv.name=UV Adjustable Dynamo Hatch
+gregtech.machine.energy_hatch.adjustable.output.uhv.name=UHV Adjustable Dynamo Hatch
+gregtech.machine.energy_hatch.adjustable.output.uev.name=UEV Adjustable Dynamo Hatch
+gregtech.machine.energy_hatch.adjustable.output.uiv.name=UIV Adjustable Dynamo Hatch
+gregtech.machine.energy_hatch.adjustable.output.umv.name=UMV Adjustable Dynamo Hatch
+gregtech.machine.energy_hatch.adjustable.output.uxv.name=UXV Adjustable Dynamo Hatch
+gregtech.machine.energy_hatch.adjustable.output.max.name=MAX Adjustable Dynamo Hatch
+
+gregtech.machine.energy_hatch_adjustable.message_adjust=Adjusted Amperage to %dA
 
 gregtech.machine.rotor_holder.tooltip1=Rotor Holder for Multiblocks
 gregtech.machine.rotor_holder.tooltip2=Holds Rotor in place so it will not fly away
