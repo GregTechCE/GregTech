@@ -2984,7 +2984,6 @@ gregtech.machine.transformer.tooltip_transform_down=Transform Down: §a%dA %dV (
 gregtech.machine.transformer.message_transform_down=Transforming Down, In: %dV %dA, Out: %dV %dA
 gregtech.machine.transformer.tooltip_transform_up=Transform Up: §a%dA %dV (%d)§7 -> §a%dA %dV (%d)
 gregtech.machine.transformer.message_transform_up=Transforming Up, In: %dV %dA, Out: %dV %dA
-
 gregtech.machine.transformer_adjustable.tooltip_tool_usage=Use Screwdriver to cycle amperage (Starts as 4 Amps)
 gregtech.machine.transformer_adjustable.message_adjust=Adjusted Hi-Amp to %dV %dA, Lo-Amp to %dV %dA
 
@@ -3017,6 +3016,27 @@ gregtech.machine.transformer.adjustable.uev.name=UEV Voltage Adjustable Transfor
 gregtech.machine.transformer.adjustable.uiv.name=UIV Voltage Adjustable Transformer
 gregtech.machine.transformer.adjustable.umv.name=UMV Voltage Adjustable Transformer
 gregtech.machine.transformer.adjustable.uxv.name=UXV Voltage Adjustable Transformer
+
+# Diodes
+gregtech.machine.diode.message=Max Amperage throughput: %s
+gregtech.machine.diode.tooltip_general=A simple Diode that will allow Energy Flow in only one direction.
+gregtech.machine.diode.tooltip_tool_usage=Hit with a Soft Hammer to toggle Amperage flow.
+
+gregtech.machine.diode.ulv.name=Ultra Low Voltage Diode
+gregtech.machine.diode.lv.name=Low Voltage Diode
+gregtech.machine.diode.mv.name=Medium Voltage Diode
+gregtech.machine.diode.hv.name=High Voltage Diode
+gregtech.machine.diode.ev.name=Extreme Voltage Diode
+gregtech.machine.diode.iv.name=Insane Voltage Diode
+gregtech.machine.diode.luv.name=Ludicrous Voltage Diode
+gregtech.machine.diode.zpm.name=ZPM Voltage Diode
+gregtech.machine.diode.uv.name=Ultimate Voltage Diode
+gregtech.machine.diode.uhv.name=UHV Voltage Diode
+gregtech.machine.diode.uev.name=UEV Voltage Diode
+gregtech.machine.diode.uiv.name=UIV Voltage Diode
+gregtech.machine.diode.umv.name=UMV Voltage Diode
+gregtech.machine.diode.uxv.name=UXV Voltage Diode
+gregtech.machine.diode.max.name=MAX Voltage Diode
 
 # Chargers
 gregtech.machine.charger.ulv.name=Ultra Low Voltage Battery Charger

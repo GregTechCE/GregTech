@@ -39,6 +39,7 @@ public class MetaTileEntities {
     public static final MetaTileEntityHull[] HULL = new MetaTileEntityHull[GTValues.V.length];
     public static final MetaTileEntityTransformer[] TRANSFORMER = new MetaTileEntityTransformer[GTValues.V.length - 1]; // no ULV, no MAX
     public static final MetaTileEntityAdjustableTransformer[] ADJUSTABLE_TRANSFORMER = new MetaTileEntityAdjustableTransformer[GTValues.V.length - 1]; // no ULV, no MAX
+    public static final MetaTileEntityDiode[] DIODES = new MetaTileEntityDiode[GTValues.V.length];
     public static final MetaTileEntityBatteryBuffer[][] BATTERY_BUFFER = new MetaTileEntityBatteryBuffer[GTValues.V.length][];
     public static final MetaTileEntityCharger[] CHARGER = new MetaTileEntityCharger[GTValues.V.length];
 
@@ -433,14 +434,25 @@ public class MetaTileEntities {
         // MISC MTE's START: IDs 1285-2000
 
 
-        // Transformer, IDs 1285-1314
+        // Transformer, IDs 1270-1299
         endPos = GTValues.HT ? TRANSFORMER.length - 1 : Math.min(TRANSFORMER.length - 1, GTValues.UV);
         for (int i = 0; i <= endPos; i++) {
             MetaTileEntityTransformer transformer = new MetaTileEntityTransformer(gregtechId("transformer." + GTValues.VN[i].toLowerCase()), i);
-            TRANSFORMER[i] = GregTechAPI.registerMetaTileEntity(1285 + (i), transformer);
+            TRANSFORMER[i] = GregTechAPI.registerMetaTileEntity(1270 + (i), transformer);
             MetaTileEntityAdjustableTransformer adjustableTransformer = new MetaTileEntityAdjustableTransformer(gregtechId("transformer.adjustable." + GTValues.VN[i].toLowerCase()), i);
-            ADJUSTABLE_TRANSFORMER[i] = GregTechAPI.registerMetaTileEntity(1300 + (i), adjustableTransformer);
+            ADJUSTABLE_TRANSFORMER[i] = GregTechAPI.registerMetaTileEntity(1285 + (i), adjustableTransformer);
         }
+
+        // Diode, IDs 1300-1314
+        endPos = GTValues.HT ? DIODES.length - 1 : Math.min(DIODES.length - 1, GTValues.UV + 1);
+        for (int i = 0; i < endPos; i++) {
+            String diodeId = "diode." + GTValues.VN[i].toLowerCase();
+            MetaTileEntityDiode diode = new MetaTileEntityDiode(gregtechId(diodeId), i);
+            DIODES[i] = GregTechAPI.registerMetaTileEntity(1300 + i, diode);
+        }
+        // MAX Diode
+        MetaTileEntityDiode diode = new MetaTileEntityDiode(gregtechId("diode.max"), DIODES.length - 1);
+        DIODES[DIODES.length - 1] = GregTechAPI.registerMetaTileEntity(1300 + DIODES.length - 1, diode);
 
         // Battery Buffer, IDs 1315-1374
         endPos = GTValues.HT ? BATTERY_BUFFER.length - 1 : Math.min(BATTERY_BUFFER.length - 1, GTValues.UV + 1);
