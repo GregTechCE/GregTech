@@ -121,6 +121,7 @@ public abstract class RecipeMapSteamMultiblockController extends MultiblockWithD
         //basically check minimal requirements for inputs count
         int itemInputsCount = abilities.getOrDefault(MultiblockAbility.STEAM_IMPORT_ITEMS, Collections.emptyList())
                 .stream().map(it -> (IItemHandler) it).mapToInt(IItemHandler::getSlots).sum();
-        return itemInputsCount > 0 && abilities.containsKey(MultiblockAbility.STEAM);
+        return itemInputsCount >= recipeMap.getMinInputs() &&
+                abilities.containsKey(MultiblockAbility.STEAM);
     }
 }

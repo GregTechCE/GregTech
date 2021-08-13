@@ -53,8 +53,10 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
     public final String unlocalizedName;
 
     private final R recipeBuilderSample;
-    private final int maxInputs, maxOutputs;
-    private final int maxFluidInputs, maxFluidOutputs;
+    private final int minInputs, maxInputs;
+    private final int minOutputs, maxOutputs;
+    private final int minFluidInputs, maxFluidInputs;
+    private final int minFluidOutputs, maxFluidOutputs;
     protected final TByteObjectMap<TextureArea> slotOverlays;
     protected TextureArea specialTexture;
     protected int[] specialTexturePosition;
@@ -65,16 +67,24 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
     private final Map<FluidKey, Collection<Recipe>> recipeFluidMap = new HashMap<>();
     private final List<Recipe> recipeList = new ArrayList<>();
 
-    public RecipeMap(String unlocalizedName, int inputs, int outputs, int fluidInputs, int fluidOutputs, R defaultRecipe, boolean isHidden) {
+    public RecipeMap(String unlocalizedName,
+                     int minInputs, int maxInputs, int minOutputs, int maxOutputs,
+                     int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs,
+                     R defaultRecipe, boolean isHidden) {
         this.unlocalizedName = unlocalizedName;
         this.slotOverlays = new TByteObjectHashMap<>();
         this.progressBarTexture = GuiTextures.PROGRESS_BAR_ARROW;
         this.moveType = MoveType.HORIZONTAL;
 
-        this.maxInputs = inputs;
-        this.maxFluidInputs = fluidInputs;
-        this.maxOutputs = outputs;
-        this.maxFluidOutputs = fluidOutputs;
+        this.minInputs = minInputs;
+        this.minFluidInputs = minFluidInputs;
+        this.minOutputs = minOutputs;
+        this.minFluidOutputs = minFluidOutputs;
+
+        this.maxInputs = maxInputs;
+        this.maxFluidInputs = maxFluidInputs;
+        this.maxOutputs = maxOutputs;
+        this.maxFluidOutputs = maxFluidOutputs;
 
         this.isHidden = isHidden;
         defaultRecipe.setRecipeMap(this);
@@ -182,36 +192,23 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
     protected ValidationResult<Recipe> postValidateRecipe(ValidationResult<Recipe> validationResult) {
         EnumValidationResult recipeStatus = validationResult.getType();
         Recipe recipe = validationResult.getResult();
-        int totalInputs = recipe.getInputs().size() + recipe.getFluidInputs().size();
-        int totalOutputs = recipe.getOutputs().size() + recipe.getFluidOutputs().size() + recipe.getChancedOutputs().size();
-
-        if (totalInputs < 0) {
-            GTLog.logger.error("Invalid amount of recipe inputs. Actual: {}. Must have at least 1 input (Fluid or Item).", totalInputs);
+        if (!GTUtility.isBetweenInclusive(getMinInputs(), getMaxInputs(), recipe.getInputs().size())) {
+            GTLog.logger.error("Invalid amount of recipe inputs. Actual: {}. Should be between {} and {} inclusive.", recipe.getInputs().size(), getMinInputs(), getMaxInputs());
             GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
             recipeStatus = EnumValidationResult.INVALID;
         }
-        if (totalOutputs < 0) {
-            GTLog.logger.error("Invalid amount of recipe outputs. Actual: {}. Must have at least 1 output (Fluid or Item).", totalOutputs);
+        if (!GTUtility.isBetweenInclusive(getMinOutputs(), getMaxOutputs(), recipe.getOutputs().size() + recipe.getChancedOutputs().size())) {
+            GTLog.logger.error("Invalid amount of recipe outputs. Actual: {}. Should be between {} and {} inclusive.", recipe.getOutputs().size() + recipe.getChancedOutputs().size(), getMinOutputs(), getMaxOutputs());
             GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
             recipeStatus = EnumValidationResult.INVALID;
         }
-        if (!GTUtility.isBetweenInclusive(0, getMaxInputs(), recipe.getInputs().size())) {
-            GTLog.logger.error("Invalid amount of recipe inputs. Actual: {}. Should be less than {} inclusive.", recipe.getInputs().size(), getMaxInputs());
+        if (!GTUtility.isBetweenInclusive(getMinFluidInputs(), getMaxFluidInputs(), recipe.getFluidInputs().size())) {
+            GTLog.logger.error("Invalid amount of recipe fluid inputs. Actual: {}. Should be between {} and {} inclusive.", recipe.getFluidInputs().size(), getMinFluidInputs(), getMaxFluidInputs());
             GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
             recipeStatus = EnumValidationResult.INVALID;
         }
-        if (!GTUtility.isBetweenInclusive(0, getMaxOutputs(), recipe.getOutputs().size() + recipe.getChancedOutputs().size())) {
-            GTLog.logger.error("Invalid amount of recipe outputs. Actual: {}. Should be less than {} inclusive.", recipe.getOutputs().size() + recipe.getChancedOutputs().size(), getMaxOutputs());
-            GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
-            recipeStatus = EnumValidationResult.INVALID;
-        }
-        if (!GTUtility.isBetweenInclusive(0, getMaxFluidInputs(), recipe.getFluidInputs().size())) {
-            GTLog.logger.error("Invalid amount of recipe fluid inputs. Actual: {}. Should be less than {} inclusive.", recipe.getFluidInputs().size(), getMaxFluidInputs());
-            GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
-            recipeStatus = EnumValidationResult.INVALID;
-        }
-        if (!GTUtility.isBetweenInclusive(0, getMaxFluidOutputs(), recipe.getFluidOutputs().size())) {
-            GTLog.logger.error("Invalid amount of recipe fluid outputs. Actual: {}. Should be less than {} inclusive.", recipe.getFluidOutputs().size(), getMaxFluidOutputs());
+        if (!GTUtility.isBetweenInclusive(getMinFluidOutputs(), getMaxFluidOutputs(), recipe.getFluidOutputs().size())) {
+            GTLog.logger.error("Invalid amount of recipe fluid outputs. Actual: {}. Should be between {} and {} inclusive.", recipe.getFluidOutputs().size(), getMinFluidOutputs(), getMaxFluidOutputs());
             GTLog.logger.error("Stacktrace:", new IllegalArgumentException());
             recipeStatus = EnumValidationResult.INVALID;
         }
@@ -237,10 +234,10 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
     public Recipe findRecipe(long voltage, List<ItemStack> inputs, List<FluidStack> fluidInputs, int outputFluidTankCapacity, MatchingMode matchingMode) {
         if (recipeList.isEmpty())
             return null;
-        if (GTUtility.amountOfNonNullElements(fluidInputs) < 1) {
+        if (minFluidInputs > 0 && GTUtility.amountOfNonNullElements(fluidInputs) < minFluidInputs) {
             return null;
         }
-        if (GTUtility.amountOfNonEmptyStacks(inputs) < 1) {
+        if (minInputs > 0 && GTUtility.amountOfNonEmptyStacks(inputs) < minInputs) {
             return null;
         }
         if (maxInputs > 0) {
@@ -448,9 +445,19 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
         return new CTRecipeBuilder(recipeBuilder());
     }
 
+    @ZenGetter("minInputs")
+    public int getMinInputs() {
+        return minInputs;
+    }
+
     @ZenGetter("maxInputs")
     public int getMaxInputs() {
         return maxInputs;
+    }
+
+    @ZenGetter("minOutputs")
+    public int getMinOutputs() {
+        return minOutputs;
     }
 
     @ZenGetter("maxOutputs")
@@ -458,9 +465,19 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
         return maxOutputs;
     }
 
+    @ZenGetter("minFluidInputs")
+    public int getMinFluidInputs() {
+        return minFluidInputs;
+    }
+
     @ZenGetter("maxFluidInputs")
     public int getMaxFluidInputs() {
         return maxFluidInputs;
+    }
+
+    @ZenGetter("minFluidOutputs")
+    public int getMinFluidOutputs() {
+        return minFluidOutputs;
     }
 
     @ZenGetter("maxFluidOutputs")
