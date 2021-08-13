@@ -49,8 +49,8 @@ public class CoverInfiniteWater extends CoverBehavior implements ITickable {
                     .filter(tank -> Optional.ofNullable(tank.getContents())
                             .orElse(Lava.getFluid(1)).isFluidEqual(Water.getFluid(1)) && tank.getCapacity() > 64000)
                     .findFirst()
-                    .ifPresent($ -> fluidHandler.fill(Water.getFluid(64000), true));
-            int amount = fluidStack != null ? Math.max(64000 - fluidStack.amount, 0) : 64000;
+                    .ifPresent($ -> fluidHandler.fill(Water.getFluid(16000), true));
+            int amount = fluidStack != null ? Math.max(16000 - fluidStack.amount, 0) : 16000;
             fluidHandler.fill(Water.getFluid(amount), true);
         }
     }

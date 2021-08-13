@@ -729,7 +729,7 @@ metaitem.cover.solar.panel.lv.name=Solar Panel (LV)
 metaitem.cover.solar.panel.lv.tooltip=Low Voltage Solar Panel
 
 metaitem.cover.infinite_water.name=Infinite Water Cover
-metaitem.cover.infinite_water.tooltip=Creates 64 Buckets of Water every second (as Cover)
+metaitem.cover.infinite_water.tooltip=Creates 16 Buckets of Water every second (as Cover)
 
 metaitem.gelled_toluene.name=Gelled Toluene
 metaitem.gelled_toluene.tooltip=Raw Explosive
