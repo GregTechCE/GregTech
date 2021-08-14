@@ -15,7 +15,7 @@
 - Pipes and Cables now have the "Machine Grid" when holding a tool or Cover
 - Cables now require Wire Cutters to connect and disconnect
 - Machines can require a Wrench to break with a config option (default false)
-- Programmed Circuit texture taken from GTNH (credit to the NH team)
+- New Programmed Circuit texture (credit IMPACT)
 - Added Huge Pipes
 - Frame texture reworked, Colored Frames removed to reduce clutter
 - TheOneProbe now displays if a multiblock is formed or not
@@ -32,7 +32,7 @@
 - Shadows of Greg Bundler recipes added to Packer and Unpacker
 - New tiers of Cells to hold much larger quantities of fluids
 - EBF now has coil bonuses:
-    - Every 900K above the recipe temperature applies a multiplicative 95% energy discount
+    - Every 900K above the recipe temperature applies a multiplicative 5% energy discount
     - Every 1800K above the recipe temperature applies a "perfect overclock" (/4 duration instead of /2)
     - Every voltage tier above MV increases the total temperature by 100K
 - Transformers now have the "lower voltage side" on 5 sides, with higher voltage on one side
