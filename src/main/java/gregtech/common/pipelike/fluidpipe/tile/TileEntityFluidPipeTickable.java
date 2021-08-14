@@ -1,21 +1,107 @@
 package gregtech.common.pipelike.fluidpipe.tile;
 
-import gregtech.api.pipenet.tile.IPipeTile;
-import gregtech.api.unification.material.properties.FluidPipeProperties;
-import gregtech.api.util.GTFluidUtils;
-import gregtech.common.pipelike.fluidpipe.BlockFluidPipe;
-import gregtech.common.pipelike.fluidpipe.FluidPipeType;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.math.BlockPos.PooledMutableBlockPos;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.FluidStack;
+
+import java.util.Arrays;
 
 public class TileEntityFluidPipeTickable extends TileEntityFluidPipe implements ITickable {
 
     private boolean isActive;
+    private int transferredFluids = 0;
+    private FluidStack[] fluids;
+    private int[] emptyTimer;
+    private int currentChannel;
+
+    public TileEntityFluidPipeTickable() {
+        this.currentChannel = -1;
+    }
+
+    @Override
+    public void update() {
+        getCoverableImplementation().update();
+        transferredFluids = 0;
+        for (int i = 0; i < getContainedFluids().length; i++) {
+            if (emptyTimer[i] > 0 && --emptyTimer[i] == 0)
+                emptyTank(i);
+        }
+    }
+
+    public int getCurrentChannel() {
+        return currentChannel;
+    }
+
+    public void transferFluid(int amount) {
+        transferredFluids += amount;
+    }
+
+    public int getTransferredFluids() {
+        return transferredFluids;
+    }
+
+    public FluidStack getContainedFluid(int channel) {
+        if (channel < 0) return null;
+        return getContainedFluids()[channel];
+    }
+
+    public FluidStack[] getContainedFluids() {
+        if (fluids == null) {
+            int tanks = getNodeData().tanks;
+            this.fluids = new FluidStack[tanks];
+            this.emptyTimer = new int[tanks];
+            Arrays.fill(emptyTimer, 0);
+        }
+        return fluids;
+    }
+
+    public void setContainingFluid(FluidStack stack, int channel) {
+        if (channel < 0) return;
+        this.getContainedFluids()[channel] = stack;
+        this.emptyTimer[channel] = 20;
+        this.currentChannel = -1;
+    }
+
+    private void emptyTank(int channel) {
+        if (channel < 0) return;
+        this.getContainedFluids()[channel] = null;
+    }
+
+    public boolean areTanksEmpty() {
+        for (FluidStack fluidStack : getContainedFluids())
+            if (fluidStack != null)
+                return false;
+        return true;
+    }
+
+    public boolean findAndSetChannel(FluidStack stack) {
+        int c = findChannel(stack);
+        this.currentChannel = c;
+        return c >= 0 && c < fluids.length;
+    }
+
+    /**
+     * Finds a channel for the given fluid
+     *
+     * @param stack to find a channel fot
+     * @return channel
+     */
+    public int findChannel(FluidStack stack) {
+        if (getContainedFluids().length == 1) {
+            FluidStack channelStack = fluids[0];
+            return (channelStack == null || channelStack.amount <= 0 || channelStack.isFluidEqual(stack)) ? 0 : -1;
+        }
+        int emptyTank = -1;
+        for (int i = fluids.length - 1; i >= 0; i--) {
+            FluidStack channelStack = fluids[i];
+            if (channelStack == null || channelStack.amount <= 0)
+                emptyTank = i;
+            else if (channelStack.isFluidEqual(stack))
+                return i;
+        }
+        return emptyTank;
+    }
 
     public boolean isActive() {
         return isActive;
@@ -26,53 +112,41 @@ public class TileEntityFluidPipeTickable extends TileEntityFluidPipe implements 
     }
 
     @Override
-    public void update() {
-        getCoverableImplementation().update();
-        if (isActive) {
-            pushFluidsFromTank(this);
-        }
-    }
-
-    @Override
     public boolean supportsTicking() {
         return true;
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-        super.writeToNBT(compound);
-        compound.setBoolean("ActiveNode", isActive);
-        return compound;
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+        super.writeToNBT(nbt);
+        nbt.setBoolean("ActiveNode", isActive);
+        NBTTagList list = new NBTTagList();
+        for (int i = 0; i < getContainedFluids().length; i++) {
+            FluidStack stack1 = fluids[i];
+            NBTTagCompound fluidTag = new NBTTagCompound();
+            fluidTag.setInteger("Timer", emptyTimer[i]);
+            if (stack1 == null)
+                fluidTag.setBoolean("isNull", true);
+            else
+                stack1.writeToNBT(fluidTag);
+            list.appendTag(fluidTag);
+        }
+        nbt.setTag("Fluids", list);
+        return nbt;
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound compound) {
-        super.readFromNBT(compound);
-        this.isActive = compound.getBoolean("ActiveNode");
-    }
-
-    public static void pushFluidsFromTank(IPipeTile<FluidPipeType, FluidPipeProperties> pipeTile) {
-        PooledMutableBlockPos blockPos = PooledMutableBlockPos.retain();
-        BlockFluidPipe blockFluidPipe = (BlockFluidPipe) pipeTile.getPipeBlock();
-        for (EnumFacing side : EnumFacing.VALUES) {
-            if (!pipeTile.isConnectionOpenVisual(side)) {
-                continue; //do not dispatch energy to blocked sides
-            }
-            blockPos.setPos(pipeTile.getPipePos()).move(side);
-            if (!pipeTile.getPipeWorld().isBlockLoaded(blockPos)) {
-                continue; //do not allow cables to load chunks
-            }
-            TileEntity tileEntity = pipeTile.getPipeWorld().getTileEntity(blockPos);
-            if (tileEntity == null) {
-                continue; //do not emit into multiparts or other fluid pipes
-            }
-            IFluidHandler sourceHandler = pipeTile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side);
-            IFluidHandler receiverHandler = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side.getOpposite());
-            if (sourceHandler != null && receiverHandler != null && blockFluidPipe.canPushIntoFluidHandler(pipeTile, tileEntity, sourceHandler, receiverHandler)) {
-                GTFluidUtils.transferFluids(sourceHandler, receiverHandler, Integer.MAX_VALUE);
-            }
+    public void readFromNBT(NBTTagCompound nbt) {
+        super.readFromNBT(nbt);
+        this.isActive = nbt.getBoolean("ActiveNode");
+        NBTTagList list = (NBTTagList) nbt.getTag("Fluids");
+        fluids = new FluidStack[list.tagCount()];
+        emptyTimer = new int[list.tagCount()];
+        for (int i = 0; i < list.tagCount(); i++) {
+            NBTTagCompound tag = list.getCompoundTagAt(i);
+            emptyTimer[i] = tag.getInteger("Timer");
+            if (!tag.getBoolean("isNull"))
+                fluids[i] = FluidStack.loadFluidStackFromNBT(tag);
         }
-        blockPos.release();
     }
-
 }

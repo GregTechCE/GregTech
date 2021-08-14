@@ -3,6 +3,7 @@ package gregtech.common.pipelike.cable;
 import com.google.common.base.Preconditions;
 import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.tool.ICutterItem;
+import gregtech.api.cover.CoverBehavior;
 import gregtech.api.damagesources.DamageSources;
 import gregtech.api.pipenet.block.material.BlockMaterialPipe;
 import gregtech.api.pipenet.tile.AttachmentType;
@@ -112,7 +113,7 @@ public class BlockCable extends BlockMaterialPipe<Insulation, WireProperties, Wo
 
     @Override
     public boolean canPipesConnect(IPipeTile<Insulation, WireProperties> selfTile, EnumFacing side, IPipeTile<Insulation, WireProperties> sideTile) {
-        return true;
+        return selfTile instanceof TileEntityCable && sideTile instanceof TileEntityCable;
     }
 
     @Override
@@ -136,6 +137,26 @@ public class BlockCable extends BlockMaterialPipe<Insulation, WireProperties, Wo
                 }
             }
         }
+    }
+
+    @Override
+    public int getVisualConnections(IPipeTile<Insulation, WireProperties> selfTile) {
+        int connections = selfTile.getOpenConnections();
+        float selfTHICCness = selfTile.getPipeType().getThickness();
+        for (EnumFacing facing : EnumFacing.values()) {
+            CoverBehavior cover = selfTile.getCoverableImplementation().getCoverAtSide(facing);
+            if (cover != null) {
+                // adds side to open connections of it isn't already open & has a cover
+                connections |= 1 << facing.getIndex();
+                continue;
+            }
+            // check if neighbour is a smaller cable
+            TileEntity neighbourTile = selfTile.getPipeWorld().getTileEntity(selfTile.getPipePos().offset(facing));
+            if (neighbourTile instanceof TileEntityCable && ((TileEntityCable) neighbourTile).getPipeType().getThickness() < selfTHICCness) {
+                connections |= 1 << (facing.getIndex() + 6);
+            }
+        }
+        return connections;
     }
 
     @Nonnull

@@ -96,10 +96,9 @@ public class MetaTileEntityQuantumTank extends MetaTileEntity implements ITiered
         if (!getWorld().isRemote) {
             fillContainerFromInternalTank(containerInventory, containerInventory, 0, 1);
             fillInternalTankFromFluidContainer(containerInventory, containerInventory, 0, 1);
-
-        }
-        if (isAutoOutputFluids()) {
-            pushFluidsIntoNearbyHandlers(currentOutputFacing);
+            if (isAutoOutputFluids()) {
+                pushFluidsIntoNearbyHandlers(currentOutputFacing);
+            }
         }
     }
 
