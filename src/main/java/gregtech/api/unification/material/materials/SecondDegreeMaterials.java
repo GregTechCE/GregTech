@@ -87,14 +87,14 @@ public class SecondDegreeMaterials {
         Apatite = new Material.Builder(2010, "apatite")
                 .gem(1).ore(4, 2)
                 .color(0xC8C8FF).iconSet(DIAMOND)
-                .flags(NO_SMASHING, NO_SMELTING, CRYSTALLIZABLE)
+                .flags(NO_SMASHING, NO_SMELTING, CRYSTALLIZABLE, GENERATE_BOLT_SCREW)
                 .components(Calcium, 5, Phosphate, 3, Chlorine, 1)
                 .build();
 
         BlackSteel = new Material.Builder(2011, "black_steel")
                 .ingot().fluid()
                 .color(0x646464).iconSet(METALLIC)
-                .flags(EXT_METAL, GENERATE_FINE_WIRE)
+                .flags(EXT_METAL, GENERATE_FINE_WIRE, GENERATE_GEAR)
                 .components(Nickel, 1, BlackBronze, 1, Steel, 3)
                 .toolStats(6.5f, 6.5f, 768, 21)
                 .cableProperties(GTValues.V[4], 3, 2)
@@ -296,7 +296,7 @@ public class SecondDegreeMaterials {
         BorosilicateGlass = new Material.Builder(2038, "borosilicate_glass")
                 .ingot(1).fluid()
                 .color(0xE6F3E6).iconSet(SHINY)
-                .flags(GENERATE_FINE_WIRE)
+                .flags(GENERATE_FINE_WIRE, GENERATE_PLATE)
                 .components(Boron, 1, SiliconDioxide, 7)
                 .build();
 

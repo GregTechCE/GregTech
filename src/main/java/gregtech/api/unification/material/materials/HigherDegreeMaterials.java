@@ -35,7 +35,7 @@ public class HigherDegreeMaterials {
         RedSteel = new Material.Builder(2510, "red_steel")
                 .ingot().fluid()
                 .color(0x8C6464).iconSet(METALLIC)
-                .flags(EXT_METAL)
+                .flags(EXT_METAL, GENERATE_GEAR)
                 .components(SterlingSilver, 1, BismuthBronze, 1, Steel, 2, BlackSteel, 4)
                 .toolStats(7.0f, 4.5f, 896, 21)
                 .blastTemp(1300)

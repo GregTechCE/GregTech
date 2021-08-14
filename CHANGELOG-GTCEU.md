@@ -147,6 +147,8 @@
 - Alloys can no longer be handcrafted past Stainless Steel, and require an on-tier Mixer to make
 - Harder recipes for Energy Hatches (configurable, default false)
 - Config to disable in-world Concrete Powder -> Concrete conversion
+- Indium now outputs 1 Small Dust each recipe instead of 1 Tiny Dust
+- High Octane Gasoline (HOG) and Nitrobenzene were added as more power options (as well as normal Gasoline)
 
 ### Bug Fixes
 - Electric Tools now properly use power over durability
