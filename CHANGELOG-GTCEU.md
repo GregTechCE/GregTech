@@ -42,7 +42,7 @@
 - Added Super Tanks and Super Chests, starting at MV. Quantum Tanks and Chests are now later and much, much larger
 - Fluids can now be manually removed from Singleblock Generators
 - Advancements (achievements) were added all the way from Bronze to MK3 Fusion Reactor and Wetware Mainframe
-- TheOneProbe now displays recipe time in ticks, to be more accurate
+- TheOneProbe now displays recipe time in ticks when duration is short, to be more accurate
 - Progress Bars in JEI now are active (like Vanilla Furnace progress bar in JEI)
 - "Allow Input from Output Side" now defaults to True
 - Energy Output Hatches (now called Dynamo Hatches) now only output energy on one side (Energy Input unchanged)
@@ -64,15 +64,15 @@
     - Steam Oven:
         - Multiblock Furnace at Steam-Age
         - Consumes 2x the base rate of Steam, at 1.5x the base duration, but up to 8 items at a time
-- Tools can now be enchanted with Efficiency and Unbreaking
+- Tools can now be enchanted with Unbreaking, and Wrenches can have Efficiency as well
 - Item Pipes have been added
     - Much larger throughput compared to options from other Mods
     - More efficient (TPS) than EnderIO Conduits
     - Two Modes with a Conveyor or Robot Arm cover:
-        - "Priority":
+        - Priority:
             - Each Pipe has a "priority" value
             - Items will go to the lowest priority value first
-            - Restrictive Pipes can be used to drastically reduce priority
+            - Restrictive Pipes can be used to drastically increase priority value (lower priority)
         - Round Robin
             - Items will be evenly distributed to each destination
             - Unlike EnderIO, a single "group" of items extracted will be split across destinations
@@ -81,6 +81,7 @@
 - Multiblocks can now share ALL hatches (energy, item in/out, fluid in/out) excluding Rotor Holders
 - Mixer now has 2 more Item Input slots
 - Chemical Reactor now has 1 more Item Output Slot
+- Distillery now has an Item Output Slot
 - GT Wrenches will now work for: BuildCraft, EnderIO, Thermal Expansion, Applied Energistics
 - New Covers:
     - Computer Monitor: a decorative cover
@@ -109,13 +110,13 @@
 - Cable Loss reworked:
     - Lossless wires will now no longer damage you
     - Cables will always have lossy wires, unless they are "Superconductors"
-    - Superconductors are available at every tier, and are only wires to reduce clutter
+    - Superconductors are available at every tier, and are available only wires to reduce clutter
 - High-Amp Energy Hatches added (can be configured with a Screwdriver, with amperages: 2, 4, 8, 16)
 - High-Amp Transformers added (can be configured with a Screwdriver, with ranges: 1->4, 2->8, 4->16, 16->64)
 - Diodes Added, which allow energy flow in one direction and restrict amperage (can be configured with a Screwdriver, with amperages: 1, 2, 4, 8, 16)
 - GT Cables and wires can now natively power RF-consuming machines (with config, default true)
 - Simple Ore Washer added
-    - Ore Washer, but only at LV
+    - Ore Washer, but only at ULV
     - Consumes 100mB of Water per recipe
     - Is much faster than an Ore Washer, but grants no byproducts
     - Can do: crushed -> crushedPurified, impureDust -> dust, pureDust -> dust
@@ -160,9 +161,16 @@
 - Drums now properly display their Tank contents in TheOneProbe
 - Tools now properly override `getToolClasses()`, leading to better mod compatibility
 - Fix Distillation Tower not respecting the output order in some arrangements of output hatches
+- Fix GT items being improperly sorted in JEI
+- Fix recipes being improperly sorted in each category
+    - Sorted in groups of voltage-tier, with duration increasing within each tier
+- Fix recipes in JEI taking an odd number of ticks rounding up
+    - 1 tick recipes properly display as 0.05s (instead of 0.1s)
+    - Example: 19 ticks will show as 0.95s (before would have been 1s)
 
 ### CraftTweaker
-- t
+- Materials can now automatically generate IDs
+    - Be careful, as changing the order of this will cause items in-world to disappear
 
 
 ### Removals
@@ -172,6 +180,7 @@
 - Canning Machine and Fluid Canning Machine were combined (now Canning Machine)
 - Microwave, Amplifabricator, and Tesla Coil were removed
 - Dust-only Materials no longer generate blocks
+- GT Chests were removed (in favor of Crates, Super Chests, Quantum Chests)
 
 ### Misc Changes
 - Many Material colors and IconSets (their overall appearance) have been updated
