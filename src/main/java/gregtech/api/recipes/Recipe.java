@@ -343,5 +343,9 @@ public class Recipe {
         public int getBoostPerTier() {
             return boostPerTier;
         }
+
+        public ChanceEntry copy() {
+            return new ChanceEntry(itemStack, chance, boostPerTier);
+        }
     }
 }
