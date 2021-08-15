@@ -187,6 +187,7 @@ public class MetaTileEntities {
 
     public static final MetaTileEntityQuantumChest[] QUANTUM_CHEST = new MetaTileEntityQuantumChest[10];
     public static final MetaTileEntityQuantumTank[] QUANTUM_TANK = new MetaTileEntityQuantumTank[10];
+    public static final MetaTileEntityBuffer[] BUFFER = new MetaTileEntityBuffer[3];
 
     //MISC MACHINES SECTION
     public static MetaTileEntityWorkbench WORKBENCH;
@@ -534,7 +535,11 @@ public class MetaTileEntities {
         GregTechAPI.registerMetaTileEntity(1480 + ENERGY_INPUT_HATCH.length - 1, ENERGY_INPUT_HATCH[ENERGY_INPUT_HATCH.length - 1]);
         GregTechAPI.registerMetaTileEntity(1495 + ENERGY_OUTPUT_HATCH_ADJUSTABLE.length - 1, ENERGY_OUTPUT_HATCH_ADJUSTABLE[ENERGY_OUTPUT_HATCH_ADJUSTABLE.length - 1]);
 
-        // Free Range: 1510-1514
+        BUFFER[0] = GregTechAPI.registerMetaTileEntity(1510, new MetaTileEntityBuffer(gregtechId("buffer.lv"), 1));
+        BUFFER[1] = GregTechAPI.registerMetaTileEntity(1511, new MetaTileEntityBuffer(gregtechId("buffer.mv"), 2));
+        BUFFER[2] = GregTechAPI.registerMetaTileEntity(1512, new MetaTileEntityBuffer(gregtechId("buffer.hv"), 3));
+
+        // Free Range: 1513-1514
 
         // Fishers, IDs 1515-1529
         FISHER[0] = GregTechAPI.registerMetaTileEntity(1515, new MetaTileEntityFisher(gregtechId("fisher.lv"), 1));

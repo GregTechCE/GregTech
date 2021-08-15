@@ -3119,6 +3119,14 @@ gregtech.machine.quantum_tank.zpm.name=Quantum Tank III
 gregtech.machine.quantum_tank.uv.name=Quantum Tank IV
 gregtech.machine.quantum_tank.uhv.name=Quantum Tank V
 
+#Buffers
+gregtech.machine.buffer.tooltip=A Small Buffer to store Items and Fluids
+gregtech.machine.buffer.inventory=Item Capacity: %d Slots
+gregtech.machine.buffer.tanks=Fluid Capacity: %d Tanks at 64,000L each
+gregtech.machine.buffer.lv.name=Basic Buffer
+gregtech.machine.buffer.mv.name=Advanced Buffer
+gregtech.machine.buffer.hv.name=Advanced Buffer II
+
 #Hermetic Casing
 tile.hermetic_casing.hermetic_casing_lv.name=Hermetic Casing I
 tile.hermetic_casing.hermetic_casing_mv.name=Hermetic Casing II

@@ -493,6 +493,10 @@ public class MetaTileEntityLoader {
         ModHandler.addShapedRecipe("hermetic_casing_zpm", MetaBlocks.HERMETIC_CASING.getItemVariant(HERMETIC_ZPM), "PPP", "PFP", "PPP", 'P', new UnificationEntry(OrePrefix.plate, Materials.Iridium), 'F', new UnificationEntry(OrePrefix.pipeLargeFluid, Materials.NiobiumTitanium));
         ModHandler.addShapedRecipe("hermetic_casing_uv", MetaBlocks.HERMETIC_CASING.getItemVariant(HERMETIC_UV), "PPP", "PFP", "PPP", 'P', new UnificationEntry(OrePrefix.plate, Materials.Osmium), 'F', new UnificationEntry(OrePrefix.pipeLargeFluid, Materials.Naquadah));
         ModHandler.addShapedRecipe("hermetic_casing_max", MetaBlocks.HERMETIC_CASING.getItemVariant(HERMETIC_MAX), "PPP", "PFP", "PPP", 'P', new UnificationEntry(OrePrefix.plate, Materials.Neutronium), 'F', new UnificationEntry(OrePrefix.pipeLargeFluid, Materials.Ultimet));
+
+        ModHandler.addShapedRecipe("buffer_lv", MetaTileEntities.BUFFER[0].getStackForm(), "HP", "CV", 'H', MetaTileEntities.HULL[GTValues.LV].getStackForm(), 'P', MetaItems.ELECTRIC_PUMP_LV.getStackForm(), 'V', MetaItems.CONVEYOR_MODULE_LV.getStackForm(), 'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Basic));
+        ModHandler.addShapedRecipe("buffer_mv", MetaTileEntities.BUFFER[1].getStackForm(), "HP", "CV", 'H', MetaTileEntities.HULL[GTValues.MV].getStackForm(), 'P', MetaItems.ELECTRIC_PUMP_MV.getStackForm(), 'V', MetaItems.CONVEYOR_MODULE_MV.getStackForm(), 'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Basic));
+        ModHandler.addShapedRecipe("buffer_hv", MetaTileEntities.BUFFER[2].getStackForm(), "HP", "CV", 'H', MetaTileEntities.HULL[GTValues.HV].getStackForm(), 'P', MetaItems.ELECTRIC_PUMP_HV.getStackForm(), 'V', MetaItems.CONVEYOR_MODULE_HV.getStackForm(), 'C', new UnificationEntry(OrePrefix.circuit, MarkerMaterials.Tier.Basic));
     }
 
     public static <T extends MetaTileEntity & ITieredMetaTileEntity> void registerMachineRecipe(T[] metaTileEntities, Object... recipe) {
