@@ -127,6 +127,7 @@
     - Can also be set to Round Robin (with Pump cover)
 - Added Quadruple (4) and Nonuple (9) Pipes, which can move multiple fluid types through them at once
 - Distillation Tower Fluid Input Hatch can be placed on any block on the bottom layer. Energy Input Hatch can be placed on any block in the structure
+- Added Buffers, which can hold both a small amount of a few types of each Items and Fluids, meant for use in machine automation
 
 ### Major Recipe Changes
 - Many, many new recipes for Vanilla items and blocks, with various configs to toggle
