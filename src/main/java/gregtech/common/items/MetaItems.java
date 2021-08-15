@@ -131,16 +131,16 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem BATTERY_HULL_MV;
     public static MetaItem<?>.MetaValueItem BATTERY_HULL_HV;
 
-    public static MetaItem<?>.MetaValueItem BATTERY_RE_ULV_TANTALUM;
-    public static MetaItem<?>.MetaValueItem BATTERY_RE_LV_CADMIUM;
-    public static MetaItem<?>.MetaValueItem BATTERY_RE_LV_LITHIUM;
-    public static MetaItem<?>.MetaValueItem BATTERY_RE_LV_SODIUM;
-    public static MetaItem<?>.MetaValueItem BATTERY_RE_MV_CADMIUM;
-    public static MetaItem<?>.MetaValueItem BATTERY_RE_MV_LITHIUM;
-    public static MetaItem<?>.MetaValueItem BATTERY_RE_MV_SODIUM;
-    public static MetaItem<?>.MetaValueItem BATTERY_RE_HV_CADMIUM;
-    public static MetaItem<?>.MetaValueItem BATTERY_RE_HV_LITHIUM;
-    public static MetaItem<?>.MetaValueItem BATTERY_RE_HV_SODIUM;
+    public static MetaItem<?>.MetaValueItem BATTERY_ULV_TANTALUM;
+    public static MetaItem<?>.MetaValueItem BATTERY_LV_CADMIUM;
+    public static MetaItem<?>.MetaValueItem BATTERY_LV_LITHIUM;
+    public static MetaItem<?>.MetaValueItem BATTERY_LV_SODIUM;
+    public static MetaItem<?>.MetaValueItem BATTERY_MV_CADMIUM;
+    public static MetaItem<?>.MetaValueItem BATTERY_MV_LITHIUM;
+    public static MetaItem<?>.MetaValueItem BATTERY_MV_SODIUM;
+    public static MetaItem<?>.MetaValueItem BATTERY_HV_CADMIUM;
+    public static MetaItem<?>.MetaValueItem BATTERY_HV_LITHIUM;
+    public static MetaItem<?>.MetaValueItem BATTERY_HV_SODIUM;
     public static MetaItem<?>.MetaValueItem ENERGY_CRYSTAL;
     public static MetaItem<?>.MetaValueItem LAPOTRON_CRYSTAL;
 
@@ -415,7 +415,6 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem POWER_UNIT_IV;
 
     public static MetaItem<?>.MetaValueItem NANO_SABER;
-    public static MetaItem<?>.MetaValueItem ENERGY_FIELD_PROJECTOR;
     public static MetaItem<?>.MetaValueItem SCANNER;
 
     public static final MetaItem<?>.MetaValueItem[] DYE_ONLY_ITEMS = new MetaItem.MetaValueItem[EnumDyeColor.values().length];

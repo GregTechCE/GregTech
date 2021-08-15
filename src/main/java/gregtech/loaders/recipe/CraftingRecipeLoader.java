@@ -116,8 +116,6 @@ public class CraftingRecipeLoader {
         ModHandler.addShapedRecipe("component_grinder_tungsten", MetaItems.COMPONENT_GRINDER_TUNGSTEN.getStackForm(), "WSW", "SDS", "WSW", 'W', new UnificationEntry(OrePrefix.plate, Materials.Tungsten), 'S', new UnificationEntry(OrePrefix.plate, Materials.Steel), 'D', new UnificationEntry(OrePrefix.gem, Materials.Diamond));
         ModHandler.addShapedRecipe("component_sawblade_diamond", MetaItems.COMPONENT_SAW_BLADE_DIAMOND.getStackForm(), " D ", "DGD", " D ", 'D', new UnificationEntry(OrePrefix.dustSmall, Materials.Diamond), 'G', new UnificationEntry(OrePrefix.gear, Materials.CobaltBrass));
 
-        ModHandler.addShapedRecipe("energy_field_projector", MetaItems.ENERGY_FIELD_PROJECTOR.getStackForm(), "PLP", "LFL", "PLP", 'P', MetaItems.PLATE_IRIDIUM_ALLOY.getStackForm(), 'L', MetaItems.LAPOTRON_CRYSTAL.getStackForm(), 'F', MetaItems.FIELD_GENERATOR_EV);
-
         ModHandler.addShapedRecipe("ingot_iridium_alloy", MetaItems.INGOT_IRIDIUM_ALLOY.getStackForm(), "IWI", "WDW", "IWI", 'I', new UnificationEntry(OrePrefix.plate, Materials.Iridium), 'W', MetaItems.ADVANCED_ALLOY_PLATE, 'D', new ItemStack(Items.DIAMOND));
 
         ModHandler.addShapedRecipe("nano_saber", MetaItems.NANO_SABER.getStackForm(), "PIC", "PIC", "XEX", 'P', new UnificationEntry(OrePrefix.plate, Materials.Platinum), 'I', MetaItems.PLATE_IRIDIUM_ALLOY.getStackForm(), 'C', MetaItems.CARBON_PLATE.getStackForm(), 'X', new UnificationEntry(OrePrefix.circuit, Tier.Extreme), 'E', MetaItems.ENERGY_CRYSTAL.getStackForm());

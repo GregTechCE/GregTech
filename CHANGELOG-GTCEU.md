@@ -184,6 +184,9 @@
 - Microwave, Amplifabricator, and Tesla Coil were removed
 - Dust-only Materials no longer generate blocks
 - GT Chests were removed (in favor of Crates, Super Chests, Quantum Chests)
+- Single-Use Batteries were removed (Except the ZPM)
+- Energy Field Projector was removed
+- Re-breather was removed
 
 ### Misc Changes
 - Many Material colors and IconSets (their overall appearance) have been updated
