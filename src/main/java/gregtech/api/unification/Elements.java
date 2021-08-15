@@ -20,7 +20,7 @@ public class Elements {
     public static final Element D = add(1, 1, -1, "H", "Deuterium", "D", true);
     public static final Element T = add(1, 2, -1, "D", "Tritium", "T", true);
     public static final Element He = add(2, 2, -1, null, "Helium", "He", false);
-    public static final Element He3 = add(2, 1, -1, "H&D", "Helium-3", "He_3", true);
+    public static final Element He3 = add(2, 1, -1, "H&D", "Helium-3", "He-3", true);
     public static final Element Li = add(3, 4, -1, null, "Lithium", "Li", false);
     public static final Element Be = add(4, 5, -1, null, "Beryllium", "Be", false);
     public static final Element B = add(5, 5, -1, null, "Boron", "B", false);
@@ -111,12 +111,12 @@ public class Elements {
     public static final Element Th = add(90, 140, -1, null, "Thorium", "Th", false);
     public static final Element Pa = add(91, 138, -1, null, "Protactinium", "Pa", false);
     public static final Element U = add(92, 146, -1, null, "Uranium", "U", false);
-    public static final Element U238 = add(92, 146, -1, null, "Uranium-238", "U_238", false);
-    public static final Element U235 = add(92, 143, -1, null, "Uranium-235", "U_235", true);
+    public static final Element U238 = add(92, 146, -1, null, "Uranium-238", "U-238", false);
+    public static final Element U235 = add(92, 143, -1, null, "Uranium-235", "U-235", true);
     public static final Element Np = add(93, 144, -1, null, "Neptunium", "Np", false);
     public static final Element Pu = add(94, 152, -1, null, "Plutonium", "Pu", false);
-    public static final Element Pu239 = add(94, 145, -1, null, "Plutonium-239", "Pu_239", false);
-    public static final Element Pu241 = add(94, 149, -1, null, "Plutonium-241", "Pu_241", true);
+    public static final Element Pu239 = add(94, 145, -1, null, "Plutonium-239", "Pu-239", false);
+    public static final Element Pu241 = add(94, 149, -1, null, "Plutonium-241", "Pu-241", true);
     public static final Element Am = add(95, 150, -1, null, "Americium", "Am", false);
     public static final Element Cm = add(96, 153, -1, null, "Curium", "Cm", false);
     public static final Element Bk = add(97, 152, -1, null, "Berkelium", "Bk", false);
