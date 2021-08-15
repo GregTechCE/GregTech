@@ -170,6 +170,9 @@
 - Fix recipes in JEI taking an odd number of ticks rounding up
     - 1 tick recipes properly display as 0.05s (instead of 0.1s)
     - Example: 19 ticks will show as 0.95s (before would have been 1s)
+- Cables and Wires now properly respect amperage on the line
+- Machines (and other Energy-acceptors) now no longer accept their maximum amount of amps per side, instead its per container
+- Cables will no longer burn improper parts of the network, and now is only the overamped/overvolted portion
 
 ### CraftTweaker
 - Materials can now automatically generate IDs
