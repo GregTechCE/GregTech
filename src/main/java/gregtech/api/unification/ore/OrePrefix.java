@@ -8,10 +8,9 @@ import gregtech.api.unification.material.info.MaterialIconType;
 import gregtech.api.unification.material.properties.IMaterialProperty;
 import gregtech.api.unification.material.properties.PropertyKey;
 import gregtech.api.unification.stack.MaterialStack;
+import gregtech.api.util.LocalizationUtils;
 import gregtech.api.util.function.TriConsumer;
 import net.minecraft.client.resources.I18n;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.Validate;
 
 import javax.annotation.Nullable;
@@ -546,13 +545,13 @@ public class OrePrefix {
         currentProcessingPrefix.set(null);
     }
 
-    @SideOnly(Side.CLIENT) // todo clean this up
+    // todo clean this up
     public String getLocalNameForItem(Material material) {
         String specifiedUnlocalized = "item." + material.toString() + "." + this.name;
-        if (I18n.hasKey(specifiedUnlocalized)) return I18n.format(specifiedUnlocalized);
+        if (LocalizationUtils.hasKey(specifiedUnlocalized)) return I18n.format(specifiedUnlocalized);
         String unlocalized = "item.material.oreprefix." + this.name;
         String matLocalized = material.getLocalizedName();
-        String formatted = I18n.format(unlocalized, matLocalized);
+        String formatted = LocalizationUtils.format(unlocalized, matLocalized);
         return formatted.equals(unlocalized) ? matLocalized : formatted;
     }
 

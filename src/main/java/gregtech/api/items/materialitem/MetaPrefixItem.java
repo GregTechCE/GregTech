@@ -97,7 +97,6 @@ public class MetaPrefixItem extends StandardMetaItem {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public String getItemStackDisplayName(ItemStack itemStack) {
         Material material = MaterialRegistry.MATERIAL_REGISTRY.getObjectById(itemStack.getItemDamage());
         if (material == null || prefix == null) return "";

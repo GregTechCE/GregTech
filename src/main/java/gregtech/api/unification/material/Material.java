@@ -10,13 +10,11 @@ import gregtech.api.unification.material.info.MaterialFlags;
 import gregtech.api.unification.material.info.MaterialIconSet;
 import gregtech.api.unification.material.properties.*;
 import gregtech.api.unification.stack.MaterialStack;
+import gregtech.api.util.LocalizationUtils;
 import gregtech.api.util.SmallDigits;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import stanhebben.zenscript.annotations.OperatorType;
 import stanhebben.zenscript.annotations.ZenOperator;
 
@@ -301,10 +299,9 @@ public class Material implements Comparable<Material> {
         return "material." + materialInfo.name;
     }
 
-    @SideOnly(Side.CLIENT)
     //@ZenGetter("localizedName")
     public String getLocalizedName() {
-        return I18n.format(getUnlocalizedName());
+        return LocalizationUtils.format(getUnlocalizedName());
     }
 
     @Override

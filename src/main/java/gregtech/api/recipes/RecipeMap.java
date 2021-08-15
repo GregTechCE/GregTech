@@ -22,17 +22,11 @@ import gregtech.api.recipes.crafttweaker.CTRecipe;
 import gregtech.api.recipes.crafttweaker.CTRecipeBuilder;
 import gregtech.api.unification.material.Material;
 import gregtech.api.unification.ore.OrePrefix;
-import gregtech.api.util.EnumValidationResult;
-import gregtech.api.util.GTLog;
-import gregtech.api.util.GTUtility;
-import gregtech.api.util.ValidationResult;
-import net.minecraft.client.resources.I18n;
+import gregtech.api.util.*;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Optional.Method;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.*;
@@ -424,10 +418,9 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
                 .collect(Collectors.toList());
     }
 
-    @SideOnly(Side.CLIENT)
     @ZenGetter("localizedName")
     public String getLocalizedName() {
-        return I18n.format("recipemap." + unlocalizedName + ".name");
+        return LocalizationUtils.format("recipemap." + unlocalizedName + ".name");
     }
 
     @ZenGetter("unlocalizedName")

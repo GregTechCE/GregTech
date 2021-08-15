@@ -25,6 +25,7 @@ import gregtech.api.unification.material.properties.PropertyKey;
 import gregtech.api.unification.material.properties.ToolProperty;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.LocalizationUtils;
 import gregtech.common.ConfigHolder;
 import gregtech.common.tools.DamageValues;
 import gregtech.common.tools.ToolWrench;
@@ -422,7 +423,6 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public String getItemStackDisplayName(ItemStack stack) {
         if (stack.getItemDamage() >= metaItemOffset) {
             T item = getItem(stack);
@@ -431,7 +431,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             }
             Material primaryMaterial = getToolMaterial(stack);
             String materialName = primaryMaterial == null ? "" : String.valueOf(primaryMaterial.getLocalizedName());
-            return I18n.format("metaitem." + item.unlocalizedName + ".name", materialName);
+            return LocalizationUtils.format("metaitem." + item.unlocalizedName + ".name", materialName);
         }
         return super.getItemStackDisplayName(stack);
     }
