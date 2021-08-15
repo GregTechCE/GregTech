@@ -34,83 +34,83 @@ public class MetaItem1 extends StandardMetaItem {
     @Override
     public void registerSubItems() {
         // Credits: ID 0-10
-        CREDIT_COPPER = addItem(0, "credit.copper");
-        CREDIT_CUPRONICKEL = addItem(1, "credit.cupronickel").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Cupronickel, 907200L)));
-        CREDIT_SILVER = addItem(2, "credit.silver");
-        CREDIT_GOLD = addItem(3, "credit.gold");
-        CREDIT_PLATINUM = addItem(4, "credit.platinum");
-        CREDIT_OSMIUM = addItem(5, "credit.osmium");
-        CREDIT_NAQUADAH = addItem(6, "credit.naquadah");
-        CREDIT_NEUTRONIUM = addItem(7, "credit.neutronium");
+        CREDIT_COPPER = addItem(0, "credit.copper").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Copper, GTValues.M / 4)));
+        CREDIT_CUPRONICKEL = addItem(1, "credit.cupronickel").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Cupronickel, GTValues.M / 4)));
+        CREDIT_SILVER = addItem(2, "credit.silver").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Silver, GTValues.M / 4)));
+        CREDIT_GOLD = addItem(3, "credit.gold").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Gold, GTValues.M / 4)));
+        CREDIT_PLATINUM = addItem(4, "credit.platinum").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Platinum, GTValues.M / 4)));
+        CREDIT_OSMIUM = addItem(5, "credit.osmium").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Osmium, GTValues.M / 4)));
+        CREDIT_NAQUADAH = addItem(6, "credit.naquadah").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Naquadah, GTValues.M / 4)));
+        CREDIT_NEUTRONIUM = addItem(7, "credit.neutronium").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Neutronium, GTValues.M / 4)));
 
         COIN_GOLD_ANCIENT = addItem(8, "coin.gold.ancient").
-                setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Gold, 907200L)));
+                setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Gold, GTValues.M / 4)));
         COIN_DOGE = addItem(9, "coin.doge")
-                .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Brass, 907200L)));
+                .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Brass, GTValues.M / 4)));
         COIN_CHOCOLATE = addItem(10, "coin.chocolate")
-                .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Gold, OrePrefix.foil.materialAmount)))
+                .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Gold, GTValues.M / 4)))
                 .addComponents(new FoodStats(1, 0.1F, false, true, OreDictUnifier.get(OrePrefix.foil, Materials.Gold), new RandomPotionEffect(MobEffects.SPEED, 200, 1, 10)));
 
         // Solidifier Shapes: ID 11-30
-        SHAPE_EMPTY = addItem(11, "shape.empty");
+        SHAPE_EMPTY = addItem(11, "shape.empty").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 4)));
 
-        SHAPE_MOLDS[0] = SHAPE_MOLD_PLATE = addItem(12, "shape.mold.plate");
-        SHAPE_MOLDS[1] = SHAPE_MOLD_GEAR = addItem(13, "shape.mold.gear");
-        SHAPE_MOLDS[2] = SHAPE_MOLD_CREDIT = addItem(14, "shape.mold.credit");
-        SHAPE_MOLDS[3] = SHAPE_MOLD_BOTTLE = addItem(15, "shape.mold.bottle");
-        SHAPE_MOLDS[4] = SHAPE_MOLD_INGOT = addItem(16, "shape.mold.ingot");
-        SHAPE_MOLDS[5] = SHAPE_MOLD_BALL = addItem(17, "shape.mold.ball");
-        SHAPE_MOLDS[6] = SHAPE_MOLD_BLOCK = addItem(18, "shape.mold.block");
-        SHAPE_MOLDS[7] = SHAPE_MOLD_NUGGET = addItem(19, "shape.mold.nugget");
-        SHAPE_MOLDS[8] = SHAPE_MOLD_CYLINDER = addItem(20, "shape.mold.cylinder");
-        SHAPE_MOLDS[9] = SHAPE_MOLD_ANVIL = addItem(21, "shape.mold.anvil");
-        SHAPE_MOLDS[10] = SHAPE_MOLD_NAME = addItem(22, "shape.mold.name");
-        SHAPE_MOLDS[11] = SHAPE_MOLD_GEAR_SMALL = addItem(23, "shape.mold.gear.small");
-        SHAPE_MOLDS[12] = SHAPE_MOLD_ROTOR = addItem(24, "shape.mold.rotor");
+        SHAPE_MOLDS[0] = SHAPE_MOLD_PLATE = addItem(12, "shape.mold.plate").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 4)));
+        SHAPE_MOLDS[1] = SHAPE_MOLD_GEAR = addItem(13, "shape.mold.gear").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 4)));
+        SHAPE_MOLDS[2] = SHAPE_MOLD_CREDIT = addItem(14, "shape.mold.credit").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 4)));
+        SHAPE_MOLDS[3] = SHAPE_MOLD_BOTTLE = addItem(15, "shape.mold.bottle").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 4)));
+        SHAPE_MOLDS[4] = SHAPE_MOLD_INGOT = addItem(16, "shape.mold.ingot").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 4)));
+        SHAPE_MOLDS[5] = SHAPE_MOLD_BALL = addItem(17, "shape.mold.ball").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 4)));
+        SHAPE_MOLDS[6] = SHAPE_MOLD_BLOCK = addItem(18, "shape.mold.block").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 4)));
+        SHAPE_MOLDS[7] = SHAPE_MOLD_NUGGET = addItem(19, "shape.mold.nugget").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 4)));
+        SHAPE_MOLDS[8] = SHAPE_MOLD_CYLINDER = addItem(20, "shape.mold.cylinder").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 4)));
+        SHAPE_MOLDS[9] = SHAPE_MOLD_ANVIL = addItem(21, "shape.mold.anvil").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 4)));
+        SHAPE_MOLDS[10] = SHAPE_MOLD_NAME = addItem(22, "shape.mold.name").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 4)));
+        SHAPE_MOLDS[11] = SHAPE_MOLD_GEAR_SMALL = addItem(23, "shape.mold.gear.small").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 4)));
+        SHAPE_MOLDS[12] = SHAPE_MOLD_ROTOR = addItem(24, "shape.mold.rotor").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 4)));
 
         // Extruder Shapes: ID 31-60
-        SHAPE_EXTRUDERS[0] = SHAPE_EXTRUDER_PLATE = addItem(31, "shape.extruder.plate");
-        SHAPE_EXTRUDERS[1] = SHAPE_EXTRUDER_ROD = addItem(32, "shape.extruder.rod");
-        SHAPE_EXTRUDERS[2] = SHAPE_EXTRUDER_BOLT = addItem(33, "shape.extruder.bolt");
-        SHAPE_EXTRUDERS[3] = SHAPE_EXTRUDER_RING = addItem(34, "shape.extruder.ring");
-        SHAPE_EXTRUDERS[4] = SHAPE_EXTRUDER_CELL = addItem(35, "shape.extruder.cell");
-        SHAPE_EXTRUDERS[5] = SHAPE_EXTRUDER_INGOT = addItem(36, "shape.extruder.ingot");
-        SHAPE_EXTRUDERS[6] = SHAPE_EXTRUDER_WIRE = addItem(37, "shape.extruder.wire");
-        SHAPE_EXTRUDERS[7] = SHAPE_EXTRUDER_PIPE_TINY = addItem(38, "shape.extruder.pipe.tiny");
-        SHAPE_EXTRUDERS[8] = SHAPE_EXTRUDER_PIPE_SMALL = addItem(39, "shape.extruder.pipe.small");
-        SHAPE_EXTRUDERS[9] = SHAPE_EXTRUDER_PIPE_MEDIUM = addItem(40, "shape.extruder.pipe.medium");
-        SHAPE_EXTRUDERS[10] = SHAPE_EXTRUDER_PIPE_LARGE = addItem(41, "shape.extruder.pipe.large");
-        SHAPE_EXTRUDERS[11] = SHAPE_EXTRUDER_PIPE_HUGE = addItem(42, "shape.extruder.pipe.huge");
-        SHAPE_EXTRUDERS[12] = SHAPE_EXTRUDER_BLOCK = addItem(43, "shape.extruder.block");
-        SHAPE_EXTRUDERS[13] = SHAPE_EXTRUDER_SWORD = addItem(44, "shape.extruder.sword");
-        SHAPE_EXTRUDERS[14] = SHAPE_EXTRUDER_PICKAXE = addItem(45, "shape.extruder.pickaxe");
-        SHAPE_EXTRUDERS[15] = SHAPE_EXTRUDER_SHOVEL = addItem(46, "shape.extruder.shovel");
-        SHAPE_EXTRUDERS[16] = SHAPE_EXTRUDER_AXE = addItem(47, "shape.extruder.axe");
-        SHAPE_EXTRUDERS[17] = SHAPE_EXTRUDER_HOE = addItem(48, "shape.extruder.hoe");
-        SHAPE_EXTRUDERS[18] = SHAPE_EXTRUDER_HAMMER = addItem(49, "shape.extruder.hammer");
-        SHAPE_EXTRUDERS[19] = SHAPE_EXTRUDER_FILE = addItem(50, "shape.extruder.file");
-        SHAPE_EXTRUDERS[20] = SHAPE_EXTRUDER_SAW = addItem(51, "shape.extruder.saw");
-        SHAPE_EXTRUDERS[21] = SHAPE_EXTRUDER_GEAR = addItem(52, "shape.extruder.gear");
-        SHAPE_EXTRUDERS[22] = SHAPE_EXTRUDER_BOTTLE = addItem(53, "shape.extruder.bottle");
-        SHAPE_EXTRUDERS[23] = SHAPE_EXTRUDER_FOIL = addItem(54, "shape.extruder.foil");
-        SHAPE_EXTRUDERS[24] = SHAPE_EXTRUDER_GEAR_SMALL = addItem(55, "shape.extruder.gear_small");
-        SHAPE_EXTRUDERS[25] = SHAPE_EXTRUDER_ROD_LONG = addItem(56, "shape.extruder.rod_long");
+        SHAPE_EXTRUDERS[0] = SHAPE_EXTRUDER_PLATE = addItem(31, "shape.extruder.plate").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 4)));
+        SHAPE_EXTRUDERS[1] = SHAPE_EXTRUDER_ROD = addItem(32, "shape.extruder.rod").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 4)));
+        SHAPE_EXTRUDERS[2] = SHAPE_EXTRUDER_BOLT = addItem(33, "shape.extruder.bolt").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 4)));
+        SHAPE_EXTRUDERS[3] = SHAPE_EXTRUDER_RING = addItem(34, "shape.extruder.ring").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 4)));
+        SHAPE_EXTRUDERS[4] = SHAPE_EXTRUDER_CELL = addItem(35, "shape.extruder.cell").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 4)));
+        SHAPE_EXTRUDERS[5] = SHAPE_EXTRUDER_INGOT = addItem(36, "shape.extruder.ingot").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 4)));
+        SHAPE_EXTRUDERS[6] = SHAPE_EXTRUDER_WIRE = addItem(37, "shape.extruder.wire").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 4)));
+        SHAPE_EXTRUDERS[7] = SHAPE_EXTRUDER_PIPE_TINY = addItem(38, "shape.extruder.pipe.tiny").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 4)));
+        SHAPE_EXTRUDERS[8] = SHAPE_EXTRUDER_PIPE_SMALL = addItem(39, "shape.extruder.pipe.small").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 4)));
+        SHAPE_EXTRUDERS[9] = SHAPE_EXTRUDER_PIPE_MEDIUM = addItem(40, "shape.extruder.pipe.medium").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 4)));
+        SHAPE_EXTRUDERS[10] = SHAPE_EXTRUDER_PIPE_LARGE = addItem(41, "shape.extruder.pipe.large").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 4)));
+        SHAPE_EXTRUDERS[11] = SHAPE_EXTRUDER_PIPE_HUGE = addItem(42, "shape.extruder.pipe.huge").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 4)));
+        SHAPE_EXTRUDERS[12] = SHAPE_EXTRUDER_BLOCK = addItem(43, "shape.extruder.block").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 4)));
+        SHAPE_EXTRUDERS[13] = SHAPE_EXTRUDER_SWORD = addItem(44, "shape.extruder.sword").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 4)));
+        SHAPE_EXTRUDERS[14] = SHAPE_EXTRUDER_PICKAXE = addItem(45, "shape.extruder.pickaxe").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 4)));
+        SHAPE_EXTRUDERS[15] = SHAPE_EXTRUDER_SHOVEL = addItem(46, "shape.extruder.shovel").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 4)));
+        SHAPE_EXTRUDERS[16] = SHAPE_EXTRUDER_AXE = addItem(47, "shape.extruder.axe").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 4)));
+        SHAPE_EXTRUDERS[17] = SHAPE_EXTRUDER_HOE = addItem(48, "shape.extruder.hoe").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 4)));
+        SHAPE_EXTRUDERS[18] = SHAPE_EXTRUDER_HAMMER = addItem(49, "shape.extruder.hammer").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 4)));
+        SHAPE_EXTRUDERS[19] = SHAPE_EXTRUDER_FILE = addItem(50, "shape.extruder.file").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 4)));
+        SHAPE_EXTRUDERS[20] = SHAPE_EXTRUDER_SAW = addItem(51, "shape.extruder.saw").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 4)));
+        SHAPE_EXTRUDERS[21] = SHAPE_EXTRUDER_GEAR = addItem(52, "shape.extruder.gear").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 4)));
+        SHAPE_EXTRUDERS[22] = SHAPE_EXTRUDER_BOTTLE = addItem(53, "shape.extruder.bottle").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 4)));
+        SHAPE_EXTRUDERS[23] = SHAPE_EXTRUDER_FOIL = addItem(54, "shape.extruder.foil").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 4)));
+        SHAPE_EXTRUDERS[24] = SHAPE_EXTRUDER_GEAR_SMALL = addItem(55, "shape.extruder.gear_small").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 4)));
+        SHAPE_EXTRUDERS[25] = SHAPE_EXTRUDER_ROD_LONG = addItem(56, "shape.extruder.rod_long").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 4)));
 
         // Spray Cans: ID 61-77
         SPRAY_EMPTY = addItem(61, "spray.empty")
-                .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Tin, OrePrefix.plate.materialAmount * 2L), new MaterialStack(Materials.Redstone, OrePrefix.dust.materialAmount)));
+                .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Tin, GTValues.M * 2), new MaterialStack(Materials.Redstone, GTValues.M)));
 
         for (int i = 0; i < EnumDyeColor.values().length; i++) {
-            EnumDyeColor dyeColor = EnumDyeColor.values()[i];
-            SPRAY_CAN_DYES[i] = addItem(62 + i, "spray.can.dyes." + dyeColor.getName()).setMaxStackSize(1);
-            ColorSprayBehaviour behaviour = new ColorSprayBehaviour(SPRAY_EMPTY.getStackForm(), 512, i);
-            SPRAY_CAN_DYES[i].addComponents(behaviour);
+            SPRAY_CAN_DYES[i] = addItem(62 + i, "spray.can.dyes." + EnumDyeColor.values()[i].getName()).setMaxStackSize(1)
+                    .addComponents(new ColorSprayBehaviour(SPRAY_EMPTY.getStackForm(), 512, i));
         }
 
         // Fluid Cells: ID 78-88
-        FLUID_CELL = addItem(78, "fluid_cell").addComponents(new FluidStats(1000, Integer.MIN_VALUE, Integer.MAX_VALUE, false));
+        FLUID_CELL = addItem(78, "fluid_cell").addComponents(new FluidStats(1000, Integer.MIN_VALUE, Integer.MAX_VALUE, false))
+                .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Tin, GTValues.M * 2)));
 
-        UNIVERSAL_FLUID_CELL = addItem(79, "fluid_cell.universal").addComponents(new FluidStats(1000, Integer.MIN_VALUE, Integer.MAX_VALUE, true));
+        UNIVERSAL_FLUID_CELL = addItem(79, "fluid_cell.universal").addComponents(new FluidStats(1000, Integer.MIN_VALUE, Integer.MAX_VALUE, true))
+                .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Tin, GTValues.M * 2)));
 
         LARGE_FLUID_CELL_STEEL = addItem(80, "large_fluid_cell.steel")
                 .addComponents(new FluidStats(8000, Integer.MIN_VALUE, Integer.MAX_VALUE, true))
@@ -160,24 +160,24 @@ public class MetaItem1 extends StandardMetaItem {
         TOOL_MATCHBOX = addItem(90, "tool.matchbox")
                 .addComponents(new LighterBehaviour(16)).setMaxStackSize(1);
         TOOL_LIGHTER_INVAR = addItem(91, "tool.lighter.invar")
-                .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Invar, GTValues.L * 2)))
+                .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Invar, GTValues.M * 2)))
                 .addComponents(new LighterBehaviour(100)).setMaxStackSize(1);
         TOOL_LIGHTER_PLATINUM = addItem(92, "tool.lighter.platinum")
-                .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Platinum, GTValues.L * 2)))
+                .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Platinum, GTValues.M * 2)))
                 .addComponents(new LighterBehaviour(1000)).setMaxStackSize(1);
 
         BOTTLE_PURPLE_DRINK = addItem(93, "bottle.purple.drink").addComponents(new FoodStats(8, 0.2F, true, true, new ItemStack(Items.GLASS_BOTTLE), new RandomPotionEffect(MobEffects.HASTE, 800, 1, 90)));
 
         // Voltage Coils: ID 96-110
-        VOLTAGE_COIL_ULV = addItem(96, "voltage_coil.ulv");
-        VOLTAGE_COIL_LV = addItem(97, "voltage_coil.lv");
-        VOLTAGE_COIL_MV = addItem(98, "voltage_coil.mv");
-        VOLTAGE_COIL_HV = addItem(99, "voltage_coil.hv");
-        VOLTAGE_COIL_EV = addItem(100, "voltage_coil.ev");
-        VOLTAGE_COIL_IV = addItem(101, "voltage_coil.iv");
-        VOLTAGE_COIL_LUV = addItem(102, "voltage_coil.luv");
-        VOLTAGE_COIL_ZPM = addItem(103, "voltage_coil.zpm");
-        VOLTAGE_COIL_UV = addItem(104, "voltage_coil.uv");
+        VOLTAGE_COIL_ULV = addItem(96, "voltage_coil.ulv").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Lead, GTValues.M * 2), new MaterialStack(Materials.IronMagnetic, GTValues.M / 2)));
+        VOLTAGE_COIL_LV = addItem(97, "voltage_coil.lv").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 2), new MaterialStack(Materials.IronMagnetic, GTValues.M / 2)));
+        VOLTAGE_COIL_MV = addItem(98, "voltage_coil.mv").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Aluminium, GTValues.M * 2), new MaterialStack(Materials.SteelMagnetic, GTValues.M / 2)));
+        VOLTAGE_COIL_HV = addItem(99, "voltage_coil.hv").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.BlackSteel, GTValues.M * 2), new MaterialStack(Materials.SteelMagnetic, GTValues.M / 2)));
+        VOLTAGE_COIL_EV = addItem(100, "voltage_coil.ev").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.TungstenSteel, GTValues.M * 2), new MaterialStack(Materials.NeodymiumMagnetic, GTValues.M / 2)));
+        VOLTAGE_COIL_IV = addItem(101, "voltage_coil.iv").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Iridium, GTValues.M * 2), new MaterialStack(Materials.NeodymiumMagnetic, GTValues.M / 2)));
+        VOLTAGE_COIL_LUV = addItem(102, "voltage_coil.luv").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Osmiridium, GTValues.M * 2), new MaterialStack(Materials.SamariumMagnetic, GTValues.M / 2)));
+        VOLTAGE_COIL_ZPM = addItem(103, "voltage_coil.zpm").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Europium, GTValues.M * 2), new MaterialStack(Materials.SamariumMagnetic, GTValues.M / 2)));
+        VOLTAGE_COIL_UV = addItem(104, "voltage_coil.uv").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.FluxedElectrum, GTValues.M * 2), new MaterialStack(Materials.SamariumMagnetic, GTValues.M / 2)));
 
         // ???: ID 111-125
 
@@ -276,9 +276,12 @@ public class MetaItem1 extends StandardMetaItem {
         TOOL_DATA_ORB = addItem(262, "tool.dataorb");
 
         // Special Machine Components: ID 266-280
-        COMPONENT_SAW_BLADE_DIAMOND = addItem(266, "component.sawblade.diamond").addOreDict(OreDictNames.craftingDiamondBlade);
-        COMPONENT_GRINDER_DIAMOND = addItem(267, "component.grinder.diamond").addOreDict(OreDictNames.craftingGrinder);
-        COMPONENT_GRINDER_TUNGSTEN = addItem(268, "component.grinder.tungsten").addOreDict(OreDictNames.craftingGrinder);
+        COMPONENT_SAW_BLADE_DIAMOND = addItem(266, "component.sawblade.diamond").addOreDict(OreDictNames.craftingDiamondBlade)
+                .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Invar, GTValues.M * 4), new MaterialStack(Materials.Diamond, GTValues.M)));
+        COMPONENT_GRINDER_DIAMOND = addItem(267, "component.grinder.diamond").addOreDict(OreDictNames.craftingGrinder)
+                .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 4), new MaterialStack(Materials.Diamond, GTValues.M * 5)));
+        COMPONENT_GRINDER_TUNGSTEN = addItem(268, "component.grinder.tungsten").addOreDict(OreDictNames.craftingGrinder)
+                .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Tungsten, GTValues.M * 4), new MaterialStack(Materials.Steel, GTValues.M * 4), new MaterialStack(Materials.Diamond, GTValues.M)));
 
         // Special Eyes/Stars: ID 281-289
         QUANTUM_EYE = addItem(281, "quantumeye");
