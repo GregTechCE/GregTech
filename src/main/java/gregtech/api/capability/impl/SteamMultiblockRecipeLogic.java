@@ -2,6 +2,7 @@ package gregtech.api.capability.impl;
 
 import gregtech.api.GTValues;
 import gregtech.api.capability.IMultipleTankHandler;
+import gregtech.api.metatileentity.multiblock.RecipeMapSteamMultiblockController;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
 import net.minecraft.block.Block;
@@ -52,7 +53,7 @@ public class SteamMultiblockRecipeLogic extends AbstractRecipeLogic {
 
     protected IMultipleTankHandler getSteamFluidTank() {
         RecipeMapSteamMultiblockController controller = (RecipeMapSteamMultiblockController) metaTileEntity;
-        return controller.steamFluidTank;
+        return controller.getSteamFluidTank();
     }
 
     private void combineSteamTanks() {

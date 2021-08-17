@@ -1,6 +1,7 @@
 package gregtech.api.capability.impl;
 
 import gregtech.api.capability.IMultipleTankHandler;
+import gregtech.api.metatileentity.multiblock.RecipeMapSteamMultiblockController;
 import gregtech.api.recipes.CountableIngredient;
 import gregtech.api.recipes.MatchingMode;
 import gregtech.api.recipes.Recipe;
