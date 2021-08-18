@@ -238,12 +238,6 @@ public class OrePrefix {
 
     // Used for Gregification Addon TODO Don't do these here post De-Enum
 
-    // Ex Nihilo Compat
-    public static final OrePrefix oreChunk = new OrePrefix("oreChunk", -1, null, MaterialIconType.oreChunk, ENABLE_UNIFICATION, null);
-    public static final OrePrefix oreEnderChunk = new OrePrefix("oreEnderChunk", -1, null, MaterialIconType.oreEnderChunk, ENABLE_UNIFICATION, null);
-    public static final OrePrefix oreNetherChunk = new OrePrefix("oreNetherChunk", -1, null, MaterialIconType.oreNetherChunk, ENABLE_UNIFICATION, null);
-    public static final OrePrefix oreSandyChunk = new OrePrefix("oreSandyChunk", -1, null, MaterialIconType.oreSandyChunk, ENABLE_UNIFICATION, null);
-
     // Myst Ag Compat
     public static final OrePrefix seed = new OrePrefix("seed", -1, null, MaterialIconType.seed, ENABLE_UNIFICATION, null);
     public static final OrePrefix crop = new OrePrefix("crop", -1, null, MaterialIconType.crop, ENABLE_UNIFICATION, null);
@@ -424,6 +418,8 @@ public class OrePrefix {
     public final List<MaterialStack> secondaryMaterials = new ArrayList<>();
     public float heatDamage = 0.0F; // Negative for Frost Damage
 
+    private String alternativeOreName = null;
+
     public OrePrefix(String name, long materialAmount, @Nullable Material material, @Nullable MaterialIconType materialIconType, long flags, @Nullable Predicate<Material> condition) {
         Preconditions.checkArgument(!PREFIXES.containsKey(name), "OrePrefix " + name + " already registered!");
         this.name = name;
@@ -543,6 +539,14 @@ public class OrePrefix {
         //clear generated materials for next pass
         generatedMaterials.clear();
         currentProcessingPrefix.set(null);
+    }
+
+    public void setAlternativeOreName(String name) {
+        this.alternativeOreName = name;
+    }
+
+    public String getAlternativeOreName() {
+        return alternativeOreName;
     }
 
     // todo clean this up

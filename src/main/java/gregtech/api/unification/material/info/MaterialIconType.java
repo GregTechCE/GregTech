@@ -112,10 +112,6 @@ public class MaterialIconType {
     public static final MaterialIconType pipeNonuple = new MaterialIconType("pipeNonuple");
 
     // USED FOR GREGIFICATION ADDON
-    public static final MaterialIconType oreChunk = new MaterialIconType("oreChunk");
-    public static final MaterialIconType oreEnderChunk = new MaterialIconType("oreEnderChunk");
-    public static final MaterialIconType oreNetherChunk = new MaterialIconType("oreNetherChunk");
-    public static final MaterialIconType oreSandyChunk = new MaterialIconType("oreSandyChunk");
     public static final MaterialIconType seed = new MaterialIconType("seed");
     public static final MaterialIconType crop = new MaterialIconType("crop");
     public static final MaterialIconType essence = new MaterialIconType("essence");

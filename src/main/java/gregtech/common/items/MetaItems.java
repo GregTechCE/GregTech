@@ -511,7 +511,6 @@ public final class MetaItems {
         add(OrePrefix.wireFine);
         add(OrePrefix.rotor);
         add(OrePrefix.lens);
-        add(OrePrefix.oreChunk);
         add(OrePrefix.turbineBlade);
         add(OrePrefix.toolHeadSword);
         add(OrePrefix.toolHeadPickaxe);
