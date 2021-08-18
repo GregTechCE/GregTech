@@ -199,6 +199,10 @@ public class MetaTileEntityFusionReactor extends RecipeMapMultiblockController {
         Textures.FUSION_REACTOR_OVERLAY.render(renderState, translation, pipeline, this.getFrontFacing(), this.recipeMapWorkable.isActive());
     }
 
+    public long getHeat() {
+        return heat;
+    }
+
     private class FusionRecipeLogic extends MultiblockRecipeLogic {
 
         public FusionRecipeLogic(MetaTileEntityFusionReactor tileEntity) {
