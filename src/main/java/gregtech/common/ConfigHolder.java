@@ -201,14 +201,6 @@ public class ConfigHolder {
 
         public static class GT5U {
 
-            @Config.Comment("Enable an extra ZPM and UV Battery (this also makes the Ultimate Battery harder to make). Default: false")
-            @Config.RequiresMcRestart
-            public boolean enableZPMandUVBats = false;
-
-            @Config.Comment("Replace the Ultimate Battery with a MAX Battery. Default: false")
-            @Config.RequiresMcRestart
-            public boolean replaceUVwithMAXBat = false;
-
             @Config.Comment("This config requires 'B:Use custom machine tank sizes' = true to take effect. Changes the input tank size to the first value, and out tank size to the second value for nearly every single block machine. Units are millibuckets. Default: {64000, 64000}")
             @Config.RangeInt(min = 1)
             @Config.RequiresMcRestart
