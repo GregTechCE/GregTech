@@ -3622,6 +3622,7 @@ gregtech.item_filter.footer=§eClick with item to override
 gregtech.cable.voltage=Max Voltage: §a%,d §a(%s)
 gregtech.cable.amperage=Max Amperage: §e%,d
 gregtech.cable.loss_per_block=Loss/Meter/Ampere: §c%,d§7 EU-Volt
+gregtech.cable.superconductor=§d%s Superconductor
 
 gregtech.fluid_pipe.throughput=§9Transfer Rate: %,d L/s
 gregtech.fluid_pipe.max_temperature=§cTemperature Limit: %,dK

@@ -53,6 +53,9 @@ public enum Insulation implements IMaterialPipeType<WireProperties> {
         return orePrefix;
     }
 
+    public boolean isCable() {
+        return ordinal() > 4;
+    }
 
     @Override
     public WireProperties modifyProperties(WireProperties baseProperties) {
@@ -62,7 +65,7 @@ public enum Insulation implements IMaterialPipeType<WireProperties> {
             lossPerBlock = (int) (0.75 * lossMultiplier);
         else lossPerBlock = baseProperties.lossPerBlock * lossMultiplier;
 
-        return new WireProperties(baseProperties.voltage, baseProperties.amperage * amperage, lossPerBlock);
+        return new WireProperties(baseProperties.voltage, baseProperties.amperage * amperage, lossPerBlock, baseProperties.isSuperconductor);
     }
 
     @Override

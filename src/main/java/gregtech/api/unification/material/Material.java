@@ -743,6 +743,11 @@ public class Material implements Comparable<Material> {
             return this;
         }
 
+        public Builder cableProperties(long voltage, int amperage, int loss, boolean isSuperCon) {
+            properties.setProperty(PropertyKey.WIRE, new WireProperties((int) voltage, amperage, loss, isSuperCon));
+            return this;
+        }
+
         public Builder fluidPipeProperties(int maxTemp, int throughput, boolean gasProof) {
             properties.setProperty(PropertyKey.FLUID_PIPE, new FluidPipeProperties(maxTemp, throughput, gasProof));
             return this;

@@ -201,8 +201,10 @@ public class MetaBlocks {
             }
 
             if (material.hasProperty(PropertyKey.WIRE)) {
-                for (BlockCable cable : CABLES)
-                    cable.addCableMaterial(material, material.getProperty(PropertyKey.WIRE));
+                for (BlockCable cable : CABLES) {
+                    if (!cable.getItemPipeType(null).isCable() || !material.getProperty(PropertyKey.WIRE).isSuperconductor)
+                        cable.addCableMaterial(material, material.getProperty(PropertyKey.WIRE));
+                }
             }
             if (material.hasProperty(PropertyKey.FLUID_PIPE)) {
                 for (BlockFluidPipe pipe : FLUID_PIPES)
