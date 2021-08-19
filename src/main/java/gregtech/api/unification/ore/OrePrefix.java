@@ -99,8 +99,6 @@ public class OrePrefix {
     public static final OrePrefix plateDouble = new OrePrefix("plateDouble", M * 2, null, MaterialIconType.plateDouble, ENABLE_UNIFICATION, hasIngotProperty.and(mat -> mat.hasFlag(GENERATE_PLATE) && !mat.hasFlag(NO_SMASHING)));
     // Regular Plate made of one Ingot/Dust. Introduced by Calclavia
     public static final OrePrefix plate = new OrePrefix("plate", M, null, MaterialIconType.plate, ENABLE_UNIFICATION, mat -> mat.hasFlag(GENERATE_PLATE));
-    // Compressed Material, worth 1 Unit. Introduced by Galacticraft
-    public static final OrePrefix compressed = new OrePrefix("compressed", M * 2, null, null, ENABLE_UNIFICATION, null);
 
     // Round made of 1 Nugget
     public static final OrePrefix round = new OrePrefix("round", M / 9, null, MaterialIconType.round, OrePrefix.Flags.ENABLE_UNIFICATION, mat -> mat.hasFlag(GENERATE_ROUND));
@@ -165,7 +163,6 @@ public class OrePrefix {
     // made of 5 Ingots.
     public static final OrePrefix turbineBlade = new OrePrefix("turbineBlade", M * 10, null, MaterialIconType.turbineBlade, ENABLE_UNIFICATION, hasToolProperty.and(m -> m.hasFlags(GENERATE_BOLT_SCREW, GENERATE_PLATE)));
 
-    public static final OrePrefix glass = new OrePrefix("glass", -1, Materials.Glass, null, SELF_REFERENCING, null);
     public static final OrePrefix paneGlass = new OrePrefix("paneGlass", -1, MarkerMaterials.Color.Colorless, null, SELF_REFERENCING, null);
     public static final OrePrefix blockGlass = new OrePrefix("blockGlass", -1, MarkerMaterials.Color.Colorless, null, SELF_REFERENCING, null);
 
@@ -181,7 +178,6 @@ public class OrePrefix {
     public static final OrePrefix stone = new OrePrefix("stone", -1, Materials.Stone, null, SELF_REFERENCING, null);
     public static final OrePrefix cobblestone = new OrePrefix("cobblestone", -1, Materials.Stone, null, SELF_REFERENCING, null);
     // Prefix to determine which kind of Rock this is.
-    public static final OrePrefix rock = new OrePrefix("rock", -1, Materials.Stone, null, SELF_REFERENCING, null);
     // Cobblestone Prefix for all Cobblestones.
     public static final OrePrefix stoneCobble = new OrePrefix("stoneCobble", -1, Materials.Stone, null, SELF_REFERENCING, null);
 
@@ -227,13 +223,10 @@ public class OrePrefix {
      *
      * @see MarkerMaterials.Tier
      */
-    public static final OrePrefix batterySingleUse = new OrePrefix("batterySingleUse", -1, null, null, 0, null);
     // Introduced by Calclavia
     public static final OrePrefix battery = new OrePrefix("battery", -1, null, null, 0, null);
     // Introduced by Calclavia
     public static final OrePrefix circuit = new OrePrefix("circuit", -1, null, null, ENABLE_UNIFICATION, null);
-    // Introduced by Buildcraft
-    public static final OrePrefix chipset = new OrePrefix("chipset", -1, null, null, ENABLE_UNIFICATION, null);
     public static final OrePrefix component = new OrePrefix("component", -1, null, null, ENABLE_UNIFICATION, null);
 
     // Used for Gregification Addon TODO Don't do these here post De-Enum
@@ -287,10 +280,8 @@ public class OrePrefix {
 
         craftingLens.setMarkerPrefix(true);
         dye.setMarkerPrefix(true);
-        batterySingleUse.setMarkerPrefix(true);
         battery.setMarkerPrefix(true);
         circuit.setMarkerPrefix(true);
-        chipset.setMarkerPrefix(true);
 
         gem.setIgnored(Materials.Diamond);
         gem.setIgnored(Materials.Emerald);
