@@ -246,14 +246,6 @@ public class MachineRecipeLoader {
     private static void registerMixingCrystallizationRecipes() {
 
         RecipeMaps.MIXER_RECIPES.recipeBuilder()
-                .input(OrePrefix.dust, Materials.Lead, 2)
-                .input(OrePrefix.dust, Materials.Bronze, 2)
-                .input(OrePrefix.dust, Materials.Tin, 1)
-                .output(OrePrefix.dust, Materials.Potin, 5)
-                .duration(500).EUt(8)
-                .buildAndRegister();
-
-        RecipeMaps.MIXER_RECIPES.recipeBuilder()
                 .input(OrePrefix.dust, Materials.Stone, 1)
                 .fluidInputs(Materials.Lubricant.getFluid(20), Materials.Water.getFluid(4980))
                 .fluidOutputs(Materials.DrillingFluid.getFluid(5000))
@@ -412,18 +404,6 @@ public class MachineRecipeLoader {
                     .EUt(8).duration(200)
                     .buildAndRegister();
         }
-
-        //todo fix
-//        for (Material cableMaterial : new Material[]{Materials.YttriumBariumCuprate, Materials.NiobiumTitanium, Materials.VanadiumGallium, Materials.Naquadah}) {
-//            RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
-//                .input(OrePrefix.wireGtSingle, cableMaterial, 3)
-//                .input(OrePrefix.pipeTinyFluid, Materials.TungstenSteel, 2)
-//                .inputs(MetaItems.ELECTRIC_PUMP_LV.getStackForm(2))
-//                .fluidInputs(Materials.Nitrogen.getFluid(2000))
-//                .outputs(OreDictUnifier.get(OrePrefix.wireGtSingle, Tier.Superconductor, 3))
-//                .duration(20).EUt(512)
-//                .buildAndRegister();
-//        }
 
         Material[] coverMaterials = new Material[]{Materials.Iron, Materials.WroughtIron, Materials.Aluminium};
 

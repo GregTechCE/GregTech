@@ -415,6 +415,15 @@ public class Materials {
     public static Material DistilledWater;
     public static Material SodiumPotassium;
     public static Material SamariumMagnetic;
+    public static Material ManganesePhosphide;
+    public static Material MagnesiumDiboride;
+    public static Material MercuryBariumCalciumCuprate;
+    public static Material UraniumTriplatinum;
+    public static Material SamariumIronArsenicOxide;
+    public static Material IndiumTinBariumTitaniumCuprate;
+    public static Material UraniumRhodiumDinaquadide;
+    public static Material EnrichedNaquadahTriniumEuropiumDuranide;
+    public static Material RutheniumTriniumAmericiumNeutronate;
 
     /**
      * Organic chemistry

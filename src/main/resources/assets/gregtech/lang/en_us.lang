@@ -1675,6 +1675,16 @@ material.coal_tar=Coal Tar
 material.ethylbenzene=Ethylbenzene
 material.naphthalene=Naphthalene
 
+material.manganese_phosphide=Manganese Phosphide
+material.magnesium_diboride=Magnesium Diboride
+material.mercury_barium_calcium_cuprate=Mercury Barium Calcium Cuprate
+material.uranium_triplatinum=Uranium Triplatinum
+material.samarium_iron_arsenic_oxide=Samarium Iron Arsenic Oxide
+material.indium_tin_barium_titanium_cuprate=Indium Tin Barium Titanium Cuprate
+material.uranium_rhodium_dinaquadide=Uranium Rhodium Dinaquadide
+material.enriched_naquadah_trinium_europium_duranide=Enriched Naquadah Trinium Europium Duranide
+material.ruthenium_trinium_americium_neutronate=Ruthenium Trinium Americium Neutronate
+
 item.nether_quartz.oreNetherrack=Nether Quartz Ore
 item.gunpowder.dustTiny=Tiny Pile of Gunpowder
 item.gunpowder.dustSmall=Small Pile of Gunpowder

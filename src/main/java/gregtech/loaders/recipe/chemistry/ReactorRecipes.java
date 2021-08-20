@@ -1098,5 +1098,11 @@ public class ReactorRecipes {
                 .fluidInputs(GlycerylTrinitrate.getFluid(500))
                 .output(MetaItems.DYNAMITE)
                 .duration(160).EUt(4).buildAndRegister();
+
+        CHEMICAL_RECIPES.recipeBuilder()
+                .input(dust, Niobium)
+                .fluidInputs(Nitrogen.getFluid(1000))
+                .output(dust, NiobiumNitride, 2)
+                .duration(200).EUt(480).buildAndRegister();
     }
 }
