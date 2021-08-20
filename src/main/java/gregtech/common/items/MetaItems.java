@@ -130,6 +130,11 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem BATTERY_HULL_LV;
     public static MetaItem<?>.MetaValueItem BATTERY_HULL_MV;
     public static MetaItem<?>.MetaValueItem BATTERY_HULL_HV;
+    public static MetaItem<?>.MetaValueItem BATTERY_HULL_SMALL_VANADIUM;
+    public static MetaItem<?>.MetaValueItem BATTERY_HULL_MEDIUM_VANADIUM;
+    public static MetaItem<?>.MetaValueItem BATTERY_HULL_LARGE_VANADIUM;
+    public static MetaItem<?>.MetaValueItem BATTERY_HULL_MEDIUM_NAQUADRIA;
+    public static MetaItem<?>.MetaValueItem BATTERY_HULL_LARGE_NAQUADRIA;
 
     public static MetaItem<?>.MetaValueItem BATTERY_ULV_TANTALUM;
     public static MetaItem<?>.MetaValueItem BATTERY_LV_CADMIUM;
@@ -143,6 +148,12 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem BATTERY_HV_SODIUM;
     public static MetaItem<?>.MetaValueItem ENERGY_CRYSTAL;
     public static MetaItem<?>.MetaValueItem LAPOTRON_CRYSTAL;
+
+    public static MetaItem<?>.MetaValueItem BATTERY_EV_VANADIUM;
+    public static MetaItem<?>.MetaValueItem BATTERY_IV_VANADIUM;
+    public static MetaItem<?>.MetaValueItem BATTERY_LUV_VANADIUM;
+    public static MetaItem<?>.MetaValueItem BATTERY_ZPM_NAQUADRIA;
+    public static MetaItem<?>.MetaValueItem BATTERY_UV_NAQUADRIA;
 
     public static MetaItem<?>.MetaValueItem ENERGY_LAPOTRONIC_ORB;
     public static MetaItem<?>.MetaValueItem ENERGY_LAPOTRONIC_ORB2;

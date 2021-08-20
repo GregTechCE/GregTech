@@ -521,6 +521,11 @@ public class MetaItem1 extends StandardMetaItem {
         BATTERY_HULL_LV = addItem(717, "battery.hull.lv").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.BatteryAlloy, OrePrefix.plate.materialAmount)));
         BATTERY_HULL_MV = addItem(718, "battery.hull.mv").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.BatteryAlloy, OrePrefix.plate.materialAmount * 3L)));
         BATTERY_HULL_HV = addItem(719, "battery.hull.hv").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.BatteryAlloy, OrePrefix.plate.materialAmount * 9L)));
+        BATTERY_HULL_SMALL_VANADIUM = addItem(720, "battery.hull.ev").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.BlueSteel, GTValues.M * 2)));
+        BATTERY_HULL_MEDIUM_VANADIUM = addItem(721, "battery.hull.iv").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.RoseGold, GTValues.M * 6)));
+        BATTERY_HULL_LARGE_VANADIUM = addItem(722, "battery.hull.luv").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.RedSteel, GTValues.M * 18)));
+        BATTERY_HULL_MEDIUM_NAQUADRIA = addItem(723, "battery.hull.zpm").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Europium, GTValues.M * 6)));
+        BATTERY_HULL_LARGE_NAQUADRIA = addItem(724, "battery.hull.uv").setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Americium, GTValues.M * 18)));
 
         // Batteries: 731-775
         BATTERY_ULV_TANTALUM = addItem(731, "battery.re.ulv.tantalum").addComponents(ElectricStats.createRechargeableBattery(1000, GTValues.ULV)).setUnificationData(OrePrefix.battery, Tier.Primitive);
@@ -540,13 +545,20 @@ public class MetaItem1 extends StandardMetaItem {
         ENERGY_CRYSTAL = addItem(741, "energy_crystal").addComponents(ElectricStats.createRechargeableBattery(4000000L, GTValues.HV)).setUnificationData(OrePrefix.battery, Tier.Advanced).setModelAmount(8).setMaxStackSize(1);
         LAPOTRON_CRYSTAL = addItem(742, "lapotron_crystal").addComponents(ElectricStats.createRechargeableBattery(10000000L, GTValues.EV)).setUnificationData(OrePrefix.battery, Tier.Extreme).setModelAmount(8).setMaxStackSize(1);
 
-        ENERGY_LAPOTRONIC_ORB = addItem(743, "energy.lapotronicorb").addComponents(ElectricStats.createRechargeableBattery(100000000, GTValues.IV)).setUnificationData(OrePrefix.battery, Tier.Elite).setModelAmount(8);
-        ENERGY_LAPOTRONIC_ORB2 = addItem(744, "energy.lapotronicorb2").addComponents(ElectricStats.createRechargeableBattery(1000000000, GTValues.LuV)).setUnificationData(OrePrefix.battery, Tier.Master).setModelAmount(8);
+        BATTERY_EV_VANADIUM = addItem(743, "battery.ev.vanadium").addComponents(ElectricStats.createRechargeableBattery(10240000L, GTValues.EV)).setUnificationData(OrePrefix.battery, Tier.Extreme).setModelAmount(8);
+        BATTERY_IV_VANADIUM = addItem(744, "battery.iv.vanadium").addComponents(ElectricStats.createRechargeableBattery(40960000L, GTValues.IV)).setUnificationData(OrePrefix.battery, Tier.Elite).setModelAmount(8);
+        BATTERY_LUV_VANADIUM = addItem(745, "battery.luv.vanadium").addComponents(ElectricStats.createRechargeableBattery(163840000L, GTValues.LuV)).setUnificationData(OrePrefix.battery, Tier.Master).setModelAmount(8);
 
-        ENERGY_LAPOTRONIC_MODULE = addItem(745, "energy.module").addComponents(new IItemComponent[]{ElectricStats.createRechargeableBattery(10000000000L, GTValues.ZPM)}).setUnificationData(OrePrefix.battery, Tier.Ultimate).setModelAmount(8);
-        ENERGY_LAPOTRONIC_CLUSTER = addItem(746, "energy.cluster").addComponents(new IItemComponent[]{ElectricStats.createRechargeableBattery(100000000000L, GTValues.UV)}).setUnificationData(OrePrefix.battery, Tier.Superconductor).setModelAmount(8);
+        BATTERY_ZPM_NAQUADRIA = addItem(746, "battery.zpm.naquadria").addComponents(ElectricStats.createRechargeableBattery(655360000L, GTValues.ZPM)).setUnificationData(OrePrefix.battery, Tier.Ultimate).setModelAmount(8);
+        BATTERY_UV_NAQUADRIA = addItem(747, "battery.uv.naquadria").addComponents(ElectricStats.createRechargeableBattery(2621440000L, GTValues.UV)).setUnificationData(OrePrefix.battery, Tier.Superconductor).setModelAmount(8);
 
-        ZERO_POINT_MODULE = addItem(747, "zpm").addComponents(ElectricStats.createBattery(2000000000000L, GTValues.ZPM, false)).setModelAmount(8);
-        ULTIMATE_BATTERY = addItem(748, "max.battery").addComponents(ElectricStats.createRechargeableBattery(Long.MAX_VALUE, GTValues.MAX)).setUnificationData(OrePrefix.battery, Tier.Maximum).setModelAmount(8);
+        ENERGY_LAPOTRONIC_ORB = addItem(748, "energy.lapotronicorb").addComponents(ElectricStats.createRechargeableBattery(100000000L, GTValues.IV)).setUnificationData(OrePrefix.battery, Tier.Elite).setModelAmount(8);
+        ENERGY_LAPOTRONIC_ORB2 = addItem(749, "energy.lapotronicorb2").addComponents(ElectricStats.createRechargeableBattery(1000000000L, GTValues.LuV)).setUnificationData(OrePrefix.battery, Tier.Master).setModelAmount(8);
+
+        ENERGY_LAPOTRONIC_MODULE = addItem(750, "energy.module").addComponents(new IItemComponent[]{ElectricStats.createRechargeableBattery(10000000000L, GTValues.ZPM)}).setUnificationData(OrePrefix.battery, Tier.Ultimate).setModelAmount(8);
+        ENERGY_LAPOTRONIC_CLUSTER = addItem(751, "energy.cluster").addComponents(new IItemComponent[]{ElectricStats.createRechargeableBattery(100000000000L, GTValues.UV)}).setUnificationData(OrePrefix.battery, Tier.Superconductor).setModelAmount(8);
+
+        ZERO_POINT_MODULE = addItem(752, "zpm").addComponents(ElectricStats.createBattery(2000000000000L, GTValues.ZPM, false)).setModelAmount(8);
+        ULTIMATE_BATTERY = addItem(753, "max.battery").addComponents(ElectricStats.createRechargeableBattery(Long.MAX_VALUE, GTValues.MAX)).setUnificationData(OrePrefix.battery, Tier.Maximum).setModelAmount(8);
     }
 }

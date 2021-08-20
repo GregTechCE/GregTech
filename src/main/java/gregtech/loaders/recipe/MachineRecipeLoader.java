@@ -573,11 +573,6 @@ public class MachineRecipeLoader {
             RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().duration(50).EUt(16).inputs(MetaBlocks.MACHINE_CASING.getItemVariant(MachineCasingType.MAX)).input(OrePrefix.wireGtSingle, MarkerMaterials.Tier.Superconductor, 2).outputs(MetaTileEntities.HULL[14].getStackForm()).buildAndRegister();
         }
 
-        ASSEMBLER_RECIPES.recipeBuilder().duration(800).EUt(1).input(cableGtSingle, Tin).input(plate, BatteryAlloy).fluidInputs(Polyethylene.getFluid(144)).output(BATTERY_HULL_LV).buildAndRegister();
-        ASSEMBLER_RECIPES.recipeBuilder().duration(1600).EUt(2).input(cableGtSingle, Copper, 2).input(plate, BatteryAlloy, 3).fluidInputs(Polyethylene.getFluid(432)).output(BATTERY_HULL_MV).buildAndRegister();
-        ASSEMBLER_RECIPES.recipeBuilder().duration(1600).EUt(2).input(cableGtSingle, AnnealedCopper, 2).input(plate, BatteryAlloy, 3).fluidInputs(Polyethylene.getFluid(432)).output(BATTERY_HULL_MV).buildAndRegister();
-        ASSEMBLER_RECIPES.recipeBuilder().duration(3200).EUt(4).input(cableGtSingle, Gold, 4).input(plate, BatteryAlloy, 9).fluidInputs(Polyethylene.getFluid(1296)).output(BATTERY_HULL_HV).buildAndRegister();
-
         ASSEMBLER_RECIPES.recipeBuilder().EUt(2).inputs(new ItemStack(Blocks.CHEST, 1, GTValues.W)).input(plate, Iron, 5).outputs(new ItemStack(Blocks.HOPPER)).duration(800).buildAndRegister();
         ASSEMBLER_RECIPES.recipeBuilder().EUt(2).inputs(new ItemStack(Blocks.TRAPPED_CHEST, 1, GTValues.W)).input(plate, Iron, 5).outputs(new ItemStack(Blocks.HOPPER)).duration(800).buildAndRegister();
         ASSEMBLER_RECIPES.recipeBuilder().EUt(2).input(gear, CobaltBrass).input(dust, Diamond).output(COMPONENT_SAW_BLADE_DIAMOND).duration(1600).buildAndRegister();

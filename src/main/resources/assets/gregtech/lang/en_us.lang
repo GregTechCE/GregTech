@@ -260,14 +260,19 @@ metaitem.battery.hull.mv.name=Medium Battery Hull
 metaitem.battery.hull.mv.tooltip=An empty MV Battery Hull
 metaitem.battery.hull.hv.name=Large Battery Hull
 metaitem.battery.hull.hv.tooltip=An empty HV Battery Hull
+metaitem.battery.hull.ev.name=Small Vanadium Battery Hull
+metaitem.battery.hull.ev.tooltip=An empty EV Battery Hull
+metaitem.battery.hull.iv.name=Medium Vanadium Battery Hull
+metaitem.battery.hull.iv.tooltip=An empty IV Battery Hull
+metaitem.battery.hull.luv.name=Large Vanadium Battery Hull
+metaitem.battery.hull.luv.tooltip=An empty LuV Battery Hull
+metaitem.battery.hull.zpm.name=Medium Naquadria Battery Hull
+metaitem.battery.hull.zpm.tooltip=An empty ZPM Battery Hull
+metaitem.battery.hull.uv.name=Large Naquadria Battery Hull
+metaitem.battery.hull.uv.tooltip=An empty UV Battery Hull
 
 metaitem.battery.re.ulv.tantalum.name=Tantalum Capacitor
 metaitem.battery.re.ulv.tantalum.tooltip=Reusable Battery
-
-metaitem.battery.su.lv.sulfuricacid.name=Small Acid Battery
-metaitem.battery.su.lv.sulfuricacid.tooltip=Single Use Battery
-metaitem.battery.su.lv.mercury.name=Small Mercury Battery
-metaitem.battery.su.lv.mercury.tooltip=Single Use Battery
 
 metaitem.battery.re.lv.cadmium.name=Small Cadmium Battery
 metaitem.battery.re.lv.cadmium.tooltip=Reusable Battery
@@ -276,11 +281,6 @@ metaitem.battery.re.lv.lithium.tooltip=Reusable Battery
 metaitem.battery.re.lv.sodium.name=Small Sodium Battery
 metaitem.battery.re.lv.sodium.tooltip=Reusable Battery
 
-metaitem.battery.su.mv.sulfuricacid.name=Medium Acid Battery
-metaitem.battery.su.mv.sulfuricacid.tooltip=Single Use Battery
-metaitem.battery.su.mv.mercury.name=Medium Mercury Battery
-metaitem.battery.su.mv.mercury.tooltip=Single Use Battery
-
 metaitem.battery.re.mv.cadmium.name=Medium Cadmium Battery
 metaitem.battery.re.mv.cadmium.tooltip=Reusable Battery
 metaitem.battery.re.mv.lithium.name=Medium Lithium Battery
@@ -288,17 +288,24 @@ metaitem.battery.re.mv.lithium.tooltip=Reusable Battery
 metaitem.battery.re.mv.sodium.name=Medium Sodium Battery
 metaitem.battery.re.mv.sodium.tooltip=Reusable Battery
 
-metaitem.battery.su.hv.sulfuricacid.name=Large Acid Battery
-metaitem.battery.su.hv.sulfuricacid.tooltip=Single Use Battery
-metaitem.battery.su.hv.mercury.name=Large Mercury Battery
-metaitem.battery.su.hv.mercury.tooltip=Single Use Battery
-
 metaitem.battery.re.hv.cadmium.name=Large Cadmium Battery
 metaitem.battery.re.hv.cadmium.tooltip=Reusable Battery
 metaitem.battery.re.hv.lithium.name=Large Lithium Battery
 metaitem.battery.re.hv.lithium.tooltip=Reusable Battery
 metaitem.battery.re.hv.sodium.name=Large Sodium Battery
 metaitem.battery.re.hv.sodium.tooltip=Reusable Battery
+
+metaitem.battery.ev.vanadium.name=Small Vanadium Battery
+metaitem.battery.ev.vanadium.tooltip=Reusable Battery
+metaitem.battery.iv.vanadium.name=Medium Vanadium Battery
+metaitem.battery.iv.vanadium.tooltip=Reusable Battery
+metaitem.battery.luv.vanadium.name=Large Vanadium Battery
+metaitem.battery.luv.vanadium.tooltip=Reusable Battery
+
+metaitem.battery.zpm.naquadria.name=Medium Naquadria Battery
+metaitem.battery.zpm.naquadria.tooltip=Reusable Battery
+metaitem.battery.uv.naquadria.name=Large Naquadria Battery
+metaitem.battery.uv.naquadria.tooltip=Reusable Battery
 
 metaitem.energy_crystal.name=Energy Crystal
 metaitem.energy_crystal.tooltip=Reusable Battery
@@ -311,9 +318,11 @@ metaitem.energy.lapotronicorb2.tooltip=Reusable Battery
 metaitem.zpm.name=Zero Point Module
 metaitem.zpm.tooltip=Single Use Battery
 metaitem.energy.module.name=Energy Module
+metaitem.energy.module.tooltip=Reusable Battery
 metaitem.energy.cluster.name=Energy Cluster
+metaitem.energy.cluster.tooltip=Reusable Battery
 metaitem.max.battery.name=Ultimate Battery
-metaitem.max.battery.tooltip=Fill this to win minecraft
+metaitem.max.battery.tooltip=Fill this to win Minecraft
 
 metaitem.electric.motor.lv.name=LV Electric Motor
 metaitem.electric.motor.mv.name=MV Electric Motor
