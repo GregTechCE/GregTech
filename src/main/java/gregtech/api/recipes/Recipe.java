@@ -314,6 +314,10 @@ public class Recipe {
         return recipePropertyStorage.getRecipePropertyKeys();
     }
 
+    public boolean hasProperty(RecipeProperty<?> property) {
+        return recipePropertyStorage.hasRecipeProperty(property);
+    }
+
     public int getPropertyCount() {
         return recipePropertyStorage.getSize();
     }
