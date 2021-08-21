@@ -366,6 +366,8 @@ public class OrePrefix {
 
         pipeTinyFluid.setIgnored(Materials.Wood);
         pipeHugeFluid.setIgnored(Materials.Wood);
+        pipeQuadrupleFluid.setIgnored(Materials.Wood);
+        pipeNonupleFluid.setIgnored(Materials.Wood);
         plate.setIgnored(Materials.BorosilicateGlass);
         foil.setIgnored(Materials.BorosilicateGlass);
     }
