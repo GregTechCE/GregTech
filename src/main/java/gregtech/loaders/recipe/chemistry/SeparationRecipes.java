@@ -313,6 +313,11 @@ public class SeparationRecipes {
                 .chancedOutput(dustTiny, Ilmenite, 5000, 500)
                 .buildAndRegister();
 
+        CENTRIFUGE_RECIPES.recipeBuilder().duration(800).EUt(5)
+                .input(dust, Oilsands)
+                .fluidOutputs(Oil.getFluid(1000))
+                .buildAndRegister();
+
 
         // Electrolyzer
         ELECTROLYZER_RECIPES.recipeBuilder()

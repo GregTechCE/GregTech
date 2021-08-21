@@ -236,7 +236,6 @@ public class UnknownCompositionMaterials {
         Oilsands = new Material.Builder(1597, "oilsands")
                 .dust(1).ore()
                 .color(0x0A0A0A).iconSet(SAND)
-                .components(Oil, 1)
                 .build();
 
         RareEarth = new Material.Builder(1598, "rare_earth")
