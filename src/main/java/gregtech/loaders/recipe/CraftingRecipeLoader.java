@@ -64,6 +64,8 @@ public class CraftingRecipeLoader {
 
         ModHandler.addSmeltingRecipe(new UnificationEntry(OrePrefix.nugget, Materials.Iron), OreDictUnifier.get(OrePrefix.nugget, Materials.WroughtIron));
 
+        ModHandler.addShapedRecipe("clipboard", MetaItems.CLIPBOARD.getStackForm(), " Sd", "BWR", "PPP", 'P', Items.PAPER, 'R', new UnificationEntry(OrePrefix.springSmall, Iron), 'B', new UnificationEntry(OrePrefix.bolt, Iron), 'S', new UnificationEntry(OrePrefix.screw, Iron), 'W', new UnificationEntry(OrePrefix.plate, Wood));
+
         for (MetaValueItem batteryItem : ToolRecipeHandler.batteryItems[0]) {
             ModHandler.addShapedEnergyTransferRecipe("scanner_" + batteryItem.unlocalizedName, MetaItems.SCANNER.getStackForm(),
                     batteryItem::isItemEqual, true,

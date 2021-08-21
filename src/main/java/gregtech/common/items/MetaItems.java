@@ -488,6 +488,8 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem VOLTAGE_COIL_ZPM;
     public static MetaItem<?>.MetaValueItem VOLTAGE_COIL_UV;
 
+    public static MetaItem<?>.MetaValueItem CLIPBOARD;
+
     private static final List<OrePrefix> orePrefixes = new ArrayList<OrePrefix>() {{
         add(OrePrefix.dust);
         add(OrePrefix.dustSmall);

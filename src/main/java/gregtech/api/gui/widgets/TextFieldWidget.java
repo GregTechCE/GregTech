@@ -44,7 +44,26 @@ public class TextFieldWidget extends Widget {
             }
             this.textField.setCanLoseFocus(true);
             this.textField.setEnableBackgroundDrawing(enableBackground);
+            this.textField.setMaxStringLength(this.maxStringLength);
+            this.textField.setGuiResponder(MCGuiUtil.createTextFieldResponder(this::onTextChanged));
+        }
+        this.textSupplier = textSupplier;
+        this.textResponder = textResponder;
+    }
+
+    public TextFieldWidget(int xPosition, int yPosition, int width, int height, boolean enableBackground, Supplier<String> textSupplier, Consumer<String> textResponder, int maxStringLength) {
+        super(new Position(xPosition, yPosition), new Size(width, height));
+        if (isClientSide()) {
+            FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+            if (enableBackground) {
+                this.textField = new GuiTextField(0, fontRenderer, xPosition, yPosition, width, height);
+            } else {
+                this.textField = new GuiTextField(0, fontRenderer, xPosition + 1, yPosition + (height - fontRenderer.FONT_HEIGHT) / 2 + 1, width - 2, height);
+            }
+            this.textField.setCanLoseFocus(true);
+            this.textField.setEnableBackgroundDrawing(enableBackground);
             this.textField.setMaxStringLength(maxStringLength);
+            this.maxStringLength = maxStringLength;
             this.textField.setGuiResponder(MCGuiUtil.createTextFieldResponder(this::onTextChanged));
         }
         this.textSupplier = textSupplier;
@@ -91,6 +110,7 @@ public class TextFieldWidget extends Widget {
         }
         return this.currentString;
     }
+
 
     @Override
     protected void onPositionUpdate() {

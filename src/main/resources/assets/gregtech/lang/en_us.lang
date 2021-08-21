@@ -844,6 +844,9 @@ metaitem.turbine_rotor.name=%s Turbine Rotor
 metaitem.turbine_rotor.tooltip=Turbine Rotors for your power station
 metaitem.tool.magnifying_glass.name=%s Magnifying Glass
 
+metaitem.clipboard.name=Clipboard
+metaitem.clipboard.tooltip=Can be written on (without any writing Instrument). Right-click on Wall to place, and Shift-Right-Click to remove
+
 metaitem.drill.mode.three_cube=3x3x3 Cube
 metaitem.drill.mode.five_cube=5x5x5 Cube
 metaitem.drill.mode.seven_cube=7x7x7 Cube
@@ -2161,6 +2164,8 @@ gregtech.machine.aluminium_tank.name=Aluminium Tank
 gregtech.machine.stainless_steel_tank.name=Stainless Steel Tank
 gregtech.machine.titanium_tank.name=Titanium Tank
 gregtech.machine.tungstensteel_tank.name=Tungstensteel Tank
+
+gregtech.machine.clipboard.name=Clipboard
 
 # Granite blocks
 tile.granite.black_granite.normal.name=Black Granite

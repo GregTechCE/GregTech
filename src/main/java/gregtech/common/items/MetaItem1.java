@@ -377,7 +377,7 @@ public class MetaItem1 extends StandardMetaItem {
         NANO_SABER = addItem(463, "nano_saber").addComponents(ElectricStats.createElectricItem(4000000L, GTValues.HV)).addComponents(new NanoSaberBehavior()).setMaxStackSize(1);
         // Free ID 464
         SCANNER = addItem(465, "scanner").addComponents(ElectricStats.createElectricItem(200_000L, GTValues.LV), new ScannerBehavior(50));
-        /* CLIPBOARD GOES HERE - ID 466 */
+        CLIPBOARD = addItem(466, "clipboard").addComponents(new ClipboardBehavior()).setMaxStackSize(1);
         TERMINAL = addItem(467, "terminal").addComponents(new TerminalBehaviour());
 
         // Misc Crafting Items: ID 491-515
