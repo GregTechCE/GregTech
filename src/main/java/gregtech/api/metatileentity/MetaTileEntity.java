@@ -12,7 +12,10 @@ import com.google.common.base.Preconditions;
 import gregtech.api.GregTechAPI;
 import gregtech.api.capability.GregtechTileCapabilities;
 import gregtech.api.capability.IEnergyContainer;
-import gregtech.api.capability.impl.*;
+import gregtech.api.capability.impl.FluidHandlerProxy;
+import gregtech.api.capability.impl.FluidTankList;
+import gregtech.api.capability.impl.ItemHandlerProxy;
+import gregtech.api.capability.impl.NotifiableFluidTank;
 import gregtech.api.cover.CoverBehavior;
 import gregtech.api.cover.CoverDefinition;
 import gregtech.api.cover.ICoverable;
@@ -52,7 +55,8 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 import static gregtech.api.util.InventoryUtils.simulateItemStackMerge;
@@ -370,6 +374,15 @@ public abstract class MetaTileEntity implements ICoverable {
                 MetaTileEntityUIFactory.INSTANCE.openUI(getHolder(), (EntityPlayerMP) playerIn);
             }
             return true;
+        } else if (playerIn.isSneaking()) {
+            EnumFacing hitFacing = hitResult.sideHit;
+
+            CoverBehavior coverBehavior = hitFacing == null ? null : getCoverAtSide(hitFacing);
+
+            EnumActionResult coverResult = coverBehavior == null ? EnumActionResult.PASS :
+                    coverBehavior.onScrewdriverClick(playerIn, hand, hitResult);
+
+            return coverResult == EnumActionResult.SUCCESS;
         }
         return false;
     }
