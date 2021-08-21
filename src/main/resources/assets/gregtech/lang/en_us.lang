@@ -271,6 +271,9 @@ metaitem.battery.hull.zpm.tooltip=An empty ZPM Battery Hull
 metaitem.battery.hull.uv.name=Large Naquadria Battery Hull
 metaitem.battery.hull.uv.tooltip=An empty UV Battery Hull
 
+metaitem.battery.charge_time=§aHolds %,d%s of Power
+metaitem.battery.charge_detailed=%,d/%,d EU - Tier §e%s §r(§%c%,d%s remaining§r)
+
 metaitem.battery.re.ulv.tantalum.name=Tantalum Capacitor
 metaitem.battery.re.ulv.tantalum.tooltip=Reusable Battery
 

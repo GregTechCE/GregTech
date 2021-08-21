@@ -277,9 +277,9 @@ public class MachineRecipeLoader {
                 .buildAndRegister();
 
         RecipeMaps.MIXER_RECIPES.recipeBuilder()
-                .duration(1200).EUt(16)
-                .input(OrePrefix.dust, Materials.Ruby, 9)
-                .input(OrePrefix.dust, Materials.Redstone, 9)
+                .duration(600).EUt(120)
+                .input(OrePrefix.dust, Materials.Ruby, 4)
+                .input(OrePrefix.dust, Materials.Redstone, 5)
                 .outputs(MetaItems.ENERGIUM_DUST.getStackForm(9))
                 .buildAndRegister();
 
