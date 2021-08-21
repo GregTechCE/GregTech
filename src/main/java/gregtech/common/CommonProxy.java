@@ -7,6 +7,8 @@ import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.recipes.crafttweaker.MetaItemBracketHandler;
 import gregtech.api.recipes.recipeproperties.BlastTemperatureProperty;
 import gregtech.api.recipes.recipeproperties.FusionEUToStartProperty;
+import gregtech.api.terminal.TerminalRegistry;
+import gregtech.api.terminal.util.GuideJsonLoader;
 import gregtech.api.unification.material.Material;
 import gregtech.api.unification.material.properties.DustProperty;
 import gregtech.api.unification.material.properties.PropertyKey;
@@ -273,5 +275,7 @@ public class CommonProxy {
 
     public void onPostLoad() {
         WoodMachineRecipes.postInit();
+        TerminalRegistry.init();
+        new GuideJsonLoader().onResourceManagerReload(null);
     }
 }

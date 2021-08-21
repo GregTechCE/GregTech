@@ -38,6 +38,10 @@ public class GTRecipeWrapper implements IRecipeWrapper {
         this.recipe = recipe;
     }
 
+    public Recipe getRecipe() {
+        return recipe;
+    }
+
     @Override
     public void getIngredients(@Nonnull IIngredients ingredients) {
         if (!recipe.getInputs().isEmpty()) {

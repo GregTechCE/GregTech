@@ -378,6 +378,7 @@ public class MetaItem1 extends StandardMetaItem {
         // Free ID 464
         SCANNER = addItem(465, "scanner").addComponents(ElectricStats.createElectricItem(200_000L, GTValues.LV), new ScannerBehavior(50));
         /* CLIPBOARD GOES HERE - ID 466 */
+        TERMINAL = addItem(467, "terminal").addComponents(new TerminalBehaviour());
 
         // Misc Crafting Items: ID 491-515
         ENERGIUM_DUST = addItem(491, "energium_dust");
