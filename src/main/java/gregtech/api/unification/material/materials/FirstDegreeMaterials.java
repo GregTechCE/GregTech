@@ -200,6 +200,7 @@ public class FirstDegreeMaterials {
                 .color(0xC8FFFF).iconSet(DIAMOND)
                 .flags(GENERATE_BOLT_SCREW, GENERATE_LENS, GENERATE_GEAR, NO_SMASHING, NO_SMELTING, FLAMMABLE,
                         HIGH_SIFTER_OUTPUT, DISABLE_DECOMPOSITION, EXCLUDE_BLOCK_CRAFTING_BY_HAND_RECIPES)
+                .components(Carbon, 1)
                 .toolStats(8.0f, 3.0f, 1280, 15)
                 .build();
 

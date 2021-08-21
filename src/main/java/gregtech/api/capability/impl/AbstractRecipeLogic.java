@@ -36,9 +36,6 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
 
     public final RecipeMap<?> recipeMap;
 
-    protected boolean forceRecipeRecheck;
-    @Deprecated protected ItemStack[] lastItemInputs;
-    @Deprecated protected FluidStack[] lastFluidInputs;
     protected Recipe previousRecipe;
     protected boolean allowOverclocking = true;
     private long overclockVoltage = 0;
@@ -218,10 +215,6 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
         metaTileEntity.getNotifiedFluidInputList().clear();
     }
 
-    public void forceRecipeRecheck() {
-        this.forceRecipeRecheck = true;
-    }
-
     protected int getMinTankCapacity(IMultipleTankHandler tanks) {
         if (tanks.getTanks() == 0) {
             return 0;
@@ -235,18 +228,6 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable 
 
     protected Recipe findRecipe(long maxVoltage, IItemHandlerModifiable inputs, IMultipleTankHandler fluidInputs, MatchingMode mode) {
         return recipeMap.findRecipe(maxVoltage, inputs, fluidInputs, getMinTankCapacity(getOutputTank()), mode);
-    }
-
-    /**
-     * @deprecated Use {@link #hasNotifiedInputs() } instead
-     * Left here for binary compatibility purposes
-     */
-    @Deprecated
-    protected boolean checkRecipeInputsDirty(IItemHandler inputs, IMultipleTankHandler fluidInputs) {
-        boolean isDirty = this.hasNotifiedInputs();
-        metaTileEntity.getNotifiedItemInputList().clear();
-        metaTileEntity.getNotifiedFluidInputList().clear();
-        return isDirty;
     }
 
     protected static boolean areItemStacksEqual(ItemStack stackA, ItemStack stackB) {
