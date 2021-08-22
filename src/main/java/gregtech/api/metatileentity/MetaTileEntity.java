@@ -24,6 +24,7 @@ import gregtech.api.render.Textures;
 import gregtech.api.util.GTFluidUtils;
 import gregtech.api.util.GTUtility;
 import gregtech.common.ConfigHolder;
+import gregtech.common.advancement.GTTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -342,7 +343,11 @@ public abstract class MetaTileEntity implements ICoverable {
         EnumActionResult coverResult = coverBehavior == null ? EnumActionResult.PASS :
                 coverBehavior.onRightClick(playerIn, hand, result);
         if (coverResult != EnumActionResult.PASS) {
-            return coverResult == EnumActionResult.SUCCESS;
+            if (coverResult == EnumActionResult.SUCCESS) {
+                if (!getWorld().isRemote) GTTriggers.FIRST_COVER_PLACE.trigger((EntityPlayerMP) playerIn);
+                return true;
+            }
+            return false;
         }
         return onRightClick(playerIn, hand, result.sideHit, result);
     }
