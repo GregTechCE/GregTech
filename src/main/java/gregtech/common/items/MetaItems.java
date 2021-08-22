@@ -507,7 +507,6 @@ public final class MetaItems {
         add(OrePrefix.ingot);
         add(OrePrefix.ingotHot);
         add(OrePrefix.plate);
-        add(OrePrefix.plateCurved);
         add(OrePrefix.plateDouble);
         add(OrePrefix.plateDense);
         add(OrePrefix.foil);

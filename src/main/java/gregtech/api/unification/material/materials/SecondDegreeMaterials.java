@@ -290,7 +290,7 @@ public class SecondDegreeMaterials {
                 .color(0xc99781).iconSet(METALLIC)
                 .flags(EXT2_METAL)
                 .components(Lead, 2, Bronze, 2, Tin, 1)
-                .fluidPipeProperties(2023, 96, true)
+                .fluidPipeProperties(2023, 69, true)
                 .build();
 
         BorosilicateGlass = new Material.Builder(2038, "borosilicate_glass")
