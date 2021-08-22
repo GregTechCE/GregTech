@@ -1251,6 +1251,7 @@ material.construction_foam=Construction Foam
 material.epichlorohydrin=Epichlorohydrin
 material.nitric_acid=Nitric Acid
 material.nitration_mixture=Nitration Mixture
+material.aqua_regia=Aqua Regia
 material.fireclay=Fireclay
 material.brick=Brick
 material.coke=Coke
@@ -1628,16 +1629,9 @@ material.duranium=Duranium
 material.diamericium_titanium=Diamericium Titanium
 material.fluxed_electrum=Fluxed Electrum
 
-material.cheese=Cheese
-material.chili=Chili
-material.chocolate=Chocolate
-material.meat_raw=Raw Meat
-material.meat_cooked=Cooked Meat
 material.milk=Milk
 material.honey=Honey
-material.juice=Fruit Juice
 material.cocoa=Cocoa
-material.coffee=Coffee
 material.wheat=Wheat
 material.meat=Mince Meat
 
