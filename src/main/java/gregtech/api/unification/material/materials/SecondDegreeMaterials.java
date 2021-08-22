@@ -414,5 +414,12 @@ public class SecondDegreeMaterials {
                 .flags(DISABLE_DECOMPOSITION)
                 .components(NitrogenDioxide, 122, Deuterium, 50, Helium, 15, Tritium, 10, Krypton, 1, Xenon, 1, Radon, 1, EnderPearl, 1)
                 .build();
+
+        AquaRegia = new Material.Builder(2056, "aqua_regia")
+                .fluid()
+                .color(0xFFB132)
+                .flags(DISABLE_DECOMPOSITION)
+                .components(NitricAcid, 1, HydrochloricAcid, 1)
+                .build();
     }
 }

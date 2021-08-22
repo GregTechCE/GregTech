@@ -650,6 +650,7 @@ public class Materials {
     public static Material LiquidNetherAir;
     public static Material EnderAir;
     public static Material LiquidEnderAir;
+    public static Material AquaRegia;
 
     /**
      * Third Degree Materials
