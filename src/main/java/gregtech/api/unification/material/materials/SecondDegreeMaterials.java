@@ -239,20 +239,20 @@ public class SecondDegreeMaterials {
                 .build();
 
         Trona = new Material.Builder(2031, "trona")
-                .dust(1)
+                .dust(1).ore()
                 .color(0x87875F).iconSet(METALLIC)
                 .flags(DISABLE_DECOMPOSITION)
                 .components(Sodium, 3, Carbon, 2, Hydrogen, 1, Water, 2, Oxygen, 6)
                 .build();
 
         Gypsum = new Material.Builder(2032, "gypsum")
-                .dust(1)
+                .dust(1).ore()
                 .color(0xE6E6FA)
                 .components(Calcium, 1, Sulfur, 1, Water, 2, Oxygen, 4)
                 .build();
 
         Zeolite = new Material.Builder(2033, "zeolite")
-                .dust()
+                .dust().ore()
                 .color(0xF0E6E6)
                 .components(Sodium, 1, Calcium, 4, Silicon, 27, Aluminium, 9, Water, 28, Oxygen, 72)
                 .build();

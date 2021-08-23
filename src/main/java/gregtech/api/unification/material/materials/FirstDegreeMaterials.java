@@ -964,7 +964,7 @@ public class FirstDegreeMaterials {
                 .build();
 
         Lepidolite = new Material.Builder(382, "lepidolite")
-                .dust().ore(5, 1)
+                .dust().ore(2, 1)
                 .color(0xF0328C).iconSet(FINE)
                 .components(Potassium, 1, Lithium, 3, Aluminium, 4, Fluorine, 2, Oxygen, 10)
                 .build();
@@ -988,7 +988,7 @@ public class FirstDegreeMaterials {
                 .build();
 
         Mica = new Material.Builder(386, "mica")
-                .dust()
+                .dust().ore()
                 .color(0xC3C3CD).iconSet(FINE)
                 .components(Potassium, 1, Aluminium, 3, Silicon, 3, Fluorine, 2, Oxygen, 10)
                 .build();
@@ -1006,19 +1006,19 @@ public class FirstDegreeMaterials {
                 .build();
 
         Dolomite = new Material.Builder(389, "dolomite")
-                .dust(1)
+                .dust(1).ore()
                 .color(0xE1CDCD).iconSet(FLINT)
                 .components(Calcium, 1, Magnesium, 1, Carbon, 2, Oxygen, 6)
                 .build();
 
         Wollastonite = new Material.Builder(390, "wollastonite")
-                .dust()
+                .dust().ore()
                 .color(0xF0F0F0)
                 .components(Calcium, 1, Silicon, 1, Oxygen, 3)
                 .build();
 
         Kaolinite = new Material.Builder(391, "kaolinite")
-                .dust()
+                .dust().ore()
                 .color(0xf5EBEB).iconSet(METALLIC)
                 .components(Aluminium, 2, Silicon, 2, Hydrogen, 4, Oxygen, 9)
                 .build();
@@ -1036,7 +1036,7 @@ public class FirstDegreeMaterials {
                 .build();
 
         Kyanite = new Material.Builder(394, "kyanite")
-                .dust()
+                .dust().ore()
                 .color(0x6E6EFA).iconSet(FLINT)
                 .components(Aluminium, 2, Silicon, 1, Oxygen, 5)
                 .build();
