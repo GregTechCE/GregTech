@@ -906,6 +906,22 @@ public class ReactorRecipes {
                 .duration(600).EUt(30).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
+                .input(dustTiny, SodiumHydroxide)
+                .fluidInputs(FishOil.getFluid(6000))
+                .fluidInputs(Methanol.getFluid(1000))
+                .fluidOutputs(Glycerol.getFluid(1000))
+                .fluidOutputs(BioDiesel.getFluid(6000))
+                .duration(600).EUt(30).buildAndRegister();
+
+        CHEMICAL_RECIPES.recipeBuilder()
+                .input(dustTiny, SodiumHydroxide)
+                .fluidInputs(FishOil.getFluid(6000))
+                .fluidInputs(Ethanol.getFluid(1000))
+                .fluidOutputs(Glycerol.getFluid(1000))
+                .fluidOutputs(BioDiesel.getFluid(6000))
+                .duration(600).EUt(30).buildAndRegister();
+
+        CHEMICAL_RECIPES.recipeBuilder()
                 .fluidInputs(SulfuricAcid.getFluid(1000))
                 .fluidInputs(Ethanol.getFluid(1000))
                 .fluidOutputs(Ethylene.getFluid(1000))

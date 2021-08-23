@@ -241,6 +241,7 @@ public class SecondDegreeMaterials {
         Trona = new Material.Builder(2031, "trona")
                 .dust(1)
                 .color(0x87875F).iconSet(METALLIC)
+                .flags(DISABLE_DECOMPOSITION)
                 .components(Sodium, 3, Carbon, 2, Hydrogen, 1, Water, 2, Oxygen, 6)
                 .build();
 

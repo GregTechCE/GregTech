@@ -351,5 +351,10 @@ public class UnknownCompositionMaterials {
                 .flags(GENERATE_PLATE, FLAMMABLE, NO_SMELTING, NO_SMASHING,
                         MORTAR_GRINDABLE, GENERATE_RING, EXCLUDE_PLATE_COMPRESSOR_RECIPE)
                 .build();
+
+        FishOil = new Material.Builder(1619, "fish_oil")
+                .fluid()
+                .color(0xDCC15D)
+                .build();
     }
 }

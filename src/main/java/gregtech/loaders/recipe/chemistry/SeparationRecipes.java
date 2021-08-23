@@ -418,6 +418,13 @@ public class SeparationRecipes {
                 .output(dust, Carbon, 64)
                 .duration(768).EUt(30).buildAndRegister();
 
+        ELECTROLYZER_RECIPES.recipeBuilder()
+                .input(dust, Trona, 16)
+                .output(dust, SodaAsh, 6)
+                .output(dust, SodiumBicarbonate, 6)
+                .fluidOutputs(Water.getFluid(2000))
+                .duration(784).EUt(60).build();
+
         // Thermal Centrifuge
         THERMAL_CENTRIFUGE_RECIPES.recipeBuilder()
                 .inputs(new ItemStack(Blocks.COBBLESTONE, 1, GTValues.W))
@@ -453,6 +460,11 @@ public class SeparationRecipes {
                 .inputs(new ItemStack(Items.PUMPKIN_SEEDS, 1, GTValues.W))
                 .fluidOutputs(SeedOil.getFluid(6))
                 .buildAndRegister();
+
+        EXTRACTOR_RECIPES.recipeBuilder().duration(32).EUt(2)
+                .inputs(new ItemStack(Items.FISH, 1, GTValues.W))
+                .fluidOutputs(FishOil.getFluid(50))
+                .build();
 
         EXTRACTOR_RECIPES.recipeBuilder().duration(600).EUt(28)
                 .input(dust, Quartzite)
@@ -500,5 +512,15 @@ public class SeparationRecipes {
                 .inputs(new ItemStack(Blocks.BOOKSHELF))
                 .outputs(new ItemStack(Items.BOOK, 3))
                 .duration(300).EUt(2).buildAndRegister();
+
+        EXTRACTOR_RECIPES.recipeBuilder().duration(80).EUt(32)
+                .input(dust, Redstone)
+                .fluidOutputs(Redstone.getFluid(L))
+                .buildAndRegister();
+
+        EXTRACTOR_RECIPES.recipeBuilder().duration(80).EUt(32)
+                .input(dust, Glowstone)
+                .fluidOutputs(Glowstone.getFluid(L))
+                .buildAndRegister();
     }
 }
