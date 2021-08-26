@@ -31,7 +31,7 @@ public class FluidStackTextRenderer extends FluidStackRenderer {
         String s = TextFormattingUtil.formatLongToCompactString(fluidStack.amount, 4) + "L";
 
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-        fontRenderer.drawStringWithShadow(s, (xPosition + 6) * 2 - fontRenderer.getStringWidth(s) + 21, (yPosition + 12) * 2, 0xFFFFFF);
+        fontRenderer.drawStringWithShadow(s, (xPosition + 6) * 2 - fontRenderer.getStringWidth(s) + 19, (yPosition + 11) * 2, 0xFFFFFF);
         GlStateManager.popMatrix();
 
         GlStateManager.enableBlend();
