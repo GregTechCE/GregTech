@@ -36,14 +36,14 @@ public class OrganicChemistryMaterials {
                 .dust()
                 .color(0x54403D).iconSet(SHINY)
                 .flags(DISABLE_DECOMPOSITION)
-                .components(Carbon, 8, Hydrogen, 8)
+                .components(Styrene, 1, Butadiene, 3)
                 .build();
 
         StyreneButadieneRubber = new Material.Builder(1004, "styrene_butadiene_rubber")
                 .ingot().fluid()
                 .color(0x211A18).iconSet(SHINY)
                 .flags(GENERATE_GEAR, GENERATE_RING, FLAMMABLE, NO_SMASHING, DISABLE_DECOMPOSITION)
-                .components(Carbon, 8, Hydrogen, 8)
+                .components(Styrene, 1, Butadiene, 3)
                 .build();
 
         PolyvinylAcetate = new Material.Builder(1005, "polyvinyl_acetate")
@@ -200,6 +200,7 @@ public class OrganicChemistryMaterials {
         Propane = new Material.Builder(1027, "propane")
                 .fluid(Material.FluidType.GAS)
                 .color(0xFAE250)
+                .flags(DISABLE_DECOMPOSITION)
                 .components(Carbon, 3, Hydrogen, 8)
                 .build();
 
@@ -218,12 +219,14 @@ public class OrganicChemistryMaterials {
         Butene = new Material.Builder(1030, "butene")
                 .fluid(Material.FluidType.GAS)
                 .color(0xCF5005)
+                .flags(DISABLE_DECOMPOSITION)
                 .components(Carbon, 2, Hydrogen, 8)
                 .build();
 
         Butane = new Material.Builder(1031, "butane")
                 .fluid(Material.FluidType.GAS)
                 .color(0xB6371E)
+                .flags(DISABLE_DECOMPOSITION)
                 .components(Carbon, 4, Hydrogen, 10)
                 .build();
 
