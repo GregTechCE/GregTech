@@ -36,15 +36,17 @@ public class OrganicChemistryMaterials {
                 .dust()
                 .color(0x54403D).iconSet(SHINY)
                 .flags(DISABLE_DECOMPOSITION)
-                .components(Styrene, 1, Butadiene, 3)
-                .build();
+                .components(Carbon, 20, Hydrogen, 26)
+                .build()
+                .setFormula("(C4H6)3C8H8", true);
 
         StyreneButadieneRubber = new Material.Builder(1004, "styrene_butadiene_rubber")
                 .ingot().fluid()
                 .color(0x211A18).iconSet(SHINY)
                 .flags(GENERATE_GEAR, GENERATE_RING, FLAMMABLE, NO_SMASHING, DISABLE_DECOMPOSITION)
-                .components(Styrene, 1, Butadiene, 3)
-                .build();
+                .components(Carbon, 20, Hydrogen, 26)
+                .build()
+                .setFormula("(C4H6)3C8H8", true);
 
         PolyvinylAcetate = new Material.Builder(1005, "polyvinyl_acetate")
                 .fluid()

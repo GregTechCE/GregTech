@@ -110,6 +110,6 @@ public class GTRecipeWrapper implements IRecipeWrapper {
     }
 
     private int getPropertyListHeight() {
-        return (recipe.getPropertyCount() + 3) * LINE_HEIGHT;
+        return (recipe.getPropertyCount() + 3) * LINE_HEIGHT - 3;
     }
 }
