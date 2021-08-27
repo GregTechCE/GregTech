@@ -488,7 +488,7 @@ public class CraftingComponent {
          */
         @SuppressWarnings("unused")
         public void appendIngredients(Map<Integer, Object> newIngredients) {
-            newIngredients.remove(GTValues.FALLBACK);
+            ingredients.remove(GTValues.FALLBACK);
             newIngredients.forEach((key, value) ->
                     ingredients.merge(key, value, (v1, v2) -> v2)
             );
