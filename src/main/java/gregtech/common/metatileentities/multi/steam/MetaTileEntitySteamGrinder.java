@@ -67,4 +67,9 @@ public class MetaTileEntitySteamGrinder extends RecipeMapSteamMultiblockControll
     protected OrientedOverlayRenderer getFrontOverlay() {
         return Textures.ROCK_BREAKER_OVERLAY;
     }
+
+    @Override
+    public boolean hasMaintenanceMechanics() {
+        return false;
+    }
 }

@@ -173,4 +173,9 @@ public class MetaTileEntitySteamOven extends RecipeMapSteamMultiblockController 
     protected OrientedOverlayRenderer getFrontOverlay() {
         return Textures.ELECTRIC_FURNACE_OVERLAY;
     }
+
+    @Override
+    public boolean hasMaintenanceMechanics() {
+        return false;
+    }
 }
