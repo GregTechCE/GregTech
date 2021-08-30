@@ -6,6 +6,7 @@ import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.GregtechTileCapabilities;
 import gregtech.api.cover.ICoverable;
 import gregtech.api.cover.ICoverable.PrimaryBoxData;
+import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.pipenet.tile.TileEntityPipeBase;
 import gregtech.api.util.GTUtility;
@@ -94,8 +95,8 @@ public class WrenchOverlayRenderer {
 
     public static boolean shouldDrawOverlayForItem(ItemStack itemStack, TileEntity tileEntity) {
         if (tileEntity instanceof MetaTileEntityHolder) {
-            if(!((MetaTileEntityHolder) tileEntity).getMetaTileEntity().canRenderMachineGrid())
-                return false;
+            MetaTileEntity mte = ((MetaTileEntityHolder) tileEntity).getMetaTileEntity();
+            if (mte == null || !mte.canRenderMachineGrid()) return false;
         }
 
         if (tileEntity instanceof TileEntityPipeBase) {
