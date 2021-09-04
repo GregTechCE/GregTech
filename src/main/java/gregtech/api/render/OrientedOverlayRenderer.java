@@ -6,6 +6,7 @@ import codechicken.lib.texture.TextureUtils.IIconRegister;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Matrix4;
 import gregtech.api.GTValues;
+import gregtech.common.ConfigHolder;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.EnumFacing;
@@ -121,8 +122,13 @@ public class OrientedOverlayRenderer implements IIconRegister {
 
                 TextureAtlasSprite emissiveSprite = predicate.getEmissiveSprite(isActive);
                 if (emissiveSprite != null) {
-                    IVertexOperation[] lightPipeline = ArrayUtils.add(ops, new LightMapOperation(240, 240));
-                    Textures.renderFace(renderState, translation, lightPipeline, renderSide, bounds, emissiveSprite);
+                    if (ConfigHolder.U.emissiveTextures) {
+                        IVertexOperation[] lightPipeline = ArrayUtils.add(ops, new LightMapOperation(240, 240));
+                        Textures.renderFace(renderState, translation, lightPipeline, renderSide, bounds, emissiveSprite);
+                    } else {
+                        // have to still render both overlays or else textures will be broken
+                        Textures.renderFace(renderState, translation, ops, renderSide, bounds, emissiveSprite);
+                    }
                 }
             }
         }
