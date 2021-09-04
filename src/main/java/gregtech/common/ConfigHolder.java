@@ -99,16 +99,6 @@ public class ConfigHolder {
     @Config.RequiresMcRestart
     public static int gasTurbineBonusOutput = 6144;
 
-    @Config.Comment("Client configs for file path, rendering and so on")
-    @Config.Name("Client Options")
-    @Config.RequiresMcRestart
-    public static ClientConfig clientConfig = new ClientConfig();
-
-    public static class ClientConfig {
-        @Config.Comment("Whether to use shader program. Default: true")
-        public boolean useShader = true;
-    }
-
     public static class VanillaRecipes {
 
         @Config.Comment("Whether to make glass related recipes harder. Default: true")
@@ -183,6 +173,11 @@ public class ConfigHolder {
         @Config.Name("Energy Compatibility Options")
         public EnergyCompatibility energyOptions = new EnergyCompatibility();
 
+        @Config.Comment("Client configs for file path, rendering and so on")
+        @Config.Name("Client Options")
+        @Config.RequiresMcRestart
+        public ClientConfig clientConfig = new ClientConfig();
+
         @Config.Comment("Allow GregTech to add additional loot. Default: true")
         @Config.RequiresMcRestart
         public static boolean addLoot = true;
@@ -206,9 +201,6 @@ public class ConfigHolder {
         @Config.Comment("Steam to EU multiplier for Steam Multiblocks. 1.0 means 1 Steam -> 1 EU. 0.5 means 2 Steam -> 1 EU. Default: 0.5")
         @Config.RequiresWorldRestart
         public double multiblockSteamToEU = 0.5;
-
-        @Config.Comment("Whether or not to enable Emissive Textures for GregTech Machines. Default: true")
-        public boolean emissiveTextures = true;
 
         public static class GT5U {
 
@@ -276,6 +268,15 @@ public class ConfigHolder {
             @Config.Comment("GTEU to Forge Energy (RF and alike) ratio. Default: 4 FE to 1 EU")
             @Config.RangeDouble() // to ensure positive number
             public double rfRatio = 4;
+        }
+
+        public static class ClientConfig {
+
+            @Config.Comment("Whether to use shader program. Default: true")
+            public boolean useShader = true;
+
+            @Config.Comment("Whether or not to enable Emissive Textures for GregTech Machines. Default: true")
+            public boolean emissiveTextures = true;
         }
     }
 }
