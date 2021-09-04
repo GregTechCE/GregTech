@@ -71,14 +71,6 @@ public abstract class WorkableTieredMetaTileEntity extends TieredMetaTileEntity 
     }
 
     @Override
-    public void renderEmissiveMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
-        super.renderEmissiveMetaTileEntity(renderState, translation, pipeline);
-        if (workable.isActive()) {
-            renderer.render(renderState, translation, pipeline, getFrontFacing(), true);
-        }
-    }
-
-    @Override
     protected IItemHandlerModifiable createImportItemHandler() {
         if (workable == null) return new ItemStackHandler(0);
         return new NotifiableItemStackHandler(workable.recipeMap.getMaxInputs(), this, false);
