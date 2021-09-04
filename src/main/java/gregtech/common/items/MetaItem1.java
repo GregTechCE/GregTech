@@ -16,6 +16,7 @@ import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.util.RandomPotionEffect;
+import gregtech.common.ConfigHolder;
 import gregtech.common.items.behaviors.*;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
@@ -312,6 +313,21 @@ public class MetaItem1 extends StandardMetaItem {
         COVER_SOLAR_PANEL = addItem(331, "cover.solar.panel");
         COVER_SOLAR_PANEL_ULV = addItem(332, "cover.solar.panel.ulv");
         COVER_SOLAR_PANEL_LV = addItem(333, "cover.solar.panel.lv");
+        COVER_SOLAR_PANEL_MV = addItem(334, "cover.solar.panel.mv");
+        COVER_SOLAR_PANEL_HV = addItem(335, "cover.solar.panel.hv");
+        COVER_SOLAR_PANEL_EV = addItem(336, "cover.solar.panel.ev");
+        COVER_SOLAR_PANEL_IV = addItem(337, "cover.solar.panel.iv");
+        COVER_SOLAR_PANEL_LUV = addItem(338, "cover.solar.panel.luv");
+        COVER_SOLAR_PANEL_ZPM = addItem(339, "cover.solar.panel.zpm");
+        COVER_SOLAR_PANEL_UV = addItem(340, "cover.solar.panel.uv");
+        // MAX-tier solar panel?
+
+        if (!ConfigHolder.U.GT5u.enableHighTierSolars) {
+            COVER_SOLAR_PANEL_IV.setInvisible();
+            COVER_SOLAR_PANEL_LUV.setInvisible();
+            COVER_SOLAR_PANEL_ZPM.setInvisible();
+            COVER_SOLAR_PANEL_UV.setInvisible();
+        }
 
         // Early Game Brick Related: ID 347-360
         IItemContainerItemProvider selfContainerItemProvider = itemStack -> itemStack;
