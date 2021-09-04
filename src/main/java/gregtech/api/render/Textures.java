@@ -127,7 +127,7 @@ public class Textures {
     public static final OrientedOverlayRenderer FLUID_SOLIDIFIER_OVERLAY = new OrientedOverlayRenderer("machines/fluid_solidifier", true, FRONT);
     public static final OrientedOverlayRenderer FORGE_HAMMER_OVERLAY = new OrientedOverlayRenderer("machines/forge_hammer", FRONT);
     public static final OrientedOverlayRenderer FORMING_PRESS_OVERLAY = new OrientedOverlayRenderer("machines/press", true, FRONT, SIDE, TOP);
-    public static final OrientedOverlayRenderer GAS_COLLECTOR_OVERLAY = new OrientedOverlayRenderer("machines/gas_collector", FRONT, SIDE, TOP, BOTTOM, BACK);
+    public static final OrientedOverlayRenderer GAS_COLLECTOR_OVERLAY = new OrientedOverlayRenderer("machines/gas_collector", true, FRONT, SIDE, TOP, BOTTOM, BACK);
     public static final OrientedOverlayRenderer LATHE_OVERLAY = new OrientedOverlayRenderer("machines/lathe", FRONT);
     public static final OrientedOverlayRenderer MIXER_OVERLAY = new OrientedOverlayRenderer("machines/mixer", FRONT, SIDE, TOP);
     public static final OrientedOverlayRenderer ORE_WASHER_OVERLAY = new OrientedOverlayRenderer("machines/ore_washer", true, FRONT, SIDE);
