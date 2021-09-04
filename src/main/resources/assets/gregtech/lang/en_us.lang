@@ -896,6 +896,59 @@ metaitem.voltage_coil.uxv.tooltip=UXV Coil
 metaitem.voltage_coil.max.name=Maximum Voltage Coil
 metaitem.voltage_coil.max.tooltip=Maximum Coil
 
+metaitem.liquid_fuel_jetpack.name=Liquid-Fueled Jetpack
+metaitem.impeller_jetpack.name=Thruster Jetpack
+metaitem.advanced_impeller_jetpack.name=Advanced Thruster Jetpack
+metaitem.battery_pack.lv.name=Battery Pack (§eLV§r)
+metaitem.battery_pack.mv.name=Battery Pack (§eMV§r)
+metaitem.battery_pack.hv.name=Battery Pack (§eHV§r)
+
+metaitem.nightvision_goggles.name=NightVision Goggles
+
+metaitem.nms.chestplate.name=NanoMuscle™ Suite Chestplate
+metaitem.nms.leggings.name=NanoMuscle™ Suite Leggings
+metaitem.nms.boots.name=NanoMuscle™ Suite Boots
+metaitem.nms.helmet.name=NanoMuscle™ Suite Helmet
+metaitem.nms.advanced_chestplate.name=Advanced NanoMuscle™ Suite Chestplate
+
+metaitem.qts.chestplate.name=QuarkTech™ Suite Chestplate
+metaitem.qts.leggings.name=QuarkTech™ Suite Leggings
+metaitem.qts.boots.name=QuarkTech™ Suite Boots
+metaitem.qts.helmet.name=QuarkTech™ Suite Helmet
+metaitem.qts.advanced_chestplate.name=Advanced QuarkTech™ Suite Chestplate
+
+metaitem.impeller.mv.name=Power Thruster
+metaitem.impeller.hv.name=Advanced Power Thruster
+metaitem.gravitation_engine.name=Gravitation Engine Unit
+
+metaarmor.nms.nightvision.enabled=NanoMuscle™ Suite: NightVision Enabled
+metaarmor.nms.nightvision.disabled=NanoMuscle™ Suite: NightVision Disabled
+
+metaarmor.qts.nightvision.enabled=QuarkTech™ Suite: NightVision Enabled
+metaarmor.qts.nightvision.disabled=QuarkTech™ Suite: NightVision Disabled
+
+metaarmor.jetpack.hover.enable=Jetpack: Hover Mode Enabled
+metaarmor.jetpack.hover.disable=Jetpack: Hover Mode Disabled
+
+metaarmor.message.nightvision.enabled=§bNightVision: §aOn
+metaarmor.message.nightvision.disabled=§bNightVision: §cOff
+metaarmor.message.nightvision.error=§cNot enough power!
+
+metaarmor.hud.status.enabled=§aON
+metaarmor.hud.status.disabled=§cOFF
+metaarmor.hud.energy_lvl=Energy level: %s
+metaarmor.hud.fuel_lvl=Fuel level: %s
+metaarmor.hud.hover_mode=Hover mode: %s
+mataarmor.hud.supply_mode=Supply mode: %s
+metaarmor.hud.fly_mode=Fly mode: %s
+metaarmor.hud.gravi_engine=GraviEngine: %s
+
+metaarmor.energy_share.enable=Energy Supply: Gadgets charging enabled
+metaarmor.energy_share.disable=Energy Supply: Gadgets charging disabled
+metaarmor.energy_share.tooltip=Supply mode: %s
+metaarmor.energy_share.tooltip.guide=To change mode shift-right click when holding item
+
+
 cover.filter.blacklist.disabled=Whitelist
 cover.filter.blacklist.enabled=Blacklist
 

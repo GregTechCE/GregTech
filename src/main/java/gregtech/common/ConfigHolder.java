@@ -173,6 +173,10 @@ public class ConfigHolder {
         @Config.Name("Energy Compatibility Options")
         public EnergyCompatibility energyOptions = new EnergyCompatibility();
 
+        @Config.Comment({"Configs for Armor and Tools", "Tiers are from ULV-0 to MAX-14"})
+        @Config.Name("Armor Options")
+        public Equipment equipment = new Equipment();
+
         @Config.Comment("Client configs for file path, rendering and so on")
         @Config.Name("Client Options")
         @Config.RequiresMcRestart
@@ -277,6 +281,66 @@ public class ConfigHolder {
 
             @Config.Comment("Whether or not to enable Emissive Textures for GregTech Machines. Default: true")
             public boolean emissiveTextures = true;
+        }
+
+        public static class ArmorHud {
+            @Config.Comment({"Sets HUD location", "1 - left-upper corner", "2 - right-upper corner", "3 - left-bottom corner", "4 - right-bottom corner"})
+            public byte hudLocation = 1;
+            @Config.Comment("Horizontal offset of HUD [0 ~ 100)")
+            public byte hudOffsetX = 0;
+            @Config.Comment("Vertical offset of HUD [0 ~ 100)")
+            public byte hudOffsetY = 0;
+
+        }
+
+        public static class Equipment {
+            @Config.Comment("NightVision Goggles Voltage Tier. Default: 2 (LV)")
+            @Config.RangeInt(min = 0, max = 14)
+            public int voltageTierNightVision = 2;
+
+            @Config.Comment("NanoSuit Voltage Tier. Default: 3 (MV)")
+            @Config.RangeInt(min = 0, max = 14)
+            public int voltageTierNanoSuit = 3;
+
+            @Config.Comment("Advanced NanoSuit Chestplate Voltage Tier. Default: 4 (EV)")
+            @Config.RangeInt(min = 0, max = 14)
+            public int voltageTierAdvNanoSuit = 4;
+
+            @Config.Comment("QuarkTech Suit Voltage Tier. Default: 5 (IV)")
+            @Config.RangeInt(min = 0, max = 14)
+            public int voltageTierQuarkTech = 5;
+
+            @Config.Comment("Advanced QuarkTech Suit Chestplate Voltage Tier. Default: 5 (IV)")
+            @Config.RangeInt(min = 0, max = 14)
+            public int voltageTierAdvQuarkTech = 5;
+
+            @Config.Comment("Impeller Jetpack Voltage Tier. Default: 2 (MV)")
+            @Config.RangeInt(min = 0, max = 14)
+            public int voltageTierImpeller = 2;
+
+            @Config.Comment("Advanced Impeller Jetpack Voltage Tier. Default: 3 (HV)")
+            @Config.RangeInt(min = 0, max = 14)
+            public int voltageTierAdvImpeller = 3;
+
+            @Config.Name("BatPack Options")
+            public BatPack batpack = new BatPack();
+
+            @Config.Comment("Armor HUD Location")
+            public ArmorHud armorHud = new ArmorHud();
+        }
+
+        public static class BatPack {
+            @Config.Comment("Total LV BatPack capacity. Default: 600,000")
+            @Config.RangeInt(min = 0)
+            public int capacityLV = 600000;
+
+            @Config.Comment("Total MV BatPack capacity. Default: 2,400,000")
+            @Config.RangeInt(min = 0)
+            public int capacityMV = 2400000;
+
+            @Config.Comment("Total HV BatPack capacity. Default: 9,600,000")
+            @Config.RangeInt(min = 0)
+            public int capacityHV = 9600000;
         }
     }
 }

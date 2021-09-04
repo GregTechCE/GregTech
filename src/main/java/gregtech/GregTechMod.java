@@ -18,11 +18,9 @@ import gregtech.api.unification.material.Materials;
 import gregtech.api.util.AnnotatedMaterialHandlerLoader;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.NBTUtil;
+import gregtech.api.util.input.Keybinds;
 import gregtech.api.worldgen.config.WorldGenRegistry;
-import gregtech.common.CommonProxy;
-import gregtech.common.ConfigHolder;
-import gregtech.common.MetaEntities;
-import gregtech.common.MetaFluids;
+import gregtech.common.*;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.blocks.modelfactories.BlockCompressedFactory;
 import gregtech.common.blocks.modelfactories.BlockFrameFactory;
@@ -41,6 +39,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.SimpleReloadableResourceManager;
 import gregtech.loaders.recipe.component.AnnotatedComponentHandlerLoader;
 import net.minecraftforge.classloading.FMLForgePlugin;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.LoaderException;
@@ -78,8 +77,10 @@ public class GregTechMod {
 
     @Mod.EventHandler
     public void onPreInit(FMLPreInitializationEvent event) {
-        GTLog.init(event.getModLog());
         NetworkHandler.init();
+
+        MinecraftForge.EVENT_BUS.register(new EventHandlers());
+        GTLog.init(event.getModLog());
         MetaTileEntityUIFactory.INSTANCE.init();
         PlayerInventoryUIFactory.INSTANCE.init();
         CoverBehaviorUIFactory.INSTANCE.init();
@@ -94,6 +95,7 @@ public class GregTechMod {
         if (GTValues.isModLoaded(GTValues.MODID_CT)) {
             GTLog.logger.info("Running early CraftTweaker initialization scripts...");
             runEarlyCraftTweakerScripts();
+            MinecraftForge.EVENT_BUS.register(this);
         }
 
         //freeze material registry before processing items, blocks and fluids
@@ -112,6 +114,7 @@ public class GregTechMod {
         AnnotatedComponentHandlerLoader.discoverAndLoadAnnotatedComponentHandlers(event.getAsmData());
 
         proxy.onPreLoad();
+        Keybinds.register();
     }
 
     @Mod.EventHandler
