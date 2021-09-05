@@ -16,7 +16,7 @@ public class FluidProperty implements IMaterialProperty<FluidProperty> {
     private Fluid fluid;
 
     private boolean hasBlock;
-    private final boolean isGas;
+    private boolean isGas;
     private int fluidTemperature = BASE_TEMP;
 
     public FluidProperty(boolean isGas, boolean hasBlock) {
@@ -49,6 +49,14 @@ public class FluidProperty implements IMaterialProperty<FluidProperty> {
 
     public boolean hasBlock() {
         return hasBlock;
+    }
+
+    public void setHasBlock(boolean hasBlock) {
+        this.hasBlock = hasBlock;
+    }
+
+    public void setIsGas(boolean isGas) {
+        this.isGas = isGas;
     }
 
     @Nonnull

@@ -28,4 +28,8 @@ public class CTMaterialHelpers {
     protected static void logError(Material m, String cause, String type) {
         CraftTweakerAPI.logError("Cannot " + cause + " of a Material with no " + type + "! Try calling \"add" + type + "\" in your \"#loader gregtech\" file first if this is intentional. Material: " + m.getUnlocalizedName());
     }
+
+    protected static void logPropertyExists(Material m, String propName) {
+        CraftTweakerAPI.logWarning("Material " + m.getUnlocalizedName() + " has " + propName + " already. Skipping...");
+    }
 }
