@@ -28,6 +28,7 @@ public class BlastProperty implements IMaterialProperty<BlastProperty> {
     }
 
     public void setBlastTemperature(int blastTemp) {
+        if (blastTemp <= 0) throw new IllegalArgumentException("Blast Temperature must be greater than zero!");
         this.blastTemperature = blastTemp;
     }
 

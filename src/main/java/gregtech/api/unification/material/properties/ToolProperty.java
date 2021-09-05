@@ -13,28 +13,28 @@ public class ToolProperty implements IMaterialProperty<ToolProperty> {
      * <p>
      * Default:
      */
-    public final float toolSpeed;
+    private float toolSpeed;
 
     /**
      * Attack damage of tools made from this Material
      * <p>
      * Default:
      */
-    public final float toolAttackDamage;
+    private float toolAttackDamage;
 
     /**
      * Durability of tools made from this Material.
      * <p>
      * Default:
      */
-    public final int toolDurability;
+    private int toolDurability;
 
     /**
      * Enchantability of tools made from this Material.
      * <p>
      * Default:
      */
-    public final int toolEnchantability;
+    private int toolEnchantability;
 
     /**
      * Enchantment to be applied to tools made from this Material.
@@ -55,6 +55,42 @@ public class ToolProperty implements IMaterialProperty<ToolProperty> {
      */
     public ToolProperty() {
         this(1.0f, 1.0f, 100, 10);
+    }
+
+    public float getToolSpeed() {
+        return toolSpeed;
+    }
+
+    public void setToolSpeed(float toolSpeed) {
+        if (toolSpeed <= 0) throw new IllegalArgumentException("Tool Speed must be greater than zero!");
+        this.toolSpeed = toolSpeed;
+    }
+
+    public float getToolAttackDamage() {
+        return toolAttackDamage;
+    }
+
+    public void setToolAttackDamage(float toolAttackDamage) {
+        if (toolAttackDamage <= 0) throw new IllegalArgumentException("Tool Attack Damage must be greater than zero!");
+        this.toolAttackDamage = toolAttackDamage;
+    }
+
+    public int getToolDurability() {
+        return toolDurability;
+    }
+
+    public void setToolDurability(int toolDurability) {
+        if (toolDurability <= 0) throw new IllegalArgumentException("Tool Durability must be greater than zero!");
+        this.toolDurability = toolDurability;
+    }
+
+    public int getToolEnchantability() {
+        return toolEnchantability;
+    }
+
+    public void setToolEnchantability(int toolEnchantability) {
+        if (toolEnchantability <= 0) throw new IllegalArgumentException("Tool Enchantability must be greater than zero!");
+        this.toolEnchantability = toolEnchantability;
     }
 
     @Override

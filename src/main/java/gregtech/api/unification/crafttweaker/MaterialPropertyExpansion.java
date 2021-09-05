@@ -14,7 +14,10 @@ import static gregtech.api.unification.crafttweaker.CTMaterialHelpers.*;
 @SuppressWarnings("unused")
 public class MaterialPropertyExpansion {
 
-    // Property Checkers
+    /////////////////////////////////////
+    //        Property Checkers        //
+    /////////////////////////////////////
+
     @ZenMethod
     public static boolean hasBlastTemp(Material m) {
         return m.hasProperty(PropertyKey.BLAST);
@@ -70,7 +73,10 @@ public class MaterialPropertyExpansion {
         return m.hasProperty(PropertyKey.WIRE);
     }
 
-    // Property Setters
+    ////////////////////////////////////
+    //        Property Setters        //
+    ////////////////////////////////////
+
     @ZenMethod
     public static void addBlastTemp(Material m, int blastTemp) {
         if (checkFrozen("add blast temperature")) return;
@@ -118,5 +124,43 @@ public class MaterialPropertyExpansion {
     public static void addIngot(Material m) {
         if (checkFrozen("add an Ingot to a material")) return;
         if (!m.hasProperty(PropertyKey.INGOT)) m.setProperty(PropertyKey.INGOT, new IngotProperty());
+    }
+
+    @ZenMethod
+    public static void addItemPipes(Material m, int priority, float transferRate) {
+        if (checkFrozen("add Item Pipes to a material")) return;
+        if (m.hasProperty(PropertyKey.ITEM_PIPE)) {
+            m.getProperty(PropertyKey.ITEM_PIPE).priority = priority;
+            m.getProperty(PropertyKey.ITEM_PIPE).transferRate = transferRate;
+        } else m.setProperty(PropertyKey.ITEM_PIPE, new ItemPipeProperties(priority, transferRate));
+    }
+
+    @ZenMethod
+    public static void addPlasma(Material m) {
+        if (checkFrozen("add a Plasma to a material")) return;
+        if (!m.hasProperty(PropertyKey.PLASMA)) m.setProperty(PropertyKey.PLASMA, new PlasmaProperty());
+    }
+
+    @ZenMethod
+    public static void addTools(Material m, float toolSpeed, float toolAttackDamage, int toolDurability, @Optional int toolEnchantability) {
+        if (checkFrozen("add Tools to a material")) return;
+        if (toolEnchantability == 0) toolEnchantability = 10;
+        if (m.hasProperty(PropertyKey.TOOL)) {
+            m.getProperty(PropertyKey.TOOL).setToolSpeed(toolSpeed);
+            m.getProperty(PropertyKey.TOOL).setToolAttackDamage(toolAttackDamage);
+            m.getProperty(PropertyKey.TOOL).setToolDurability(toolDurability);
+            m.getProperty(PropertyKey.TOOL).setToolEnchantability(toolEnchantability);
+        } else m.setProperty(PropertyKey.TOOL, new ToolProperty(toolSpeed, toolAttackDamage, toolDurability, toolEnchantability));
+    }
+
+    @ZenMethod
+    public static void addWires(Material m, int voltage, int baseAmperage, int lossPerBlock, @Optional boolean isSuperCon) {
+        if (checkFrozen("add Wires to a material")) return;
+        if (m.hasProperty(PropertyKey.WIRE)) {
+            m.getProperty(PropertyKey.WIRE).voltage = voltage;
+            m.getProperty(PropertyKey.WIRE).amperage = baseAmperage;
+            m.getProperty(PropertyKey.WIRE).lossPerBlock = lossPerBlock;
+            m.getProperty(PropertyKey.WIRE).isSuperconductor = isSuperCon;
+        } else m.setProperty(PropertyKey.WIRE, new WireProperties(voltage, baseAmperage, lossPerBlock, isSuperCon));
     }
 }

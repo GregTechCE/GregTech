@@ -25,7 +25,10 @@ import static gregtech.api.unification.crafttweaker.CTMaterialHelpers.logError;
 @SuppressWarnings("unused")
 public class MaterialExpansion {
 
-    // Basic Material methods
+    ////////////////////////////////////
+    //        Material Methods        //
+    ////////////////////////////////////
+
     @ZenMethod
     public static void setFormula(Material m, String formula, @Optional boolean withFormatting) {
         if (checkFrozen("set material chemical formula")) return;
@@ -43,7 +46,10 @@ public class MaterialExpansion {
         m.setMaterialIconSet(MaterialIconSet.getByName(iconSetName));
     }
 
-    // Fluid Property
+    ////////////////////////////////////
+    //         Fluid Property         //
+    ////////////////////////////////////
+
     @ZenMethod
     public static boolean hasFluid(Material m) { // todo move?
         return m.hasProperty(PropertyKey.FLUID);
@@ -84,7 +90,10 @@ public class MaterialExpansion {
         return null;
     }
 
-    // Dust Property
+    ///////////////////////////////////
+    //         Dust Property         //
+    ///////////////////////////////////
+
     @ZenGetter("harvestLevel")
     public static int harvestLevel(Material m) {
         DustProperty prop = m.getProperty(PropertyKey.DUST);
@@ -121,7 +130,9 @@ public class MaterialExpansion {
         } else logError(m, "set the burn time", "Dust");
     }
 
-    // Ingot Property todo
+    ////////////////////////////////////
+    //         Ingot Property         //
+    ////////////////////////////////////
 
     // Plasma Property
     @ZenGetter("plasma")
@@ -134,12 +145,15 @@ public class MaterialExpansion {
         return null;
     }
 
-    // Tool Property
+    ///////////////////////////////////
+    //         Tool Property         //
+    ///////////////////////////////////
+
     @ZenGetter("toolSpeed")
     public static float toolSpeed(Material m) {
         ToolProperty prop = m.getProperty(PropertyKey.TOOL);
         if (prop != null) {
-            return prop.toolSpeed;
+            return prop.getToolSpeed();
         } else logError(m, "get the tool speed", "Tool");
         return 0;
     }
@@ -148,7 +162,7 @@ public class MaterialExpansion {
     public static float attackDamage(Material m) {
         ToolProperty prop = m.getProperty(PropertyKey.TOOL);
         if (prop != null) {
-            return prop.toolAttackDamage;
+            return prop.getToolAttackDamage();
         } else logError(m, "get the tool attack damage", "Tool");
         return 0;
     }
@@ -157,7 +171,7 @@ public class MaterialExpansion {
     public static int toolDurability(Material m) {
         ToolProperty prop = m.getProperty(PropertyKey.TOOL);
         if (prop != null) {
-            return prop.toolDurability;
+            return prop.getToolDurability();
         } else logError(m, "get the tool durability", "Tool");
         return 0;
     }
@@ -166,7 +180,7 @@ public class MaterialExpansion {
     public static int toolEnchant(Material m) {
         ToolProperty prop = m.getProperty(PropertyKey.TOOL);
         if (prop != null) {
-            return prop.toolEnchantability;
+            return prop.getToolEnchantability();
         } else logError(m, "get the tool enchantability", "Tool");
         return 0;
     }
@@ -184,7 +198,10 @@ public class MaterialExpansion {
 
     // Wire/Item Pipe/Fluid Pipe stuff?
 
-    // Blast Property
+    ////////////////////////////////////
+    //         Blast Property         //
+    ////////////////////////////////////
+
     @ZenMethod
     public static void setBlastTemp(Material m, int blastTemp) {
         if (checkFrozen("set blast temperature")) return;
