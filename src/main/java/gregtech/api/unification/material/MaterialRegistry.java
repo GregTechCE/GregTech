@@ -1,11 +1,18 @@
 package gregtech.api.unification.material;
 
+import com.google.common.collect.Lists;
+import crafttweaker.annotations.ZenRegister;
 import gregtech.api.util.GTControlledRegistry;
 import gregtech.api.util.GTLog;
+import stanhebben.zenscript.annotations.ZenClass;
+import stanhebben.zenscript.annotations.ZenMethod;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+@ZenClass("mods.gregtech.material.MaterialRegistry")
+@ZenRegister
 public class MaterialRegistry {
 
     private MaterialRegistry() {
@@ -38,5 +45,16 @@ public class MaterialRegistry {
 
     public static void register(Material material) {
         DEFERRED_REGISTRY.add(material);
+    }
+
+    @ZenMethod
+    @Nullable
+    public static Material get(String name) {
+        return MATERIAL_REGISTRY.getObject(name);
+    }
+
+    @ZenMethod
+    public static List<Material> getAllMaterials() {
+        return Lists.newArrayList(MATERIAL_REGISTRY);
     }
 }
