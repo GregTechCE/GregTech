@@ -1,17 +1,11 @@
 package gregtech.api.unification.material.properties;
 
 import com.google.common.base.Preconditions;
-import crafttweaker.api.liquid.ILiquidDefinition;
-import crafttweaker.api.minecraft.CraftTweakerMC;
-import gregtech.api.GTValues;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.common.Optional;
 
 import javax.annotation.Nonnull;
 
-//@ZenClass("mods.gregtech.material.FluidMaterial")
-//@ZenRegister
 public class FluidProperty implements IMaterialProperty<FluidProperty> {
 
     public static final int BASE_TEMP = 300;
@@ -37,12 +31,6 @@ public class FluidProperty implements IMaterialProperty<FluidProperty> {
         this(false, false);
     }
 
-    //@ZenGetter("hasFluid")
-    public boolean shouldGenerateFluid() {
-        return true;
-    }
-
-    //@ZenGetter("isGaseous")
     public boolean isGas() {
         return isGas;
     }
@@ -68,22 +56,13 @@ public class FluidProperty implements IMaterialProperty<FluidProperty> {
         return new FluidStack(fluid, amount);
     }
 
-    //@ZenMethod("setFluidTemperature")
     public void setFluidTemperature(int fluidTemperature) {
         Preconditions.checkArgument(fluidTemperature > 0, "Invalid temperature");
         this.fluidTemperature = fluidTemperature;
     }
 
-    //@ZenGetter("fluidTemperature")
     public int getFluidTemperature() {
         return fluidTemperature;
-    }
-
-    //@ZenGetter("fluid")
-    @Optional.Method(modid = GTValues.MODID_CT)
-    @Nonnull
-    public ILiquidDefinition ctGetFluid() {
-        return CraftTweakerMC.getILiquidDefinition(fluid);
     }
 
     @Override

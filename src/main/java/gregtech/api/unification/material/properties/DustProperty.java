@@ -1,7 +1,5 @@
 package gregtech.api.unification.material.properties;
 
-//@ZenClass("mods.gregtech.material.DustMaterial")
-//@ZenRegister
 public class DustProperty implements IMaterialProperty<DustProperty> {
 
     /**
@@ -9,7 +7,6 @@ public class DustProperty implements IMaterialProperty<DustProperty> {
      * <p>
      * Default: 2 (Iron).
      */
-    //@ZenProperty
     private int harvestLevel;
 
     /**
@@ -18,7 +15,6 @@ public class DustProperty implements IMaterialProperty<DustProperty> {
      * <p>
      * Default: 0.
      */
-    //@ZenProperty
     private int burnTime;
 
     public DustProperty(int harvestLevel, int burnTime) {
@@ -33,7 +29,6 @@ public class DustProperty implements IMaterialProperty<DustProperty> {
         this(2, 0);
     }
 
-    //@ZenMethod
     public void setHarvestLevel(int harvestLevel) {
         this.harvestLevel = harvestLevel;
     }

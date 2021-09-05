@@ -1,17 +1,18 @@
 package gregtech.api.unification.crafttweaker;
 
-import com.google.common.collect.ImmutableList;
 import crafttweaker.annotations.ZenRegister;
 import gregtech.api.unification.Element;
 import gregtech.api.unification.Elements;
 import gregtech.api.unification.material.Material;
-import gregtech.api.unification.material.Material.FluidType;
 import gregtech.api.unification.material.info.MaterialFlag;
 import gregtech.api.unification.material.info.MaterialIconSet;
 import gregtech.api.unification.stack.MaterialStack;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
+
+import static gregtech.api.unification.crafttweaker.CTMaterialHelpers.validateComponentList;
+import static gregtech.api.unification.crafttweaker.CTMaterialHelpers.validateFluidType;
 
 @ZenClass("mods.gregtech.material.MaterialBuilder")
 @ZenRegister
@@ -162,15 +163,5 @@ public class CTMaterialBuilder {
     @ZenMethod
     public Material build() {
         return backingBuilder.build();
-    }
-
-    private static ImmutableList<MaterialStack> validateComponentList(MaterialStack[] components) {
-        return components == null || components.length == 0 ? ImmutableList.of() : ImmutableList.copyOf(components);
-    }
-
-    private static FluidType validateFluidType(String fluidTypeName) {
-        if (fluidTypeName == null || fluidTypeName.equals("fluid")) return FluidType.FLUID;
-        else if (fluidTypeName.equals("gas")) return FluidType.GAS;
-        else throw new IllegalArgumentException("Fluid Type must be either \"fluid\" or \"gas\"!");
     }
 }

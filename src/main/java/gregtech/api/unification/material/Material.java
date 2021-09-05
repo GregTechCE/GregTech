@@ -3,6 +3,7 @@ package gregtech.api.unification.material;
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+import crafttweaker.annotations.ZenRegister;
 import gregtech.api.unification.Element;
 import gregtech.api.unification.Elements;
 import gregtech.api.unification.material.info.MaterialFlag;
@@ -15,8 +16,7 @@ import gregtech.api.util.SmallDigits;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-import stanhebben.zenscript.annotations.OperatorType;
-import stanhebben.zenscript.annotations.ZenOperator;
+import stanhebben.zenscript.annotations.*;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -24,8 +24,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-//@ZenClass("mods.gregtech.material.Material")
-//@ZenRegister
+@ZenClass("mods.gregtech.material.Material")
+@ZenRegister
 public class Material implements Comparable<Material> {
 
     /**
@@ -72,7 +72,7 @@ public class Material implements Comparable<Material> {
         return "";
     }
 
-    //@ZenGetter
+    @ZenGetter
     public String getChemicalFormula() {
         return chemicalFormula;
     }
@@ -111,13 +111,13 @@ public class Material implements Comparable<Material> {
         MaterialRegistry.register(this);
     }
 
+    @ZenMethod
     public void addFlag(MaterialFlag... flags) {
         if (MaterialRegistry.isFrozen())
             throw new IllegalStateException("Cannot add flag to material when registry is frozen!");
         this.flags.addFlags(flags).verify(this);
     }
 
-    //@ZenMethod("hasFlagRaw")
     public boolean hasFlag(MaterialFlag flag) {
         return flags.hasFlag(flag);
     }
@@ -125,12 +125,6 @@ public class Material implements Comparable<Material> {
     public boolean hasFlags(MaterialFlag... flags) {
         return Arrays.stream(flags).allMatch(this::hasFlag);
     }
-
-    //@ZenMethod
-    //public boolean hasFlag(String flagName) {
-    //    long materialFlagId = MaterialFlags.resolveFlag(flagName, getClass());
-    //    return hasFlag(materialFlagId);
-    //}
 
     protected void calculateDecompositionType() {
         if (!materialInfo.componentList.isEmpty() &&
@@ -168,17 +162,16 @@ public class Material implements Comparable<Material> {
         return getProperty(PropertyKey.DUST).getHarvestLevel();
     }
 
-    //@ZenMethod
+    @ZenMethod
     public void setMaterialRGB(int materialRGB) {
         materialInfo.color = materialRGB;
     }
 
-    //@ZenGetter
+    @ZenGetter
     public int getMaterialRGB() {
         return materialInfo.color;
     }
 
-    //@ZenMethod
     public void setMaterialIconSet(MaterialIconSet materialIconSet) {
         materialInfo.iconSet = materialIconSet;
     }
@@ -187,7 +180,7 @@ public class Material implements Comparable<Material> {
         return materialInfo.iconSet;
     }
 
-    //@ZenGetter("radioactive")
+    @ZenGetter("radioactive")
     public boolean isRadioactive() {
         if (materialInfo.element != null)
             return materialInfo.element.halfLifeSeconds >= 0;
@@ -196,7 +189,7 @@ public class Material implements Comparable<Material> {
         return false;
     }
 
-    //@ZenGetter("protons")
+    @ZenGetter("protons")
     public long getProtons() {
         if (materialInfo.element != null)
             return materialInfo.element.getProtons();
@@ -209,7 +202,7 @@ public class Material implements Comparable<Material> {
         return totalProtons;
     }
 
-    //@ZenGetter("neutrons")
+    @ZenGetter("neutrons")
     public long getNeutrons() {
         if (materialInfo.element != null)
             return materialInfo.element.getNeutrons();
@@ -222,7 +215,7 @@ public class Material implements Comparable<Material> {
         return totalNeutrons;
     }
 
-    //@ZenGetter("mass")
+    @ZenGetter("mass")
     public long getMass() {
         if (materialInfo.element != null)
             return materialInfo.element.getMass();
@@ -235,7 +228,7 @@ public class Material implements Comparable<Material> {
         return totalMass;
     }
 
-    //@ZenGetter("averageProtons")
+    @ZenGetter("averageProtons")
     public long getAverageProtons() {
         if (materialInfo.element != null)
             return materialInfo.element.getProtons();
@@ -249,7 +242,7 @@ public class Material implements Comparable<Material> {
         return totalProtons / totalAmount;
     }
 
-    //@ZenGetter("averageNeutrons")
+    @ZenGetter("averageNeutrons")
     public long getAverageNeutrons() {
         if (materialInfo.element != null)
             return materialInfo.element.getNeutrons();
@@ -264,7 +257,7 @@ public class Material implements Comparable<Material> {
     }
 
 
-    //@ZenGetter("averageMass")
+    @ZenGetter("averageMass")
     public long getAverageMass() {
         if (materialInfo.element != null)
             return materialInfo.element.getMass();
@@ -278,7 +271,7 @@ public class Material implements Comparable<Material> {
         return totalMass / totalAmount;
     }
 
-    //@ZenGetter("blastTemperature")
+    @ZenGetter("blastTemperature")
     public int getBlastTemperature() {
         BlastProperty prop = properties.getProperty(PropertyKey.BLAST);
         return prop == null ? 0 : prop.getBlastTemperature();
@@ -289,29 +282,29 @@ public class Material implements Comparable<Material> {
         return prop == null ? null : prop.getPlasma(amount);
     }
 
-    //@ZenGetter("camelCaseName")
+    @ZenGetter("camelCaseName")
     public String toCamelCaseString() {
         return CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, toString());
     }
 
-    //@ZenGetter("unlocalizedName")
+    @ZenGetter("unlocalizedName")
     public String getUnlocalizedName() {
         return "material." + materialInfo.name;
     }
 
-    //@ZenGetter("localizedName")
+    @ZenGetter("localizedName")
     public String getLocalizedName() {
         return LocalizationUtils.format(getUnlocalizedName());
     }
 
     @Override
-    //@ZenMethod
+    @ZenMethod
     public int compareTo(Material material) {
         return toString().compareTo(material.toString());
     }
 
     @Override
-    //@ZenGetter("name")
+    @ZenGetter("name")
     public String toString() {
         return materialInfo.name;
     }
