@@ -376,7 +376,7 @@ public class Material implements Comparable<Material> {
         /*
          * The temporary list of components for this Material.
          */
-        private final List<MaterialStack> composition = new ArrayList<>();
+        private List<MaterialStack> composition = new ArrayList<>();
 
         /*
          * Temporary value to use to determine how to calculate default RGB
@@ -584,6 +584,16 @@ public class Material implements Comparable<Material> {
             return this;
         }
 
+        public Builder burnTime(int burnTime) {
+            DustProperty prop = properties.getProperty(PropertyKey.DUST);
+            if (prop == null) {
+                dust();
+                prop = properties.getProperty(PropertyKey.DUST);
+            }
+            prop.setBurnTime(burnTime);
+            return this;
+        }
+
         /**
          * Set the Color of this Material.<br>
          * Defaults to 0xFFFFFF unless {@link Builder#colorAverage()} was called, where
@@ -636,6 +646,11 @@ public class Material implements Comparable<Material> {
                         (Integer) components[i + 1]
                 ));
             }
+            return this;
+        }
+
+        public Builder components(ImmutableList<MaterialStack> components) {
+            composition = components;
             return this;
         }
 
