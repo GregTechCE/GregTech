@@ -1,18 +1,20 @@
 package gregtech.api.unification.crafttweaker;
 
 import crafttweaker.annotations.ZenRegister;
+import crafttweaker.api.enchantments.IEnchantment;
+import gregtech.api.GTValues;
 import gregtech.api.unification.Element;
 import gregtech.api.unification.Elements;
 import gregtech.api.unification.material.Material;
 import gregtech.api.unification.material.info.MaterialFlag;
 import gregtech.api.unification.material.info.MaterialIconSet;
 import gregtech.api.unification.stack.MaterialStack;
+import net.minecraft.enchantment.Enchantment;
 import stanhebben.zenscript.annotations.Optional;
 import stanhebben.zenscript.annotations.ZenClass;
 import stanhebben.zenscript.annotations.ZenMethod;
 
-import static gregtech.api.unification.crafttweaker.CTMaterialHelpers.validateComponentList;
-import static gregtech.api.unification.crafttweaker.CTMaterialHelpers.validateFluidType;
+import static gregtech.api.unification.crafttweaker.CTMaterialHelpers.*;
 
 @ZenClass("mods.gregtech.material.MaterialBuilder")
 @ZenRegister
@@ -133,12 +135,99 @@ public class CTMaterialBuilder {
     }
 
     @ZenMethod
+    public CTMaterialBuilder washedIn(String name, @Optional int washedAmount) {
+        return washedIn(validateMaterialName(name), washedAmount);
+    }
+
+    @ZenMethod
+    public CTMaterialBuilder washedIn(Material m, @Optional int washedAmount) {
+        if (washedAmount == 0) washedAmount = 100;
+        if (m != null) backingBuilder.washedIn(m, washedAmount);
+        return this;
+    }
+
+    @ZenMethod
+    public CTMaterialBuilder separatedInto(String... names) {
+        return separatedInto(validateMaterialNames("separatedInto", names));
+    }
+
+    @ZenMethod
+    public CTMaterialBuilder separatedInto(Material... materials) {
+        if (materials != null) backingBuilder.separatedInto(materials);
+        return this;
+    }
+
+    @ZenMethod
+    public CTMaterialBuilder addOreByproducts(String... names) {
+        return addOreByproducts(validateMaterialNames("addOreByproducts", names));
+    }
+
+    @ZenMethod
+    public CTMaterialBuilder addOreByproducts(Material... materials) {
+        if (materials != null) backingBuilder.addOreByproducts(materials);
+        return this;
+    }
+
+    @ZenMethod
+    public CTMaterialBuilder oreSmeltInto(String name) {
+        return oreSmeltInto(validateMaterialName(name));
+    }
+
+    @ZenMethod
+    public CTMaterialBuilder oreSmeltInto(Material m) {
+        if (m != null) backingBuilder.oreSmeltInto(m);
+        return this;
+    }
+
+    @ZenMethod
+    public CTMaterialBuilder polarizesInto(String name) {
+        return polarizesInto(validateMaterialName(name));
+    }
+
+    @ZenMethod
+    public CTMaterialBuilder polarizesInto(Material m) {
+        if (m != null) backingBuilder.polarizesInto(m);
+        return this;
+    }
+
+    @ZenMethod
+    public CTMaterialBuilder arcSmeltInto(String name) {
+        return arcSmeltInto(validateMaterialName(name));
+    }
+
+    @ZenMethod
+    public CTMaterialBuilder arcSmeltInto(Material m) {
+        if (m != null) backingBuilder.arcSmeltInto(m);
+        return this;
+    }
+
+    @ZenMethod
+    public CTMaterialBuilder macerateInto(String name) {
+        return macerateInto(validateMaterialName(name));
+    }
+
+    @ZenMethod
+    public CTMaterialBuilder macerateInto(Material m) {
+        if (m != null) backingBuilder.macerateInto(m);
+        return this;
+    }
+
+    @ZenMethod
+    public CTMaterialBuilder ingotSmeltInto(String name) {
+        return ingotSmeltInto(validateMaterialName(name));
+    }
+
+    @ZenMethod
+    public CTMaterialBuilder ingotSmeltInto(Material m) {
+        if (m != null) backingBuilder.ingotSmeltInto(m);
+        return this;
+    }
+
+    @ZenMethod
     public CTMaterialBuilder fluidTemp(int temp) {
         backingBuilder.fluidTemp(temp);
         return this;
     }
-
-    // TODO Ore stuff
 
     @ZenMethod
     public CTMaterialBuilder cableProperties(long voltage, int amperage, int loss, @Optional boolean isSuperCon) {
@@ -158,7 +247,13 @@ public class CTMaterialBuilder {
         return this;
     }
 
-    // TODO Default enchant?
+    @ZenMethod
+    @net.minecraftforge.fml.common.Optional.Method(modid = GTValues.MODID_CT)
+    public CTMaterialBuilder addDefaultEnchant(IEnchantment enchantment) {
+        Enchantment enchantmentType = (Enchantment) enchantment.getDefinition().getInternal();
+        backingBuilder.addDefaultEnchant(enchantmentType, enchantment.getLevel());
+        return this;
+    }
 
     @ZenMethod
     public Material build() {

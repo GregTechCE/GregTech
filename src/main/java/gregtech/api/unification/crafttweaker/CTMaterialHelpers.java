@@ -6,6 +6,9 @@ import gregtech.api.unification.material.Material;
 import gregtech.api.unification.material.MaterialRegistry;
 import gregtech.api.unification.stack.MaterialStack;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 public class CTMaterialHelpers {
 
     protected static ImmutableList<MaterialStack> validateComponentList(MaterialStack[] components) {
@@ -21,6 +24,21 @@ public class CTMaterialHelpers {
         }
     }
 
+    protected static Material[] validateMaterialNames(String methodName, String... names) {
+        Material[] materials = Arrays.stream(names).map(MaterialRegistry::get).toArray(Material[]::new);
+        if (Arrays.stream(materials).anyMatch(Objects::isNull)) {
+            logNullMaterial(methodName);
+            return null;
+        }
+        return materials;
+    }
+
+    protected static Material validateMaterialName(String name) {
+        Material m = MaterialRegistry.get(name);
+        if (m == null) logBadMaterialName(name);
+        return m;
+    }
+
     protected static boolean checkFrozen(String description) {
         if (MaterialRegistry.isFrozen()) {
             CraftTweakerAPI.logError("Cannot " + description + " now, must be done in a file labeled with \"#loader gregtech\"");
@@ -34,5 +52,13 @@ public class CTMaterialHelpers {
 
     protected static void logPropertyExists(Material m, String propName) {
         CraftTweakerAPI.logWarning("Material " + m.getUnlocalizedName() + " has " + propName + " already. Skipping...");
+    }
+
+    protected static void logBadMaterialName(String name) {
+        CraftTweakerAPI.logError("Material with name " + name + " does not exist! If this is a Material added by CT, try passing the Material directly instead of as a String");
+    }
+
+    protected static void logNullMaterial(String methodName) {
+        CraftTweakerAPI.logError("Null Material passed to Builder method " + methodName + "!");
     }
 }
