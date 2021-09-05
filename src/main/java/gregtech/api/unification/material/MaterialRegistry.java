@@ -22,12 +22,12 @@ public class MaterialRegistry {
 
     private static List<Material> DEFERRED_REGISTRY = new ArrayList<>();
 
-    public static void freeze() {
-        GTLog.logger.info("Freezing material registry...");
+    public static void finalizeMaterials(boolean shouldFreeze) {
+        if (shouldFreeze) GTLog.logger.info("Freezing material registry...");
         DEFERRED_REGISTRY.forEach(MaterialRegistry::finalizeRegistry);
         DEFERRED_REGISTRY.forEach(MaterialRegistry::postVerify);
-        DEFERRED_REGISTRY = null; // destroy the deferred registry
-        MATERIAL_REGISTRY.freezeRegistry();
+        DEFERRED_REGISTRY = shouldFreeze ? null : new ArrayList<>(); // destroy the deferred registry
+        if (shouldFreeze) MATERIAL_REGISTRY.freezeRegistry();
     }
 
     public static boolean isFrozen() {

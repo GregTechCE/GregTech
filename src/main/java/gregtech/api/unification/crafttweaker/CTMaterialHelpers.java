@@ -15,7 +15,10 @@ public class CTMaterialHelpers {
     protected static Material.FluidType validateFluidType(String fluidTypeName) {
         if (fluidTypeName == null || fluidTypeName.equals("fluid")) return Material.FluidType.FLUID;
         else if (fluidTypeName.equals("gas")) return Material.FluidType.GAS;
-        else throw new IllegalArgumentException("Fluid Type must be either \"fluid\" or \"gas\"!");
+        else {
+            CraftTweakerAPI.logError("Fluid Type must be either \"fluid\" or \"gas\"!");
+            throw new IllegalArgumentException();
+        }
     }
 
     protected static boolean checkFrozen(String description) {
