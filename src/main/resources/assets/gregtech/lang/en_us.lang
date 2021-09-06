@@ -2201,6 +2201,9 @@ gregtech.machine.drum.stainless_steel.name=Stainless Steel Drum
 gregtech.machine.drum.titanium.name=Titanium Drum
 gregtech.machine.drum.tungstensteel.name=Tungstensteel Drum
 
+gregtech.machine.drum.enable_output=Will drain Fluid to vertically adjacent Tanks
+gregtech.machine.drum.disable_output=Will not drain Fluid
+
 # Crates
 gregtech.machine.crate.wood.name=Wooden Crate
 gregtech.machine.crate.bronze.name=Bronze Crate
