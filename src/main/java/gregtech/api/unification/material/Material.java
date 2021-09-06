@@ -167,7 +167,7 @@ public class Material implements Comparable<Material> {
         materialInfo.color = materialRGB;
     }
 
-    @ZenGetter
+    @ZenGetter("materialRGB")
     public int getMaterialRGB() {
         return materialInfo.color;
     }

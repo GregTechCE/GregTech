@@ -46,16 +46,16 @@ public class MaterialExpansion {
         m.setMaterialIconSet(MaterialIconSet.getByName(iconSetName));
     }
 
+    @ZenGetter("iconSet")
+    public static String getIconSet(Material m) {
+        return m.getMaterialIconSet().getName();
+    }
+
     ////////////////////////////////////
     //         Fluid Property         //
     ////////////////////////////////////
 
-    @ZenMethod
-    public static boolean hasFluid(Material m) { // todo move?
-        return m.hasProperty(PropertyKey.FLUID);
-    }
-
-    @ZenMethod
+    @ZenGetter
     public static boolean isGaseous(Material m) {
         FluidProperty prop = m.getProperty(PropertyKey.FLUID);
         return prop != null && prop.isGas();
@@ -196,6 +196,18 @@ public class MaterialExpansion {
         } else logError(m, "change tool enchantments", "Tool");
     }
 
+    @ZenMethod
+    public static void setToolStats(Material m, float toolSpeed, float toolAttackDamage, int toolDurability, @Optional int enchantability) {
+        if (checkFrozen("set tool stats")) return;
+        ToolProperty prop = m.getProperty(PropertyKey.TOOL);
+        if (prop != null) {
+            prop.setToolSpeed(toolSpeed);
+            prop.setToolAttackDamage(toolAttackDamage);
+            prop.setToolDurability(toolDurability);
+            prop.setToolEnchantability(enchantability == 0 ? 10 : enchantability);
+        } else logError(m, "change tool stats", "Tool");
+    }
+
     // Wire/Item Pipe/Fluid Pipe stuff?
 
     ////////////////////////////////////
@@ -212,5 +224,14 @@ public class MaterialExpansion {
         BlastProperty prop = m.getProperty(PropertyKey.BLAST);
         if (prop != null) prop.setBlastTemperature(blastTemp);
         else m.setProperty(PropertyKey.BLAST, new BlastProperty(blastTemp));
+    }
+
+    @ZenGetter
+    public static int blastTemp(Material m) {
+        BlastProperty prop = m.getProperty(PropertyKey.BLAST);
+        if (prop != null) {
+            return prop.getBlastTemperature();
+        } else logError(m, "get blast temperature", "Blast");
+        return 0;
     }
 }
