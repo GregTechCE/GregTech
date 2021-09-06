@@ -79,7 +79,6 @@ public class GregTechMod {
     public void onPreInit(FMLPreInitializationEvent event) {
         NetworkHandler.init();
 
-        MinecraftForge.EVENT_BUS.register(new EventHandlers());
         GTLog.init(event.getModLog());
         MetaTileEntityUIFactory.INSTANCE.init();
         PlayerInventoryUIFactory.INSTANCE.init();

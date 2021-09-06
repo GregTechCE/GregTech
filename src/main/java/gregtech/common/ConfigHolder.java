@@ -74,10 +74,6 @@ public class ConfigHolder {
     @Config.RequiresMcRestart
     public static boolean ignoreErrorOrInvalidRecipes = true;
 
-    @Config.Comment("Setting this to false causes GTCE to not register additional methane recipes for foods in the centrifuge. Default: true")
-    @Config.RequiresMcRestart
-    public static boolean addFoodMethaneRecipes = true;
-
     @Config.Comment("Category that contains configs for changing vanilla recipes")
     @Config.Name("Vanilla Recipe Options")
     @Config.RequiresMcRestart
@@ -186,14 +182,6 @@ public class ConfigHolder {
         @Config.RequiresMcRestart
         public static boolean addLoot = true;
 
-        @Config.Comment("Should recipes for EV and IV Drills be enabled, which may cause large amounts of lag when used on some low-end devices? Default: true")
-        @Config.RequiresMcRestart
-        public boolean registerRecipesForHighTierDrills = true;
-
-        @Config.Comment("Should recipes for Mining Hammers be enabled? Default: true")
-        @Config.RequiresMcRestart
-        public boolean registerRecipesForMiningHammers = true;
-
         @Config.Comment("Divisor for Recipe Duration per Overclock. Default: 2.0")
         @Config.RangeDouble(min = 2.0, max = 3.0)
         public double overclockDivisor = 2.0;
@@ -224,10 +212,6 @@ public class ConfigHolder {
             @Config.RequiresMcRestart
             public boolean harderRods = false;
 
-            @Config.Comment("Whether or not to use polymers instead of rare metals for Carbon Fibers. REMOVES THE CHANCED OUTPUT! Default: false")
-            @Config.RequiresMcRestart
-            public boolean polymerCarbonFiber = false;
-
             @Config.Comment("The default color to overlay onto machines. \n16777215 (0xFFFFFF in decimal) is no coloring (default), and 13819135 (0xD2DCFF in decimal) is the classic blue from GT5. THIS IS SERVER SIDE!!!")
             @Config.RequiresMcRestart
             public int defaultPaintingColor = 0xFFFFFF;
@@ -237,7 +221,6 @@ public class ConfigHolder {
             public int defaultInsulationColor = 0x777777;
 
             @Config.Comment("Enable temperature based bonuses for the Electric Blast Furnace. Default: true")
-            @Config.RequiresMcRestart
             public boolean ebfTemperatureBonuses = true;
 
             @Config.Comment("Enable more challenging recipes for Electric Blast Furnace Coils. Default: true")
@@ -255,6 +238,10 @@ public class ConfigHolder {
             @Config.Comment("Enable High-Tier solar panels (IV-UV). They will not have recipes. Default: false")
             @Config.RequiresMcRestart
             public boolean enableHighTierSolars = false;
+
+            @Config.Comment("Should EV and IV Drills be enabled, which may cause large amounts of lag when used on some low-end devices? Default: true")
+            @Config.RequiresMcRestart
+            public boolean enableHighTierDrills = true;
         }
 
         public static class GT6 {
@@ -335,15 +322,15 @@ public class ConfigHolder {
 
         public static class BatPack {
             @Config.Comment("Total LV BatPack capacity. Default: 600,000")
-            @Config.RangeInt(min = 0)
+            @Config.RangeInt(min = 1)
             public int capacityLV = 600000;
 
             @Config.Comment("Total MV BatPack capacity. Default: 2,400,000")
-            @Config.RangeInt(min = 0)
+            @Config.RangeInt(min = 1)
             public int capacityMV = 2400000;
 
             @Config.Comment("Total HV BatPack capacity. Default: 9,600,000")
-            @Config.RangeInt(min = 0)
+            @Config.RangeInt(min = 1)
             public int capacityHV = 9600000;
         }
     }

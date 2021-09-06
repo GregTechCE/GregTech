@@ -1,6 +1,7 @@
 package gregtech.common;
 
 import gregtech.api.GTValues;
+import gregtech.common.items.behaviors.ToggleEnergyConsumerBehavior;
 import net.minecraft.client.Minecraft;
 import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.IElectricItem;
@@ -15,11 +16,14 @@ import gregtech.common.items.armor.PowerlessJetpack;
 import gregtech.common.items.MetaItems;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityEnderman;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.EnumDifficulty;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
+import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
@@ -42,12 +46,26 @@ public class EventHandlers {
     }
 
     @SubscribeEvent
+    public static void onEntitySpawn(LivingSpawnEvent.SpecialSpawn event) {
+        EntityLivingBase entity = event.getEntityLiving();
+        EnumDifficulty difficulty = entity.world.getDifficulty();
+        if (difficulty == EnumDifficulty.HARD && entity.getRNG().nextFloat() <= 0.03f) {
+            if (entity instanceof EntityZombie && ConfigHolder.nanoSaberConfiguration.zombieSpawnWithSabers) {
+                ItemStack itemStack = MetaItems.NANO_SABER.getInfiniteChargedStack();
+                ToggleEnergyConsumerBehavior.setItemActive(itemStack, true);
+                entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, itemStack);
+                ((EntityZombie) entity).setDropChance(EntityEquipmentSlot.MAINHAND, 0.0f);
+            }
+        }
+    }
+
+    @SubscribeEvent
     public static void onPlayerInteraction(PlayerInteractEvent.RightClickBlock event) {
         ItemStack stack = event.getItemStack();
         if (!stack.isEmpty() && stack.getItem() == Items.FLINT_AND_STEEL) {
             if (!event.getWorld().isRemote
                     && !event.getEntityPlayer().capabilities.isCreativeMode
-                    && event.getWorld().rand.nextInt(100) >= ConfigHolder.flintChanceToCreateFire) {
+                    && GTValues.RNG.nextInt(100) >= ConfigHolder.flintChanceToCreateFire) {
                 stack.damageItem(1, event.getEntityPlayer());
                 if (stack.getItemDamage() >= stack.getMaxDamage()) {
                     stack.shrink(1);
@@ -59,7 +77,7 @@ public class EventHandlers {
 
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
-    public void onRender(final TickEvent.RenderTickEvent event) {
+    public static void onRender(final TickEvent.RenderTickEvent event) {
         final Minecraft mc = Minecraft.getMinecraft();
         if (mc.inGameHasFocus && mc.world != null && !mc.gameSettings.showDebugInfo && Minecraft.isGuiEnabled()) {
             final ItemStack item = mc.player.inventory.armorItemInSlot(EntityEquipmentSlot.CHEST.getIndex());
@@ -81,7 +99,7 @@ public class EventHandlers {
     }
 
     @SubscribeEvent(priority = EventPriority.LOW)
-    public void onKeyInput(InputEvent.KeyInputEvent event) {
+    public static void onKeyInput(InputEvent.KeyInputEvent event) {
         if (ArmorUtils.SIDE.isClient()) {
             boolean needNewPacket = false;
             for (Key key : Keybinds.REGISTERY) {
@@ -96,7 +114,7 @@ public class EventHandlers {
     }
 
     @SubscribeEvent(priority = EventPriority.LOW)
-    public void onEntityLivingFallEvent(LivingFallEvent event) {
+    public static void onEntityLivingFallEvent(LivingFallEvent event) {
         if (!event.getEntity().getEntityWorld().isRemote && event.getEntity() instanceof EntityLivingBase) {
             EntityLivingBase entity = (EntityLivingBase) event.getEntity();
             ItemStack armor = entity.getItemStackFromSlot(EntityEquipmentSlot.FEET);
@@ -140,6 +158,4 @@ public class EventHandlers {
             }
         }
     }
-
-
 }

@@ -441,49 +441,29 @@ public class CircuitRecipes {
                 .buildAndRegister();
 
         // Carbon Fibers
-        if (ConfigHolder.U.GT5u.polymerCarbonFiber) {
-            AUTOCLAVE_RECIPES.recipeBuilder().duration(37).EUt(30)
-                    .input(dust, Carbon, 4)
-                    .fluidInputs(Polyethylene.getFluid(36))
-                    .output(CARBON_FIBERS)
-                    .buildAndRegister();
+        AUTOCLAVE_RECIPES.recipeBuilder().duration(37).EUt(30)
+                .input(dust, Carbon, 4)
+                .fluidInputs(Polyethylene.getFluid(36))
+                .output(CARBON_FIBERS)
+                .buildAndRegister();
 
-            AUTOCLAVE_RECIPES.recipeBuilder().duration(37).EUt(120)
-                    .input(dust, Carbon, 4)
-                    .fluidInputs(Polytetrafluoroethylene.getFluid(18))
-                    .output(CARBON_FIBERS, 2)
-                    .buildAndRegister();
+        AUTOCLAVE_RECIPES.recipeBuilder().duration(37).EUt(120)
+                .input(dust, Carbon, 4)
+                .fluidInputs(Polytetrafluoroethylene.getFluid(18))
+                .output(CARBON_FIBERS, 2)
+                .buildAndRegister();
 
-            AUTOCLAVE_RECIPES.recipeBuilder().duration(37).EUt(480)
-                    .input(dust, Carbon, 4)
-                    .fluidInputs(Epoxy.getFluid(9))
-                    .output(CARBON_FIBERS, 4)
-                    .buildAndRegister();
+        AUTOCLAVE_RECIPES.recipeBuilder().duration(37).EUt(480)
+                .input(dust, Carbon, 4)
+                .fluidInputs(Epoxy.getFluid(9))
+                .output(CARBON_FIBERS, 4)
+                .buildAndRegister();
 
-            AUTOCLAVE_RECIPES.recipeBuilder().duration(37).EUt(1920)
-                    .input(dust, Carbon, 8)
-                    .fluidInputs(Polybenzimidazole.getFluid(9))
-                    .output(CARBON_FIBERS, 16)
-                    .buildAndRegister();
-        } else {
-            AUTOCLAVE_RECIPES.recipeBuilder().duration(37).EUt(30)
-                    .input(dust, Carbon, 4)
-                    .fluidInputs(Palladium.getFluid(1))
-                    .chancedOutput(CARBON_FIBERS, 2, 9000, 1000)
-                    .buildAndRegister();
-
-            AUTOCLAVE_RECIPES.recipeBuilder().duration(37).EUt(30)
-                    .input(dust, Carbon, 4)
-                    .fluidInputs(Platinum.getFluid(1))
-                    .chancedOutput(CARBON_FIBERS, 2, 5000, 5000)
-                    .buildAndRegister();
-
-            AUTOCLAVE_RECIPES.recipeBuilder().duration(37).EUt(30)
-                    .input(dust, Carbon, 4)
-                    .fluidInputs(Lutetium.getFluid(1))
-                    .chancedOutput(CARBON_FIBERS, 2, 3333, 3334)
-                    .buildAndRegister();
-        }
+        AUTOCLAVE_RECIPES.recipeBuilder().duration(37).EUt(1920)
+                .input(dust, Carbon, 8)
+                .fluidInputs(Polybenzimidazole.getFluid(9))
+                .output(CARBON_FIBERS, 16)
+                .buildAndRegister();
 
         // Crystal Circuit Components
         LASER_ENGRAVER_RECIPES.recipeBuilder().duration(256).EUt(480)
