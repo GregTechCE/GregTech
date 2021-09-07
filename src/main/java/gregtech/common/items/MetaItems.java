@@ -46,6 +46,7 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem COIN_CHOCOLATE;
 
     public static MetaItem<?>.MetaValueItem COMPRESSED_CLAY;
+    public static MetaItem<?>.MetaValueItem COMPRESSED_COKE_CLAY;
     public static MetaItem<?>.MetaValueItem COMPRESSED_FIRECLAY;
     public static MetaItem<?>.MetaValueItem FIRECLAY_BRICK;
     public static MetaItem<?>.MetaValueItem COKE_OVEN_BRICK;

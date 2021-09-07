@@ -584,6 +584,7 @@ public class VanillaOverrideRecipes {
      * - Removes Vanilla Golden Carrot Recipe
      * - Removes Vanilla Magma Cream Recipe
      * - Removes Vanilla Polished Stone Variant Recipes
+     * - Removes Vanilla Brick Smelting Recipe
      */
     private static void miscRecipes() {
         ModHandler.removeRecipeByName(new ResourceLocation("minecraft:tnt"));
@@ -689,6 +690,9 @@ public class VanillaOverrideRecipes {
         ModHandler.removeRecipeByName(new ResourceLocation("minecraft:polished_granite"));
         ModHandler.removeRecipeByName(new ResourceLocation("minecraft:polished_diorite"));
         ModHandler.removeRecipeByName(new ResourceLocation("minecraft:polished_andesite"));
+
+        //todo this doesn't work
+        ModHandler.removeFurnaceSmelting(new ItemStack(Items.CLAY_BALL));
     }
 
     /**

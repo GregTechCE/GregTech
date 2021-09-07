@@ -334,9 +334,13 @@ public class MetaItem1 extends StandardMetaItem {
         WOODEN_FORM_EMPTY = addItem(347, "wooden_form.empty");
         WOODEN_FORM_BRICK = addItem(348, "wooden_form.brick").addComponents(selfContainerItemProvider);
         COMPRESSED_CLAY = addItem(349, "compressed.clay");
-        COMPRESSED_FIRECLAY = addItem(350, "compressed.fireclay");
-        FIRECLAY_BRICK = addItem(351, "brick.fireclay");
-        COKE_OVEN_BRICK = addItem(352, "brick.coke");
+        COMPRESSED_COKE_CLAY = addItem(350, "compressed.coke_clay");
+        COMPRESSED_FIRECLAY = addItem(351, "compressed.fireclay");
+        FIRECLAY_BRICK = addItem(352, "brick.fireclay");
+        COKE_OVEN_BRICK = addItem(353, "brick.coke");
+
+        if (!ConfigHolder.vanillaRecipes.hardMiscRecipes)
+            COMPRESSED_CLAY.setInvisible();
 
         // Boules: ID 361-370
         SILICON_BOULE = addItem(361, "boule.silicon");
