@@ -690,6 +690,11 @@ public class MetaTileEntities {
          * - Gregicality / Shadows of Greg: 2000-3999
          * - Gregification: 4000-4499
          * - GregTech Food Option: 8500-8999
+         * - HtmlTech: 9000-9499
+         * - PCM's Ore Addon: 9500-9999
+         * - GCM: 10000-10099
+         * - MechTech: 10100-10499
+         * - FREE RANGE 10500-32767
          */
     }
 
