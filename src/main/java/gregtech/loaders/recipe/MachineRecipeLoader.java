@@ -403,6 +403,8 @@ public class MachineRecipeLoader {
 
         ALLOY_SMELTER_RECIPES.recipeBuilder().duration(10).EUt(7).input(OrePrefix.ingot, Materials.Rubber, 2).notConsumable(MetaItems.SHAPE_MOLD_PLATE).output(OrePrefix.plate, Materials.Rubber).buildAndRegister();
         ALLOY_SMELTER_RECIPES.recipeBuilder().duration(100).EUt(7).input(OrePrefix.dust, Materials.Sulfur).input(OrePrefix.dust, Materials.RawRubber, 3).output(OrePrefix.ingot, Materials.Rubber).buildAndRegister();
+
+        ALLOY_SMELTER_RECIPES.recipeBuilder().duration(150).EUt(7).inputs(OreDictUnifier.get("sand")).inputs(new ItemStack(Items.CLAY_BALL)).outputs(COKE_OVEN_BRICK.getStackForm(2)).buildAndRegister();
     }
 
     private static void registerAssemblerRecipes() {
