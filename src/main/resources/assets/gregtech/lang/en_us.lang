@@ -3282,7 +3282,7 @@ gregtech.machine.fisher.hv.name=Advanced Fisher II
 gregtech.machine.fisher.ev.name=Advanced Fisher III
 gregtech.machine.fisher.tooltip=Costs string to fish. Consumes one string each time.
 gregtech.machine.fisher.speed=Catches something every %,d ticks
-gregtech.machine.fisher.requirement=Requires a square of water with size of %,d blocks directly below.
+gregtech.machine.fisher.requirement=Requires a %,dx%,d centered square of water directly below.
 
 # General machinery
 gregtech.machine.basic.input_from_output_side.allow=Allow Input from Output Side
