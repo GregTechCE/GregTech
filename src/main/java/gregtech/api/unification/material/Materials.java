@@ -449,7 +449,6 @@ public class Materials {
      * Organic chemistry
      */
     public static Material SiliconeRubber;
-    public static Material Polystyrene;
     public static Material RawRubber;
     public static Material RawStyreneButadieneRubber;
     public static Material StyreneButadieneRubber;
@@ -462,7 +461,6 @@ public class Materials {
     public static Material Polydimethylsiloxane;
     public static Material Polyethylene;
     public static Material Epoxy;
-    public static Material Polysiloxane;
     public static Material Polycaprolactam;
     public static Material Polytetrafluoroethylene;
     public static Material Sugar;

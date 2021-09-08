@@ -791,11 +791,6 @@ public class CircuitRecipes {
                 .buildAndRegister();
 
         // Wetware Board
-        FLUID_SOLIDFICATION_RECIPES.recipeBuilder().duration(160).EUt(16)
-                .notConsumable(SHAPE_MOLD_CYLINDER)
-                .fluidInputs(Polystyrene.getFluid(L / 4))
-                .output(PETRI_DISH)
-                .buildAndRegister();
 
         FLUID_SOLIDFICATION_RECIPES.recipeBuilder().duration(160).EUt(16)
                 .notConsumable(SHAPE_MOLD_CYLINDER)
