@@ -12,13 +12,13 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.TieredMetaTileEntity;
 import gregtech.api.pipenet.block.material.TileEntityMaterialPipeBase;
+import gregtech.api.pipenet.tile.TileEntityPipeBase;
 import gregtech.api.render.Textures;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagString;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -104,7 +104,7 @@ public class MetaTileEntityWorldAccelerator extends TieredMetaTileEntity impleme
                 BlockPos[] neighbours = new BlockPos[]{worldAcceleratorPos.down(), worldAcceleratorPos.up(), worldAcceleratorPos.north(), worldAcceleratorPos.south(), worldAcceleratorPos.east(), worldAcceleratorPos.west()};
                 for (BlockPos neighbour : neighbours) {
                     TileEntity targetTE = world.getTileEntity(neighbour);
-                    if (targetTE == null || targetTE instanceof TileEntityMaterialPipeBase || targetTE instanceof MetaTileEntityHolder) {
+                    if (targetTE == null || targetTE instanceof TileEntityPipeBase || targetTE instanceof MetaTileEntityHolder) {
                         continue;
                     }
                     boolean horror = false;
@@ -112,9 +112,7 @@ public class MetaTileEntityWorldAccelerator extends TieredMetaTileEntity impleme
                         horror = clazz.isInstance(targetTE);
                     }
                     if (targetTE instanceof ITickable && (!horror || !world.isRemote)) {
-                        IntStream.range(0, (int) Math.pow(2, getTier())).forEach(value -> {
-                            ((ITickable) targetTE).update();
-                        });
+                        IntStream.range(0, (int) Math.pow(2, getTier())).forEach(value -> ((ITickable) targetTE).update());
                     }
                 }
             } else {
@@ -126,7 +124,7 @@ public class MetaTileEntityWorldAccelerator extends TieredMetaTileEntity impleme
 
                         IBlockState targetBlock = world.getBlockState(cell);
                         IntStream.range(0, (int) Math.pow(2, getTier())).forEach(value -> {
-                            if (world.rand.nextInt(100) == 0) {
+                            if (GTValues.RNG.nextInt(100) == 0) {
                                 if (targetBlock.getBlock().getTickRandomly()) {
                                     targetBlock.getBlock().randomTick(world, cell, targetBlock, world.rand);
                                 }
@@ -193,16 +191,16 @@ public class MetaTileEntityWorldAccelerator extends TieredMetaTileEntity impleme
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound data) {
         super.writeToNBT(data);
-        data.setTag("TileMode", new NBTTagString(Boolean.valueOf(tileMode).toString()));
-        data.setTag("isPaused", new NBTTagString(Boolean.valueOf(isPaused).toString()));
+        data.setBoolean("TileMode", tileMode);
+        data.setBoolean("isPaused", isPaused);
         return data;
     }
 
     @Override
     public void readFromNBT(NBTTagCompound data) {
         super.readFromNBT(data);
-        tileMode = Boolean.parseBoolean(data.getString("TileMode"));
-        isPaused = Boolean.parseBoolean(data.getString("isPaused"));
+        tileMode = data.getBoolean("TileMode");
+        isPaused = data.getBoolean("isPaused");
     }
 
     @Override
