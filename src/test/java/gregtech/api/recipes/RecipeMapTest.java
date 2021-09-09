@@ -29,7 +29,7 @@ public class RecipeMapTest {
         GTLog.init(LogManager.getLogger(GTValues.MODID)); // yes this was necessary
         Bootstrap.register();
         Materials.register();
-        MaterialRegistry.freeze();
+        MaterialRegistry.finalizeMaterials(false);
         MetaFluids.init();
     }
 
