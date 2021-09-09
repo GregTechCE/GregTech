@@ -429,7 +429,7 @@ public class MetaTileEntities {
         HULL[HULL.length - 1] = new MetaTileEntityHull(gregtechId("hull.max"), HULL.length - 1);
         GregTechAPI.registerMetaTileEntity(985 + HULL.length - 1, HULL[HULL.length - 1]);
 
-        // MULTIBLOCK START: IDs 1000-1299. Space left for addons to register Multiblocks grouped with the rest in JEI
+        // MULTIBLOCK START: IDs 1000-1149. Space left for addons to register Multiblocks grouped with the rest in JEI
         PRIMITIVE_BLAST_FURNACE = GregTechAPI.registerMetaTileEntity(1000, new MetaTileEntityPrimitiveBlastFurnace(gregtechId("primitive_blast_furnace.bronze")));
         ELECTRIC_BLAST_FURNACE = GregTechAPI.registerMetaTileEntity(1001, new MetaTileEntityElectricBlastFurnace(gregtechId("electric_blast_furnace")));
         VACUUM_FREEZER = GregTechAPI.registerMetaTileEntity(1002, new MetaTileEntityVacuumFreezer(gregtechId("vacuum_freezer")));
@@ -462,9 +462,57 @@ public class MetaTileEntities {
         STEAM_OVEN = GregTechAPI.registerMetaTileEntity(1023, new MetaTileEntitySteamOven(gregtechId("steam_oven")));
         STEAM_GRINDER = GregTechAPI.registerMetaTileEntity(1024, new MetaTileEntitySteamGrinder(gregtechId("steam_grinder")));
 
+        // MISC MTE's START: IDs 1150-2000
 
-        // MISC MTE's START: IDs 1285-2000
+        // Import/Export Buses/Hatches, IDs 1150-1209
+        for (int i = 0; i < ITEM_IMPORT_BUS.length - 1; i++) {
+            String voltageName = GTValues.VN[i].toLowerCase();
+            ITEM_IMPORT_BUS[i] = new MetaTileEntityItemBus(gregtechId("item_bus.import." + voltageName), i, false);
+            ITEM_EXPORT_BUS[i] = new MetaTileEntityItemBus(gregtechId("item_bus.export." + voltageName), i, true);
+            FLUID_IMPORT_HATCH[i] = new MetaTileEntityFluidHatch(gregtechId("fluid_hatch.import." + voltageName), i, false);
+            FLUID_EXPORT_HATCH[i] = new MetaTileEntityFluidHatch(gregtechId("fluid_hatch.export." + voltageName), i, true);
 
+            GregTechAPI.registerMetaTileEntity(1150 + i, ITEM_IMPORT_BUS[i]);
+            GregTechAPI.registerMetaTileEntity(1165 + i, ITEM_EXPORT_BUS[i]);
+            GregTechAPI.registerMetaTileEntity(1180 + i, FLUID_IMPORT_HATCH[i]);
+            GregTechAPI.registerMetaTileEntity(1195 + i, FLUID_EXPORT_HATCH[i]);
+        }
+
+        // Max Hatches/Buses
+        ITEM_IMPORT_BUS[9] = new MetaTileEntityItemBus(gregtechId("item_bus.import.max"), 14, false);
+        ITEM_EXPORT_BUS[9] = new MetaTileEntityItemBus(gregtechId("item_bus.export.max"), 14, true);
+        FLUID_IMPORT_HATCH[9] = new MetaTileEntityFluidHatch(gregtechId("fluid_hatch.import.max"), 14, false);
+        FLUID_EXPORT_HATCH[9] = new MetaTileEntityFluidHatch(gregtechId("fluid_hatch.export.max"), 14, true);
+
+        GregTechAPI.registerMetaTileEntity(1150 + 9, ITEM_IMPORT_BUS[9]);
+        GregTechAPI.registerMetaTileEntity(1165 + 9, ITEM_EXPORT_BUS[9]);
+        GregTechAPI.registerMetaTileEntity(1180 + 9, FLUID_IMPORT_HATCH[9]);
+        GregTechAPI.registerMetaTileEntity(1195 + 9, FLUID_EXPORT_HATCH[9]);
+
+        // Energy Input/Output Hatches, IDs 1210-1269
+        endPos = GTValues.HT ? ENERGY_INPUT_HATCH.length - 1 : Math.min(ENERGY_INPUT_HATCH.length - 1, GTValues.UV + 1);
+        for (int i = 0; i < endPos; i++) {
+            String voltageName = GTValues.VN[i].toLowerCase();
+            ENERGY_INPUT_HATCH[i] = new MetaTileEntityEnergyHatch(gregtechId("energy_hatch.input." + voltageName), i, false);
+            ENERGY_INPUT_HATCH_ADJUSTABLE[i] = new MetaTileEntityAdjustableEnergyHatch(gregtechId("energy_hatch.adjustable.input." + voltageName), i, false);
+            ENERGY_OUTPUT_HATCH[i] = new MetaTileEntityEnergyHatch(gregtechId("energy_hatch.output." + voltageName), i, true);
+            ENERGY_OUTPUT_HATCH_ADJUSTABLE[i] = new MetaTileEntityAdjustableEnergyHatch(gregtechId("energy_hatch.adjustable.output." + voltageName), i, true);
+
+            GregTechAPI.registerMetaTileEntity(1210 + i, ENERGY_INPUT_HATCH[i]);
+            GregTechAPI.registerMetaTileEntity(1225 + i, ENERGY_OUTPUT_HATCH[i]);
+            GregTechAPI.registerMetaTileEntity(1240 + i, ENERGY_INPUT_HATCH_ADJUSTABLE[i]);
+            GregTechAPI.registerMetaTileEntity(1255 + i, ENERGY_OUTPUT_HATCH_ADJUSTABLE[i]);
+        }
+        // MAX Hatches
+        ENERGY_INPUT_HATCH[ENERGY_INPUT_HATCH.length - 1] = new MetaTileEntityEnergyHatch(gregtechId("energy_hatch.input.max"), ENERGY_INPUT_HATCH.length - 1, false);
+        ENERGY_OUTPUT_HATCH[ENERGY_OUTPUT_HATCH.length - 1] = new MetaTileEntityEnergyHatch(gregtechId("energy_hatch.output.max"), ENERGY_OUTPUT_HATCH.length - 1, true);
+        ENERGY_INPUT_HATCH_ADJUSTABLE[ENERGY_INPUT_HATCH_ADJUSTABLE.length - 1] = new MetaTileEntityAdjustableEnergyHatch(gregtechId("energy_hatch.adjustable.input.max"), ENERGY_INPUT_HATCH_ADJUSTABLE.length - 1, false);
+        ENERGY_OUTPUT_HATCH_ADJUSTABLE[ENERGY_OUTPUT_HATCH_ADJUSTABLE.length - 1] = new MetaTileEntityAdjustableEnergyHatch(gregtechId("energy_hatch.adjustable.output.max"), ENERGY_OUTPUT_HATCH_ADJUSTABLE.length - 1, true);
+
+        GregTechAPI.registerMetaTileEntity(1210 + ENERGY_INPUT_HATCH.length - 1, ENERGY_INPUT_HATCH[ENERGY_INPUT_HATCH.length - 1]);
+        GregTechAPI.registerMetaTileEntity(1225 + ENERGY_INPUT_HATCH.length - 1, ENERGY_INPUT_HATCH[ENERGY_INPUT_HATCH.length - 1]);
+        GregTechAPI.registerMetaTileEntity(1240 + ENERGY_INPUT_HATCH_ADJUSTABLE.length - 1, ENERGY_INPUT_HATCH_ADJUSTABLE[ENERGY_INPUT_HATCH_ADJUSTABLE.length - 1]);
+        GregTechAPI.registerMetaTileEntity(1255 + ENERGY_OUTPUT_HATCH_ADJUSTABLE.length - 1, ENERGY_OUTPUT_HATCH_ADJUSTABLE[ENERGY_OUTPUT_HATCH_ADJUSTABLE.length - 1]);
 
         // Transformer, IDs 1270-1299
         endPos = GTValues.HT ? TRANSFORMER.length - 1 : Math.min(TRANSFORMER.length - 1, GTValues.UV);
@@ -515,55 +563,7 @@ public class MetaTileEntities {
         MetaTileEntityCharger charger = new MetaTileEntityCharger(gregtechId("charger.max"), CHARGER.length - 1, 4);
         CHARGER[CHARGER.length - 1] = GregTechAPI.registerMetaTileEntity(1375 + CHARGER.length - 1, charger);
 
-        // Import/Export Buses/Hatches, IDs 1390-1449
-        for (int i = 0; i < ITEM_IMPORT_BUS.length - 1; i++) {
-            String voltageName = GTValues.VN[i].toLowerCase();
-            ITEM_IMPORT_BUS[i] = new MetaTileEntityItemBus(gregtechId("item_bus.import." + voltageName), i, false);
-            ITEM_EXPORT_BUS[i] = new MetaTileEntityItemBus(gregtechId("item_bus.export." + voltageName), i, true);
-            FLUID_IMPORT_HATCH[i] = new MetaTileEntityFluidHatch(gregtechId("fluid_hatch.import." + voltageName), i, false);
-            FLUID_EXPORT_HATCH[i] = new MetaTileEntityFluidHatch(gregtechId("fluid_hatch.export." + voltageName), i, true);
-
-            GregTechAPI.registerMetaTileEntity(1390 + i, ITEM_IMPORT_BUS[i]);
-            GregTechAPI.registerMetaTileEntity(1405 + i, ITEM_EXPORT_BUS[i]);
-            GregTechAPI.registerMetaTileEntity(1420 + i, FLUID_IMPORT_HATCH[i]);
-            GregTechAPI.registerMetaTileEntity(1435 + i, FLUID_EXPORT_HATCH[i]);
-        }
-
-        // Max Hatches/Buses
-        ITEM_IMPORT_BUS[9] = new MetaTileEntityItemBus(gregtechId("item_bus.import.max"), 14, false);
-        ITEM_EXPORT_BUS[9] = new MetaTileEntityItemBus(gregtechId("item_bus.export.max"), 14, true);
-        FLUID_IMPORT_HATCH[9] = new MetaTileEntityFluidHatch(gregtechId("fluid_hatch.import.max"), 14, false);
-        FLUID_EXPORT_HATCH[9] = new MetaTileEntityFluidHatch(gregtechId("fluid_hatch.export.max"), 14, true);
-
-        GregTechAPI.registerMetaTileEntity(1390 + 9, ITEM_IMPORT_BUS[9]);
-        GregTechAPI.registerMetaTileEntity(1405 + 9, ITEM_EXPORT_BUS[9]);
-        GregTechAPI.registerMetaTileEntity(1420 + 9, FLUID_IMPORT_HATCH[9]);
-        GregTechAPI.registerMetaTileEntity(1435 + 9, FLUID_EXPORT_HATCH[9]);
-
-        // Energy Input/Output Hatches, IDs 1450-1509
-        endPos = GTValues.HT ? ENERGY_INPUT_HATCH.length - 1 : Math.min(ENERGY_INPUT_HATCH.length - 1, GTValues.UV + 1);
-        for (int i = 0; i < endPos; i++) {
-            String voltageName = GTValues.VN[i].toLowerCase();
-            ENERGY_INPUT_HATCH[i] = new MetaTileEntityEnergyHatch(gregtechId("energy_hatch.input." + voltageName), i, false);
-            ENERGY_INPUT_HATCH_ADJUSTABLE[i] = new MetaTileEntityAdjustableEnergyHatch(gregtechId("energy_hatch.adjustable.input." + voltageName), i, false);
-            ENERGY_OUTPUT_HATCH[i] = new MetaTileEntityEnergyHatch(gregtechId("energy_hatch.output." + voltageName), i, true);
-            ENERGY_OUTPUT_HATCH_ADJUSTABLE[i] = new MetaTileEntityAdjustableEnergyHatch(gregtechId("energy_hatch.adjustable.output." + voltageName), i, true);
-
-            GregTechAPI.registerMetaTileEntity(1450 + i, ENERGY_INPUT_HATCH[i]);
-            GregTechAPI.registerMetaTileEntity(1465 + i, ENERGY_INPUT_HATCH_ADJUSTABLE[i]);
-            GregTechAPI.registerMetaTileEntity(1480 + i, ENERGY_OUTPUT_HATCH[i]);
-            GregTechAPI.registerMetaTileEntity(1495 + i, ENERGY_OUTPUT_HATCH_ADJUSTABLE[i]);
-        }
-        // MAX Hatches
-        ENERGY_INPUT_HATCH[ENERGY_INPUT_HATCH.length - 1] = new MetaTileEntityEnergyHatch(gregtechId("energy_hatch.input.max"), ENERGY_INPUT_HATCH.length - 1, false);
-        ENERGY_INPUT_HATCH_ADJUSTABLE[ENERGY_INPUT_HATCH_ADJUSTABLE.length - 1] = new MetaTileEntityAdjustableEnergyHatch(gregtechId("energy_hatch.adjustable.input.max"), ENERGY_INPUT_HATCH_ADJUSTABLE.length - 1, false);
-        ENERGY_OUTPUT_HATCH[ENERGY_OUTPUT_HATCH.length - 1] = new MetaTileEntityEnergyHatch(gregtechId("energy_hatch.output.max"), ENERGY_OUTPUT_HATCH.length - 1, true);
-        ENERGY_OUTPUT_HATCH_ADJUSTABLE[ENERGY_OUTPUT_HATCH_ADJUSTABLE.length - 1] = new MetaTileEntityAdjustableEnergyHatch(gregtechId("energy_hatch.adjustable.output.max"), ENERGY_OUTPUT_HATCH_ADJUSTABLE.length - 1, true);
-
-        GregTechAPI.registerMetaTileEntity(1450 + ENERGY_INPUT_HATCH.length - 1, ENERGY_INPUT_HATCH[ENERGY_INPUT_HATCH.length - 1]);
-        GregTechAPI.registerMetaTileEntity(1465 + ENERGY_INPUT_HATCH_ADJUSTABLE.length - 1, ENERGY_INPUT_HATCH_ADJUSTABLE[ENERGY_INPUT_HATCH_ADJUSTABLE.length - 1]);
-        GregTechAPI.registerMetaTileEntity(1480 + ENERGY_INPUT_HATCH.length - 1, ENERGY_INPUT_HATCH[ENERGY_INPUT_HATCH.length - 1]);
-        GregTechAPI.registerMetaTileEntity(1495 + ENERGY_OUTPUT_HATCH_ADJUSTABLE.length - 1, ENERGY_OUTPUT_HATCH_ADJUSTABLE[ENERGY_OUTPUT_HATCH_ADJUSTABLE.length - 1]);
+        // Free Range: 1390-1509
 
         BUFFER[0] = GregTechAPI.registerMetaTileEntity(1510, new MetaTileEntityBuffer(gregtechId("buffer.lv"), 1));
         BUFFER[1] = GregTechAPI.registerMetaTileEntity(1511, new MetaTileEntityBuffer(gregtechId("buffer.mv"), 2));
