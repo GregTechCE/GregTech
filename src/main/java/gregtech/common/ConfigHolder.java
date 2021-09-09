@@ -242,6 +242,10 @@ public class ConfigHolder {
             @Config.Comment("Should EV and IV Drills be enabled, which may cause large amounts of lag when used on some low-end devices? Default: true")
             @Config.RequiresMcRestart
             public boolean enableHighTierDrills = true;
+
+            @Config.Comment("Enable World Accelerators, which accelerate ticks. Default: true")
+            @Config.RequiresMcRestart
+            public boolean enableWorldAccelerators = true;
         }
 
         public static class GT6 {

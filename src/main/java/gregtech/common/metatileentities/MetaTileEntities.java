@@ -10,6 +10,7 @@ import gregtech.api.render.OrientedOverlayRenderer;
 import gregtech.api.render.Textures;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.util.GTLog;
+import gregtech.common.ConfigHolder;
 import gregtech.common.metatileentities.electric.*;
 import gregtech.common.metatileentities.electric.multiblockpart.*;
 import gregtech.common.metatileentities.multi.*;
@@ -201,6 +202,7 @@ public class MetaTileEntities {
     public static final MetaTileEntityBlockBreaker[] BLOCK_BREAKER = new MetaTileEntityBlockBreaker[4];
     public static final MetaTileEntityItemCollector[] ITEM_COLLECTOR = new MetaTileEntityItemCollector[4];
     public static final MetaTileEntityFisher[] FISHER = new MetaTileEntityFisher[4];
+    public static final MetaTileEntityWorldAccelerator[] WORLD_ACCELERATOR = new MetaTileEntityWorldAccelerator[8]; // no ULV, no MAX
 
     public static MetaTileEntityCreativeEnergy CREATIVE_ENERGY;
 
@@ -563,8 +565,21 @@ public class MetaTileEntities {
         MetaTileEntityCharger charger = new MetaTileEntityCharger(gregtechId("charger.max"), CHARGER.length - 1, 4);
         CHARGER[CHARGER.length - 1] = GregTechAPI.registerMetaTileEntity(1375 + CHARGER.length - 1, charger);
 
-        // Free Range: 1390-1509
+        // World Accelerators, IDs 1390-1404
+        if (ConfigHolder.U.GT5u.enableWorldAccelerators) {
+            WORLD_ACCELERATOR[0] = GregTechAPI.registerMetaTileEntity(1390, new MetaTileEntityWorldAccelerator(gregtechId("world_accelerator.lv"), 1));
+            WORLD_ACCELERATOR[1] = GregTechAPI.registerMetaTileEntity(1391, new MetaTileEntityWorldAccelerator(gregtechId("world_accelerator.mv"), 2));
+            WORLD_ACCELERATOR[2] = GregTechAPI.registerMetaTileEntity(1392, new MetaTileEntityWorldAccelerator(gregtechId("world_accelerator.hv"), 3));
+            WORLD_ACCELERATOR[3] = GregTechAPI.registerMetaTileEntity(1393, new MetaTileEntityWorldAccelerator(gregtechId("world_accelerator.ev"), 4));
+            WORLD_ACCELERATOR[4] = GregTechAPI.registerMetaTileEntity(1394, new MetaTileEntityWorldAccelerator(gregtechId("world_accelerator.iv"), 5));
+            WORLD_ACCELERATOR[5] = GregTechAPI.registerMetaTileEntity(1395, new MetaTileEntityWorldAccelerator(gregtechId("world_accelerator.luv"), 6));
+            WORLD_ACCELERATOR[6] = GregTechAPI.registerMetaTileEntity(1396, new MetaTileEntityWorldAccelerator(gregtechId("world_accelerator.zpm"), 7));
+            WORLD_ACCELERATOR[7] = GregTechAPI.registerMetaTileEntity(1397, new MetaTileEntityWorldAccelerator(gregtechId("world_accelerator.uv"), 8));
+        }
 
+        // Free Range: 1405-1509
+
+        // Buffers, IDs 1510-1512
         BUFFER[0] = GregTechAPI.registerMetaTileEntity(1510, new MetaTileEntityBuffer(gregtechId("buffer.lv"), 1));
         BUFFER[1] = GregTechAPI.registerMetaTileEntity(1511, new MetaTileEntityBuffer(gregtechId("buffer.mv"), 2));
         BUFFER[2] = GregTechAPI.registerMetaTileEntity(1512, new MetaTileEntityBuffer(gregtechId("buffer.hv"), 3));

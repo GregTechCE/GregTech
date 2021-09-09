@@ -3280,6 +3280,25 @@ gregtech.machine.fisher.tooltip=Costs string to fish. Consumes one string each t
 gregtech.machine.fisher.speed=Catches something every %,d ticks
 gregtech.machine.fisher.requirement=Requires a %,dx%,d centered square of water directly below.
 
+# World Accelerator
+gregtech.machine.world_accelerator.lv.name=Basic World Accelerator
+gregtech.machine.world_accelerator.mv.name=Advanced World Accelerator
+gregtech.machine.world_accelerator.hv.name=Advanced World Accelerator II
+gregtech.machine.world_accelerator.ev.name=Advanced World Accelerator III
+gregtech.machine.world_accelerator.iv.name=Elite World Accelerator
+gregtech.machine.world_accelerator.luv.name=Elite World Accelerator II
+gregtech.machine.world_accelerator.zpm.name=Elite World Accelerator III
+gregtech.machine.world_accelerator.uv.name=Elite World Accelerator IV
+gregtech.machine.world_accelerator.uhv.name=High-Tech World Accelerator
+gregtech.machine.world_accelerator.uev.name=High-Tech World Accelerator II
+gregtech.machine.world_accelerator.uiv.name=High-Tech World Accelerator III
+gregtech.machine.world_accelerator.umv.name=High-Tech World Accelerator IV
+gregtech.machine.world_accelerator.uxv.name=Ultimate World Accelerator
+gregtech.machine.world_accelerator.description=Increase tick updates per tick. 2 modes: Tile Entity or Random Tick. Use a Screwdriver to change modes.
+gregtech.machine.world_accelerator.area=On Tile Entity mode, only adjacent blocks are sped up. On Random Tick, it is %dx%d blocks radius.
+gregtech.machine.world_accelerator.mode_tile=Tile Entity Mode
+gregtech.machine.world_accelerator.mode_entity=Entity Mode
+
 # General machinery
 gregtech.machine.basic.input_from_output_side.allow=Allow Input from Output Side
 gregtech.machine.basic.input_from_output_side.disallow=Disallow Input from Output Side
