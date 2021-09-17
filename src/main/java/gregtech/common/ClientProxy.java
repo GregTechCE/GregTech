@@ -8,6 +8,8 @@ import com.mojang.realmsclient.gui.ChatFormatting;
 import gregtech.api.GTValues;
 import gregtech.api.render.MetaTileEntityRenderer;
 import gregtech.api.render.ToolRenderHandler;
+import gregtech.api.render.shader.Shaders;
+import gregtech.api.terminal.TerminalRegistry;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Material;
 import gregtech.api.unification.stack.UnificationEntry;
@@ -42,6 +44,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -119,12 +122,16 @@ public class ClientProxy extends CommonProxy {
     public void onLoad() {
         KeyBinds.registerClient();
         super.onLoad();
+        if (ConfigHolder.debug) {
+            ClientCommandHandler.instance.registerCommand(new Shaders.ShaderCommand());
+        }
         registerColors();
     }
 
     @Override
     public void onPostLoad() {
         super.onPostLoad();
+        TerminalRegistry.initTerminalFiles();
         ResourceUtils.registerReloadListener(ToolRenderHandler.INSTANCE);
         ModCompatibility.initCompat();
         FacadeRenderer.init();
