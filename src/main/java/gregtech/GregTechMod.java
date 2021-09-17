@@ -18,7 +18,7 @@ import gregtech.api.unification.material.Materials;
 import gregtech.api.util.AnnotatedMaterialHandlerLoader;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.NBTUtil;
-import gregtech.api.util.input.Keybinds;
+import gregtech.api.util.input.KeyBinds;
 import gregtech.api.worldgen.config.WorldGenRegistry;
 import gregtech.common.*;
 import gregtech.common.blocks.MetaBlocks;
@@ -116,7 +116,7 @@ public class GregTechMod {
         AnnotatedComponentHandlerLoader.discoverAndLoadAnnotatedComponentHandlers(event.getAsmData());
 
         proxy.onPreLoad();
-        Keybinds.register();
+        KeyBinds.register();
     }
 
     @Mod.EventHandler

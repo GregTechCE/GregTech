@@ -11,7 +11,7 @@ import gregtech.api.items.armor.ArmorUtils;
 import gregtech.api.net.KeysPacket;
 import gregtech.api.net.NetworkHandler;
 import gregtech.api.util.input.Key;
-import gregtech.api.util.input.Keybinds;
+import gregtech.api.util.input.KeyBinds;
 import gregtech.common.items.armor.PowerlessJetpack;
 import gregtech.common.items.MetaItems;
 import net.minecraft.entity.EntityLivingBase;
@@ -118,14 +118,14 @@ public class EventHandlers {
     public static void onKeyInput(InputEvent.KeyInputEvent event) {
         if (ArmorUtils.SIDE.isClient()) {
             boolean needNewPacket = false;
-            for (Key key : Keybinds.REGISTERY) {
+            for (Key key : KeyBinds.REGISTRY) {
                 boolean keyState = key.getBind().isKeyDown();
                 if (key.state != keyState) {
                     key.state = keyState;
                     needNewPacket = true;
                 }
             }
-            if (needNewPacket) NetworkHandler.INSTANCE.sendToServer(new KeysPacket(Keybinds.REGISTERY));
+            if (needNewPacket) NetworkHandler.INSTANCE.sendToServer(new KeysPacket(KeyBinds.REGISTRY));
         }
     }
 
