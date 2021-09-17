@@ -1,7 +1,7 @@
 package gregtech.integration.jei;
 
 import gregtech.api.GTValues;
-import gregtech.api.GregTechAPI;
+import gregtech.api.GregTechRegistries;
 import gregtech.api.capability.GregtechTileCapabilities;
 import gregtech.api.capability.IControllable;
 import gregtech.api.capability.impl.AbstractRecipeLogic;
@@ -117,8 +117,8 @@ public class GTJeiPlugin implements IModPlugin {
         }
 
         List<SteamMetaTileEntity> deferredCatalysts = new ArrayList<>();
-        for (ResourceLocation metaTileEntityId : GregTechAPI.META_TILE_ENTITY_REGISTRY.getKeys()) {
-            MetaTileEntity metaTileEntity = GregTechAPI.META_TILE_ENTITY_REGISTRY.getObject(metaTileEntityId);
+        for (ResourceLocation metaTileEntityId : GregTechRegistries.MTE_REGISTRY.getKeys()) {
+            MetaTileEntity metaTileEntity = GregTechRegistries.MTE_REGISTRY.getObject(metaTileEntityId);
             assert metaTileEntity != null;
             if (metaTileEntity.getCapability(GregtechTileCapabilities.CAPABILITY_CONTROLLABLE, null) != null) {
                 IControllable workableCapability = metaTileEntity.getCapability(GregtechTileCapabilities.CAPABILITY_CONTROLLABLE, null);
