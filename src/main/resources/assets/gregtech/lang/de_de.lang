@@ -68,7 +68,7 @@ metaitem.credit.naquadah.tooltip=32768 Münzen
 metaitem.credit.darmstadtium.name=Darmstadtium Münze
 metaitem.credit.darmstadtium.tooltip=262144 Münzen
 
-metaitem.coin.gold.ancient.name=Uhralte Gold Münze
+metaitem.coin.gold.ancient.name=Uralte Gold Münze
 metaitem.coin.gold.ancient.tooltip=Gefunden in Uhralten Ruinen
 metaitem.coin.doge.name=Doge Münze
 metaitem.coin.doge.tooltip=Viel Krypto geld. 
@@ -188,7 +188,7 @@ metaitem.fuel.can.plastic.empty.tooltip=Wird benutzt un Flüssigkeiten zu lagern
 metaitem.fuel.can.plastic.filled.name=Plastik Flüssigkeiten Kanne
 metaitem.fuel.can.plastic.filled.tooltip=Brennt gut in diesel Generatoren
 
-metaitem.spray.empty.name=Spray Can (Empty)
+metaitem.spray.empty.name=Sprüh Dose (Leer)
 metaitem.spray.empty.tooltip=Can be filled with sprays of various colors
 
 metaitem.thermos_can.empty.name=Leere Thermos Kanne
@@ -220,8 +220,8 @@ metaitem.spray.can.dyes.black.name=Sprüh Dose (Schwarz)
 
 metaitem.tool.matches.name=Streichholz
 metaitem.tool.matchbox.name=Streichholzschachtel
-metaitem.tool.lighter.invar.name=Lighter
-metaitem.tool.lighter.platinum.name=Platinum Lighter
+metaitem.tool.lighter.invar.name=Feuerzeug
+metaitem.tool.lighter.platinum.name=Platinum Feuerzeug
 metaitem.tool.lighter.platinum.tooltip=A known Prank Master is engraved on it
 
 metaitem.ingot.iridiumalloy.name=Iridium Alloy Ingot
