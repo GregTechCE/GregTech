@@ -1916,7 +1916,7 @@ gregtech.machine.gas_turbine.hv.name=Turbo Gas Turbine
 gregtech.machine.gas_turbine.ev.name=Turbo Gas Turbine II
 
 gregtech.machine.magic_energy_absorber.name=Magic Energy Absorber
-gregtech.machine.magic_energy_absorber.tooltip=Max Voltage OUT: §a2048 §7(§aEV§7)/nCollects energy from ender crystals in 64 blocks/nEach ender crystal adds 32 EU/t to output/nPlace Dragon Egg on top to amplify output/n/nWhen amplified:/nEach ender crystal adds 128 EU/t
+gregtech.machine.magic_energy_absorber.tooltip=Max Voltage OUT: §a2048 §7(§aEV§7)/nCollects energy from end crystals on naturally generated obsidian pillars in the End within 64 blocks./nEach ender crystal adds 32 EU/t to output/nPlace Dragon Egg on top to amplify output/n/nWhen amplified:/nEach ender crystal adds 128 EU/t
 gregtech.machine.magic_energy_converter.name=Magic Energy Converter
 gregtech.machine.magic_energy_converter.tooltip=Voltage OUT: §a128 §7(§aMV§7)/nCollects essentia from containers within 16 blocks/nConsumes 20 Potentia per second
 
@@ -2279,6 +2279,8 @@ gregtech.machine.item_collector.gui.collect_range=Collect in %s blocks
 gregtech.machine.quantum_chest.tooltip=Better than JABBA.
 gregtech.machine.quantum_chest.capacity=Item Capacity: %,d items
 gregtech.machine.quantum_chest.items_stored=Item Amount:
+gregtech.machine.quantum_chest.tooltip.item=Item Stored: §b%s
+gregtech.machine.quantum_chest.tooltip.count=Item Amount: §e%,d
 
 gregtech.machine.quantum_chest.mv.name=Basic Quantum Chest
 gregtech.machine.quantum_chest.hv.name=Advanced Quantum Chest
@@ -2288,6 +2290,8 @@ gregtech.machine.quantum_chest.iv.name=Black Hole-Quantum Chest III
 #Quantum tanks
 gregtech.machine.quantum_tank.tooltip=Compact place to store all your fluids.
 gregtech.machine.quantum_tank.capacity=Fluid Capacity: %,d mb
+gregtech.machine.quantum_tank.tooltip.name=Fluid Stored: §b%s
+gregtech.machine.quantum_tank.tooltip.count=Fluid Amount: §e%,d mb
 
 gregtech.machine.quantum_tank.mv.name=Basic Quantum Tank
 gregtech.machine.quantum_tank.hv.name=Advanced Quantum Tank
@@ -2923,8 +2927,8 @@ gregtech.gui.toggle_view.disabled=Toggle View (Fluids)
 gregtech.gui.toggle_view.enabled=Toggle View (Items)
 gregtech.gui.overclock.enabled=Overclocking Enabled./nClick to Disable
 gregtech.gui.overclock.disabled=Overclocking Disabled./nClick to Enable
-gregtech.gui.overclock.description=Recipes can overclock to this tier./nOFF means no overclocking is performed.
-gregtech.gui.overclock.off=OFF
+gregtech.gui.overclock.description=Recipes can overclock to this tier./nX means no overclocking is performed.
+gregtech.gui.overclock.off=X
 gregtech.gui.sort=Sort
 gregtech.gui.fluid_auto_output.tooltip.enabled=Fluid Auto-Output Enabled
 gregtech.gui.fluid_auto_output.tooltip.disabled=Fluid Auto-Output Disabled
@@ -2967,6 +2971,12 @@ gregtech.multiblock.preview.zoom=Shift+RMB to zoom
 gregtech.multiblock.preview.pan=LMB+Drag to pan
 gregtech.multiblock.preview.move=RMB+Drag to move
 gregtech.multiblock.preview.reset=Scroll Mousewheel to reset
+gregtech.multiblock.preview.any_hatch=Any tier hatch can be used to form the structure
+gregtech.multiblock.preview.limit=Minimum Limit: %d
+gregtech.multiblock.preview.limit_per_layer=Only %d per layer
+gregtech.multiblock.preview.only=Only %s allowed
+gregtech.multiblock.preview.only_location=Only allowed at %s
+gregtech.multiblock.preview.location.b_c=Bottom Center
 
 gregtech.multiblock.blast_furnace.max_temperature=Max Temperature: %sK
 gregtech.multiblock.multi_furnace.heating_coil_level=Heating Coil Level: %s
@@ -3011,3 +3021,5 @@ gregtech.command.util.hand.tool_stats=Tool Stats Class: %s
 gregtech.command.util.hand.meta_item=Meta Item Name: %s
 gregtech.command.util.hand.not_a_player=This command is only usable by a player.
 gregtech.command.util.hand.no_item=You must hold something in mainhand before executing this command.
+
+gregtech.universal.clear_nbt_recipe.tooltip=§cThis will destroy all contents!

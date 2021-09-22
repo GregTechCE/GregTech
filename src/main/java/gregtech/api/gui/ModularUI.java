@@ -90,12 +90,7 @@ public final class ModularUI implements ISizeProvider {
     }
 
     public static Builder defaultBuilder() {
-        return defaultBuilder(0);
-    }
-
-    //to be called in order to change the gui height by a specific amount
-    public static Builder defaultBuilder(int yOffset) {
-        return new Builder(GuiTextures.BACKGROUND, 176, 166 + yOffset);
+        return new Builder(GuiTextures.BACKGROUND, 176, 166);
     }
 
     public static Builder borderedBuilder() {
@@ -185,17 +180,12 @@ public final class ModularUI implements ISizeProvider {
         }
 
         public Builder bindPlayerInventory(InventoryPlayer inventoryPlayer, int startY) {
-            bindPlayerInventory(inventoryPlayer, GuiTextures.SLOT, 8, startY);
+            bindPlayerInventory(inventoryPlayer, GuiTextures.SLOT, 7, startY);
             return this;
         }
 
         public Builder bindPlayerInventory(InventoryPlayer inventoryPlayer, TextureArea imageLocation) {
-            return bindPlayerInventory(inventoryPlayer, imageLocation, 0);
-        }
-
-        //to be called in order to offset the player inventory from the top of the window
-        public Builder bindPlayerInventory(InventoryPlayer inventoryPlayer, TextureArea imageLocation, int yOffset) {
-            return bindPlayerInventory(inventoryPlayer, imageLocation, 8, 84 + yOffset);
+            return bindPlayerInventory(inventoryPlayer, imageLocation, 7, 84);
         }
 
         public Builder bindPlayerInventory(InventoryPlayer inventoryPlayer, TextureArea imageLocation, int x, int y) {

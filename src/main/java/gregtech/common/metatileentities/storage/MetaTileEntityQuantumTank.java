@@ -28,10 +28,9 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.items.ItemStackHandler;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -106,6 +105,18 @@ public class MetaTileEntityQuantumTank extends MetaTileEntity implements ITiered
     }
 
     @Override
+    public void initFromItemStackData(NBTTagCompound itemStack) {
+        super.initFromItemStackData(itemStack);
+        fluidTank.readFromNBT(itemStack);
+    }
+
+    @Override
+    public void writeItemStackData(NBTTagCompound itemStack) {
+        super.writeItemStackData(itemStack);
+        fluidTank.writeToNBT(itemStack);
+    }
+
+    @Override
     protected boolean shouldSerializeInventories() {
         return false;
     }
@@ -155,6 +166,12 @@ public class MetaTileEntityQuantumTank extends MetaTileEntity implements ITiered
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, boolean advanced) {
         super.addInformation(stack, player, tooltip, advanced);
         tooltip.add(I18n.format("gregtech.machine.quantum_tank.capacity", maxFluidCapacity));
+        NBTTagCompound compound = stack.getTagCompound();
+        if (compound != null && compound.hasKey("FluidName")) {
+            FluidStack fluidStack = new FluidStack(FluidRegistry.getFluid(compound.getString("FluidName")), 1000);
+            tooltip.add(I18n.format("gregtech.machine.quantum_tank.tooltip.name", fluidStack.getLocalizedName()));
+            tooltip.add(I18n.format("gregtech.machine.quantum_tank.tooltip.count", compound.getInteger("Amount")));
+        }
     }
 
     @Override
