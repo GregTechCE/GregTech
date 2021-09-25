@@ -575,7 +575,6 @@ public class Materials {
     public static Material Bacteria;
     public static Material BacterialSludge;
     public static Material EnrichedBacterialSludge;
-    public static Material FermentedBacterialSludge;
     public static Material Mutagen;
     public static Material GelatinMixture;
     public static Material RawGasoline;
