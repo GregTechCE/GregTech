@@ -3,21 +3,17 @@ package gregtech;
 import codechicken.lib.CodeChickenLib;
 import crafttweaker.CraftTweakerAPI;
 import gregtech.api.GTValues;
-import gregtech.api.IGTAddon;
 import gregtech.api.capability.SimpleCapabilityManager;
 import gregtech.api.cover.CoverBehaviorUIFactory;
 import gregtech.api.cover.CoverDefinition;
 import gregtech.api.gui.UIFactory;
 import gregtech.api.items.gui.PlayerInventoryUIFactory;
-import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityUIFactory;
 import gregtech.api.model.ResourcePackHook;
 import gregtech.api.net.NetworkHandler;
 import gregtech.api.recipes.RecipeMap;
-import gregtech.api.terminal.TerminalRegistry;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.IMaterialHandler;
-import gregtech.api.unification.material.Material;
 import gregtech.api.unification.material.MaterialRegistry;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.util.AnnotatedMaterialHandlerLoader;
@@ -40,7 +36,6 @@ import gregtech.common.worldgen.WorldGenAbandonedBase;
 import gregtech.common.worldgen.WorldGenRubberTree;
 import gregtech.integration.theoneprobe.TheOneProbeCompatibility;
 import gregtech.loaders.dungeon.DungeonLootLoader;
-import gregtech.loaders.recipe.component.AnnotatedComponentHandlerLoader;
 import net.minecraftforge.classloading.FMLForgePlugin;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -134,7 +129,7 @@ public class GregTechMod {
 
         // discover annotated crafting component handlers
         // todo do this differently
-        AnnotatedComponentHandlerLoader.discoverAndLoadAnnotatedComponentHandlers(event.getAsmData());
+        //AnnotatedComponentHandlerLoader.discoverAndLoadAnnotatedComponentHandlers(event.getAsmData());
 
         proxy.onPreLoad();
         KeyBinds.register();
@@ -154,7 +149,7 @@ public class GregTechMod {
                 GTLog.logger.fatal("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
                 GTLog.logger.fatal("Ignoring invalid recipes and continuing loading");
                 GTLog.logger.fatal("Some things may lack recipes or have invalid ones, proceed at your own risk");
-                GTLog.logger.fatal("Report to GTCE github to get more help and fix the problem");
+                GTLog.logger.fatal("Report to GTCEu GitHub to get more help and fix the problem");
                 GTLog.logger.fatal("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             }
         }

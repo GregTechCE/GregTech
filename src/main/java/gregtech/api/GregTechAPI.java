@@ -46,11 +46,11 @@ public class GregTechAPI {
         }
 
         public void register(int id, ResourceLocation key, V value) {
-            registry.register(id, key, value);
+            if (registry != null) registry.register(id, key, value);
         }
 
         public void register(int id, String key, V value) {
-            registry.register(id, new ResourceLocation(Loader.instance().activeModContainer().getModId(), key), value);
+            if (registry != null) registry.register(id, new ResourceLocation(Loader.instance().activeModContainer().getModId(), key), value);
         }
     }
 }
