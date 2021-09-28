@@ -3,6 +3,7 @@ package gregtech;
 import codechicken.lib.CodeChickenLib;
 import crafttweaker.CraftTweakerAPI;
 import gregtech.api.GTValues;
+import gregtech.api.IGTAddon;
 import gregtech.api.capability.SimpleCapabilityManager;
 import gregtech.api.cover.CoverBehaviorUIFactory;
 import gregtech.api.cover.CoverDefinition;
@@ -43,18 +44,15 @@ import gregtech.loaders.recipe.component.AnnotatedComponentHandlerLoader;
 import net.minecraftforge.classloading.FMLForgePlugin;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.LoaderException;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.Optional.Method;
-import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-import static gregtech.api.GregTechRegistries.*;
+import static gregtech.api.GregTechAPI.*;
 
 @Mod(modid = GTValues.MODID,
         name = "GregTech",
@@ -129,14 +127,13 @@ public class GregTechMod {
         MTE_REGISTRY.unfreeze();
         GTLog.logger.info("Registering GTCEu Meta Tile Entities");
         MetaTileEntities.init();
-        GTLog.logger.info("Registering addon Meta Tile Entities");
-        MinecraftForge.EVENT_BUS.post(new RegisterEvent<>(MTE_REGISTRY, MetaTileEntity.class));
-        MTE_REGISTRY.freeze();
-        /* End MetaTileEntity Registration */
+        /* End CEu MetaTileEntity Registration */
+        /* Addons not done via an Event due to how much must be initialized for MTEs to register */
 
         MetaEntities.init();
 
         // discover annotated crafting component handlers
+        // todo do this differently
         AnnotatedComponentHandlerLoader.discoverAndLoadAnnotatedComponentHandlers(event.getAsmData());
 
         proxy.onPreLoad();
@@ -145,6 +142,7 @@ public class GregTechMod {
 
     @Mod.EventHandler
     public void onInit(FMLInitializationEvent event) {
+        MTE_REGISTRY.freeze(); // freeze once addon preInit is finished
         proxy.onLoad();
         if (RecipeMap.isFoundInvalidRecipe()) {
             GTLog.logger.fatal("Seems like invalid recipe was found.");
