@@ -14,7 +14,6 @@ import gregtech.api.net.NetworkHandler;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.IMaterialHandler;
-import gregtech.api.unification.material.MaterialRegistry;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.util.AnnotatedMaterialHandlerLoader;
 import gregtech.api.util.GTLog;
@@ -92,13 +91,14 @@ public class GregTechMod {
         // TODO Update this to new registration method
         /* Start Material Registration */
         //first, register primary materials and run material handlers
-        MaterialRegistry.MATERIAL_REGISTRY.unfreeze();
+        MATERIAL_REGISTRY.unfreeze();
         Materials.register();
+        MATERIAL_REGISTRY.flush();
         AnnotatedMaterialHandlerLoader.discoverAndLoadAnnotatedMaterialHandlers(event.getAsmData());
         IMaterialHandler.runMaterialHandlers();
 
         // Finalize GT materials (for now) so CT can access them by registry lookup
-        MaterialRegistry.finalizeMaterials(false);
+        MATERIAL_REGISTRY.flush();
 
         //then, run CraftTweaker early material registration scripts
         if (GTValues.isModLoaded(GTValues.MODID_CT)) {
@@ -108,7 +108,7 @@ public class GregTechMod {
         }
 
         //freeze material registry before processing items, blocks and fluids
-        MaterialRegistry.finalizeMaterials(true);
+        MATERIAL_REGISTRY.freeze();
         /* End Material Registration */
 
         OreDictUnifier.init();
