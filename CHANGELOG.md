@@ -1,11 +1,11 @@
 ## Changelog
 
 ### 1.17.1
-* New algorithm for Fluid Regulator Keep Exact Mode (#1717) - Exaxxion
-* Fix multi dimensions (#1713) - Synthitic
-* Add warning to controller if Turbine is obstructed (#1710) - ALongStringOfNumbers
-* Move fetching dimensions to catch late registrations (#1709) - ALongStringOfNumbers
-* Fix phosphor ore names (#1718) - Exaxxion
+* Added warning to controller if Turbine is obstructed (#1710) - ALongStringOfNumbers
+* Updated fetching of dimensions in worldgen to catch late registrations (#1709) - ALongStringOfNumbers
+* Fixed usage of multiple dimensions in worldgen definitions (#1713) - Synthitic
+* Fixed Fluid Regulator: Keep Exact Mode not working as expected (#1717) - Exaxxion
+* Fixed phosphor ore names (#1718) - Exaxxion
 
 ### 1.17.0
 * Fix many small GUI issues (#1574) - dan
