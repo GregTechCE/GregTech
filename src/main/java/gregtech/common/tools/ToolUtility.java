@@ -42,6 +42,8 @@ public class ToolUtility {
         if(TreeChopTask.isLogBlock(blockState) == 1) {
             if(!world.isRemote) {
                 EntityPlayerMP playerMP = (EntityPlayerMP) player;
+                if (playerMP.getCooldownTracker().hasCooldown(itemStack.getItem()))
+                    return false;
                 TreeChopTask treeChopTask = new TreeChopTask(blockPos, world, playerMP, itemStack);
                 TaskScheduler.scheduleTask(world, treeChopTask);
             }

@@ -42,9 +42,11 @@ public class TreeChopTask implements Task {
         this.startBlockPos = startPos.toImmutable();
         this.currentPos.setPos(startPos);
         this.woodBlockPos.add(startPos.toImmutable());
+        this.visitedBlockPos.add(startPos.toImmutable());
         this.world = world;
         this.itemStack = toolStack.copy();
         this.player = player;
+        player.getCooldownTracker().setCooldown(itemStack.getItem(), 20);
     }
 
     @Override
@@ -62,6 +64,8 @@ public class TreeChopTask implements Task {
         if (toolValueItem == null) {
             return false;
         }
+        if (world.getTotalWorldTime() % 10 == 0)
+            player.getCooldownTracker().setCooldown(itemStack.getItem(), 20);
         IToolStats toolStats = toolValueItem.getToolStats();
         int damagePerBlockBreak = toolStats.getToolDamagePerBlockBreak(itemStack);
 
@@ -117,7 +121,6 @@ public class TreeChopTask implements Task {
                 this.world.destroyBlock(woodPos, true);
                 return true;
             }
-            return true;
         }
         return false;
     }
