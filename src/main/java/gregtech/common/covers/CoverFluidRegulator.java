@@ -190,7 +190,6 @@ public class CoverFluidRegulator extends CoverPump {
               .map(IFluidTankProperties::getContents)
               .filter(Objects::nonNull)
               .filter(fluidTypeFilter)
-              .filter(Objects::nonNull) // objects can and have been null here, shut up IntelliJ
               .forEach(fs -> {
                   summedFluids.putIfAbsent(fs, 0);
                   summedFluids.computeIfPresent(fs, (k,v) -> v + fs.amount);
