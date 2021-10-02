@@ -137,10 +137,46 @@ public class CoverFluidRegulatorTest {
 
         // expect that 44mB of water and 144mB of lava will be moved
         assertEquals("Wrong fluid amount moved", 44+144, amountTransferred);
+
+        // verify final fluid quantities
+        assertEquals(2, dest.getTankProperties().length);
+        IFluidTankProperties tank1 = dest.getTankProperties()[0];
+        IFluidTankProperties tank2 = dest.getTankProperties()[1];
+        assertNotNull(tank1.getContents());
+        assertNotNull(tank2.getContents());
+        assertTrue(tank1.getContents().isFluidStackIdentical(new FluidStack(FluidRegistry.WATER, 144)));
+        assertTrue(tank2.getContents().isFluidStackIdentical(new FluidStack(FluidRegistry.LAVA, 144)));
     }
 
     @Test
-    public void doKeepExact_respects_transfer_limit() {
+    public void doKeepExact_respects_transfer_limit_with_one_fluid() {
+
+        // Create a regulator for testing with, and set it to "Keep Exact" mode
+        CoverFluidRegulator cfr = new CoverFluidRegulator(null, EnumFacing.UP, 0, 1000);
+        cfr.transferMode = TransferMode.KEEP_EXACT;
+
+        // One output tank full of water
+        IFluidHandler source =
+            new FluidHandlerProxy(
+                new FluidTankList(false),
+                new FluidTankList(false,
+                                  new FluidTank(new FluidStack(FluidRegistry.WATER, 64000), 64000)));
+
+        // One input tank with nothing in it
+        IFluidHandler dest =
+            new FluidHandlerProxy(
+                new FluidTankList(false, new FluidTank(64000)),
+                new FluidTankList(false));
+
+        // accept any fluid this time
+        int amountTransferred = cfr.doKeepExact(100, source, dest, fs -> true, 144);
+
+        // expect that at most 100mB of fluids total will be moved this tick, as if possible it would do 144mB
+        assertEquals("Wrong fluid amount moved", 100, amountTransferred);
+    }
+
+    @Test
+    public void doKeepExact_respects_transfer_limit_with_multiple_fluids() {
 
         // Create a regulator for testing with, and set it to "Keep Exact" mode
         CoverFluidRegulator cfr = new CoverFluidRegulator(null, EnumFacing.UP, 0, 1000);
