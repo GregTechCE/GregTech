@@ -66,12 +66,12 @@ public class CraftingComponent {
                 {5, new UnificationEntry(OrePrefix.circuit, Tier.Elite)},
                 {6, new UnificationEntry(OrePrefix.circuit, Tier.Master)},
                 {7, new UnificationEntry(OrePrefix.circuit, Tier.Ultimate)},
-                {8, new UnificationEntry(OrePrefix.circuit, Tier.Superconductor)},
+                {8, new UnificationEntry(OrePrefix.circuit, Tier.Super)},
                 {9, new UnificationEntry(OrePrefix.circuit, Tier.Infinite)},
                 {10, new UnificationEntry(OrePrefix.circuit, Tier.Ultra)},
                 {11, new UnificationEntry(OrePrefix.circuit, Tier.Insane)},
-                {12, new UnificationEntry(OrePrefix.circuit, Tier.UMVCircuit)},
-                {13, new UnificationEntry(OrePrefix.circuit, Tier.UXVCircuit)},
+                {12, new UnificationEntry(OrePrefix.circuit, Tier.Epic)},
+                {13, new UnificationEntry(OrePrefix.circuit, Tier.Legendary)},
                 {14, new UnificationEntry(OrePrefix.circuit, Tier.Maximum)}
 
         }).collect(Collectors.toMap(data -> (Integer) data[0], data -> data[1])));
@@ -85,12 +85,12 @@ public class CraftingComponent {
                 {4, new UnificationEntry(OrePrefix.circuit, Tier.Elite)},
                 {5, new UnificationEntry(OrePrefix.circuit, Tier.Master)},
                 {6, new UnificationEntry(OrePrefix.circuit, Tier.Ultimate)},
-                {7, new UnificationEntry(OrePrefix.circuit, Tier.Superconductor)},
+                {7, new UnificationEntry(OrePrefix.circuit, Tier.Super)},
                 {8, new UnificationEntry(OrePrefix.circuit, Tier.Infinite)},
                 {9, new UnificationEntry(OrePrefix.circuit, Tier.Ultra)},
                 {10, new UnificationEntry(OrePrefix.circuit, Tier.Insane)},
-                {11, new UnificationEntry(OrePrefix.circuit, Tier.UMVCircuit)},
-                {12, new UnificationEntry(OrePrefix.circuit, Tier.UXVCircuit)},
+                {11, new UnificationEntry(OrePrefix.circuit, Tier.Epic)},
+                {12, new UnificationEntry(OrePrefix.circuit, Tier.Legendary)},
                 {13, new UnificationEntry(OrePrefix.circuit, Tier.Maximum)}
 
         }).collect(Collectors.toMap(data -> (Integer) data[0], data -> data[1])));
