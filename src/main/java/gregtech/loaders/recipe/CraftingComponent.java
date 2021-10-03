@@ -119,7 +119,7 @@ public class CraftingComponent {
                 {6, new UnificationEntry(OrePrefix.cableGtSingle, Materials.NiobiumTitanium)},
                 {7, new UnificationEntry(OrePrefix.cableGtSingle, Materials.Naquadah)},
                 {8, new UnificationEntry(OrePrefix.cableGtSingle, Materials.NaquadahAlloy)},
-                {9, new UnificationEntry(OrePrefix.wireGtSingle, Tier.Superconductor)},
+                {9, new UnificationEntry(OrePrefix.wireGtSingle, Materials.RutheniumTriniumAmericiumNeutronate)},
 
         }).collect(Collectors.toMap(data -> (Integer) data[0], data -> data[1])));
 
@@ -147,7 +147,7 @@ public class CraftingComponent {
                 {5, new UnificationEntry(OrePrefix.cableGtQuadruple, Materials.Platinum)},
                 {6, new UnificationEntry(OrePrefix.cableGtQuadruple, Materials.NiobiumTitanium)},
                 {7, new UnificationEntry(OrePrefix.cableGtQuadruple, Materials.NaquadahAlloy)},
-                {8, new UnificationEntry(OrePrefix.wireGtQuadruple, Tier.Superconductor)},
+                {8, new UnificationEntry(OrePrefix.wireGtQuadruple, Materials.RutheniumTriniumAmericiumNeutronate)},
 
         }).collect(Collectors.toMap(data -> (Integer) data[0], data -> data[1])));
 
@@ -385,12 +385,12 @@ public class CraftingComponent {
                 {0, new UnificationEntry(OrePrefix.wireGtSingle, Materials.Tin)},
                 {1, new UnificationEntry(OrePrefix.wireGtDouble, Materials.Tin)},
                 {2, new UnificationEntry(OrePrefix.wireGtDouble, Materials.Copper)},
-                {3, new UnificationEntry(OrePrefix.wireGtQuadruple, Materials.Copper)},
-                {4, new UnificationEntry(OrePrefix.wireGtOctal, Materials.AnnealedCopper)},
-                {5, new UnificationEntry(OrePrefix.wireGtOctal, Materials.AnnealedCopper)},
-                {6, new UnificationEntry(OrePrefix.wireGtQuadruple, Materials.YttriumBariumCuprate)},
-                {7, new UnificationEntry(OrePrefix.wireGtOctal, Tier.Superconductor)},
-                {8, new UnificationEntry(OrePrefix.wireGtHex, Tier.Superconductor)},
+                {3, new UnificationEntry(OrePrefix.wireGtDouble, Materials.Silver)},
+                {4, new UnificationEntry(OrePrefix.wireGtQuadruple, Materials.Steel)},
+                {5, new UnificationEntry(OrePrefix.wireGtQuadruple, Materials.Graphene)},
+                {6, new UnificationEntry(OrePrefix.wireGtQuadruple, Materials.NiobiumNitride)},
+                {7, new UnificationEntry(OrePrefix.wireGtOctal, Materials.VanadiumGallium)},
+                {8, new UnificationEntry(OrePrefix.wireGtOctal, Materials.YttriumBariumCuprate)},
 
         }).collect(Collectors.toMap(data -> (Integer) data[0], data -> data[1])));
 
