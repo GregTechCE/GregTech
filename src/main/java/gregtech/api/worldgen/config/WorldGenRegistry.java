@@ -141,6 +141,7 @@ public class WorldGenRegistry {
             if (!Files.exists(jarFileExtractLock)) {
                 //create extraction lock only if it doesn't exist
                 Files.createFile(jarFileExtractLock);
+                extractJarVeinDefinitions(configPath, jarFileExtractLock);
             }
             // Populate the config folder with the defaults from the mod jar
             extractJarVeinDefinitions(configPath, worldgenRootPath);
@@ -191,6 +192,8 @@ public class WorldGenRegistry {
         Path worldgenRootPath = configPath.resolve("worldgen");
         // The path of the named dimensions file in the config folder
         Path dimensionsRootPath = configPath.resolve("dimensions.json");
+        // THe path of the lock file in the config folder
+        Path extractLockPath = configPath.resolve("worldgen_extracted.txt");
         FileSystem zipFileSystem = null;
         try {
             URI sampleUri = WorldGenRegistry.class.getResource("/assets/gregtech/.gtassetsroot").toURI();
@@ -235,6 +238,15 @@ public class WorldGenRegistry {
                 Files.copy(dimensionFile, worldgenPath, StandardCopyOption.REPLACE_EXISTING);
 
                 GTLog.logger.info("Extracted builtin dimension definitions into worldgen folder");
+            }
+            // Attempts to extract lock txt file
+            else if (targetPath.compareTo(extractLockPath) == 0) {
+                Path extractLockFile = worldgenJarRootPath.resolve("worldgen_extracted.txt");
+
+                Path worldgenPath = extractLockPath.resolve(worldgenJarRootPath.relativize(worldgenJarRootPath).toString());
+                Files.copy(extractLockFile, worldgenPath, StandardCopyOption.REPLACE_EXISTING);
+
+                GTLog.logger.info("Extracted jar lock file into worldgen folder");
             }
 
         } catch (URISyntaxException impossible) {
