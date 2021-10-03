@@ -2042,8 +2042,10 @@ behaviour.lighter.uses=Remaining uses: %,d
 behavior.plunger.description=Use to clear 1000 L out of a machine's output tank./nUse while sneaking to clear 1000 L out of a machine's input tank./nInput tank clearing works only on GT machines!
 behavior.toggle_energy_consumer.tooltip=Use to toggle mode
 
-enchantment.damage.endermen=Disjunction
-enchantment.hard.hammer=Hammering
+enchantment.damage.disjunction=Disjunction
+enchantment.gregtech.disjunction.desc=Applies Weakness and Slowness to Ender-related mobs.
+enchantment.hard_hammer=Hammering
+enchantment.gregtech.hard_hammer.desc=Breaks blocks as if they were mined with a GregTech Hammer.
 
 tile.gt.seal.name=Sealed Block
 tile.gt.foam.name=Foam
