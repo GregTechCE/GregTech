@@ -3962,6 +3962,11 @@ gregtech.terminal.app_name.theme_settings=Theme Settings
 gregtech.terminal.app_name.guide_editor=Guide Editor
 gregtech.terminal.app_name.recipe_chart=Recipe Chart
 gregtech.terminal.app_name.ore_prospector=Ore Prospector
+gregtech.terminal.app_name.pong=Pong
+gregtech.terminal.app_name.minesweeper=Minesweeper
+gregtech.terminal.app_name.maze=Theseus's Escape
+
+
 gregtech.terminal.app_name.console=GT Console
 gregtech.terminal.app_name.battery=Battery Manager
 gregtech.terminal.app_name.hardware=Hardware Manager
@@ -3975,6 +3980,9 @@ terminal.items.description=A guide book about items.
 terminal.machines.description=A guide book about gt machines.
 terminal.multiblocks.description=A guide book about multi-blocks.
 terminal.tutorials.description=Introduces all kinds of things, CT integration, tips, tutorials and more.
+terminal.pong.description=A classic pong game, if you're really that bored of waiting for that tungstensteel.
+terminal.minesweeper.description=A classic minesweeper game, if you're in class.
+terminal.maze.description=A GTOS exclusive game finding you racing through an endless labyrinth to survive the Minotaur!
 
 texture.modify_gui_texture.missing=Missing Texture
 texture.url_texture.fail=Load Failed

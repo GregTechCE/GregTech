@@ -10,6 +10,9 @@ import gregtech.api.util.GTLog;
 import gregtech.common.ConfigHolder;
 import gregtech.common.items.MetaItems;
 import gregtech.common.terminal.app.ThemeSettingApp;
+import gregtech.common.terminal.app.game.maze.MazeApp;
+import gregtech.common.terminal.app.game.minesweeper.MinesweeperApp;
+import gregtech.common.terminal.app.game.pong.PongApp;
 import gregtech.common.terminal.app.appstore.AppStoreApp;
 import gregtech.common.terminal.app.multiblockhelper.MultiBlockPreviewARApp;
 import gregtech.common.terminal.app.batterymanager.BatteryManagerApp;
@@ -66,6 +69,17 @@ public class TerminalRegistry {
         AppRegistryBuilder.create(new TutorialGuideApp()).defaultApp().build();
         AppRegistryBuilder.create(new GuideEditorApp()).defaultApp().build();
         AppRegistryBuilder.create(new ThemeSettingApp()).defaultApp().build();
+
+        AppRegistryBuilder.create(new PongApp())
+                .battery(GTValues.LV, 75)
+                .build();
+        AppRegistryBuilder.create(new MazeApp())
+                .battery(GTValues.LV, 150)
+                .build();
+        AppRegistryBuilder.create(new MinesweeperApp())
+                .battery(GTValues.LV, 150)
+                .build();
+
         AppRegistryBuilder.create(new OreProspectorApp())
                 .battery(GTValues.MV, 1000)
                 .upgrade(MetaItems.COIN_DOGE.getStackForm(10))
