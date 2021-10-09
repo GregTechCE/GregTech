@@ -20,6 +20,7 @@ import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.material.type.SolidMaterial;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.LocalisationUtils;
 import gregtech.common.ConfigHolder;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
@@ -406,7 +407,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @SuppressWarnings("deprecation")
     public String getItemStackDisplayName(ItemStack stack) {
         if (stack.getItemDamage() >= metaItemOffset) {
             T item = getItem(stack);
@@ -415,7 +416,7 @@ public class ToolMetaItem<T extends ToolMetaItem<?>.MetaToolValueItem> extends M
             }
             SolidMaterial primaryMaterial = getToolMaterial(stack);
             String materialName = primaryMaterial == null ? "" : String.valueOf(primaryMaterial.getLocalizedName());
-            return I18n.format("metaitem." + item.unlocalizedName + ".name", materialName);
+            return LocalisationUtils.format("metaitem." + item.unlocalizedName + ".name", materialName);
         }
         return super.getItemStackDisplayName(stack);
     }

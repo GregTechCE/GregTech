@@ -29,7 +29,6 @@ public class FrameItemBlock extends ItemBlock {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public String getItemStackDisplayName(ItemStack stack) {
         Material material = frameBlock.frameMaterial;
         return OrePrefix.frameGt.getLocalNameForItem(material);

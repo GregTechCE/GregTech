@@ -21,6 +21,7 @@ import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.type.Material;
 import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.stack.ItemMaterialInfo;
+import gregtech.api.util.LocalisationUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -471,7 +472,7 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @SuppressWarnings("deprecation")
     public String getItemStackDisplayName(ItemStack stack) {
         if (stack.getItemDamage() >= metaItemOffset) {
             T item = getItem(stack);
@@ -486,9 +487,9 @@ public abstract class MetaItem<T extends MetaItem<?>.MetaValueItem> extends Item
                 .getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null);
             if (fluidHandlerItem != null) {
                 FluidStack fluidInside = fluidHandlerItem.drain(Integer.MAX_VALUE, false);
-                return I18n.format(unlocalizedName, fluidInside == null ? I18n.format("metaitem.fluid_cell.empty") : fluidInside.getLocalizedName());
+                return LocalisationUtils.format(unlocalizedName, fluidInside == null ? LocalisationUtils.format("metaitem.fluid_cell.empty") : fluidInside.getLocalizedName());
             }
-            return I18n.format(unlocalizedName);
+            return LocalisationUtils.format(unlocalizedName);
         }
         return super.getItemStackDisplayName(stack);
     }

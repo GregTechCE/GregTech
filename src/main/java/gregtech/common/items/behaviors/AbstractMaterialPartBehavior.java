@@ -7,6 +7,7 @@ import gregtech.api.items.metaitem.stats.IItemNameProvider;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.material.type.IngotMaterial;
 import gregtech.api.unification.material.type.Material;
+import gregtech.api.util.LocalisationUtils;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -62,10 +63,10 @@ public abstract class AbstractMaterialPartBehavior implements IItemBehaviour, II
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @SuppressWarnings("deprecation")
     public String getItemStackDisplayName(ItemStack itemStack, String unlocalizedName) {
         IngotMaterial material = getPartMaterial(itemStack);
-        return I18n.format(unlocalizedName, material.getLocalizedName());
+        return LocalisationUtils.format(unlocalizedName, material.getLocalizedName());
     }
 
     @Override

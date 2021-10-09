@@ -24,6 +24,7 @@ import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.util.EnumValidationResult;
 import gregtech.api.util.GTLog;
 import gregtech.api.util.GTUtility;
+import gregtech.api.util.LocalisationUtils;
 import gregtech.api.util.ValidationResult;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
@@ -406,10 +407,10 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
             .collect(Collectors.toList());
     }
 
-    @SideOnly(Side.CLIENT)
     @ZenGetter("localizedName")
+    @SuppressWarnings("deprecation")
     public String getLocalizedName() {
-        return I18n.format("recipemap." + unlocalizedName + ".name");
+        return LocalisationUtils.format("recipemap." + unlocalizedName + ".name");
     }
 
     @ZenGetter("unlocalizedName")
