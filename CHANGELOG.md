@@ -1,5 +1,12 @@
 ## Changelog
 
+### 1.17.1
+* Added warning to controller if Turbine is obstructed (#1710) - ALongStringOfNumbers
+* Updated fetching of dimensions in worldgen to catch late registrations (#1709) - ALongStringOfNumbers
+* Fixed usage of multiple dimensions in worldgen definitions (#1713) - Synthitic
+* Fixed Fluid Regulator: Keep Exact Mode not working as expected (#1717) - Exaxxion
+* Fixed phosphor ore names (#1718) - Exaxxion
+
 ### 1.17.0
 * Fix many small GUI issues (#1574) - dan
 * Add clarification tooltips to blocks in the multiblock preview (#1584) - ALongStringOfNumbers
