@@ -318,7 +318,6 @@ public class MetaTileEntityQuantumChest extends MetaTileEntity implements ITiere
             if(stack.getCount() > insertedAmount) {
                 remainingStack = stack.copy();
                 remainingStack.setCount(stack.getCount() - insertedAmount);
-                return ItemStack.EMPTY;
             }
             if (!simulate) {
                 if (itemStack.isEmpty()) {
