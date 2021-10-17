@@ -25,12 +25,8 @@ public class GregtechDataCodes {
     public static final int UPDATE_LOCKED_STATE = 8;
     public static final int UPDATE_CONTENTS_SEED = 9;
 
-    // World Accelerator
+    // Misc TEs (Transformer, World Accelerator)
     public static final int SYNC_TILE_MODE = 100;
-    public static final int IS_ACTIVE = 1;
-
-    // Transformer
-    public static final int SYNC_TRANSFORM_STATE = 100;
 
     // Clipboard
     public static final int UPDATE_UI = 0;
@@ -42,8 +38,6 @@ public class GregtechDataCodes {
 
     // Item Collector, Magic Energy Absorber, Large Boiler, Steam Oven
     public static final int IS_WORKING = 100;
-
-    public static final int IS_BURNING = 100;
 
     // Adjustable Transformer, Adjustable Energy Hatch, Diode
     public static final int AMP_INDEX = 101;

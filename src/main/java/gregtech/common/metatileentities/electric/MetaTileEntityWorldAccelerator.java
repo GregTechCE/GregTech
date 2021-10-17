@@ -35,7 +35,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.stream.IntStream;
 
-import static gregtech.api.capability.GregtechDataCodes.IS_ACTIVE;
+import static gregtech.api.capability.GregtechDataCodes.IS_WORKING;
 import static gregtech.api.capability.GregtechDataCodes.SYNC_TILE_MODE;
 
 public class MetaTileEntityWorldAccelerator extends TieredMetaTileEntity implements IControllable {
@@ -222,7 +222,7 @@ public class MetaTileEntityWorldAccelerator extends TieredMetaTileEntity impleme
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         super.receiveCustomData(dataId, buf);
-        if (dataId == IS_ACTIVE) {
+        if (dataId == IS_WORKING) {
             this.isActive = buf.readBoolean();
             scheduleRenderUpdate();
         }
@@ -236,7 +236,7 @@ public class MetaTileEntityWorldAccelerator extends TieredMetaTileEntity impleme
         this.isActive = active;
         markDirty();
         if (!getWorld().isRemote) {
-            writeCustomData(IS_ACTIVE, buf -> buf.writeBoolean(active));
+            writeCustomData(IS_WORKING, buf -> buf.writeBoolean(active));
         }
     }
 

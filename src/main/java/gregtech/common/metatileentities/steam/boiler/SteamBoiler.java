@@ -37,7 +37,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import javax.annotation.Nullable;
 import java.util.List;
 
-import static gregtech.api.capability.GregtechDataCodes.IS_BURNING;
+import static gregtech.api.capability.GregtechDataCodes.IS_WORKING;
 
 public abstract class SteamBoiler extends MetaTileEntity {
 
@@ -134,7 +134,7 @@ public abstract class SteamBoiler extends MetaTileEntity {
     @Override
     public void receiveCustomData(int dataId, PacketBuffer buf) {
         super.receiveCustomData(dataId, buf);
-        if (dataId == IS_BURNING) {
+        if (dataId == IS_WORKING) {
             this.isBurning = buf.readBoolean();
             getHolder().scheduleChunkForRenderUpdate();
         }
@@ -230,7 +230,7 @@ public abstract class SteamBoiler extends MetaTileEntity {
         this.isBurning = burning;
         if (!getWorld().isRemote) {
             markDirty();
-            writeCustomData(IS_BURNING, buf -> buf.writeBoolean(burning));
+            writeCustomData(IS_WORKING, buf -> buf.writeBoolean(burning));
         }
     }
 
