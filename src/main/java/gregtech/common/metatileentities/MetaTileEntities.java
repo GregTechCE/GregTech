@@ -110,7 +110,7 @@ public class MetaTileEntities {
     public static final SimpleMachineMetaTileEntity[] MASS_FABRICATOR = new SimpleMachineMetaTileEntity[GTValues.V.length - 1];
     public static final SimpleMachineMetaTileEntity[] REPLICATOR = new SimpleMachineMetaTileEntity[GTValues.V.length - 1];
     public static final SimpleMachineMetaTileEntity[] SCANNER = new SimpleMachineMetaTileEntity[GTValues.V.length - 1];
-    public static final SimpleMachineMetaTileEntity[] GAS_COLLECTOR = new SimpleMachineMetaTileEntity[GTValues.V.length - 1];
+    public static final SimpleMachineMetaTileEntity[] GAS_COLLECTOR = new MetaTileEntityGasCollector[GTValues.V.length - 1];
     public static final MetaTileEntityRockBreaker[] ROCK_BREAKER = new MetaTileEntityRockBreaker[GTValues.V.length - 1];
     public static MetaTileEntitySimpleOreWasher SIMPLE_ORE_WASHER;
 
@@ -361,8 +361,14 @@ public class MetaTileEntities {
         registerSimpleMetaTileEntity(UNPACKER, 530, "unpacker", RecipeMaps.UNPACKER_RECIPES, Textures.UNPACKER_OVERLAY, true);
 
         // Gas Collectors, IDs 545-559
-        registerSimpleMetaTileEntity(GAS_COLLECTOR, 545, "gas_collector", RecipeMaps.GAS_COLLECTOR_RECIPES, Textures.GAS_COLLECTOR_OVERLAY, false);
+        for (int i = 0; i < GAS_COLLECTOR.length - 1; i++) {
+            if (i > 4 && !getMidTier("gas_collector")) continue;
+            if (i > 7 && !getHighTier("gas_collector")) break;
 
+            String voltageName = GTValues.VN[i + 1].toLowerCase();
+            GAS_COLLECTOR[i] = registerMetaTileEntity(545 + i,
+                    new MetaTileEntityGasCollector(gregtechId(String.format("%s.%s", "gas_collector", voltageName)), RecipeMaps.GAS_COLLECTOR_RECIPES, Textures.GAS_COLLECTOR_OVERLAY, i + 1, false, GTUtility.largeTankSizeFunction));
+        }
         // Polarizer, IDs 560-574
         registerSimpleMetaTileEntity(POLARIZER, 560, "polarizer", RecipeMaps.POLARIZER_RECIPES, Textures.POLARIZER_OVERLAY, true);
 
