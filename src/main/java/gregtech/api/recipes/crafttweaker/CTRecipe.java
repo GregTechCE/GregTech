@@ -33,10 +33,19 @@ public class CTRecipe {
     @ZenGetter("inputs")
     public List<InputIngredient> getInputs() {
         return this.backingRecipe.getInputs().stream()
+        	.filter(out -> out.getCount() > 0)
             .map(InputIngredient::new)
             .collect(Collectors.toList());
     }
 
+    @ZenGetter("nonConsumable")
+    public List<InputIngredient> getNonConsumableInputs() {
+    	return this.backingRecipe.getInputs().stream()
+			.filter(out -> out.getCount() < 1)
+			.map(InputIngredient::new)
+			.collect(Collectors.toList());
+    }
+    
     @ZenGetter("outputs")
     public List<IItemStack> getOutputs() {
         return this.backingRecipe.getOutputs().stream()
@@ -50,7 +59,8 @@ public class CTRecipe {
             .map(MCItemStack::new)
             .collect(Collectors.toList());
     }
-
+    
+    @Deprecated
     @ZenGetter("changedOutputs")
     public List<ChancedEntry> getChancedOutputs() {
         ArrayList<ChancedEntry> result = new ArrayList<>();

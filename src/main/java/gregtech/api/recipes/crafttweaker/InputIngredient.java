@@ -16,11 +16,13 @@ import java.util.List;
 public class InputIngredient implements IIngredient {
 
     private final IIngredient iingredient;
+    private final int amount;
 
     public InputIngredient(CountableIngredient backingIngredient) {
         iingredient = CraftTweakerMC
             .getIIngredient(backingIngredient.getIngredient())
-            .amount(backingIngredient.getCount());
+        	.amount(1);
+        amount = backingIngredient.getCount();
     }
 
     @Override
@@ -30,7 +32,7 @@ public class InputIngredient implements IIngredient {
 
     @Override
     public int getAmount() {
-        return iingredient.getAmount();
+        return amount;
     }
 
     @Override
