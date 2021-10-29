@@ -16,7 +16,6 @@ import java.util.List;
  * 	1. Not full implementation
  * 	2. CT provides required implementaions
  * 	3. Buggy
- *
  */
 @Deprecated
 @ZenClass("mods.gregtech.recipe.InputIngredient")
@@ -28,7 +27,7 @@ public class InputIngredient implements IIngredient {
     public InputIngredient(CountableIngredient backingIngredient) {
         iingredient = CraftTweakerMC
             .getIIngredient(backingIngredient.getIngredient())
-        	.amount(backingIngredient.getCount());
+            .amount(backingIngredient.getCount());
     }
 
     @Override

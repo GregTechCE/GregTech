@@ -51,10 +51,10 @@ public class CokeOvenRecipe {
     @ZenGetter("input")
     @Method(modid = GTValues.MODID_CT)
     public IIngredient ctGetInput() {
-    	CountableIngredient input = getInput();
+        CountableIngredient input = getInput();
         return new IngredientStack(
-        		CraftTweakerMC.getIIngredient(input.getIngredient()),
-        		input.getCount());
+                CraftTweakerMC.getIIngredient(input.getIngredient()),
+                input.getCount());
     }
 
     @ZenGetter("output")
