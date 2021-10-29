@@ -1,13 +1,14 @@
 package gregtech.api.recipes.recipes;
 
 import crafttweaker.annotations.ZenRegister;
+import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.item.IngredientStack;
 import crafttweaker.api.liquid.ILiquidStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import crafttweaker.mc1120.liquid.MCLiquidStack;
 import gregtech.api.GTValues;
 import gregtech.api.recipes.CountableIngredient;
-import gregtech.api.recipes.crafttweaker.InputIngredient;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.Optional.Method;
@@ -49,8 +50,11 @@ public class CokeOvenRecipe {
 
     @ZenGetter("input")
     @Method(modid = GTValues.MODID_CT)
-    public InputIngredient ctGetInput() {
-        return new InputIngredient(getInput());
+    public IIngredient ctGetInput() {
+    	CountableIngredient input = getInput();
+        return new IngredientStack(
+        		CraftTweakerMC.getIIngredient(input.getIngredient()),
+        		input.getCount());
     }
 
     @ZenGetter("output")

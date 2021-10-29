@@ -1,11 +1,14 @@
 package gregtech.api.recipes.crafttweaker;
 
 import crafttweaker.annotations.ZenRegister;
+import crafttweaker.api.item.IIngredient;
 import crafttweaker.api.item.IItemStack;
+import crafttweaker.api.item.IngredientStack;
 import crafttweaker.api.liquid.ILiquidStack;
 import crafttweaker.api.minecraft.CraftTweakerMC;
 import crafttweaker.mc1120.item.MCItemStack;
 import crafttweaker.mc1120.liquid.MCLiquidStack;
+import gregtech.api.recipes.CountableIngredient;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
 import stanhebben.zenscript.annotations.Optional;
@@ -31,18 +34,22 @@ public class CTRecipe {
     }
 
     @ZenGetter("inputs")
-    public List<InputIngredient> getInputs() {
+    public List<IIngredient> getInputs() {
         return this.backingRecipe.getInputs().stream()
         	.filter(out -> out.getCount() > 0)
-            .map(InputIngredient::new)
+            .map(ing -> new IngredientStack(
+	                		CraftTweakerMC.getIIngredient(ing.getIngredient()),
+	                		ing.getCount()))
             .collect(Collectors.toList());
     }
 
     @ZenGetter("nonConsumable")
-    public List<InputIngredient> getNonConsumableInputs() {
+    public List<IIngredient> getNonConsumableInputs() {
     	return this.backingRecipe.getInputs().stream()
 			.filter(out -> out.getCount() < 1)
-			.map(InputIngredient::new)
+			.map(CountableIngredient::getIngredient)
+			.map(CraftTweakerMC::getIIngredient)
+			.map(ing -> new IngredientStack(ing, 0))
 			.collect(Collectors.toList());
     }
     
