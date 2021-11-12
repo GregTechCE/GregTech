@@ -156,32 +156,62 @@ public class MachineRecipeLoader {
                 .buildAndRegister();
 
         EXTRUDER_RECIPES.recipeBuilder()
-                .notConsumable(MetaItems.SHAPE_EXTRUDER_CELL)
                 .input(OrePrefix.ingot, Materials.Tin, 2)
+                .notConsumable(MetaItems.SHAPE_EXTRUDER_CELL)
                 .outputs(MetaItems.FLUID_CELL.getStackForm())
                 .duration(128).EUt(30)
                 .buildAndRegister();
 
         EXTRUDER_RECIPES.recipeBuilder()
-                .notConsumable(MetaItems.SHAPE_EXTRUDER_CELL)
                 .input(OrePrefix.ingot, Materials.Steel)
+                .notConsumable(MetaItems.SHAPE_EXTRUDER_CELL)
                 .outputs(MetaItems.FLUID_CELL.getStackForm())
                 .duration(128).EUt(30)
                 .buildAndRegister();
 
         EXTRUDER_RECIPES.recipeBuilder()
-                .notConsumable(MetaItems.SHAPE_EXTRUDER_CELL)
                 .input(OrePrefix.ingot, Polytetrafluoroethylene)
+                .notConsumable(MetaItems.SHAPE_EXTRUDER_CELL)
                 .outputs(MetaItems.FLUID_CELL.getStackForm(4))
                 .duration(128).EUt(30)
                 .buildAndRegister();
 
         EXTRUDER_RECIPES.recipeBuilder()
-                .notConsumable(MetaItems.SHAPE_EXTRUDER_CELL)
                 .input(OrePrefix.ingot, Polybenzimidazole)
+                .notConsumable(MetaItems.SHAPE_EXTRUDER_CELL)
                 .outputs(MetaItems.FLUID_CELL.getStackForm(16))
                 .duration(128).EUt(30)
                 .buildAndRegister();
+
+        EXTRUDER_RECIPES.recipeBuilder()
+                .input(OrePrefix.ingot, Steel, 4)
+                .notConsumable(MetaItems.SHAPE_EXTRUDER_CELL)
+                .output(FLUID_CELL_LARGE_STEEL)
+                .duration(256).EUt(30).buildAndRegister();
+
+        EXTRUDER_RECIPES.recipeBuilder()
+                .input(OrePrefix.ingot, Aluminium, 4)
+                .notConsumable(MetaItems.SHAPE_EXTRUDER_CELL)
+                .output(FLUID_CELL_LARGE_ALUMINIUM)
+                .duration(256).EUt(120).buildAndRegister();
+
+        EXTRUDER_RECIPES.recipeBuilder()
+                .input(OrePrefix.ingot, StainlessSteel, 6)
+                .notConsumable(MetaItems.SHAPE_EXTRUDER_CELL)
+                .output(FLUID_CELL_LARGE_STAINLESS_STEEL)
+                .duration(512).EUt(120).buildAndRegister();
+
+        EXTRUDER_RECIPES.recipeBuilder()
+                .input(OrePrefix.ingot, Titanium, 6)
+                .notConsumable(MetaItems.SHAPE_EXTRUDER_CELL)
+                .output(FLUID_CELL_LARGE_TITANIUM)
+                .duration(512).EUt(480).buildAndRegister();
+
+        EXTRUDER_RECIPES.recipeBuilder()
+                .input(OrePrefix.ingot, TungstenSteel, 8)
+                .notConsumable(MetaItems.SHAPE_EXTRUDER_CELL)
+                .output(FLUID_CELL_LARGE_TUNGSTEN_STEEL)
+                .duration(1024).EUt(480).buildAndRegister();
 
         COMPRESSOR_RECIPES.recipeBuilder()
                 .input(OrePrefix.dust, Materials.NetherQuartz)
@@ -392,7 +422,7 @@ public class MachineRecipeLoader {
         BENDER_RECIPES.recipeBuilder().inputs(MetaItems.INGOT_MIXED_METAL.getStackForm()).circuitMeta(1).outputs(MetaItems.ADVANCED_ALLOY_PLATE.getStackForm()).duration(100).EUt(8).buildAndRegister();
         FORMING_PRESS_RECIPES.recipeBuilder().inputs(ADVANCED_ALLOY_PLATE.getStackForm(4)).input(OrePrefix.plate, Materials.Diamond).input(OrePrefix.plate, Materials.Iridium, 4).outputs(MetaItems.INGOT_IRIDIUM_ALLOY.getStackForm()).duration(100).EUt(256).buildAndRegister();
         IMPLOSION_RECIPES.recipeBuilder().inputs(MetaItems.INGOT_IRIDIUM_ALLOY.getStackForm()).outputs(MetaItems.PLATE_IRIDIUM_ALLOY.getStackForm()).output(OrePrefix.dustTiny, Materials.DarkAsh, 4).explosivesAmount(4).buildAndRegister();
-        COMPRESSOR_RECIPES.recipeBuilder().inputs(MetaItems.CARBON_FIBERS.getStackForm(2)).outputs(MetaItems.CARBON_MESH.getStackForm()).buildAndRegister();
+        COMPRESSOR_RECIPES.recipeBuilder().inputs(MetaItems.CARBON_FIBERS.getStackForm(2)).outputs(MetaItems.CARBON_MESH.getStackForm()).duration(100).buildAndRegister();
         COMPRESSOR_RECIPES.recipeBuilder().inputs(MetaItems.CARBON_MESH.getStackForm()).outputs(MetaItems.CARBON_PLATE.getStackForm()).buildAndRegister();
 
         ALLOY_SMELTER_RECIPES.recipeBuilder().duration(400).EUt(4).input(OrePrefix.dust, Materials.Glass, 3).inputs(MetaItems.ADVANCED_ALLOY_PLATE.getStackForm()).outputs(MetaBlocks.TRANSPARENT_CASING.getItemVariant(BlockTransparentCasing.CasingType.REINFORCED_GLASS, 4)).buildAndRegister();
@@ -693,62 +723,6 @@ public class MachineRecipeLoader {
                 .output(dust, RawRubber, 2)
                 .buildAndRegister();
 
-        EXTRACTOR_RECIPES.recipeBuilder().duration(20).EUt(2)
-                .inputs(MetaItems.FLUID_CELL.getStackForm())
-                .outputs(MetaItems.FLUID_CELL.getStackForm())
-                .buildAndRegister();
-
-        EXTRACTOR_RECIPES.recipeBuilder().duration(20).EUt(2)
-                .inputs(MetaItems.UNIVERSAL_FLUID_CELL.getStackForm())
-                .outputs(MetaItems.UNIVERSAL_FLUID_CELL.getStackForm())
-                .buildAndRegister();
-
-        EXTRACTOR_RECIPES.recipeBuilder().duration(20).EUt(2)
-                .inputs(MetaItems.LARGE_FLUID_CELL_STEEL.getStackForm())
-                .outputs(MetaItems.LARGE_FLUID_CELL_STEEL.getStackForm())
-                .buildAndRegister();
-
-        EXTRACTOR_RECIPES.recipeBuilder().duration(20).EUt(2)
-                .inputs(MetaItems.LARGE_FLUID_CELL_ALUMINIUM.getStackForm())
-                .outputs(MetaItems.LARGE_FLUID_CELL_ALUMINIUM.getStackForm())
-                .buildAndRegister();
-
-        EXTRACTOR_RECIPES.recipeBuilder().duration(20).EUt(2)
-                .inputs(MetaItems.LARGE_FLUID_CELL_STAINLESS_STEEL.getStackForm())
-                .outputs(MetaItems.LARGE_FLUID_CELL_STAINLESS_STEEL.getStackForm())
-                .buildAndRegister();
-
-        EXTRACTOR_RECIPES.recipeBuilder().duration(20).EUt(2)
-                .inputs(MetaItems.LARGE_FLUID_CELL_TITANIUM.getStackForm())
-                .outputs(MetaItems.LARGE_FLUID_CELL_TITANIUM.getStackForm())
-                .buildAndRegister();
-
-        EXTRACTOR_RECIPES.recipeBuilder().duration(20).EUt(2)
-                .inputs(MetaItems.LARGE_FLUID_CELL_TUNGSTEN_STEEL.getStackForm())
-                .outputs(MetaItems.LARGE_FLUID_CELL_TUNGSTEN_STEEL.getStackForm())
-                .buildAndRegister();
-
-        EXTRACTOR_RECIPES.recipeBuilder().duration(20).EUt(2)
-                .inputs(MetaItems.LARGE_FLUID_CELL_CHROME.getStackForm())
-                .outputs(MetaItems.LARGE_FLUID_CELL_CHROME.getStackForm())
-                .buildAndRegister();
-
-        EXTRACTOR_RECIPES.recipeBuilder().duration(20).EUt(2)
-                .inputs(MetaItems.LARGE_FLUID_CELL_IRIDIUM.getStackForm())
-                .outputs(MetaItems.LARGE_FLUID_CELL_IRIDIUM.getStackForm())
-                .buildAndRegister();
-
-        EXTRACTOR_RECIPES.recipeBuilder().duration(20).EUt(2)
-                .inputs(MetaItems.LARGE_FLUID_CELL_OSMIUM.getStackForm())
-                .outputs(MetaItems.LARGE_FLUID_CELL_OSMIUM.getStackForm())
-                .buildAndRegister();
-
-        EXTRACTOR_RECIPES.recipeBuilder().duration(20).EUt(2)
-                .inputs(MetaItems.LARGE_FLUID_CELL_NEUTRONIUM.getStackForm())
-                .outputs(MetaItems.LARGE_FLUID_CELL_NEUTRONIUM.getStackForm())
-                .buildAndRegister();
-
-
         COMPRESSOR_RECIPES.recipeBuilder().duration(300).EUt(2).input("treeSapling", 8).output(PLANT_BALL).buildAndRegister();
         COMPRESSOR_RECIPES.recipeBuilder().duration(300).EUt(2).inputs(new ItemStack(Items.WHEAT, 8)).output(PLANT_BALL).buildAndRegister();
         COMPRESSOR_RECIPES.recipeBuilder().duration(300).EUt(2).inputs(new ItemStack(Items.POTATO, 8)).output(PLANT_BALL).buildAndRegister();
@@ -943,6 +917,15 @@ public class MachineRecipeLoader {
         ModHandler.addShapelessRecipe("tank_nbt_stainless_steel", MetaTileEntities.STAINLESS_STEEL_TANK.getStackForm(), MetaTileEntities.STAINLESS_STEEL_TANK.getStackForm());
         ModHandler.addShapelessRecipe("tank_nbt_titanium", MetaTileEntities.TITANIUM_TANK.getStackForm(), MetaTileEntities.TITANIUM_TANK.getStackForm());
         ModHandler.addShapelessRecipe("tank_nbt_tungstensteel", MetaTileEntities.TUNGSTENSTEEL_TANK.getStackForm(), MetaTileEntities.TUNGSTENSTEEL_TANK.getStackForm());
+        // Cells
+        ModHandler.addShapelessRecipe("cell_nbt_regular", MetaItems.FLUID_CELL.getStackForm(), MetaItems.FLUID_CELL.getStackForm());
+        ModHandler.addShapelessRecipe("cell_nbt_universal", MetaItems.FLUID_CELL_UNIVERSAL.getStackForm(), MetaItems.FLUID_CELL_UNIVERSAL.getStackForm());
+        ModHandler.addShapelessRecipe("cell_nbt_steel", MetaItems.FLUID_CELL_LARGE_STEEL.getStackForm(), MetaItems.FLUID_CELL_LARGE_STEEL.getStackForm());
+        ModHandler.addShapelessRecipe("cell_nbt_aluminium", MetaItems.FLUID_CELL_LARGE_ALUMINIUM.getStackForm(), MetaItems.FLUID_CELL_LARGE_ALUMINIUM.getStackForm());
+        ModHandler.addShapelessRecipe("cell_nbt_stainless_steel", MetaItems.FLUID_CELL_LARGE_STAINLESS_STEEL.getStackForm(), MetaItems.FLUID_CELL_LARGE_STAINLESS_STEEL.getStackForm());
+        ModHandler.addShapelessRecipe("cell_nbt_titanium", MetaItems.FLUID_CELL_LARGE_TITANIUM.getStackForm(), MetaItems.FLUID_CELL_LARGE_TITANIUM.getStackForm());
+        ModHandler.addShapelessRecipe("cell_nbt_tungstensteel", MetaItems.FLUID_CELL_LARGE_TUNGSTEN_STEEL.getStackForm(), MetaItems.FLUID_CELL_LARGE_TUNGSTEN_STEEL.getStackForm());
+
 
         //Jetpacks
         ModHandler.addShapelessRecipe("fluid_jetpack_clear", SEMIFLUID_JETPACK.getStackForm(), SEMIFLUID_JETPACK.getStackForm());

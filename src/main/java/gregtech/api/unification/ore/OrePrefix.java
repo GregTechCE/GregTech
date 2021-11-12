@@ -141,7 +141,7 @@ public class OrePrefix {
     // made of 1 Ingots.
     public static final OrePrefix toolHeadShovel = new OrePrefix("toolHeadShovel", M, null, MaterialIconType.toolHeadShovel, ENABLE_UNIFICATION, hasToolProperty);
     // made of 1 Ingots.
-    public static final OrePrefix toolHeadUniversalSpade = new OrePrefix("toolHeadUniversalSpade", M, null, MaterialIconType.toolHeadUniversalSpade, ENABLE_UNIFICATION, hasToolProperty);
+    public static final OrePrefix toolHeadUniversalSpade = new OrePrefix("toolHeadUniversalSpade", M * 6, null, MaterialIconType.toolHeadUniversalSpade, ENABLE_UNIFICATION, hasToolProperty);
     // made of 3 Ingots.
     public static final OrePrefix toolHeadAxe = new OrePrefix("toolHeadAxe", M * 3, null, MaterialIconType.toolHeadAxe, ENABLE_UNIFICATION, hasToolProperty);
     // made of 2 Ingots.
@@ -185,7 +185,7 @@ public class OrePrefix {
     // Cobblestone Prefix for all Cobblestones.
     public static final OrePrefix stoneCobble = new OrePrefix("stoneCobble", -1, Materials.Stone, null, SELF_REFERENCING, null);
 
-    public static final OrePrefix frameGt = new OrePrefix("frameGt", (long) (M * 1.375), null, null, ENABLE_UNIFICATION, material -> material.hasFlag(GENERATE_FRAME));
+    public static final OrePrefix frameGt = new OrePrefix("frameGt", M * 2, null, null, ENABLE_UNIFICATION, material -> material.hasFlag(GENERATE_FRAME));
 
     public static final OrePrefix pipeTinyFluid = new OrePrefix("pipeTinyFluid", M / 2, null, MaterialIconType.pipeTiny, ENABLE_UNIFICATION, null);
     public static final OrePrefix pipeSmallFluid = new OrePrefix("pipeSmallFluid", M, null, MaterialIconType.pipeSmall, ENABLE_UNIFICATION, null);
@@ -365,6 +365,10 @@ public class OrePrefix {
         pipeHugeFluid.setIgnored(Materials.Wood);
         pipeQuadrupleFluid.setIgnored(Materials.Wood);
         pipeNonupleFluid.setIgnored(Materials.Wood);
+        pipeSmallRestrictive.addSecondaryMaterial(new MaterialStack(Materials.Iron, ring.materialAmount * 2));
+        pipeNormalRestrictive.addSecondaryMaterial(new MaterialStack(Materials.Iron, ring.materialAmount * 2));
+        pipeLargeRestrictive.addSecondaryMaterial(new MaterialStack(Materials.Iron, ring.materialAmount * 2));
+
         plate.setIgnored(Materials.BorosilicateGlass);
         foil.setIgnored(Materials.BorosilicateGlass);
     }
