@@ -14,6 +14,7 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.gui.recipes.RecipeLayout;
 import net.minecraft.client.resources.I18n;
+import net.minecraftforge.common.MinecraftForge;
 
 import javax.annotation.Nonnull;
 import java.util.HashMap;
@@ -60,6 +61,7 @@ public class MultiblockInfoCategory implements IRecipeCategory<MultiblockInfoRec
     }};
 
     public static void registerRecipes(IModRegistry registry) {
+        MinecraftForge.EVENT_BUS.post(new MultiInfoPageEvent(multiblockRecipes));
         registry.addRecipes(multiblockRecipes.values(), "gregtech:multiblock_info");
     }
 
