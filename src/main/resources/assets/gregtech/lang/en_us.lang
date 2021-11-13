@@ -3720,6 +3720,7 @@ gregtech.machine.rotor_holder.tooltip2=Holds Rotor in place so it will not fly a
 gregtech.machine.rotor_holder.hv.name=HV Rotor Holder
 gregtech.machine.rotor_holder.luv.name=LuV Rotor Holder
 gregtech.machine.rotor_holder.uhv.name=UHV Rotor Holder
+gregtech.machine.rotor_holder.max.name=MAX Rotor Holder
 
 gregtech.machine.maintenance_hatch.name=Maintenance Hatch
 gregtech.machine.maintenance_hatch.tooltip=For maintaining Multiblocks
