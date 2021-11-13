@@ -481,7 +481,7 @@ public class OrePrefix {
     }
 
     public boolean doGenerateItem(Material material) {
-        return !isSelfReferencing && generationCondition != null && !isIgnored(material) && generationCondition.test(material);
+        return !material.isHidden() && !isSelfReferencing && generationCondition != null && !isIgnored(material) && generationCondition.test(material);
     }
 
     public void setGenerationCondition(@Nullable Predicate<Material> in) {
@@ -561,7 +561,7 @@ public class OrePrefix {
     }
 
     public boolean isIgnored(Material material) {
-        return ignoredMaterials.contains(material);
+        return ignoredMaterials.contains(material) || material.isHidden();
     }
 
     @ZenMethod
