@@ -15,6 +15,11 @@ import java.util.function.Supplier;
 public class GTValues {
 
     /**
+     * Version String for use in addon mods' @Mod(dependencies = "...") block.
+     */
+    public static final String MOD_VERSION_DEP = "required-after:gregtech@[2.0,);";
+
+    /**
      * <p/>
      * This is worth exactly one normal Item.
      * This Constant can be divided by many commonly used Numbers such as
