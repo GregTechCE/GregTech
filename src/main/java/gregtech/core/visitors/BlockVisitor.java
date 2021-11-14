@@ -1,6 +1,6 @@
-package gregtech.common.asm;
+package gregtech.core.visitors;
 
-import gregtech.common.asm.util.ObfMapping;
+import gregtech.core.util.ObfMapping;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.*;
 
@@ -9,7 +9,7 @@ public class BlockVisitor implements Opcodes {
     public static final String TARGET_CLASS_NAME = "net/minecraft/block/Block";
     public static final ObfMapping TARGET_METHOD = new ObfMapping(TARGET_CLASS_NAME, "canRenderInLayer", "(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/util/BlockRenderLayer;)Z");
 
-    private static final String BLOCK_HOOKS_OWNER = "gregtech/common/asm/hooks/BlockHooks";
+    private static final String BLOCK_HOOKS_OWNER = "gregtech/core/hooks/BlockHooks";
     private static final String BLOCK_HOOKS_SIGNATURE = "(Lnet/minecraft/block/state/IBlockState;Lnet/minecraft/util/BlockRenderLayer;)Ljava/lang/Boolean;";
     private static final String BLOCK_HOOKS_METHOD_NAME = "canRenderInLayer";
 

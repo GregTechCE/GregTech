@@ -11,23 +11,17 @@ import codechicken.lib.vec.uv.IconTransformation;
 import codechicken.lib.vec.uv.UVTransformationList;
 import gregtech.api.GTValues;
 import gregtech.api.util.GTLog;
-import gregtech.common.asm.hooks.BloomRenderLayerHooks;
+import gregtech.core.hooks.BloomRenderLayerHooks;
 import gregtech.common.render.CrateRenderer;
 import gregtech.common.render.DrumRenderer;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static gregtech.api.render.OrientedOverlayRenderer.OverlayFace.*;

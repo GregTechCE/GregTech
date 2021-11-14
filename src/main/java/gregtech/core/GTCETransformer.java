@@ -1,8 +1,9 @@
-package gregtech.common.asm;
+package gregtech.core;
 
 import gregtech.api.GTValues;
 import gregtech.common.ConfigHolder;
-import gregtech.common.asm.util.TargetClassVisitor;
+import gregtech.core.util.TargetClassVisitor;
+import gregtech.core.visitors.*;
 import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;

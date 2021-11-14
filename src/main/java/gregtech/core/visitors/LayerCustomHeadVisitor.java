@@ -1,12 +1,12 @@
-package gregtech.common.asm;
+package gregtech.core.visitors;
 
-import gregtech.common.asm.util.ObfMapping;
-import gregtech.common.asm.util.SafeMethodVisitor;
+import gregtech.core.util.ObfMapping;
+import gregtech.core.util.SafeMethodVisitor;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
-class LayerCustomHeadVisitor extends SafeMethodVisitor {
+public class LayerCustomHeadVisitor extends SafeMethodVisitor {
 
     public static final String TARGET_CLASS_NAME = "net/minecraft/client/renderer/entity/layers/LayerCustomHead";
     public static final ObfMapping TARGET_METHOD = new ObfMapping(TARGET_CLASS_NAME, "func_177141_a", "(Lnet/minecraft/entity/EntityLivingBase;FFFFFFF)V");

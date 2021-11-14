@@ -1,4 +1,4 @@
-package gregtech.common.asm.util;
+package gregtech.core.util;
 
 import org.objectweb.asm.MethodVisitor;
 

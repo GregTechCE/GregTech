@@ -1,10 +1,10 @@
-package gregtech.common.asm;
+package gregtech.core.visitors;
 
-import gregtech.common.asm.util.ObfMapping;
+import gregtech.core.util.ObfMapping;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
-class EntityRendererVisitor extends MethodVisitor implements Opcodes {
+public class EntityRendererVisitor extends MethodVisitor implements Opcodes {
 
     public static final String TARGET_CLASS_NAME = "net/minecraft/client/renderer/EntityRenderer";
     public static final ObfMapping TARGET_METHOD = new ObfMapping(TARGET_CLASS_NAME, "func_175068_a", "(IFJ)V");
@@ -18,7 +18,7 @@ class EntityRendererVisitor extends MethodVisitor implements Opcodes {
             "(Lnet/minecraft/util/BlockRenderLayer;DILnet/minecraft/entity/Entity;)I").toRuntime();
 
     private static final ObfMapping METHOD_BLOOM_HOOKS = new ObfMapping(
-            "gregtech/common/asm/hooks/BloomRenderLayerHooks",
+            "gregtech/core/hooks/BloomRenderLayerHooks",
             "renderBloomBlockLayer",
             "(Lnet/minecraft/client/renderer/RenderGlobal;Lnet/minecraft/util/BlockRenderLayer;DILnet/minecraft/entity/Entity;)I");
 

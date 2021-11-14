@@ -1,4 +1,4 @@
-package gregtech.common.asm.hooks;
+package gregtech.core.hooks;
 
 
 import com.google.common.collect.Lists;
@@ -19,7 +19,6 @@ import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL30;
 
 import java.util.List;
 import java.util.Map;

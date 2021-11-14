@@ -1,10 +1,10 @@
-package gregtech.common.asm;
+package gregtech.core.visitors;
 
-import gregtech.common.asm.util.ObfMapping;
+import gregtech.core.util.ObfMapping;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
-class RegionRenderCacheBuilderVisitor extends MethodVisitor implements Opcodes {
+public class RegionRenderCacheBuilderVisitor extends MethodVisitor implements Opcodes {
 
     public static final String TARGET_CLASS_NAME = "net/minecraft/client/renderer/RegionRenderCacheBuilder";
     public static final ObfMapping TARGET_METHOD = new ObfMapping(TARGET_CLASS_NAME, "<init>", "()V");
@@ -13,7 +13,7 @@ class RegionRenderCacheBuilderVisitor extends MethodVisitor implements Opcodes {
             "field_179040_a",
             "[Lnet/minecraft/client/renderer/BufferBuilder;").toRuntime();
     private static final ObfMapping METHOD_BLOOM_HOOKS = new ObfMapping(
-            "gregtech/common/asm/hooks/BloomRenderLayerHooks",
+            "gregtech/core/hooks/BloomRenderLayerHooks",
             "initBloomRenderLayer",
             "([Lnet/minecraft/client/renderer/BufferBuilder;)V");
 

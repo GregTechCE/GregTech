@@ -1,4 +1,4 @@
-package gregtech.common.asm.hooks;
+package gregtech.core.hooks;
 
 import gregtech.api.model.customtexture.CustomTextureBakedModel;
 import net.minecraft.block.state.IBlockState;

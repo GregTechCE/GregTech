@@ -1,4 +1,4 @@
-package gregtech.common.asm;
+package gregtech.core;
 
 import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
@@ -12,12 +12,12 @@ import java.util.Map;
 
 @Name("GTCELoadingPlugin")
 @MCVersion(ForgeVersion.mcVersion)
-@TransformerExclusions("gregtech.common.asm.")
+@TransformerExclusions("gregtech.core.")
 @SortingIndex(1001)
 public class GTCELoadingPlugin implements IFMLLoadingPlugin {
     @Override
     public String[] getASMTransformerClass() {
-        return new String[]{"gregtech.common.asm.GTCETransformer"};
+        return new String[]{"gregtech.core.GTCETransformer"};
     }
 
     @Override

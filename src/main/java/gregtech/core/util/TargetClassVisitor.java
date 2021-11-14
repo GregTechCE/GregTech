@@ -1,4 +1,4 @@
-package gregtech.common.asm.util;
+package gregtech.core.util;
 
 import net.minecraftforge.fml.common.FMLLog;
 import org.apache.logging.log4j.Level;

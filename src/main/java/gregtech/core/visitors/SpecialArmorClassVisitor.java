@@ -1,7 +1,7 @@
-package gregtech.common.asm;
+package gregtech.core.visitors;
 
-import gregtech.common.asm.util.ObfMapping;
-import gregtech.common.asm.util.TargetClassVisitor;
+import gregtech.core.util.ObfMapping;
+import gregtech.core.util.TargetClassVisitor;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;

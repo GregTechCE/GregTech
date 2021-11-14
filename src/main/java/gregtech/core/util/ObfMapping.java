@@ -1,4 +1,4 @@
-package gregtech.common.asm.util;
+package gregtech.core.util;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Objects;
