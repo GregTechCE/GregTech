@@ -1971,6 +1971,8 @@ item.wheat.dust=Flour
 item.meat.dustTiny=Tiny Pile of Mince Meat
 item.meat.dustSmall=Small Pile of Mince Meat
 item.meat.dust=Mince Meat
+item.borosilicate_glass.ingot=Borosilicate Glass Bar
+item.borosilicate_glass.wireFine=Borosilicate Glass Fibers
 
 recipemap.ore_washer.name=Ore Washer
 recipemap.thermal_centrifuge.name=Thermal Centrifuge
