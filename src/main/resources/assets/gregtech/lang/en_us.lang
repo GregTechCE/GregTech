@@ -2358,6 +2358,9 @@ gregtech.machine.steam_rock_breaker_bronze.name=Steam Rock Breaker
 gregtech.machine.steam_rock_breaker_bronze.tooltip=Place Water and Lava adjancent
 gregtech.machine.steam_rock_breaker_steel.name=High Pressure Steam Rock Breaker
 gregtech.machine.steam_rock_breaker_steel.tooltip=Place Water and Lava adjancent
+gregtech.machine.steam_miner.name=Steam Miner
+gregtech.machine.steam_miner.tooltip=Mines ores below the miner ONLY!
+gregtech.machine.steam_miner.description=Working Area: §b%dx%d§7 blocks. §b%ds§7 per block. Uses §b16mB/t§7 of steam.
 
 # Generators
 gregtech.machine.combustion_generator.lv.name=Basic Combustion Generator
@@ -3561,6 +3564,8 @@ gregtech.machine.coke_oven.name=Coke Oven
 gregtech.machine.coke_oven_hatch.name=Coke Oven Hatch
 gregtech.machine.coke_oven_hatch.tooltip=Allows automation access to coke oven. Must be centered on coke oven side.
 
+
+
 gregtech.machine.large_combustion_engine.name=Large Combustion Engine
 gregtech.machine.large_turbine.steam.name=Large Steam Turbine
 gregtech.machine.large_turbine.gas.name=Large Gas Turbine
@@ -3576,6 +3581,22 @@ gregtech.machine.fusion_reactor.luv.name=Fusion Reactor Computer Mark 1
 gregtech.machine.fusion_reactor.zpm.name=Fusion Reactor Computer Mark 2
 gregtech.machine.fusion_reactor.uv.name=Fusion Reactor Computer Mark 3
 gregtech.machine.fusion_reactor.capacity=§7Maximum Energy Storage: §e%sM EU
+
+gregtech.machine.miner.lv.name=Basic Miner
+gregtech.machine.miner.mv.name=Advanced Miner
+gregtech.machine.miner.hv.name=Advanced Miner II
+gregtech.machine.miner.tooltip=Mines ores below the miner ONLY! Use screwdriver to configure radius.
+gregtech.machine.miner.usage=Max Working Area: §b%dx%d§7 blocks. §b%ds§7 per block. Uses §b%d§7 EU/t.
+
+gregtech.machine.large_miner.ev.name=Basic Large Miner
+gregtech.machine.large_miner.iv.name=Advanced Large Miner
+gregtech.machine.large_miner.luv.name=Advanced Large Miner II
+gregtech.machine.miner.multi.modes=Has Silk Touch and Chunk Boundary Modes.
+gregtech.machine.miner.multi.tooltip=Max Working Area: §b%dx%d§7 chunks.
+gregtech.machine.miner.multi.production=Produces 3x more crushed ore than a macerator.
+#Small ores lang: gregtech.machine.miner.multi.production=Produces 3x more crushed ore than a macerator. Small ore Fortune §b%d§7.
+gregtech.machine.miner.fluid_usage=Consumes §b%dmb§7 of §e%s§7 per tick. Each overclock doubles the fluid consumption.
+gregtech.machine.miner.overclock=Requires §e%s§7 power. Overclocks up to §e%s§7.
 
 gregtech.machine.large_chemical_reactor.name=Large Chemical Reactor
 
@@ -3820,6 +3841,10 @@ gregtech.gui.fluid_auto_output.tooltip.enabled=Fluid Auto-Output Enabled
 gregtech.gui.fluid_auto_output.tooltip.disabled=Fluid Auto-Output Disabled
 gregtech.gui.item_auto_output.tooltip.enabled=Item Auto-Output Enabled
 gregtech.gui.item_auto_output.tooltip.disabled=Item Auto-Output Disabled
+gregtech.gui.silktouch.enabled=Silk Touch Enabled: Click to Disable./n§7Switching requires an idle machine.
+gregtech.gui.silktouch.disabled=Silk Touch Disabled: Click to Enable./n§7Switching requires an idle machine.
+gregtech.gui.chunkmode.enabled=Chunk Mode Enabled: Click to Disable./n§7Switching requires an idle machine.
+gregtech.gui.chunkmode.disabled=Chunk Mode Disabled: Click to Enable./n§7Switching requires an idle machine.
 
 gregtech.jei.ore_by_product_from_ore=Use %s for %s
 gregtech.jei.ore_by_product_from_machine=Produce by processing %s with %s
@@ -3922,6 +3947,16 @@ gregtech.multiblock.large_boiler.heat_efficiency=Heat Efficiency: %d%%
 gregtech.multiblock.large_boiler.heat_efficiency.tooltip=The higher boiler temperature is, the higher it's fuel efficiency
 gregtech.multiblock.large_boiler.throttle.tooltip=Boiler can output less steam and consume less fuel, but it comes with price: the fuel efficiency is lower at higher throttle rates.
 gregtech.multiblock.large_boiler.throttle_modify=Modify Throttle:
+
+gregtech.multiblock.large_miner.done=Done!
+gregtech.multiblock.large_miner.working=Working...
+gregtech.multiblock.large_miner.invfull=Inventory Full!
+gregtech.multiblock.large_miner.needspower=Needs Power!
+gregtech.multiblock.large_miner.vent=Venting Blocked!
+gregtech.multiblock.large_miner.steam=Needs Steam!
+gregtech.multiblock.large_miner.radius=Radius: %d Blocks
+gregtech.multiblock.large_miner.errorradius=Cannot change radius while working!
+gregtech.multiblock.large_miner.needsfluid=Needs Drilling Fluid
 
 gregtech.command.usage=Usage: /gregtech <worldgen/util>
 gregtech.command.worldgen.usage=Usage: /gregtech worldgen <reload>
