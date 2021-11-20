@@ -1020,7 +1020,6 @@ public class GTUtility {
         return romanNumeralConversions.get(conversion) + romanNumeralString(num - conversion);
     }
 
-
     public static boolean isOre(Block block) {
         OrePrefix orePrefix = OreDictUnifier.getPrefix(new ItemStack(block));
         return orePrefix != null && orePrefix.name().startsWith("ore");
