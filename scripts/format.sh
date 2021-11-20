@@ -7,9 +7,15 @@ for i in "${FILES[@]}"
 do
     if [[ "$i" == *".java"* || "$i" == *".json"* ]]
     then
-        if ! editorconfig-cli -e ../.editorconfig "../$i" > /dev/null
+        OUTPUT=$(editorconfig-cli -e ../.editorconfig "../$i" 2>&1)
+        if [[ $? != 0 ]]
         then
             ERROR="error"
+            IFS=$'\n' read -rd '' -a LINES <<< "$OUTPUT"
+            for f in "${LINES[@]}"
+            do
+                echo "$f" | awk '/^(Line).*|^(File).*/'
+            done
         fi
     fi
 done
