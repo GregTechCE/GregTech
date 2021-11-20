@@ -5,7 +5,7 @@ IFS=$'\n' read -rd '' -a FILES <<< "$(git --no-pager diff --name-only HEAD "$(gi
 ERROR=""
 for i in "${FILES[@]}"
 do
-    if [[ "$i" == *".java"* || "$i" == *".json"* ]]
+    if [[ "$i" == *".java"* || "$i" == *".json"* || "$i" == *".mcmeta"* ]]
     then
         OUTPUT=$(editorconfig-cli -e ../.editorconfig "../$i" 2>&1)
         if [[ $? != 0 ]]
