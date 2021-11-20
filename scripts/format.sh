@@ -7,13 +7,9 @@ for i in "${FILES[@]}"
 do
     if [[ "$i" == *".java"* || "$i" == *".json"* ]]
     then
-        if ! editorconfig-cli -e ../.editorconfig "../$i" > OUTPUT
+        if ! editorconfig-cli -e ../.editorconfig "../$i" > /dev/null
         then
             ERROR="error"
-        fi
-        if [[ "$OUTPUT" == "Line: "* ]]
-        then
-            echo "$OUTPUT"
         fi
     fi
 done
