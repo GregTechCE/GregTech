@@ -5,9 +5,12 @@ import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.IElectricItem;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.common.items.MetaItems;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 public class ToolChainsaw extends ToolSaw {
 
@@ -98,11 +101,11 @@ public class ToolChainsaw extends ToolSaw {
     }
 
     @Override
-    public boolean onBlockPreBreak(ItemStack stack, BlockPos blockPos, EntityPlayer player) {
-        if (!player.isSneaking()) {
-            return ToolUtility.applyTimberAxe(stack, player.world, blockPos, player);
+    public void onBlockDestroyed(ItemStack stack, World world, IBlockState state, BlockPos pos, EntityLivingBase entity) {
+        super.onBlockDestroyed(stack, world, state, pos, entity);
+        if (!entity.isSneaking() && entity instanceof EntityPlayer) {
+            ToolUtility.applyTimberAxe(stack, world, pos, (EntityPlayer) entity);
         }
-        return false;
     }
 
     @Override
