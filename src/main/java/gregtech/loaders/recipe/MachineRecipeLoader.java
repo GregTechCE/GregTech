@@ -618,7 +618,7 @@ public class MachineRecipeLoader {
         BLAST_RECIPES.recipeBuilder().duration(320).EUt(100).input(gem, GreenSapphire).output(nugget, Aluminium, 3).output(dustTiny, DarkAsh).blastFurnaceTemp(1200).buildAndRegister();
         BLAST_RECIPES.recipeBuilder().duration(400).EUt(100).input(dust, Sapphire).output(nugget, Aluminium, 3).blastFurnaceTemp(1200).buildAndRegister();
         BLAST_RECIPES.recipeBuilder().duration(320).EUt(100).input(gem, Sapphire).output(nugget, Aluminium, 3).blastFurnaceTemp(1200).buildAndRegister();
-        BLAST_RECIPES.recipeBuilder().duration(800).EUt(500).input(dust, Ilmenite, 5).outputs(OreDictUnifier.get(ingot, WroughtIron), OreDictUnifier.get(dust, Rutile, 3)).blastFurnaceTemp(1700).buildAndRegister();
+        BLAST_RECIPES.recipeBuilder().duration(800).EUt(480).input(dust, Ilmenite, 5).outputs(OreDictUnifier.get(ingot, WroughtIron), OreDictUnifier.get(dust, Rutile)).blastFurnaceTemp(1700).buildAndRegister();
         BLAST_RECIPES.recipeBuilder().duration(800).EUt(480).input(dust, Magnesium, 2).fluidInputs(TitaniumTetrachloride.getFluid(1000)).outputs(OreDictUnifier.get(OrePrefix.ingotHot, Materials.Titanium), OreDictUnifier.get(OrePrefix.dust, Materials.MagnesiumChloride, 6)).blastFurnaceTemp(Materials.Titanium.getBlastTemperature() + 200).buildAndRegister();
         BLAST_RECIPES.recipeBuilder().duration(500).EUt(120).input(ingot, Iron).fluidInputs(Oxygen.getFluid(1000)).output(ingot, Steel).output(dustTiny, Ash).blastFurnaceTemp(1000).buildAndRegister();
         BLAST_RECIPES.recipeBuilder().duration(100).EUt(120).input(ingot, WroughtIron).fluidInputs(Oxygen.getFluid(1000)).output(ingot, Steel).output(dustTiny, Ash).blastFurnaceTemp(1000).buildAndRegister();

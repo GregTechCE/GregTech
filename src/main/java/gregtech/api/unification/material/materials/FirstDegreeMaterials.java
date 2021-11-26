@@ -264,7 +264,7 @@ public class FirstDegreeMaterials {
                 .build();
 
         Rutile = new Material.Builder(285, "rutile")
-                .gem().ore(3, 1)
+                .gem().ore()
                 .color(0xD40D5C).iconSet(GEM_HORIZONTAL)
                 .flags(DISABLE_DECOMPOSITION)
                 .components(Titanium, 1, Oxygen, 2)
@@ -273,7 +273,6 @@ public class FirstDegreeMaterials {
         Bauxite = new Material.Builder(286, "bauxite")
                 .dust(1).ore(3, 1)
                 .color(0xC86400)
-                .flags(DISABLE_DECOMPOSITION)
                 .components(Rutile, 2, Aluminium, 16, Hydrogen, 10, Oxygen, 11)
                 .build();
 

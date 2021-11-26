@@ -337,14 +337,6 @@ public class SeparationRecipes {
                 .duration(200).EUt(30).buildAndRegister();
 
         ELECTROLYZER_RECIPES.recipeBuilder()
-                .input(dust, Bauxite, 39)
-                .output(dust, Rutile, 6)
-                .output(dust, Aluminium, 16)
-                .fluidOutputs(Hydrogen.getFluid(10000))
-                .fluidOutputs(Oxygen.getFluid(11000))
-                .duration(624).EUt(60).buildAndRegister();
-
-        ELECTROLYZER_RECIPES.recipeBuilder()
                 .fluidInputs(Water.getFluid(1000))
                 .fluidOutputs(Hydrogen.getFluid(2000))
                 .fluidOutputs(Oxygen.getFluid(1000))
