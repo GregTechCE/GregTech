@@ -242,10 +242,14 @@ fun getVersionFromJava(file: File): String  {
         return "$major.$minor.$revision-$branchNameOrTag"
     }
 
-    val build = getBuildNumber()
+    var version = "$major.$minor.$revision"
+    if (branchNameOrTag != null && branchNameOrTag == "master") {
+        version += ".${getBuildNumber()}"
+    }
 
     if (extra != "") {
-        return "$major.$minor.$revision.$build-$extra"
+        version += "-$extra"
     }
-    return "$major.$minor.$revision.$build"
+
+    return version
 }
