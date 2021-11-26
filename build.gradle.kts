@@ -199,7 +199,7 @@ idea {
 fun getBuildNumber(): String {
     val gitLog = git.log()
     val headCommitId = git.repository.resolve(Constants.HEAD)
-    val startCommitId = ObjectId.fromString("c795901d796fba8ce8d3cb87d0172c59f56f3c9b")
+    val startCommitId = ObjectId.fromString("f867923385572819385b53651f397a380a29c6b6")
     gitLog.addRange(startCommitId, headCommitId)
     return gitLog.call().toList().size.toString()
 }

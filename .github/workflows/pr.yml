@@ -24,7 +24,7 @@ jobs:
       - name: Build with Gradle
         run: |
           chmod +x gradlew
-          ./gradlew build test
+          ./gradlew test
 
   formatting:
     name: check-fmt
