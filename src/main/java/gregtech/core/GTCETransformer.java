@@ -80,14 +80,11 @@ public class GTCETransformer implements IClassTransformer, Opcodes {
                 }
                 break;
             }
-            case RenderGlobalVisitor.TARGET_CLASS_NAME: {
-                if (FMLCommonHandler.instance().getSide() == Side.CLIENT) {
-                    ClassReader classReader = new ClassReader(basicClass);
-                    ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
-                    classReader.accept(new TargetClassVisitor(classWriter, RenderGlobalVisitor.TARGET_METHOD, RenderGlobalVisitor::new), 0);
-                    return classWriter.toByteArray();
-                }
-                break;
+            case WorldVisitor.TARGET_CLASS_NAME: {
+                ClassReader classReader = new ClassReader(basicClass);
+                ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
+                classReader.accept(new TargetClassVisitor(classWriter, WorldVisitor.TARGET_METHOD, WorldVisitor::new), 0);
+                return classWriter.toByteArray();
             }
         }
         return basicClass;
