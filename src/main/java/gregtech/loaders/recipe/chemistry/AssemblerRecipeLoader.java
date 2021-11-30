@@ -118,18 +118,18 @@ public class AssemblerRecipeLoader {
                 .input(plate, Wood)
                 .circuitMeta(12)
                 .fluidInputs(Glue.getFluid(60))
-                .output(pipeSmallFluid, Wood, 6)
+                .output(pipeSmallFluid, Wood)
                 .buildAndRegister();
 
         ASSEMBLER_RECIPES.recipeBuilder().duration(200).EUt(30)
                 .input(plate, Wood, 3)
                 .circuitMeta(4)
                 .fluidInputs(Glue.getFluid(20))
-                .output(pipeNormalFluid, Wood, 4)
+                .output(pipeNormalFluid, Wood)
                 .buildAndRegister();
 
         ASSEMBLER_RECIPES.recipeBuilder().duration(100).EUt(30)
-                .input(plate, Wood, 3)
+                .input(plate, Wood, 6)
                 .circuitMeta(2)
                 .fluidInputs(Glue.getFluid(10))
                 .output(pipeLargeFluid, Wood)
