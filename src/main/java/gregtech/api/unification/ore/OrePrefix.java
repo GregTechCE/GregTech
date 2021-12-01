@@ -552,7 +552,7 @@ public class OrePrefix {
     // todo clean this up
     public String getLocalNameForItem(Material material) {
         String specifiedUnlocalized = "item." + material.toString() + "." + this.name;
-        if (LocalizationUtils.hasKey(specifiedUnlocalized)) return I18n.format(specifiedUnlocalized);
+        if (LocalizationUtils.hasKey(specifiedUnlocalized)) return LocalizationUtils.format(specifiedUnlocalized);
         String unlocalized = "item.material.oreprefix." + this.name;
         String matLocalized = material.getLocalizedName();
         String formatted = LocalizationUtils.format(unlocalized, matLocalized);
