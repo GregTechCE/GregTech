@@ -66,6 +66,7 @@ dependencies {
     "compile"(files("etc/CTM-MC1.12.2-1.0.2.31.jar"))
 
     "testImplementation"("junit:junit:4.13.1")
+    "testRuntimeOnly"(files("etc/CodeChickenLib-1.12.2-3.2.3.358-universal.jar"))
 }
 
 configure<JavaPluginConvention> {
