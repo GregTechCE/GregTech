@@ -57,7 +57,7 @@ minecraft {
 }
 
 dependencies {
-    "provided"(files("etc/CodeChickenLib-1.12.2-3.2.3.358-deobf.jar"))
+    "implementation"(files("etc/CodeChickenLib-1.12.2-3.2.3.358-deobf.jar"))
     "runtime"(files("etc/CodeChickenLib-1.12.2-3.2.3.358-universal.jar"))
 
     "compile"(files("etc/CraftTweaker2-1.12-4.1.20.670.jar"))
@@ -66,7 +66,6 @@ dependencies {
     "compile"(files("etc/CTM-MC1.12.2-1.0.2.31.jar"))
 
     "testImplementation"("junit:junit:4.13.1")
-    "testRuntimeOnly"(files("etc/CodeChickenLib-1.12.2-3.2.3.358-universal.jar"))
 }
 
 configure<JavaPluginConvention> {
