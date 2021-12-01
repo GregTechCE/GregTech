@@ -386,6 +386,13 @@ public class MixerRecipes {
                 .buildAndRegister();
 
         MIXER_RECIPES.recipeBuilder().duration(400).EUt(7680)
+                .input(dust, Palladium, 3)
+                .input(dust, Rhodium)
+                .notConsumable(new IntCircuitIngredient(1))
+                .output(dust, RhodiumPlatedPalladium, 4)
+                .buildAndRegister();
+
+        MIXER_RECIPES.recipeBuilder().duration(400).EUt(7680)
                 .input(dust, Naquadah, 2)
                 .input(dust, Osmiridium)
                 .input(dust, Trinium)

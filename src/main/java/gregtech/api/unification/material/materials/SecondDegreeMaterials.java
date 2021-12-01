@@ -458,5 +458,14 @@ public class SecondDegreeMaterials {
                 .flags(DISABLE_DECOMPOSITION)
                 .components(Osmium, 1, Oxygen, 4, Water, 1, HydrochloricAcid, 1)
                 .build();
+
+        RhodiumPlatedPalladium = new Material.Builder(2062, "rhodium_plated_palladium")
+                .ingot().fluid()
+                .color(0xDAC5C5)
+                .flags(GENERATE_ROTOR).iconSet(SHINY)
+                .components(Palladium, 3, Rhodium, 1)
+                .toolStats(12.0f, 3.0f, 1024, 33)
+                .blastTemp(4500, GasTier.HIGH, 7680, 1200)
+                .build();
     }
 }

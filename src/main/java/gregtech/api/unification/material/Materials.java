@@ -545,6 +545,7 @@ public class Materials {
     public static Material RarestMetalMixture;
     public static Material AmmoniumChloride;
     public static Material AcidicOsmiumSolution;
+    public static Material RhodiumPlatedPalladium;
 
     /**
      * Not possible to determine exact Components
