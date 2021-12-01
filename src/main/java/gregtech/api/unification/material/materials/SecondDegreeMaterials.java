@@ -331,13 +331,13 @@ public class SecondDegreeMaterials {
         NickelSulfateSolution = new Material.Builder(2043, "nickel_sulfate_water_solution")
                 .fluid()
                 .color(0x3EB640)
-                .components(Nickel, 1, Sulfur, 1, Oxygen, 4, Water, 6)
+                .components(Nickel, 1, Oxygen, 1, SulfuricAcid, 1)
                 .build();
 
         CopperSulfateSolution = new Material.Builder(2044, "copper_sulfate_water_solution")
                 .fluid()
                 .color(0x48A5C0)
-                .components(Copper, 1, Sulfur, 1, Oxygen, 4, Water, 5)
+                .components(Copper, 1, Oxygen, 1, SulfuricAcid, 1)
                 .build();
 
         LeadZincSolution = new Material.Builder(2045, "lead_zinc_solution")
@@ -422,6 +422,41 @@ public class SecondDegreeMaterials {
                 .color(0xFFB132)
                 .flags(DISABLE_DECOMPOSITION)
                 .components(NitricAcid, 1, HydrochloricAcid, 1)
+                .build();
+
+        SludgeDustResidue = new Material.Builder(2057, "sludge_dust_residue")
+                .dust()
+                .colorAverage()
+                .components(SiliconDioxide, 2, Gold, 3)
+                .build();
+
+        PalladiumRawPowder = new Material.Builder(2058, "palladium_raw_powder")
+                .dust()
+                .color(Palladium.getMaterialRGB()).iconSet(METALLIC)
+                .flags(DISABLE_DECOMPOSITION)
+                .components(Palladium, 1, Ammonia, 1)
+                .build();
+
+        RarestMetalMixture = new Material.Builder(2059, "rarest_metal_mixture")
+                .dust()
+                .color(0x832E11).iconSet(SHINY)
+                .flags(DISABLE_DECOMPOSITION)
+                .components(Iridium, 1, Osmium, 1, Oxygen, 4, Water, 1)
+                .build();
+
+        AmmoniumChloride = new Material.Builder(2060, "ammonium_chloride")
+                .fluid()
+                .color(0x9711A6)
+                .flags(DISABLE_DECOMPOSITION)
+                .components(Ammonia, 1, HydrochloricAcid, 1)
+                .build()
+                .setFormula("NH4Cl", true);
+
+        AcidicOsmiumSolution = new Material.Builder(2061, "acidic_osmium_solution")
+                .fluid()
+                .color(0x1919EB)
+                .flags(DISABLE_DECOMPOSITION)
+                .components(Osmium, 1, Oxygen, 4, Water, 1, HydrochloricAcid, 1)
                 .build();
     }
 }

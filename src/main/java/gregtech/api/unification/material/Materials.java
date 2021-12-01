@@ -465,6 +465,13 @@ public class Materials {
     public static Material EnrichedNaquadahTriniumEuropiumDuranide;
     public static Material RutheniumTriniumAmericiumNeutronate;
 
+    public static Material PlatinumRawPowder;
+    public static Material InertMetalMixture;
+    public static Material RhodiumSulfate;
+    public static Material RutheniumTetroxide;
+    public static Material OsmiumTetroxide;
+    public static Material IridiumChloride;
+
     /**
      * Organic chemistry
      */
@@ -533,6 +540,11 @@ public class Materials {
     public static Material Ethylbenzene;
     public static Material Naphthalene;
     public static Material Nitrobenzene;
+    public static Material SludgeDustResidue;
+    public static Material PalladiumRawPowder;
+    public static Material RarestMetalMixture;
+    public static Material AmmoniumChloride;
+    public static Material AcidicOsmiumSolution;
 
     /**
      * Not possible to determine exact Components
@@ -719,6 +731,7 @@ public class Materials {
     public static Material Redrock;
     public static Material GarnetSand;
     public static Material HSSG;
+    public static Material IridiumMetalResidue;
 
     /**
      * Fourth Degree Materials

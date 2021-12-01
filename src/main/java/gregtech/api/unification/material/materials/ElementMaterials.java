@@ -372,7 +372,7 @@ public class ElementMaterials {
 
         Iridium = new Material.Builder(50, "iridium")
                 .ingot(3).fluid().ore()
-                .color(0xF0F0F5)
+                .color(0xA1E4E4).iconSet(METALLIC)
                 .flags(EXT2_METAL, GENERATE_ROTOR, GENERATE_DENSE)
                 .element(Elements.Ir)
                 .toolStats(7.0f, 3.0f, 2560, 21)
@@ -676,7 +676,7 @@ public class ElementMaterials {
 
         Rhodium = new Material.Builder(90, "rhodium")
                 .ingot().fluid()
-                .color(0xF4F4F4).iconSet(SHINY)
+                .color(0xDC0C58).iconSet(BRIGHT)
                 .flags(EXT2_METAL)
                 .element(Elements.Rh)
                 .blastTemp(2237, GasTier.MID, 1920, 1200)
@@ -699,7 +699,7 @@ public class ElementMaterials {
 
         Ruthenium = new Material.Builder(93, "ruthenium")
                 .ingot().fluid()
-                .color(0x9B9B9B).iconSet(SHINY)
+                .color(0xD9D733).iconSet(SHINY)
                 .flags(EXT2_METAL)
                 .element(Elements.Ru)
                 .blastTemp(2607, GasTier.MID, 1920, 900)
