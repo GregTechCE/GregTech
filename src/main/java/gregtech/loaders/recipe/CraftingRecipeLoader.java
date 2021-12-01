@@ -75,7 +75,7 @@ public class CraftingRecipeLoader {
 
         for (MetaValueItem batteryItem : ToolRecipeHandler.batteryItems[0]) {
             ModHandler.addShapedEnergyTransferRecipe("scanner_" + batteryItem.unlocalizedName, MetaItems.SCANNER.getStackForm(),
-                    batteryItem::isItemEqual, true,
+                    batteryItem::isItemEqual, true, true,
                     "DGD", "CGC", "SBS",
                     'D', new UnificationEntry(OrePrefix.plate, Materials.Diamond),
                     'G', new UnificationEntry(OrePrefix.paneGlass),
@@ -86,7 +86,7 @@ public class CraftingRecipeLoader {
 
         for (Material material : new Material[]{Materials.Lapis, Materials.Lazurite, Materials.Sodalite}) {
             String recipeName = "lapotron_crystal_" + material.toString();
-            ModHandler.addShapedEnergyTransferRecipeWithOverride(recipeName, MetaItems.LAPOTRON_CRYSTAL.getStackForm(),
+            ModHandler.addShapedEnergyTransferRecipe(recipeName, MetaItems.LAPOTRON_CRYSTAL.getStackForm(),
                     Ingredient.fromStacks(MetaItems.ENERGY_CRYSTAL.getStackForm()), false, false,
                     "XCX", "RER", "XCX",
                     'X', new UnificationEntry(OrePrefix.plate, material),
