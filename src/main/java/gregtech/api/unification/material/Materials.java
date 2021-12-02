@@ -703,8 +703,8 @@ public class Materials {
     public static Material Fireclay;
     public static Material BorosilicateGlass;
     public static Material NaquadahAlloy;
-    public static Material NickelSulfateSolution;
-    public static Material CopperSulfateSolution;
+    public static Material SulfuricNickelSolution;
+    public static Material SulfuricCopperSolution;
     public static Material LeadZincSolution;
     public static Material NitrationMixture;
     public static Material DilutedSulfuricAcid;

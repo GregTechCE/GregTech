@@ -16,14 +16,14 @@ public class PlatGroupMetalsRecipes {
                 .input(crushedPurified, Chalcopyrite)
                 .fluidInputs(NitricAcid.getFluid(1000))
                 .output(dust, PlatinumGroupSludge, 2)
-                .fluidOutputs(CopperSulfateSolution.getFluid(1000))
+                .fluidOutputs(SulfuricCopperSolution.getFluid(1000))
                 .buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder().duration(50).EUt(30)
                 .input(crushedPurified, Pentlandite)
                 .fluidInputs(NitricAcid.getFluid(1000))
                 .output(dust, PlatinumGroupSludge, 2)
-                .fluidOutputs(NickelSulfateSolution.getFluid(1000))
+                .fluidOutputs(SulfuricNickelSolution.getFluid(1000))
                 .buildAndRegister();
 
         // Aqua Regia

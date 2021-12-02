@@ -328,13 +328,13 @@ public class SecondDegreeMaterials {
                 .blastTemp(7200, GasTier.HIGH, 30720, 1000)
                 .build();
 
-        NickelSulfateSolution = new Material.Builder(2043, "nickel_sulfate_water_solution")
+        SulfuricNickelSolution = new Material.Builder(2043, "sulfuric_nickel_solution")
                 .fluid()
                 .color(0x3EB640)
                 .components(Nickel, 1, Oxygen, 1, SulfuricAcid, 1)
                 .build();
 
-        CopperSulfateSolution = new Material.Builder(2044, "copper_sulfate_water_solution")
+        SulfuricCopperSolution = new Material.Builder(2044, "sulfuric_copper_solution")
                 .fluid()
                 .color(0x48A5C0)
                 .components(Copper, 1, Oxygen, 1, SulfuricAcid, 1)
