@@ -113,14 +113,15 @@ public class PlatGroupMetalsRecipes {
                 .input(dust, RarestMetalMixture, 7)
                 .fluidInputs(HydrochloricAcid.getFluid(4000))
                 .output(dust, IridiumMetalResidue, 5)
-                .fluidOutputs(AcidicOsmiumSolution.getFluid(1000))
+                .fluidOutputs(AcidicOsmiumSolution.getFluid(2000))
                 .fluidOutputs(Hydrogen.getFluid(3000))
                 .buildAndRegister();
 
         DISTILLATION_RECIPES.recipeBuilder().duration(400).EUt(120)
-                .fluidInputs(AcidicOsmiumSolution.getFluid(1000))
+                .fluidInputs(AcidicOsmiumSolution.getFluid(2000))
                 .output(dust, OsmiumTetroxide, 5)
-                .fluidOutputs(DilutedHydrochloricAcid.getFluid(2000))
+                .fluidOutputs(HydrochloricAcid.getFluid(1000))
+                .fluidOutputs(Water.getFluid(1000))
                 .buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder().duration(200).EUt(30)
@@ -140,7 +141,7 @@ public class PlatGroupMetalsRecipes {
                 .input(dust, IridiumChloride, 4)
                 .fluidInputs(Hydrogen.getFluid(3000))
                 .output(dust, Iridium)
-                .fluidOutputs(HydrochloricAcid.getFluid(1000))
+                .fluidOutputs(HydrochloricAcid.getFluid(3000))
                 .buildAndRegister();
     }
 }

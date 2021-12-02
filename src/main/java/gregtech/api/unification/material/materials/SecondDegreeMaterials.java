@@ -447,7 +447,6 @@ public class SecondDegreeMaterials {
         AmmoniumChloride = new Material.Builder(2060, "ammonium_chloride")
                 .fluid()
                 .color(0x9711A6)
-                .flags(DISABLE_DECOMPOSITION)
                 .components(Ammonia, 1, HydrochloricAcid, 1)
                 .build()
                 .setFormula("NH4Cl", true);
