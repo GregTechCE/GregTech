@@ -424,13 +424,13 @@ public class SecondDegreeMaterials {
                 .components(NitricAcid, 1, HydrochloricAcid, 1)
                 .build();
 
-        SludgeDustResidue = new Material.Builder(2057, "sludge_dust_residue")
+        PlatinumSludgeResidue = new Material.Builder(2057, "platinum_sludge_residue")
                 .dust()
-                .colorAverage()
+                .color(0x827951)
                 .components(SiliconDioxide, 2, Gold, 3)
                 .build();
 
-        PalladiumRawPowder = new Material.Builder(2058, "palladium_raw_powder")
+        PalladiumRaw = new Material.Builder(2058, "palladium_raw")
                 .dust()
                 .color(Palladium.getMaterialRGB()).iconSet(METALLIC)
                 .flags(DISABLE_DECOMPOSITION)
@@ -454,7 +454,7 @@ public class SecondDegreeMaterials {
 
         AcidicOsmiumSolution = new Material.Builder(2061, "acidic_osmium_solution")
                 .fluid()
-                .color(0x1919EB)
+                .color(0xA3AA8A)
                 .flags(DISABLE_DECOMPOSITION)
                 .components(Osmium, 1, Oxygen, 4, Water, 1, HydrochloricAcid, 1)
                 .build();

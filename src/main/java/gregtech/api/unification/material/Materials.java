@@ -465,7 +465,7 @@ public class Materials {
     public static Material EnrichedNaquadahTriniumEuropiumDuranide;
     public static Material RutheniumTriniumAmericiumNeutronate;
 
-    public static Material PlatinumRawPowder;
+    public static Material PlatinumRaw;
     public static Material InertMetalMixture;
     public static Material RhodiumSulfate;
     public static Material RutheniumTetroxide;
@@ -540,8 +540,8 @@ public class Materials {
     public static Material Ethylbenzene;
     public static Material Naphthalene;
     public static Material Nitrobenzene;
-    public static Material SludgeDustResidue;
-    public static Material PalladiumRawPowder;
+    public static Material PlatinumSludgeResidue;
+    public static Material PalladiumRaw;
     public static Material RarestMetalMixture;
     public static Material AmmoniumChloride;
     public static Material AcidicOsmiumSolution;

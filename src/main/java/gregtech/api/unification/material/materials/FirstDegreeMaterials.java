@@ -369,7 +369,7 @@ public class FirstDegreeMaterials {
                 .components(Phosphorus, 1, Oxygen, 4)
                 .build();
 
-        PlatinumRawPowder = new Material.Builder(299, "platinum_raw_powder")
+        PlatinumRaw = new Material.Builder(299, "platinum_raw")
                 .dust()
                 .color(0xFFFFC8).iconSet(METALLIC)
                 .flags(DISABLE_DECOMPOSITION)
@@ -459,7 +459,7 @@ public class FirstDegreeMaterials {
 
         Ruridit = new Material.Builder(310, "ruridit")
                 .ingot(3)
-                .color(0xA4A4A4).iconSet(BRIGHT)
+                .colorAverage().iconSet(BRIGHT)
                 .flags(GENERATE_FINE_WIRE, GENERATE_GEAR)
                 .components(Ruthenium, 2, Iridium, 1)
                 .blastTemp(4500, GasTier.HIGH, 1920, 1600)
@@ -1334,7 +1334,7 @@ public class FirstDegreeMaterials {
 
         InertMetalMixture = new Material.Builder(433, "inert_metal_mixture")
                 .dust()
-                .color(0xC0C0C0).iconSet(METALLIC)
+                .color(0xE2AE72).iconSet(METALLIC)
                 .flags(DISABLE_DECOMPOSITION)
                 .components(Rhodium, 1, Ruthenium, 1, Oxygen, 4)
                 .build();
@@ -1355,7 +1355,7 @@ public class FirstDegreeMaterials {
 
         OsmiumTetroxide = new Material.Builder(436, "osmium_tetroxide")
                 .dust()
-                .color(0xFFFFBF).iconSet(METALLIC)
+                .color(0xACAD71).iconSet(METALLIC)
                 .flags(DISABLE_DECOMPOSITION)
                 .components(Osmium, 1, Oxygen, 4)
                 .build();

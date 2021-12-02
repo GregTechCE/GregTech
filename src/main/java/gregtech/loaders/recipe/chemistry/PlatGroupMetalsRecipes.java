@@ -2,7 +2,8 @@ package gregtech.loaders.recipe.chemistry;
 
 import static gregtech.api.recipes.RecipeMaps.*;
 import static gregtech.api.unification.material.Materials.*;
-import static gregtech.api.unification.ore.OrePrefix.*;
+import static gregtech.api.unification.ore.OrePrefix.crushedPurified;
+import static gregtech.api.unification.ore.OrePrefix.dust;
 
 public class PlatGroupMetalsRecipes {
 
@@ -54,18 +55,18 @@ public class PlatGroupMetalsRecipes {
         ELECTROLYZER_RECIPES.recipeBuilder().duration(500).EUt(480)
                 .input(dust, PlatinumGroupSludge, 6)
                 .fluidInputs(AquaRegia.getFluid(1000))
-                .output(dust, PlatinumRawPowder, 3) // PtCl2
-                .output(dust, PalladiumRawPowder, 3) // PdNH3
+                .output(dust, PlatinumRaw, 3) // PtCl2
+                .output(dust, PalladiumRaw, 3) // PdNH3
                 .output(dust, InertMetalMixture, 2) // RhRuO4
                 .output(dust, RarestMetalMixture) // IrOsO4(H2O)
-                .output(dust, SludgeDustResidue, 2)
+                .output(dust, PlatinumSludgeResidue, 2)
                 .buildAndRegister();
 
 
         // PLATINUM
 
         ELECTROLYZER_RECIPES.recipeBuilder().duration(100).EUt(120)
-                .input(dust, PlatinumRawPowder, 3)
+                .input(dust, PlatinumRaw, 3)
                 .output(dust, Platinum)
                 .fluidOutputs(Chlorine.getFluid(500))
                 .buildAndRegister();
@@ -74,7 +75,7 @@ public class PlatGroupMetalsRecipes {
         // PALLADIUM
 
         CHEMICAL_RECIPES.recipeBuilder().duration(200).EUt(120)
-                .input(dust, PalladiumRawPowder, 5)
+                .input(dust, PalladiumRaw, 5)
                 .fluidInputs(HydrochloricAcid.getFluid(1000))
                 .output(dust, Palladium)
                 .fluidOutputs(AmmoniumChloride.getFluid(1000))
@@ -132,7 +133,7 @@ public class PlatGroupMetalsRecipes {
         CENTRIFUGE_RECIPES.recipeBuilder().duration(200).EUt(120)
                 .input(dust, IridiumMetalResidue, 5)
                 .output(dust, IridiumChloride, 4)
-                .output(dust, SludgeDustResidue)
+                .output(dust, PlatinumSludgeResidue)
                 .buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder().duration(100).EUt(30)

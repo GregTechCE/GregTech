@@ -122,7 +122,7 @@ public class ElementMaterials {
 
         Calcium = new Material.Builder(16, "calcium")
                 .ingot().fluid()
-                .color(0xFFF5F5).iconSet(METALLIC)
+                .color(0xFFF5DE).iconSet(METALLIC)
                 .element(Elements.Ca)
                 .flags(GENERATE_FOIL)
                 .build();
@@ -162,7 +162,7 @@ public class ElementMaterials {
 
         Chrome = new Material.Builder(22, "chrome")
                 .ingot(3).fluid().ore()
-                .color(0xFFE6E6).iconSet(SHINY)
+                .color(0xEAC4D8).iconSet(SHINY)
                 .flags(EXT2_METAL, GENERATE_ROTOR, GENERATE_DENSE)
                 .element(Elements.Cr)
                 .toolStats(12.0f, 3.0f, 512, 33)
@@ -421,14 +421,14 @@ public class ElementMaterials {
 
         Lithium = new Material.Builder(56, "lithium")
                 .ingot().fluid().ore()
-                .color(0xE1DCE1)
+                .color(0xBDC7DB)
                 .flags(STD_METAL)
                 .element(Elements.Li)
                 .build();
 
         Livermorium = new Material.Builder(57, "livermorium")
                 .ingot().fluid()
-                .color(0xC7B204).iconSet(SHINY)
+                .color(0x578062).iconSet(SHINY)
                 .flags(EXT2_METAL, GENERATE_ROTOR, GENERATE_DENSE)
                 .element(Elements.Lv)
                 .build();
@@ -699,7 +699,7 @@ public class ElementMaterials {
 
         Ruthenium = new Material.Builder(93, "ruthenium")
                 .ingot().fluid()
-                .color(0xD9D733).iconSet(SHINY)
+                .color(0x50ACCD).iconSet(SHINY)
                 .flags(EXT2_METAL)
                 .element(Elements.Ru)
                 .blastTemp(2607, GasTier.MID, 1920, 900)
@@ -921,7 +921,7 @@ public class ElementMaterials {
 
         Yttrium = new Material.Builder(121, "yttrium")
                 .ingot().fluid()
-                .color(0xDCFADC).iconSet(METALLIC)
+                .color(0x76524C).iconSet(METALLIC)
                 .flags(STD_METAL)
                 .element(Elements.Y)
                 .blastTemp(1799)
@@ -929,7 +929,7 @@ public class ElementMaterials {
 
         Zinc = new Material.Builder(122, "zinc")
                 .ingot(1).fluid().ore()
-                .color(0xFAF0F0).iconSet(METALLIC)
+                .color(0xEBEBFA).iconSet(METALLIC)
                 .flags(STD_METAL, MORTAR_GRINDABLE, GENERATE_FOIL, GENERATE_RING, GENERATE_FINE_WIRE)
                 .element(Elements.Zn)
                 .build();
@@ -999,7 +999,7 @@ public class ElementMaterials {
 
         Trinium = new Material.Builder(130, "trinium")
                 .ingot(7).fluid()
-                .color(0xC8C8D2).iconSet(SHINY)
+                .color(0x9973BD).iconSet(SHINY)
                 .flags(GENERATE_FOIL)
                 .element(Elements.Ke)
                 .blastTemp(8600, GasTier.HIGH, 30720, 1500)

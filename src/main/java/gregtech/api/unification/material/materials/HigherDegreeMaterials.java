@@ -132,9 +132,9 @@ public class HigherDegreeMaterials {
 
         IridiumMetalResidue = new Material.Builder(2522, "iridium_metal_residue")
                 .dust()
-                .color(0xD7D7DF).iconSet(METALLIC)
+                .color(0x5C5D68).iconSet(METALLIC)
                 .flags(DISABLE_DECOMPOSITION)
-                .components(Iridium, 1, Chlorine, 3, SludgeDustResidue, 1)
+                .components(Iridium, 1, Chlorine, 3, PlatinumSludgeResidue, 1)
                 .build();
     }
 }
