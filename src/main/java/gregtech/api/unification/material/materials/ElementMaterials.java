@@ -429,8 +429,8 @@ public class ElementMaterials {
         Livermorium = new Material.Builder(57, "livermorium")
                 .ingot().fluid()
                 .color(0xC7B204).iconSet(SHINY)
+                .flags(EXT2_METAL, GENERATE_ROTOR, GENERATE_DENSE)
                 .element(Elements.Lv)
-                .setHidden()
                 .build();
 
         Lutetium = new Material.Builder(58, "lutetium")
