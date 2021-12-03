@@ -335,7 +335,7 @@ public class MixerRecipes {
                 .input(dust, Chrome)
                 .input(dust, Steel, 7)
                 .notConsumable(new IntCircuitIngredient(1))
-                .output(dust, VanadiumSteel, 2)
+                .output(dust, VanadiumSteel, 9)
                 .buildAndRegister();
 
         MIXER_RECIPES.recipeBuilder().duration(200).EUt(480)
