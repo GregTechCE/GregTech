@@ -8,6 +8,8 @@ import gregtech.api.items.metaitem.stats.IItemContainerItemProvider;
 import gregtech.api.sound.GTSounds;
 import gregtech.api.terminal.hardware.HardwareProvider;
 import gregtech.api.unification.OreDictUnifier;
+import gregtech.api.unification.material.MarkerMaterial;
+import gregtech.api.unification.material.MarkerMaterials;
 import gregtech.api.unification.material.MarkerMaterials.Component;
 import gregtech.api.unification.material.MarkerMaterials.Tier;
 import gregtech.api.unification.material.Materials;
@@ -580,10 +582,18 @@ public class MetaItem1 extends StandardMetaItem {
         PLUGIN_ONLINE_PIC = addItem(782, "plugin.online_pic").addComponents(new OnlinePicPluginBehavior());
         PLUGIN_TEXT = addItem(783, "plugin.text").addComponents(new TextPluginBehavior());
 
-        COLOURED_LEDS = addItem(800, "coloured.leds");
-        DISPLAY = addItem(801, "display");
+        COLOURED_LEDS = addItem(798, "coloured.leds");
+        DISPLAY = addItem(799, "display");
 
-        SUS_RECORD = addItem(802, "record.sus").addComponents(new MusicDiscStats(GTSounds.RECORD_SOUND)).setRarity(EnumRarity.RARE).setMaxStackSize(1).setInvisible();
+        // Records: 800-819
+        SUS_RECORD = addItem(800, "record.sus").addComponents(new MusicDiscStats(GTSounds.RECORD_SOUND)).setRarity(EnumRarity.RARE).setMaxStackSize(1).setInvisible();
+
+        // Dyed Glass Lenses: 820-840
+        for (int i = 0; i < MarkerMaterials.Color.VALUES.length; i++) {
+            MarkerMaterial color = MarkerMaterials.Color.VALUES[i];
+            if (color != MarkerMaterials.Color.White) {
+                GLASS_LENSES.put(color, addItem(820 + i, String.format("glass_lens.%s", color.toString())));
+            }
+        }
     }
-
 }
