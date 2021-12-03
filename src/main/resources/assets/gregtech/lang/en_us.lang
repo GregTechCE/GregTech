@@ -2238,7 +2238,7 @@ tile.turbine_casing.tungstensteel_turbine_casing.name=Tungstensteel Turbine Casi
 # Multiblock casing blocks
 tile.multiblock_casing.engine_intake.name=Engine Intake Casing
 tile.multiblock_casing.grate.name=Grate Machine Casing
-tile.multiblock_casing.assembler.name=Assembler Machine Casing
+tile.multiblock_casing.assembly_control.name=Assembly Control Casing
 tile.multiblock_casing.assembly_line.name=Assembly Line Casing
 
 # Fusion casing blocks
