@@ -318,14 +318,14 @@ public class MachineRecipeLoader {
 
         RecipeMaps.AUTOCLAVE_RECIPES.recipeBuilder().inputs(MetaItems.ENERGIUM_DUST.getStackForm(9))
                 .fluidInputs(Materials.Water.getFluid(1800))
-                .outputs(MetaItems.ENERGY_CRYSTAL.getStackForm())
+                .outputs(MetaItems.ENERGIUM_CRYSTAL.getStackForm())
                 .duration(2000).EUt(120)
                 .buildAndRegister();
 
         RecipeMaps.AUTOCLAVE_RECIPES.recipeBuilder()
                 .inputs(MetaItems.ENERGIUM_DUST.getStackForm(9))
                 .fluidInputs(Materials.DistilledWater.getFluid(1800))
-                .outputs(MetaItems.ENERGY_CRYSTAL.getStackForm())
+                .outputs(MetaItems.ENERGIUM_CRYSTAL.getStackForm())
                 .duration(1500).EUt(120)
                 .buildAndRegister();
 

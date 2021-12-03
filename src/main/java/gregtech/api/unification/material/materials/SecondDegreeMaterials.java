@@ -67,7 +67,7 @@ public class SecondDegreeMaterials {
                 .gem(1).ore(6, 4)
                 .color(0x4646DC).iconSet(LAPIS)
                 .flags(NO_SMASHING, NO_SMELTING, CRYSTALLIZABLE, NO_WORKING, DECOMPOSITION_BY_ELECTROLYZING, EXCLUDE_BLOCK_CRAFTING_BY_HAND_RECIPES,
-                        GENERATE_PLATE)
+                        GENERATE_PLATE, GENERATE_ROD)
                 .components(Lazurite, 12, Sodalite, 2, Pyrite, 1, Calcite, 1)
                 .build();
 
