@@ -75,6 +75,8 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
 
     protected SoundEvent sound;
 
+    private RecipeMap<?> smallRecipeMap;
+
     public RecipeMap(String unlocalizedName,
                     int minInputs, int maxInputs, int minOutputs, int maxOutputs,
                     int minFluidInputs, int maxFluidInputs, int minFluidOutputs, int maxFluidOutputs,
@@ -154,6 +156,15 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
     public RecipeMap<R> onRecipeBuild(Consumer<RecipeBuilder<?>> consumer) {
         onRecipeBuildAction = consumer;
         return this;
+    }
+
+    public RecipeMap<R> setSmallRecipeMap(RecipeMap<?> recipeMap) {
+        this.smallRecipeMap = recipeMap;
+        return this;
+    }
+
+    public RecipeMap<?> getSmallRecipeMap() {
+        return smallRecipeMap;
     }
 
     /**
