@@ -445,7 +445,7 @@ public class SecondDegreeMaterials {
                 .build();
 
         AmmoniumChloride = new Material.Builder(2060, "ammonium_chloride")
-                .fluid()
+                .dust()
                 .color(0x9711A6)
                 .components(Ammonia, 1, HydrochloricAcid, 1)
                 .build()
