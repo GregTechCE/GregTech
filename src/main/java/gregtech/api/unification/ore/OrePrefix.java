@@ -254,6 +254,7 @@ public class OrePrefix {
         gemFlawless.maxStackSize = 32;
         gemExquisite.maxStackSize = 16;
 
+        plateDouble.maxStackSize = 32;
         plateDense.maxStackSize = 7;
         rotor.maxStackSize = 16;
         gear.maxStackSize = 16;
