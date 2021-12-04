@@ -1,7 +1,6 @@
 package gregtech.common.items;
 
 import gregtech.api.GTValues;
-import gregtech.api.items.OreDictNames;
 import gregtech.api.items.metaitem.*;
 import gregtech.api.items.metaitem.stats.IItemComponent;
 import gregtech.api.items.metaitem.stats.IItemContainerItemProvider;
@@ -262,13 +261,9 @@ public class MetaItem1 extends StandardMetaItem {
         TOOL_DATA_ORB = addItem(262, "tool.dataorb");
 
         // Special Machine Components: ID 266-280
-        COMPONENT_SAW_BLADE_DIAMOND = addItem(266, "component.sawblade.diamond").addOreDict(OreDictNames.craftingSawBlade)
-                .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.CobaltBrass, GTValues.M * 4), new MaterialStack(Materials.Diamond, GTValues.M)));
-        COMPONENT_SAW_BLADE_TUNGSTEN = addItem(267, "component.sawblade.tungsten").addOreDict(OreDictNames.craftingSawBlade)
-                .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Ultimet, GTValues.M * 4), new MaterialStack(Materials.TungstenCarbide, GTValues.M * 4)));
-        COMPONENT_GRINDER_DIAMOND = addItem(268, "component.grinder.diamond").addOreDict(OreDictNames.craftingGrinder)
+        COMPONENT_GRINDER_DIAMOND = addItem(266, "component.grinder.diamond")
                 .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Steel, GTValues.M * 8), new MaterialStack(Materials.Diamond, GTValues.M * 5)));
-        COMPONENT_GRINDER_TUNGSTEN = addItem(269, "component.grinder.tungsten").addOreDict(OreDictNames.craftingGrinder)
+        COMPONENT_GRINDER_TUNGSTEN = addItem(267, "component.grinder.tungsten")
                 .setMaterialInfo(new ItemMaterialInfo(new MaterialStack(Materials.Tungsten, GTValues.M * 4), new MaterialStack(Materials.VanadiumSteel, GTValues.M * 8), new MaterialStack(Materials.Diamond, GTValues.M)));
 
         // Special Eyes/Stars: ID 281-289

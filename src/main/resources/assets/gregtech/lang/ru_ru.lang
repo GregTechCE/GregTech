@@ -639,7 +639,6 @@ metaitem.carbon.plate.name=Углеродный лист
 metaitem.neutron_reflector.name=Нейтронный отражатель
 metaitem.neutron_reflector.tooltip=Indestructible
 
-metaitem.component.sawblade.diamond.name=Алмазный пильный диск
 metaitem.component.grinder.diamond.name=Алмазная шлифовальная головка
 metaitem.component.grinder.tungsten.name=Вольфрамовая шлифовальная головка
 

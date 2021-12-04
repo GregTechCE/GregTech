@@ -16,7 +16,6 @@ import gregtech.common.render.FacadeItemModel;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.EnumDyeColor;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -374,8 +373,6 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem WETWARE_SUPER_COMPUTER_UV;
     public static MetaItem<?>.MetaValueItem WETWARE_MAINFRAME_UHV;
 
-    public static MetaItem<?>.MetaValueItem COMPONENT_SAW_BLADE_DIAMOND;
-    public static MetaItem<?>.MetaValueItem COMPONENT_SAW_BLADE_TUNGSTEN;
     public static MetaItem<?>.MetaValueItem COMPONENT_GRINDER_DIAMOND;
     public static MetaItem<?>.MetaValueItem COMPONENT_GRINDER_TUNGSTEN;
 
