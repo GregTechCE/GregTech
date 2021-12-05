@@ -36,6 +36,8 @@ public class VanillaOverrideRecipes {
         if (ConfigHolder.vanillaRecipes.hardDyeRecipes)
             dyeRecipes();
         toolArmorRecipes();
+
+        ModHandler.removeRecipeByName(new ResourceLocation("minecraft:tnt"));
     }
 
     private static void woodRecipes() {
