@@ -1188,7 +1188,7 @@ public class FirstDegreeMaterials {
         EnderPearl = new Material.Builder(416, "ender_pearl")
                 .gem(1)
                 .color(0x6CDCC8)
-                .flags(NO_SMASHING, NO_SMELTING)
+                .flags(NO_SMASHING, NO_SMELTING, GENERATE_PLATE)
                 .components(Beryllium, 1, Potassium, 4, Nitrogen, 5)
                 .build();
 
