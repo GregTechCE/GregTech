@@ -39,7 +39,7 @@ public class WireProperties implements IMaterialProperty<WireProperties> {
 
         // Ensure all Materials with Cables and voltage tier IV or above have a Foil for recipe generation
         Material thisMaterial = properties.getMaterial();
-        if (!isSuperconductor && voltage >= GTValues.IV && !thisMaterial.hasFlag(GENERATE_FOIL)) {
+        if (!isSuperconductor && voltage >= GTValues.V[GTValues.IV] && !thisMaterial.hasFlag(GENERATE_FOIL)) {
             thisMaterial.addFlags(GENERATE_FOIL);
         }
     }
