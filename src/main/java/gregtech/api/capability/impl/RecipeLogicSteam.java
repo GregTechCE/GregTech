@@ -165,6 +165,7 @@ public class RecipeLogicSteam extends AbstractRecipeLogic {
     protected void completeRecipe() {
         super.completeRecipe();
         setNeedsVenting(true);
+        tryDoVenting();
     }
 
     @Override
