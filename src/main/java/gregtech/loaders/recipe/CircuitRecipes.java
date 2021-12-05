@@ -322,6 +322,13 @@ public class CircuitRecipes {
         ASSEMBLER_RECIPES.recipeBuilder().duration(400).EUt(30)
                 .input(wireFine, Copper, 4)
                 .input(dustSmall, GalliumArsenide)
+                .fluidInputs(Glass.getFluid(L))
+                .output(DIODE)
+                .buildAndRegister();
+
+        ASSEMBLER_RECIPES.recipeBuilder().duration(400).EUt(30)
+                .input(wireFine, Copper, 4)
+                .input(dustSmall, GalliumArsenide)
                 .fluidInputs(Polyethylene.getFluid(L))
                 .output(DIODE, 2)
                 .buildAndRegister();
