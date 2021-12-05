@@ -78,7 +78,7 @@ public class ElectricBlastFurnaceInfo extends MultiblockInfoPage {
     @Override
     protected void generateBlockTooltips() {
         super.generateBlockTooltips();
-        ITextComponent tooltip = new TextComponentTranslation("gregtech.multiblock.preview.limit", 10).setStyle(new Style().setColor(TextFormatting.AQUA));
+        ITextComponent tooltip = new TextComponentTranslation("gregtech.multiblock.preview.limit", 9).setStyle(new Style().setColor(TextFormatting.AQUA));
         addBlockTooltip(MetaBlocks.METAL_CASING.getItemVariant(MetalCasingType.INVAR_HEATPROOF), tooltip);
 
         ITextComponent mufflerTooltip = new TextComponentTranslation("gregtech.multiblock.preview.only_location", I18n.format("gregtech.multiblock.preview.location.t_c")).setStyle(new Style().setColor(TextFormatting.DARK_RED));

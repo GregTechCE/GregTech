@@ -122,7 +122,7 @@ public class MetaTileEntityElectricBlastFurnace extends RecipeMapMultiblockContr
                 .aisle("XXX", "CCC", "CCC", "XXX")
                 .aisle("XXX", "C#C", "C#C", "XMX")
                 .aisle("XSX", "CCC", "CCC", "XXX")
-                .setAmountAtLeast('L', 10)
+                .setAmountAtLeast('L', 9)
                 .where('S', selfPredicate())
                 .where('L', statePredicate(getCasingState()))
                 .where('X', statePredicate(getCasingState()).or(abilityPartPredicate(ALLOWED_ABILITIES)))
