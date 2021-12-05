@@ -356,7 +356,7 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
     @Nullable
     @Override
     public RayTraceResult collisionRayTrace(@Nonnull IBlockState blockState, World worldIn, @Nonnull BlockPos pos, @Nonnull Vec3d start, @Nonnull Vec3d end) {
-        if (worldIn.isRemote) {
+        if (!worldIn.isRemote) {
             return RayTracer.rayTraceCuboidsClosest(start, end, pos, getCollisionBox(worldIn, pos, Minecraft.getMinecraft().player));
         }
         return RayTracer.rayTraceCuboidsClosest(start, end, pos, FULL_CUBE_COLLISION);
