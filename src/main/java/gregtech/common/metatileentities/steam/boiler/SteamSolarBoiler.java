@@ -35,8 +35,8 @@ public class SteamSolarBoiler extends SteamBoiler {
 
     @Override
     protected void tryConsumeNewFuel() {
-        if (!getWorld().isRemote && checkCanSeeSun()) {
-            setFuelMaxBurnTime(5);
+        if (checkCanSeeSun()) {
+            setFuelMaxBurnTime(20);
         }
     }
 
