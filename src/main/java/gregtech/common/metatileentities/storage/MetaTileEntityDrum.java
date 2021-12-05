@@ -57,6 +57,7 @@ public class MetaTileEntityDrum extends MetaTileEntity {
         super(metaTileEntityId);
         this.tankSize = tankSize;
         this.material = material;
+        this.paintingColor = 0xFFFFFF;
         initializeInventory();
     }
 
