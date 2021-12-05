@@ -562,7 +562,7 @@ public class FirstDegreeMaterials {
                 .build();
 
         Steel = new Material.Builder(324, "steel")
-                .ingot().fluid()
+                .ingot(3).fluid()
                 .color(0x808080).iconSet(METALLIC)
                 .flags(EXT2_METAL, MORTAR_GRINDABLE, GENERATE_ROTOR, GENERATE_SMALL_GEAR, GENERATE_DENSE, GENERATE_SPRING,
                         GENERATE_SPRING_SMALL, GENERATE_FRAME, DISABLE_DECOMPOSITION)
