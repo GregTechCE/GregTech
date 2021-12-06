@@ -169,6 +169,7 @@ public class MetaTileEntityDrum extends MetaTileEntity {
             fluidStack.writeToNBT(tagCompound);
             buf.writeCompoundTag(tagCompound);
         }
+        buf.writeBoolean(isAutoOutput);
     }
 
     @Override
@@ -183,6 +184,7 @@ public class MetaTileEntityDrum extends MetaTileEntity {
             }
         }
         fluidTank.setFluid(fluidStack);
+        isAutoOutput = buf.readBoolean();
     }
 
     @Override
@@ -295,6 +297,7 @@ public class MetaTileEntityDrum extends MetaTileEntity {
     public NBTTagCompound writeToNBT(NBTTagCompound data) {
         super.writeToNBT(data);
         data.setTag("FluidInventory", ((FluidTank) fluidInventory).writeToNBT(new NBTTagCompound()));
+        data.setBoolean("AutoOutput", isAutoOutput);
         return data;
     }
 
@@ -302,6 +305,7 @@ public class MetaTileEntityDrum extends MetaTileEntity {
     public void readFromNBT(NBTTagCompound data) {
         super.readFromNBT(data);
         ((FluidTank) this.fluidInventory).readFromNBT(data.getCompoundTag("FluidInventory"));
+        isAutoOutput = data.getBoolean("AutoOutput");
     }
 
     @Override
