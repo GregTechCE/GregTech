@@ -41,7 +41,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockPos.PooledMutableBlockPos;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -1186,7 +1185,7 @@ public abstract class MetaTileEntity implements ICoverable {
         }
         data.setTag("Covers", coversList);
         data.setBoolean(TAG_KEY_FRAGILE, isFragile);
-        data.setBoolean(TAG_KEY_MUFFLED, isFragile);
+        data.setBoolean(TAG_KEY_MUFFLED, muffled);
         return data;
     }
 
