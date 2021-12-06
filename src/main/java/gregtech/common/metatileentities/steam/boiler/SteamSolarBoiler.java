@@ -41,6 +41,11 @@ public class SteamSolarBoiler extends SteamBoiler {
     }
 
     @Override
+    protected int getCooldownInterval() {
+        return isHighPressure ? 50 : 45;
+    }
+
+    @Override
     protected ModularUI createUI(EntityPlayer entityPlayer) {
         return createUITemplate(entityPlayer)
                 .widget(new ProgressWidget(() -> checkCanSeeSun() ? 1.0 : 0.0, 114, 44, 20, 20)
