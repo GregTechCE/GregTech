@@ -102,7 +102,7 @@ public abstract class SteamMetaTileEntity extends MetaTileEntity implements ISou
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         IVertexOperation[] colouredPipeline = ArrayUtils.add(pipeline, new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA_CL(getPaintingColorForRendering())));
         getBaseRenderer().render(renderState, translation, colouredPipeline);
-        renderer.render(renderState, translation, pipeline, getFrontFacing(), workableHandler.isActive());
+        renderer.render(renderState, translation, pipeline, getFrontFacing(), workableHandler.isActive(), workableHandler.isWorkingEnabled());
         Textures.STEAM_VENT_OVERLAY.renderSided(workableHandler.getVentingSide(), renderState, translation, pipeline);
     }
 

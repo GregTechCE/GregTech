@@ -403,7 +403,7 @@ public class MetaTileEntityLargeMiner extends MultiblockWithDisplayBase implemen
     @Override
     public void renderMetaTileEntity(CCRenderState renderState, Matrix4 translation, IVertexOperation[] pipeline) {
         super.renderMetaTileEntity(renderState, translation, pipeline);
-        this.getFrontOverlay().render(renderState, translation, pipeline, getFrontFacing(), this.isActive());
+        this.getFrontOverlay().render(renderState, translation, pipeline, getFrontFacing(), this.isActive(), this.isWorkingEnabled());
         for (int i = 0; i < pipeLength; i++) {
             translation.translate(0.0, -1.0, 0.0);
             Textures.SOLID_STEEL_CASING.render(renderState, translation, pipeline, PIPE_CUBOID);

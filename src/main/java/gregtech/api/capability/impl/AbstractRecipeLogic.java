@@ -689,11 +689,13 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable,
     @Override
     public void writeInitialData(PacketBuffer buf) {
         buf.writeBoolean(this.isActive);
+        buf.writeBoolean(this.workingEnabled);
     }
 
     @Override
     public void receiveInitialData(PacketBuffer buf) {
         this.isActive = buf.readBoolean();
+        this.workingEnabled = buf.readBoolean();
     }
 
     @Override
