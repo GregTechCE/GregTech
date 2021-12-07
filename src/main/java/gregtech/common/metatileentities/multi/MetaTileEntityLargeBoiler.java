@@ -356,6 +356,11 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase impleme
         }
     }
 
+    @Override
+    public boolean isActive() {
+        return super.isActive() && isActive;
+    }
+
     private double getThrottleMultiplier() {
         return throttlePercentage / 100.0;
     }
