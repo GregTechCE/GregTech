@@ -87,7 +87,7 @@ public interface ICoverable {
                 coverBehavior.renderCoverPlate(renderState, translation, platePipeline, plateBox, layer);
             }
             if (coverBehavior.canRenderInLayer(layer)) {
-                coverBehavior.renderCover(renderState, RenderUtil.adjustTrans(translation.copy(), sideFacing, 1), coverPipeline, plateBox, layer);
+                coverBehavior.renderCover(renderState, RenderUtil.adjustTrans(translation, sideFacing, 1), coverPipeline, plateBox, layer);
                 if (coverPlateThickness == 0.0 && shouldRenderBackSide() && coverBehavior.canRenderBackside()) {
                     //machine is full block, but still not opaque - render cover on the back side too
                     Matrix4 backTranslation = translation.copy();
