@@ -50,9 +50,9 @@ public class MiscRecipeLoader {
                 .outputs(new ItemStack(Items.FERMENTED_SPIDER_EYE))
                 .buildAndRegister();
 
-        RecipeMaps.SIFTER_RECIPES.recipeBuilder().duration(800).EUt(16)
+        RecipeMaps.SIFTER_RECIPES.recipeBuilder().duration(100).EUt(16)
                 .inputs(new ItemStack(Blocks.GRAVEL))
-                .outputs(new ItemStack(Items.FLINT))
+                .output(gem, Flint)
                 .buildAndRegister();
 
         RecipeMaps.PACKER_RECIPES.recipeBuilder()
