@@ -136,5 +136,33 @@ public class HigherDegreeMaterials {
                 .flags(DISABLE_DECOMPOSITION)
                 .components(Iridium, 1, Chlorine, 3, PlatinumSludgeResidue, 1)
                 .build();
+
+        Granite = new Material.Builder(2523, "granite")
+                .dust()
+                .color(0xCFA18C).iconSet(ROUGH)
+                .flags(DECOMPOSITION_BY_CENTRIFUGING)
+                .components(SiliconDioxide, 4, Redrock, 1)
+                .build();
+
+        Brick = new Material.Builder(2524, "brick")
+                .dust(1)
+                .color(0x9B5643).iconSet(ROUGH)
+                .flags(EXCLUDE_BLOCK_CRAFTING_RECIPES, DECOMPOSITION_BY_CENTRIFUGING)
+                .components(Clay, 1)
+                .build();
+
+        Fireclay = new Material.Builder(2525, "fireclay")
+                .dust()
+                .color(0xADA09B).iconSet(ROUGH)
+                .flags(DECOMPOSITION_BY_CENTRIFUGING)
+                .components(Clay, 1, Brick, 1)
+                .build();
+
+        Diorite = new Material.Builder(2526, "diorite")
+                .dust()
+                .iconSet(ROUGH)
+                .flags(DECOMPOSITION_BY_CENTRIFUGING)
+                .components(Mirabilite, 2, Clay, 7)
+                .build();
     }
 }
