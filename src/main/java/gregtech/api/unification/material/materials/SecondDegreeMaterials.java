@@ -191,6 +191,7 @@ public class SecondDegreeMaterials {
         QuartzSand = new Material.Builder(2023, "quartz_sand")
                 .dust(1)
                 .color(0xC8C8C8).iconSet(SAND)
+                .flags(DISABLE_DECOMPOSITION)
                 .components(CertusQuartz, 1, Quartzite, 1)
                 .build();
 
