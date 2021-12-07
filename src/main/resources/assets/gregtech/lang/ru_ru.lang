@@ -843,7 +843,7 @@ cover.fluid_regulator.transfer_mode.description=§eTransfer Any§r - in this mod
 cover.fluid_regulator.supply_exact=Supply Exact: %s
 cover.fluid_regulator.keep_exact=Keep Exact: %s
 
-cover.machine_controller.name=Настройки контроллера машины
+cover.machine_controller.title=Настройки контроллера машины
 cover.machine_controller.normal=Нормально
 cover.machine_controller.inverted=Инвертировано
 cover.machine_controller.redstone=Минимальный Редстоун сигнал: %d
