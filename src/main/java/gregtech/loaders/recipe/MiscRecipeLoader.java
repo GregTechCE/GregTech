@@ -121,7 +121,7 @@ public class MiscRecipeLoader {
                 .input(circuit, Advanced)
                 .inputs(CARBON_PLATE.getStackForm(7))
                 .inputs(BATTERY_HV_LITHIUM.getStackForm())
-                .circuitMeta(0)
+                .circuitMeta(4)
                 .outputs(NANO_MUSCLE_SUITE_CHESTPLATE.getStackForm())
                 .buildAndRegister();
 
