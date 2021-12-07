@@ -200,6 +200,9 @@ public class GuiTextures {
     public static final TextureArea INFO_ICON = TextureArea.fullImage("textures/gui/widget/information.png");
     public static final TextureArea MULTIBLOCK_CATEGORY = TextureArea.fullImage("textures/gui/icon/coke_oven.png");
 
+    // Covers
+    public static final TextureArea COVER_MACHINE_CONTROLLER = TextureArea.fullImage("textures/items/metaitems/cover.controller.png");
+
     //Terminal
     public static final TextureArea ICON_REMOVE = TextureArea.fullImage("textures/gui/terminal/icon/remove_hover.png");
     public static final TextureArea ICON_UP = TextureArea.fullImage("textures/gui/terminal/icon/up_hover.png");

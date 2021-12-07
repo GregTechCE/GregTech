@@ -1040,7 +1040,7 @@ cover.fluid_regulator.transfer_mode.description=§eTransfer Any§r - in this mod
 cover.fluid_regulator.supply_exact=Supply Exact: %s
 cover.fluid_regulator.keep_exact=Keep Exact: %s
 
-cover.machine_controller.name=Machine Controller Settings
+cover.machine_controller.title=Machine Controller Settings
 cover.machine_controller.normal=Normal
 cover.machine_controller.inverted=Inverted
 cover.machine_controller.inverted.description=§eNormal§r - in this mode, the cover will require a signal weaker than the set redstone level to run/n§eInverted§r - in this mode, the cover will require a signal stronger than the set redstone level to run
