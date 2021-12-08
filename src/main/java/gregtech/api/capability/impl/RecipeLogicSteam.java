@@ -41,14 +41,6 @@ public class RecipeLogicSteam extends AbstractRecipeLogic {
         this.isHighPressure = isHighPressure;
     }
 
-    public boolean isVentingStuck() {
-        return needsVenting && ventingStuck;
-    }
-
-    public boolean isNeedsVenting() {
-        return needsVenting;
-    }
-
     @Override
     public void onFrontFacingSet(EnumFacing newFrontFacing) {
         if (ventingSide == null) {
