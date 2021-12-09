@@ -2154,7 +2154,15 @@ metaitem.scanner.tooltip=Hold right mouse button on surface rocks/nto discover u
 behavior.scanner.analyzing=Analyzing...
 behavior.scanner.analyzing_failed=Analyzing failed!
 behavior.scanner.analyzing_complete=Analyzing complete!
-behavior.scanner.not_enough_energy=Analyzing failed: Not Enough Energy!
+behavior.scanner.not_enough_energy=Not Enough Energy!
+
+metaitem.prospector.lv.name=Electric Prospector's Scanner (LV)
+metaitem.prospector.hv.name=Electric Prospector's Scanner (HV)
+metaitem.prospector.luv.name=Electric Prospector's Scanner (LuV)
+metaitem.prospector.mode.ores=Ore Prospection Mode
+metaitem.prospector.mode.fluid=Fluid Prospection Mode
+metaitem.prospector.tooltip.ores=Scans Ores in a %s Chunk Radius
+metaitem.prospector.tooltip.fluids=Scans Ores and Fluids in a %s Chunk Radius
 
 metaitem.terminal.name=Terminal
 metaitem.terminal.tooltip=Sharp tools make good work
