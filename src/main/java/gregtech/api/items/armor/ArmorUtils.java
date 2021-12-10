@@ -214,7 +214,7 @@ public class ArmorUtils {
             int windowHeight = new ScaledResolution(mc).getScaledHeight();
             int windowWidth = new ScaledResolution(mc).getScaledWidth();
             int stringWidth = mc.fontRenderer.getStringWidth(stringList.get(index));
-            ConfigHolder.ToolOptions.ArmorHud configs = ConfigHolder.tools.armorHud;
+            ConfigHolder.ClientOptions.ArmorHud configs = ConfigHolder.client.armorHud;
             switch (configs.hudLocation) {
                 case 1:
                     posX = 1 + configs.hudOffsetX;

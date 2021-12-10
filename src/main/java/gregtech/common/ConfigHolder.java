@@ -6,40 +6,40 @@ import net.minecraftforge.common.config.Config;
 @Config(modid = GTValues.MODID)
 public class ConfigHolder {
 
-    @Config.Comment("Config Options for GregTech and Vanilla Recipes")
-    @Config.Name("Recipe Options")
+    @Config.Comment("Config options for client-only features")
+    @Config.Name("Client Options")
     @Config.RequiresMcRestart
-    public static RecipeOptions recipes = new RecipeOptions();
-
-    @Config.Comment("Config options for World Generation features")
-    @Config.Name("Worldgen Options")
-    @Config.RequiresMcRestart
-    public static WorldGenOptions worldgen = new WorldGenOptions();
-
-    @Config.Comment("Config options for GT Machines, Pipes, Cables, and Electric Items")
-    @Config.Name("Machine Options")
-    @Config.RequiresMcRestart
-    public static MachineOptions machines = new MachineOptions();
-
-    @Config.Comment("Config options for Armor and Tools")
-    @Config.Name("Armor and Tool Options")
-    @Config.RequiresMcRestart
-    public static ToolOptions tools = new ToolOptions();
+    public static ClientOptions client = new ClientOptions();
 
     @Config.Comment("Config options for Mod Compatibility")
     @Config.Name("Compatibility Options")
     @Config.RequiresMcRestart
     public static CompatibilityOptions compat = new CompatibilityOptions();
 
-    @Config.Comment("Config options for client-only features")
-    @Config.Name("Client Options")
+    @Config.Comment("Config options for GT Machines, Pipes, Cables, and Electric Items")
+    @Config.Name("Machine Options")
     @Config.RequiresMcRestart
-    public static ClientOptions client = new ClientOptions();
+    public static MachineOptions machines = new MachineOptions();
 
     @Config.Comment("Config options for miscellaneous features")
     @Config.Name("Miscellaneous Options")
     @Config.RequiresMcRestart
     public static MiscOptions misc = new MiscOptions();
+
+    @Config.Comment("Config Options for GregTech and Vanilla Recipes")
+    @Config.Name("Recipe Options")
+    @Config.RequiresMcRestart
+    public static RecipeOptions recipes = new RecipeOptions();
+
+    @Config.Comment("Config options for Tools and Armor")
+    @Config.Name("Tool and Armor Options")
+    @Config.RequiresMcRestart
+    public static ToolOptions tools = new ToolOptions();
+
+    @Config.Comment("Config options for World Generation features")
+    @Config.Name("Worldgen Options")
+    @Config.RequiresMcRestart
+    public static WorldGenOptions worldgen = new WorldGenOptions();
 
     public static class MachineOptions {
 
@@ -108,14 +108,14 @@ public class ConfigHolder {
 
     public static class WorldGenOptions {
 
-        @Config.Comment("Specifies min amount of veins in section. Default: 0")
-        public int minVeinsInSection = 0;
+        @Config.Comment("Specifies min amount of veins in section. Default: 1")
+        public int minVeinsInSection = 1;
 
-        @Config.Comment("Specifies additional random amount of veins in section. Default: 2")
-        public int additionalVeinsInSection = 2;
+        @Config.Comment("Specifies additional random amount of veins in section. Default: 0")
+        public int additionalVeinsInSection = 0;
 
         @Config.Comment("Whether veins should be generated in center of chunk. Default: false")
-        public boolean generateVeinsInCenterOfChunk = false;
+        public boolean generateVeinsInCenterOfChunk = true;
 
         @Config.Comment("Whether to disable vanilla ores generation in world. Default: true")
         public boolean disableVanillaOres = true;
@@ -185,11 +185,15 @@ public class ConfigHolder {
         public boolean disableConcreteInWorld = false;
 
         @Config.Comment("Whether to generate flawed and chipped gems for materials and recipes involving them. " +
-                "Useful for mods like Terrafirmacraft. Default: false")
+                "Useful for mods like TerraFirmaCraft. Default: false")
         public boolean generateLowQualityGems = false;
     }
 
     public static class CompatibilityOptions {
+
+        @Config.Comment("Config options regarding GTEU compatibility with other energy systems")
+        @Config.Name("Energy Compat Options")
+        public EnergyCompatOptions energy = new EnergyCompatOptions();
 
         @Config.Comment("Whether to hide facades of all blocks in JEI and creative search menu. Default: true")
         public boolean hideFacadesInJEI = true;
@@ -206,10 +210,6 @@ public class ConfigHolder {
                 "minecraft",
                 "gregtech"
         };
-
-        @Config.Comment("Config options regarding GTEU compatibility with other energy systems")
-        @Config.Name("Energy Compat Options")
-        public EnergyCompatOptions energy = new EnergyCompatOptions();
 
         public static class EnergyCompatOptions {
 
@@ -237,6 +237,13 @@ public class ConfigHolder {
 
     public static class ClientOptions {
 
+        @Config.Name("Armor HUD Location")
+        public ArmorHud armorHud = new ArmorHud();
+
+        @Config.Comment("Config options for Shaders and Post-processing Effects")
+        @Config.Name("Shader Options")
+        public ShaderOptions shader = new ShaderOptions();
+
         @Config.Comment("Terminal root path. Default: {.../config}/gregtech/terminal")
         public String terminalRootPath = "gregtech/terminal";
 
@@ -260,9 +267,20 @@ public class ConfigHolder {
         @Config.Comment("IWhether or not sounds should be played when crafting with tools. Default: true")
         public boolean toolCraftingSounds = true;
 
-        @Config.Comment("Config options for Shaders and Post-processing Effects")
-        @Config.Name("Shader Options")
-        public ShaderOptions shader = new ShaderOptions();
+        public static class ArmorHud {
+
+            @Config.Comment({"Sets HUD location", "1 - left-upper corner", "2 - right-upper corner", "3 - left-bottom corner", "4 - right-bottom corner"})
+            @Config.RangeInt(min = 1, max = 4)
+            public int hudLocation = 1;
+
+            @Config.Comment("Horizontal offset of HUD [0 ~ 100)")
+            @Config.RangeInt(min = 0, max = 100)
+            public int hudOffsetX = 0;
+
+            @Config.Comment("Vertical offset of HUD [0 ~ 100)")
+            @Config.RangeInt(min = 0, max = 100)
+            public int hudOffsetY = 0;
+        }
 
         public static class ShaderOptions {
 
@@ -300,6 +318,12 @@ public class ConfigHolder {
 
     public static class ToolOptions {
 
+        @Config.Name("BatPack Options")
+        public BatPack batpack = new BatPack();
+
+        @Config.Name("NanoSaber Options")
+        public NanoSaber nanoSaber = new NanoSaber();
+
         @Config.Comment("Should EV and IV Drills be enabled, which may cause large amounts of lag when used on some low-end devices? Default: true")
         public boolean enableHighTierDrills = true;
 
@@ -331,15 +355,6 @@ public class ConfigHolder {
         @Config.RangeInt(min = 0, max = 14)
         public int voltageTierAdvImpeller = 3;
 
-        @Config.Name("BatPack Options")
-        public BatPack batpack = new BatPack();
-
-        @Config.Name("Armor HUD Location")
-        public ArmorHud armorHud = new ArmorHud();
-
-        @Config.Name("NanoSaber Options")
-        public NanoSaber nanoSaber = new NanoSaber();
-
         public static class BatPack {
             @Config.Comment("Total LV BatPack capacity. Default: 600,000")
             @Config.RangeInt(min = 1)
@@ -370,15 +385,6 @@ public class ConfigHolder {
             @Config.RangeInt(min = 1, max = 512)
             @Config.Comment("The EU/t consumption of the NanoSaber. Default: 64")
             public int energyConsumption = 64;
-        }
-
-        public static class ArmorHud {
-            @Config.Comment({"Sets HUD location", "1 - left-upper corner", "2 - right-upper corner", "3 - left-bottom corner", "4 - right-bottom corner"})
-            public byte hudLocation = 1;
-            @Config.Comment("Horizontal offset of HUD [0 ~ 100)")
-            public byte hudOffsetX = 0;
-            @Config.Comment("Vertical offset of HUD [0 ~ 100)")
-            public byte hudOffsetY = 0;
         }
     }
 }
