@@ -246,6 +246,13 @@ public class VanillaStandardRecipes {
         ModHandler.addShapelessRecipe("blaze_rod_to_powder", new ItemStack(Items.BLAZE_POWDER, 3), 'm', Items.BLAZE_ROD);
 
         RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
+                .inputs(new ItemStack(Items.WHEAT))
+                .output(OrePrefix.dust, Materials.Wheat)
+                .duration(400)
+                .EUt(2)
+                .buildAndRegister();
+
+        RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
                 .inputs(new ItemStack(Items.DYE, 1, EnumDyeColor.BROWN.getDyeDamage()))
                 .outputs(OreDictUnifier.get(OrePrefix.dust, Materials.Cocoa, 1))
                 .duration(400)
@@ -1019,6 +1026,12 @@ public class VanillaStandardRecipes {
                     .outputs(new ItemStack(Blocks.STONE, 1, 6))
                     .duration(100).EUt(8).buildAndRegister();
         }
+
+        AUTOCLAVE_RECIPES.recipeBuilder()
+                .input(OrePrefix.dust, Materials.Clay)
+                .fluidInputs(Materials.Water.getFluid(250))
+                .outputs(new ItemStack(Items.CLAY_BALL))
+                .duration(600).EUt(24).buildAndRegister();
     }
 
     /**
