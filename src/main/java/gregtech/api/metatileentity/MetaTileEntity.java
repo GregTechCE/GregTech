@@ -1258,7 +1258,7 @@ public abstract class MetaTileEntity implements ICoverable {
         }
     }
 
-    public void onAttached() {
+    public void onAttached(Object... data) {
     }
 
     /**
@@ -1347,9 +1347,6 @@ public abstract class MetaTileEntity implements ICoverable {
 
     public boolean getWitherProof() {
         return false;
-    }
-
-    public void preInit(Object... data) {
     }
 
     public final void toggleMuffled() {

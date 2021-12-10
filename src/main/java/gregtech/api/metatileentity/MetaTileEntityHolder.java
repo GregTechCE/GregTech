@@ -45,10 +45,7 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
         Preconditions.checkNotNull(sampleMetaTileEntity, "metaTileEntity");
         this.metaTileEntity = sampleMetaTileEntity.createMetaTileEntity(this);
         this.metaTileEntity.holder = this;
-        if(data.length != 0) {
-            this.metaTileEntity.preInit(data);
-        }
-        this.metaTileEntity.onAttached();
+        this.metaTileEntity.onAttached(data);
         if (hasWorld() && !getWorld().isRemote) {
             updateBlockOpacity();
             sendInitialSyncData();
@@ -89,6 +86,7 @@ public class MetaTileEntityHolder extends TickableTileEntityBase implements IUIH
             NBTTagCompound metaTileEntityData = compound.getCompoundTag("MetaTileEntity");
             if (sampleMetaTileEntity != null) {
                 this.metaTileEntity = sampleMetaTileEntity.createMetaTileEntity(this);
+                this.metaTileEntity.onAttached();
                 this.metaTileEntity.holder = this;
                 this.metaTileEntity.readFromNBT(metaTileEntityData);
             } else {
