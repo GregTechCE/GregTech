@@ -10,14 +10,14 @@ import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions
 import javax.annotation.Nullable;
 import java.util.Map;
 
-@Name("GTCELoadingPlugin")
+@Name("GregTechLoadingPlugin")
 @MCVersion(ForgeVersion.mcVersion)
 @TransformerExclusions("gregtech.core.")
 @SortingIndex(1001)
-public class GTCELoadingPlugin implements IFMLLoadingPlugin {
+public class GregTechLoadingPlugin implements IFMLLoadingPlugin {
     @Override
     public String[] getASMTransformerClass() {
-        return new String[]{"gregtech.core.GTCETransformer"};
+        return new String[]{"gregtech.core.GregTechTransformer"};
     }
 
     @Override

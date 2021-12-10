@@ -1,6 +1,5 @@
 package gregtech.core.hooks;
 
-
 import gregtech.api.util.GTLog;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockRenderLayer;
@@ -9,7 +8,9 @@ import team.chisel.ctm.client.model.ModelCTM;
 
 import java.lang.reflect.Field;
 
+@SuppressWarnings("unused")
 public class CTMModHooks {
+
     private static Field layers;
 
     static{

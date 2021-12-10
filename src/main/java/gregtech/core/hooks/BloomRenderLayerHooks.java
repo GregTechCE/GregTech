@@ -1,6 +1,5 @@
 package gregtech.core.hooks;
 
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import gregtech.api.render.DepthTextureHook;
@@ -26,15 +25,10 @@ import java.util.function.Consumer;
 
 import static org.lwjgl.opengl.GL11.GL_LINEAR;
 
-/**
- * Created with IntelliJ IDEA.
- *
- * @Author: KilaBash
- * @Date: 2021/10/04
- * @Description:
- */
+@SuppressWarnings("unused")
 @SideOnly(Side.CLIENT)
 public class BloomRenderLayerHooks {
+
     public static BlockRenderLayer BLOOM;
     private static Framebuffer BLOOM_FBO;
     private static List<Runnable> RENDER_DYNAMICS;
@@ -194,5 +188,4 @@ public class BloomRenderLayerHooks {
             RENDER_FAST.get(handler).add(render);
         }
     }
-
 }
