@@ -67,7 +67,7 @@ import java.util.*;
 import static gregtech.api.util.RelativeDirection.*;
 
 public class MetaTileEntityCentralMonitor extends MultiblockWithDisplayBase implements IFastRenderMetaTileEntity {
-    private final static long ENERGY_COST = -ConfigHolder.centralMonitorEuCost;
+    private final static long ENERGY_COST = -ConfigHolder.machines.centralMonitorEuCost;
     public final static int MAX_HEIGHT = 9;
     public final static int MAX_WIDTH = 14;
     // run-time data

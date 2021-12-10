@@ -62,7 +62,7 @@ public class EventHandlers {
         EntityLivingBase entity = event.getEntityLiving();
         EnumDifficulty difficulty = entity.world.getDifficulty();
         if (difficulty == EnumDifficulty.HARD && entity.getRNG().nextFloat() <= 0.03f) {
-            if (entity instanceof EntityZombie && ConfigHolder.nanoSaberConfiguration.zombieSpawnWithSabers) {
+            if (entity instanceof EntityZombie && ConfigHolder.tools.nanoSaber.zombieSpawnWithSabers) {
                 ItemStack itemStack = MetaItems.NANO_SABER.getInfiniteChargedStack();
                 ToggleEnergyConsumerBehavior.setItemActive(itemStack, true);
                 entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, itemStack);
@@ -80,7 +80,7 @@ public class EventHandlers {
         if (!stack.isEmpty() && stack.getItem() == Items.FLINT_AND_STEEL) {
             if (!event.getWorld().isRemote
                     && !event.getEntityPlayer().capabilities.isCreativeMode
-                    && GTValues.RNG.nextInt(100) >= ConfigHolder.flintChanceToCreateFire) {
+                    && GTValues.RNG.nextInt(100) >= ConfigHolder.misc.flintChanceToCreateFire) {
                 stack.damageItem(1, event.getEntityPlayer());
                 if (stack.getItemDamage() >= stack.getMaxDamage()) {
                     stack.shrink(1);

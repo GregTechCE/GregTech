@@ -27,7 +27,7 @@ import java.util.List;
 
 public abstract class RecipeMapSteamMultiblockController extends MultiblockWithDisplayBase implements ISoundCreator {
 
-    protected static final double CONVERSION_RATE = ConfigHolder.U.multiblockSteamToEU;
+    protected static final double CONVERSION_RATE = ConfigHolder.machines.multiblockSteamToEU;
 
     public final RecipeMap<?> recipeMap;
     protected SteamMultiblockRecipeLogic recipeMapWorkable;

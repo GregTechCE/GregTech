@@ -52,7 +52,7 @@ public class TerminalRegistry {
 
     static {
         if (FMLCommonHandler.instance().getSide().isClient()) {
-            TERMINAL_PATH = new File(Loader.instance().getConfigDir(), ConfigHolder.U.clientConfig.terminalRootPath);
+            TERMINAL_PATH = new File(Loader.instance().getConfigDir(), ConfigHolder.client.terminalRootPath);
         }
     }
 

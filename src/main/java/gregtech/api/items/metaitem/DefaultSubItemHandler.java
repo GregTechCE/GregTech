@@ -38,7 +38,7 @@ public class DefaultSubItemHandler implements ISubItemHandler {
         }
         if (creativeTab == CreativeTabs.SEARCH) {
             if (itemStack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
-                if (!ConfigHolder.hideFilledCellsInJEI) {
+                if (!ConfigHolder.compat.hideFilledCellsInJEI) {
                     addFluidContainerVariants(itemStack, subItems);
                 }
             }

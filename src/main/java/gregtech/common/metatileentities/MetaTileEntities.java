@@ -603,7 +603,7 @@ public class MetaTileEntities {
         CHARGER[CHARGER.length - 1] = registerMetaTileEntity(1375 + CHARGER.length - 1, charger);
 
         // World Accelerators, IDs 1390-1404
-        if (ConfigHolder.U.GT5u.enableWorldAccelerators) {
+        if (ConfigHolder.machines.enableWorldAccelerators) {
             WORLD_ACCELERATOR[0] = registerMetaTileEntity(1390, new MetaTileEntityWorldAccelerator(gregtechId("world_accelerator.lv"), 1));
             WORLD_ACCELERATOR[1] = registerMetaTileEntity(1391, new MetaTileEntityWorldAccelerator(gregtechId("world_accelerator.mv"), 2));
             WORLD_ACCELERATOR[2] = registerMetaTileEntity(1392, new MetaTileEntityWorldAccelerator(gregtechId("world_accelerator.hv"), 3));

@@ -46,7 +46,7 @@ public class OreDictUnifier {
 
     public static Comparator<ItemAndMetadata> getSimpleItemStackComparator() {
         if (stackComparator == null) {
-            List<String> modPriorities = Arrays.asList(ConfigHolder.modPriorities);
+            List<String> modPriorities = Arrays.asList(ConfigHolder.compat.modPriorities);
             if (modPriorities.isEmpty()) {
                 //noinspection ConstantConditions
                 Function<ItemAndMetadata, String> modIdExtractor = stack -> stack.item.getRegistryName().getNamespace();

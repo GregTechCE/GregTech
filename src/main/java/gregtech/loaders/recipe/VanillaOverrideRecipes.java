@@ -25,15 +25,15 @@ public class VanillaOverrideRecipes {
 
     public static void init() {
         woodRecipes();
-        if (ConfigHolder.vanillaRecipes.hardGlassRecipes)
+        if (ConfigHolder.recipes.hardGlassRecipes)
             glassRecipes();
-        if (ConfigHolder.vanillaRecipes.hardRedstoneRecipes)
+        if (ConfigHolder.recipes.hardRedstoneRecipes)
             redstoneRecipes();
-        if (ConfigHolder.vanillaRecipes.hardIronRecipes)
+        if (ConfigHolder.recipes.hardIronRecipes)
             metalRecipes();
-        if (ConfigHolder.vanillaRecipes.hardMiscRecipes)
+        if (ConfigHolder.recipes.hardMiscRecipes)
             miscRecipes();
-        if (ConfigHolder.vanillaRecipes.hardDyeRecipes)
+        if (ConfigHolder.recipes.hardDyeRecipes)
             dyeRecipes();
         toolArmorRecipes();
 
@@ -41,13 +41,13 @@ public class VanillaOverrideRecipes {
     }
 
     private static void woodRecipes() {
-        if (ConfigHolder.vanillaRecipes.nerfStickCrafting) {
+        if (ConfigHolder.recipes.nerfStickCrafting) {
             ModHandler.removeRecipeByName(new ResourceLocation("minecraft:stick"));
             ModHandler.addShapedRecipe("stick_saw", new ItemStack(Items.STICK, 4), "s", "P", "P", 'P', new UnificationEntry(OrePrefix.plank, Materials.Wood));
             ModHandler.addShapedRecipe("stick_normal", new ItemStack(Items.STICK, 2), "P", "P", 'P', new UnificationEntry(OrePrefix.plank, Materials.Wood));
         }
 
-        if (ConfigHolder.vanillaRecipes.nerfPaperCrafting) {
+        if (ConfigHolder.recipes.nerfPaperCrafting) {
             ModHandler.removeRecipeByName(new ResourceLocation("minecraft:paper"));
             ModHandler.removeRecipeByName(new ResourceLocation("minecraft:sugar"));
             ModHandler.addShapedRecipe("paper_dust", OreDictUnifier.get(OrePrefix.dust, Materials.Paper, 2), "SSS", " m ", 'S', new ItemStack(Items.REEDS));
@@ -59,7 +59,7 @@ public class VanillaOverrideRecipes {
                     .setMirrored(false).setRegistryName("paper"));
         }
 
-        if (!ConfigHolder.vanillaRecipes.hardWoodRecipes)
+        if (!ConfigHolder.recipes.hardWoodRecipes)
             return;
 
         ModHandler.removeRecipeByName(new ResourceLocation("minecraft:ladder"));
@@ -730,7 +730,7 @@ public class VanillaOverrideRecipes {
      * + Replaces Vanilla Armor and Tool recipes
      */
     private static void toolArmorRecipes() {
-        if (ConfigHolder.vanillaRecipes.flintAndSteelRequireSteel) {
+        if (ConfigHolder.recipes.flintAndSteelRequireSteel) {
             ModHandler.removeRecipeByName(new ResourceLocation("minecraft:flint_and_steel"));
             ModHandler.addShapedRecipe("flint_and_steel", new ItemStack(Items.FLINT_AND_STEEL), "G", "F", "S",
                     'G', new UnificationEntry(OrePrefix.gearSmall, Materials.Steel),
@@ -739,7 +739,7 @@ public class VanillaOverrideRecipes {
             );
         }
 
-        if (!ConfigHolder.vanillaRecipes.hardToolArmorRecipes)
+        if (!ConfigHolder.recipes.hardToolArmorRecipes)
             return;
 
         createShovelRecipe("iron_shovel", new ItemStack(Items.IRON_SHOVEL), Materials.Iron);

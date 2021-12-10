@@ -149,7 +149,7 @@ public class AbstractWidgetGroup extends Widget implements IGhostIngredientTarge
 
     protected void removeWidget(Widget widget) {
         if (!widgets.contains(widget)) {
-            if (ConfigHolder.debug) {
+            if (ConfigHolder.misc.debug) {
                 GTLog.logger.warn("widget not added");
             }
             return;

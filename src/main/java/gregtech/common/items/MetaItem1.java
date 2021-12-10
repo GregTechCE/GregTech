@@ -307,7 +307,7 @@ public class MetaItem1 extends StandardMetaItem {
         COVER_SOLAR_PANEL_UV = addItem(340, "cover.solar.panel.uv");
         // MAX-tier solar panel?
 
-        if (!ConfigHolder.U.GT5u.enableHighTierSolars) {
+        if (!ConfigHolder.machines.enableHighTierSolars) {
             COVER_SOLAR_PANEL_IV.setInvisible();
             COVER_SOLAR_PANEL_LUV.setInvisible();
             COVER_SOLAR_PANEL_ZPM.setInvisible();
@@ -324,7 +324,7 @@ public class MetaItem1 extends StandardMetaItem {
         FIRECLAY_BRICK = addItem(352, "brick.fireclay");
         COKE_OVEN_BRICK = addItem(353, "brick.coke");
 
-        if (!ConfigHolder.vanillaRecipes.hardMiscRecipes)
+        if (!ConfigHolder.recipes.hardMiscRecipes)
             COMPRESSED_CLAY.setInvisible();
 
         // Boules: ID 361-370

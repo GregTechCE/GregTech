@@ -103,7 +103,7 @@ public abstract class MultiblockWithDisplayBase extends MultiblockControllerBase
      * @return whether this multiblock has maintenance mechanics
      */
     public boolean hasMaintenanceMechanics() {
-        return ConfigHolder.U.GT5u.enableMaintenance;
+        return ConfigHolder.machines.enableMaintenance;
     }
 
     public boolean hasMufflerMechanics() {
@@ -116,7 +116,7 @@ public abstract class MultiblockWithDisplayBase extends MultiblockControllerBase
      * @param duration in ticks to add to the counter of active time
      */
     public void calculateMaintenance(int duration) {
-        if (!ConfigHolder.U.GT5u.enableMaintenance || !hasMaintenanceMechanics())
+        if (!ConfigHolder.machines.enableMaintenance || !hasMaintenanceMechanics())
             return;
 
         IMaintenanceHatch maintenanceHatch = getAbilities(MultiblockAbility.MAINTENANCE_HATCH).get(0);
@@ -136,7 +136,7 @@ public abstract class MultiblockWithDisplayBase extends MultiblockControllerBase
     @Override
     protected void formStructure(PatternMatchContext context) {
         super.formStructure(context);
-        if (this.hasMaintenanceMechanics() && ConfigHolder.U.GT5u.enableMaintenance) { // nothing extra if no maintenance
+        if (this.hasMaintenanceMechanics() && ConfigHolder.machines.enableMaintenance) { // nothing extra if no maintenance
             if (getAbilities(MultiblockAbility.MAINTENANCE_HATCH).isEmpty())
                 return;
             IMaintenanceHatch maintenanceHatch = getAbilities(MultiblockAbility.MAINTENANCE_HATCH).get(0);
@@ -227,7 +227,7 @@ public abstract class MultiblockWithDisplayBase extends MultiblockControllerBase
 
     @Override
     public void invalidateStructure() {
-        if (hasMaintenanceMechanics() && ConfigHolder.U.GT5u.enableMaintenance) { // nothing extra if no maintenance
+        if (hasMaintenanceMechanics() && ConfigHolder.machines.enableMaintenance) { // nothing extra if no maintenance
             if (getAbilities(MultiblockAbility.MAINTENANCE_HATCH).isEmpty())
                 return;
             getAbilities(MultiblockAbility.MAINTENANCE_HATCH).get(0)

@@ -56,7 +56,7 @@ public class BloomRenderLayerHooks {
             RENDER_DYNAMICS.clear();
             RENDER_FAST.clear();
             return result;
-        } else if (!ConfigHolder.U.clientConfig.shader.bloom.emissiveTexturesBloom) {
+        } else if (!ConfigHolder.client.shader.emissiveTexturesBloom) {
             GlStateManager.depthMask(true);
             renderglobal.renderBlockLayer(BloomRenderLayerHooks.BLOOM, partialTicks, pass, entity);
             // render dynamics
@@ -145,15 +145,15 @@ public class BloomRenderLayerHooks {
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
         // render bloom effect to fbo
-        switch (ConfigHolder.U.clientConfig.shader.bloom.bloomStyle) {
+        switch (ConfigHolder.client.shader.bloomStyle) {
             case 0:
-                BloomEffect.renderLOG(BLOOM_FBO, fbo, (float) ConfigHolder.U.clientConfig.shader.bloom.strength);
+                BloomEffect.renderLOG(BLOOM_FBO, fbo, (float) ConfigHolder.client.shader.strength);
                 break;
             case 1:
-                BloomEffect.renderUnity(BLOOM_FBO, fbo, (float) ConfigHolder.U.clientConfig.shader.bloom.strength);
+                BloomEffect.renderUnity(BLOOM_FBO, fbo, (float) ConfigHolder.client.shader.strength);
                 break;
             case 2:
-                BloomEffect.renderUnreal(BLOOM_FBO, fbo, (float) ConfigHolder.U.clientConfig.shader.bloom.strength);
+                BloomEffect.renderUnreal(BLOOM_FBO, fbo, (float) ConfigHolder.client.shader.strength);
                 break;
             default:
                 GlStateManager.depthMask(false);

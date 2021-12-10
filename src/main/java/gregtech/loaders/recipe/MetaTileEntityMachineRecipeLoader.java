@@ -14,7 +14,7 @@ import static gregtech.common.metatileentities.MetaTileEntities.*;
 public class MetaTileEntityMachineRecipeLoader {
 
     public static void init() {
-        if (ConfigHolder.U.GT5u.harderEnergyHatches) {
+        if (ConfigHolder.recipes.harderEnergyHatches) {
 
             // Energy Output Hatches
 

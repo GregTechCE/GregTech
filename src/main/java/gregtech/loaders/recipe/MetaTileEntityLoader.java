@@ -42,7 +42,7 @@ import static gregtech.loaders.recipe.CraftingComponent.*;
 public class MetaTileEntityLoader {
 
     public static void init() {
-        if (ConfigHolder.U.steelSteamMultiblocks) {
+        if (ConfigHolder.machines.steelSteamMultiblocks) {
             ModHandler.addShapedRecipe("steam_oven", MetaTileEntities.STEAM_OVEN.getStackForm(), "CGC", "FMF", "CGC", 'F', MetaBlocks.BOILER_FIREBOX_CASING.getItemVariant(STEEL_FIREBOX), 'C', MetaBlocks.METAL_CASING.getItemVariant(STEEL_SOLID), 'M', MetaTileEntities.STEAM_FURNACE_STEEL.getStackForm(), 'G', new UnificationEntry(OrePrefix.gear, Materials.Invar));
             ModHandler.addShapedRecipe("steam_grinder", MetaTileEntities.STEAM_GRINDER.getStackForm(), "CGC", "CFC", "CGC", 'G', new UnificationEntry(OrePrefix.gear, Materials.Potin), 'F', MetaTileEntities.STEAM_MACERATOR_STEEL.getStackForm(), 'C', MetaBlocks.METAL_CASING.getItemVariant(STEEL_SOLID));
             ModHandler.addShapedRecipe("steam_hatch", MetaTileEntities.STEAM_HATCH.getStackForm(), "BPB", "BTB", "BPB", 'B', new UnificationEntry(OrePrefix.plate, Materials.Steel), 'P', new UnificationEntry(OrePrefix.pipeNormalFluid, Materials.Steel), 'T', MetaTileEntities.STEEL_TANK.getStackForm());
@@ -93,7 +93,7 @@ public class MetaTileEntityLoader {
         ModHandler.addShapedRecipe("casing_titanium_firebox", MetaBlocks.BOILER_FIREBOX_CASING.getItemVariant(TITANIUM_FIREBOX, 2), "PSP", "SFS", "PSP", 'P', new UnificationEntry(OrePrefix.plate, Materials.Titanium), 'F', new UnificationEntry(OrePrefix.frameGt, Materials.Titanium), 'S', new UnificationEntry(OrePrefix.stick, Materials.Titanium));
         ModHandler.addShapedRecipe("casing_tungstensteel_firebox", MetaBlocks.BOILER_FIREBOX_CASING.getItemVariant(TUNGSTENSTEEL_FIREBOX, 2), "PSP", "SFS", "PSP", 'P', new UnificationEntry(OrePrefix.plate, Materials.TungstenSteel), 'F', new UnificationEntry(OrePrefix.frameGt, Materials.TungstenSteel), 'S', new UnificationEntry(OrePrefix.stick, Materials.TungstenSteel));
 
-        if (!ConfigHolder.U.GT5u.harderHeatingCoils) {
+        if (!ConfigHolder.recipes.harderHeatingCoils) {
             for (CoilType coilType : CoilType.values()) {
                 if (coilType.getMaterial() != null) {
                     ItemStack outputStack = MetaBlocks.WIRE_COIL.getItemVariant(coilType);
@@ -165,7 +165,7 @@ public class MetaTileEntityLoader {
         ModHandler.addShapedRecipe("transformer_zpm", MetaTileEntities.TRANSFORMER[GTValues.ZPM].getStackForm(), "KBB", "CM ", "KBB", 'M', MetaTileEntities.HULL[GTValues.ZPM].getStackForm(), 'C', new UnificationEntry(OrePrefix.cableGtQuadruple, Materials.YttriumBariumCuprate), 'B', new UnificationEntry(OrePrefix.cableGtDouble, Materials.VanadiumGallium), 'K', MetaItems.HIGH_POWER_INTEGRATED_CIRCUIT);
         ModHandler.addShapedRecipe("transformer_uv", MetaTileEntities.TRANSFORMER[GTValues.UV].getStackForm(), "KBB", "CM ", "KBB", 'M', MetaTileEntities.HULL[GTValues.UV].getStackForm(), 'C', new UnificationEntry(OrePrefix.cableGtQuadruple, Materials.Europium), 'B', new UnificationEntry(OrePrefix.cableGtQuadruple, Materials.YttriumBariumCuprate), 'K', MetaItems.HIGH_POWER_INTEGRATED_CIRCUIT);
 
-        if (ConfigHolder.U.GT5u.harderEnergyHatches) {
+        if (ConfigHolder.recipes.harderEnergyHatches) {
             ModHandler.addShapedRecipe("energy_output_hatch_ulv", MetaTileEntities.ENERGY_OUTPUT_HATCH[GTValues.ULV].getStackForm(), "CKL", "SHR", "CKL", 'C', new UnificationEntry(OrePrefix.circuit, Tier.Primitive), 'K', MetaItems.VOLTAGE_COIL_ULV.getStackForm(), 'L', new FluidCellIngredient(Materials.Lubricant.getFluid()), 'S', new UnificationEntry(OrePrefix.spring, Materials.Lead), 'H', HULL.getIngredient(GTValues.ULV), 'R', new UnificationEntry(OrePrefix.rotor, Materials.Lead));
             ModHandler.addShapedRecipe("energy_output_hatch_lv", MetaTileEntities.ENERGY_OUTPUT_HATCH[GTValues.LV].getStackForm(), "CKL", "SHR", "CKL", 'C', new UnificationEntry(OrePrefix.circuit, Tier.Basic), 'K', MetaItems.VOLTAGE_COIL_LV.getStackForm(), 'L', new FluidCellIngredient(Materials.Lubricant.getFluid()), 'S', new UnificationEntry(OrePrefix.spring, Materials.Tin), 'H', HULL.getIngredient(GTValues.LV), 'R', PUMP.getIngredient(GTValues.LV));
             ModHandler.addShapedRecipe("energy_output_hatch_mv", MetaTileEntities.ENERGY_OUTPUT_HATCH[GTValues.MV].getStackForm(), "CKL", "SHR", "CKL", 'C', MetaItems.SMALL_COIL.getStackForm(), 'K', MetaItems.VOLTAGE_COIL_MV.getStackForm(), 'L', new FluidCellIngredient(Materials.Lubricant.getFluid()), 'S', new UnificationEntry(OrePrefix.spring, Materials.Copper), 'H', HULL.getIngredient(GTValues.MV), 'R', PUMP.getIngredient(GTValues.MV));

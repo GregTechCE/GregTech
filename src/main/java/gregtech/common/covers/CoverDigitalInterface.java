@@ -743,10 +743,10 @@ public class CoverDigitalInterface extends CoverBehavior implements IFastRenderM
                         return 0;
                     }
                     public long getEnergyStored() {
-                        return (long) (fe.getEnergyStored() / ConfigHolder.U.energyOptions.rfRatio);
+                        return (long) (fe.getEnergyStored() / ConfigHolder.compat.energy.rfRatio);
                     }
                     public long getEnergyCapacity() {
-                        return (long) (fe.getMaxEnergyStored() / ConfigHolder.U.energyOptions.rfRatio);
+                        return (long) (fe.getMaxEnergyStored() / ConfigHolder.compat.energy.rfRatio);
                     }
                     public long getInputAmperage() {
                         return 0;

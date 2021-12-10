@@ -146,7 +146,7 @@ public class GregTechMod {
         if (RecipeMap.isFoundInvalidRecipe()) {
             GTLog.logger.fatal("Seems like invalid recipe was found.");
             //crash if config setting is set to false, or we are in deobfuscated environment
-            if (!ConfigHolder.ignoreErrorOrInvalidRecipes || !FMLForgePlugin.RUNTIME_DEOBF) {
+            if (!ConfigHolder.misc.ignoreErrorOrInvalidRecipes || !FMLForgePlugin.RUNTIME_DEOBF) {
                 GTLog.logger.fatal("Loading cannot continue. Either fix or report invalid recipes, or enable ignoreErrorOrInvalidRecipes in the config as a temporary solution");
                 throw new LoaderException("Found at least one invalid recipe. Please read the log above for more details.");
             } else {
@@ -165,7 +165,7 @@ public class GregTechMod {
 
         WorldGenRegistry.INSTANCE.initializeRegistry();
         GameRegistry.registerWorldGenerator(new WorldGenAbandonedBase(), 20000);
-        if (!ConfigHolder.disableRubberTreeGeneration) {
+        if (!ConfigHolder.worldgen.disableRubberTreeGeneration) {
             GameRegistry.registerWorldGenerator(new WorldGenRubberTree(), 10000);
         }
 

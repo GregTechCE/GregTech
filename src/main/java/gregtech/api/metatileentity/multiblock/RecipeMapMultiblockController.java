@@ -154,7 +154,7 @@ public abstract class RecipeMapMultiblockController extends MultiblockWithDispla
     protected void updateFormedValid() {
         if (!hasMufflerMechanics() || isMufflerFaceFree())
             this.recipeMapWorkable.updateWorkable();
-        boolean state = this.recipeMapWorkable.isWorking() && ConfigHolder.U.clientConfig.casingsActiveEmissiveTextures;
+        boolean state = this.recipeMapWorkable.isWorking() && ConfigHolder.client.casingsActiveEmissiveTextures;
         if (lastActive != state) {
             lastActive = state;
             replaceVariantBlocksActive(lastActive);

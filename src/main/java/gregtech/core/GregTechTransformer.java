@@ -24,7 +24,7 @@ public class GregTechTransformer implements IClassTransformer, Opcodes {
 
             }
             case ConcretePowderVisitor.TARGET_CLASS_NAME:
-                if (ConfigHolder.vanillaRecipes.disableConcreteInWorld) {
+                if (ConfigHolder.recipes.disableConcreteInWorld) {
                     ClassReader classReader = new ClassReader(basicClass);
                     ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
                     classReader.accept(new TargetClassVisitor(classWriter, ConcretePowderVisitor.TARGET_METHOD, ConcretePowderVisitor::new), 0);

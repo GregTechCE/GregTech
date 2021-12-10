@@ -362,7 +362,7 @@ public class PartsRecipeHandler {
                     .duration((int) Math.max(material.getAverageMass() * 2, 1))
                     .EUt(16);
 
-            if (ConfigHolder.U.GT5u.harderRods) {
+            if (ConfigHolder.recipes.harderRods) {
                 builder.output(OrePrefix.stick, material);
                 builder.output(OrePrefix.dustSmall, material, 2);
             } else {

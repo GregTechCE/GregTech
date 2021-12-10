@@ -357,7 +357,7 @@ public class GTUtility {
         } else if (itemStack.hasCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null)) {
             //if we're using electric item, use default energy multiplier for textures
             IElectricItem capability = itemStack.getCapability(GregtechCapabilities.CAPABILITY_ELECTRIC_ITEM, null);
-            int energyNeeded = vanillaDamage * ConfigHolder.energyUsageMultiplier;
+            int energyNeeded = vanillaDamage * ConfigHolder.machines.energyUsageMultiplier;
             //noinspection ConstantConditions
             return capability.discharge(energyNeeded, Integer.MAX_VALUE, true, false, simulate) == energyNeeded;
 
@@ -722,7 +722,7 @@ public class GTUtility {
             double posZ = pos.getZ() + 0.5;
             ((WorldServer) metaTileEntity.getWorld()).spawnParticle(EnumParticleTypes.SMOKE_LARGE, posX, posY, posZ,
                     10, 0.2, 0.2, 0.2, 0.0);
-            metaTileEntity.getWorld().createExplosion(null, posX, posY, posZ, getTierByVoltage(voltage), ConfigHolder.doExplosions);
+            metaTileEntity.getWorld().createExplosion(null, posX, posY, posZ, getTierByVoltage(voltage), ConfigHolder.machines.doExplosions);
         }
     }
 

@@ -112,8 +112,8 @@ public class MultiBlockPreviewARApp extends ARApplication {
                 uniformCache.glUniformBoolean("block", controllerBase != null);
                 if (isMouseOver((int)x, (int)y, width, height, lastMouseX, lastMouseY)) {
                     uniformCache.glUniform2F("u_mouse",
-                            (float) (((lastMouseX - x) / 2 + width / 3)  * ConfigHolder.U.clientConfig.resolution),
-                            (float) (height / 2 * ConfigHolder.U.clientConfig.resolution));
+                            (float) (((lastMouseX - x) / 2 + width / 3)  * ConfigHolder.client.resolution),
+                            (float) (height / 2 * ConfigHolder.client.resolution));
                 }
             });
 

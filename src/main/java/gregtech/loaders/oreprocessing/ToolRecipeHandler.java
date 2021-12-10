@@ -191,7 +191,7 @@ public class ToolRecipeHandler {
 
 
     public static void processDrillHead(OrePrefix drillHead, Material material, ToolProperty property) {
-        if (ConfigHolder.U.GT5u.enableHighTierDrills) {
+        if (ConfigHolder.tools.enableHighTierDrills) {
             processSimpleElectricToolHead(drillHead, material, new MetaToolValueItem[]{MetaItems.DRILL_LV, MetaItems.DRILL_MV, MetaItems.DRILL_HV, MetaItems.DRILL_EV, MetaItems.DRILL_IV});
         } else {
             processSimpleElectricToolHead(drillHead, material, new MetaToolValueItem[]{MetaItems.DRILL_LV, MetaItems.DRILL_MV, MetaItems.DRILL_HV});

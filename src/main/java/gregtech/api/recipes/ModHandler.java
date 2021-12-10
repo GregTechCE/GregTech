@@ -481,7 +481,7 @@ public class ModHandler {
                 break;
             }
         }
-        if (ConfigHolder.debug) {
+        if (ConfigHolder.misc.debug) {
             if (wasRemoved)
                 GTLog.logger.info("Removed Smelting Recipe for Input: {}", input.getDisplayName());
             else GTLog.logger.error("Failed to Remove Smelting Recipe for Input: {}", input.getDisplayName());
@@ -493,7 +493,7 @@ public class ModHandler {
     public static int removeRecipes(ItemStack output) {
         int recipesRemoved = removeRecipes(recipe -> ItemStack.areItemStacksEqual(recipe.getRecipeOutput(), output));
 
-        if (ConfigHolder.debug) {
+        if (ConfigHolder.misc.debug) {
             if (recipesRemoved != 0)
                 GTLog.logger.info("Removed {} Recipe(s) with Output: {}", recipesRemoved, output.getDisplayName());
             else GTLog.logger.error("Failed to Remove Recipe with Output: {}", output.getDisplayName());
@@ -526,7 +526,7 @@ public class ModHandler {
      *                 Can also accept a String.
      */
     public static void removeRecipeByName(ResourceLocation location) {
-        if (ConfigHolder.debug) {
+        if (ConfigHolder.misc.debug) {
             String recipeName = location.toString();
             if (ForgeRegistries.RECIPES.containsKey(location))
                 GTLog.logger.info("Removed Recipe with Name: {}", recipeName);

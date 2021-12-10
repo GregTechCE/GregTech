@@ -166,7 +166,7 @@ public class VanillaStandardRecipes {
 
         for (int i = 0; i < 16; i++) {
             // nerf glass panes
-            if (ConfigHolder.vanillaRecipes.hardGlassRecipes) {
+            if (ConfigHolder.recipes.hardGlassRecipes) {
                 ModHandler.removeRecipes(new ItemStack(Blocks.STAINED_GLASS_PANE, 16, i));
             }
 
@@ -178,7 +178,7 @@ public class VanillaStandardRecipes {
                     .buildAndRegister();
         }
 
-        if (ConfigHolder.vanillaRecipes.hardGlassRecipes)
+        if (ConfigHolder.recipes.hardGlassRecipes)
             ModHandler.removeRecipes(new ItemStack(Blocks.GLASS_PANE, 16));
 
         ModHandler.addShapedRecipe("glass_pane", new ItemStack(Blocks.GLASS_PANE, 2), "sG", 'G', new ItemStack(Blocks.GLASS));
@@ -677,7 +677,7 @@ public class VanillaStandardRecipes {
                 .outputs(new ItemStack(Items.COMPARATOR))
                 .duration(800).EUt(1).buildAndRegister();
 
-        if (ConfigHolder.vanillaRecipes.hardRedstoneRecipes)
+        if (ConfigHolder.recipes.hardRedstoneRecipes)
             return;
 
         ModHandler.addShapedRecipe("piston_bronze", new ItemStack(Blocks.PISTON, 1), "WWW", "CBC", "CRC",
@@ -760,7 +760,7 @@ public class VanillaStandardRecipes {
                 .duration(800).EUt(4)
                 .buildAndRegister();
 
-        if (!ConfigHolder.vanillaRecipes.hardToolArmorRecipes) {
+        if (!ConfigHolder.recipes.hardToolArmorRecipes) {
             ASSEMBLER_RECIPES.recipeBuilder()
                     .input(dust, Redstone)
                     .input(plate, Iron, 4)
@@ -814,7 +814,7 @@ public class VanillaStandardRecipes {
                 'P', new UnificationEntry(OrePrefix.ring, Materials.Iron)
         );
 
-        if (!ConfigHolder.vanillaRecipes.hardIronRecipes)
+        if (!ConfigHolder.recipes.hardIronRecipes)
             RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
                     .input(OrePrefix.plate, Materials.Iron, 4)
                     .circuitMeta(4)
@@ -945,7 +945,7 @@ public class VanillaStandardRecipes {
 
         ALLOY_SMELTER_RECIPES.recipeBuilder().EUt(4).duration(40).inputs(new ItemStack(Items.NETHERBRICK, 2)).inputs(new ItemStack(Items.NETHER_WART, 2)).outputs(new ItemStack(Blocks.RED_NETHER_BRICK)).buildAndRegister();
 
-        if (!ConfigHolder.vanillaRecipes.hardMiscRecipes) {
+        if (!ConfigHolder.recipes.hardMiscRecipes) {
             ASSEMBLER_RECIPES.recipeBuilder().duration(80).EUt(6).circuitMeta(4).input("plankWood", 4).outputs(new ItemStack(Blocks.CRAFTING_TABLE)).buildAndRegister();
             ASSEMBLER_RECIPES.recipeBuilder().circuitMeta(8).input(OrePrefix.stoneCobble, Materials.Stone, 8).outputs(new ItemStack(Blocks.FURNACE)).duration(100).EUt(7).buildAndRegister();
             ASSEMBLER_RECIPES.recipeBuilder().inputs(new ItemStack(Blocks.OBSIDIAN, 4)).input(gem, Diamond, 2).inputs(new ItemStack(Items.BOOK)).outputs(new ItemStack(Blocks.ENCHANTING_TABLE)).duration(100).EUt(7).buildAndRegister();
@@ -984,7 +984,7 @@ public class VanillaStandardRecipes {
                 .outputs(new ItemStack(Blocks.RAIL, 32))
                 .duration(200).EUt(30).buildAndRegister();
 
-        if (!ConfigHolder.vanillaRecipes.hardRedstoneRecipes) {
+        if (!ConfigHolder.recipes.hardRedstoneRecipes) {
             RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder()
                     .input(OrePrefix.stick, Materials.Gold, 12)
                     .input(OrePrefix.stick, Materials.Wood)
