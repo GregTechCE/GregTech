@@ -142,11 +142,6 @@ public abstract class Widget {
     protected void onSizeUpdate() {
     }
 
-    public boolean isMouseOverElement(int mouseX, int mouseY, boolean correctPositionOnMouseWheelMoveEvent) {
-        mouseX = correctPositionOnMouseWheelMoveEvent ? mouseX + this.gui.getGuiLeft() : mouseX;
-        return isMouseOverElement(mouseX, mouseY);
-    }
-
     public boolean isMouseOverElement(int mouseX, int mouseY) {
         Position position = getPosition();
         Size size = getSize();

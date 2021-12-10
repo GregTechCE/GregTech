@@ -221,7 +221,7 @@ public class ModularUIGui extends GuiContainer implements IRenderContext {
         if (wheelMovement != 0) {
             int mouseX = Mouse.getEventX() * this.width / this.mc.displayWidth;
             int mouseY = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
-            mouseWheelMove(mouseX - guiLeft, mouseY, wheelMovement);
+            mouseWheelMove(mouseX, mouseY, wheelMovement);
         }
     }
 
