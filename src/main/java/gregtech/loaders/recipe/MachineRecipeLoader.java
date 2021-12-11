@@ -532,39 +532,15 @@ public class MachineRecipeLoader {
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(16).input(OrePrefix.plate, Livermorium, 8).outputs(MetaBlocks.MACHINE_CASING.getItemVariant(MachineCasingType.UV)).circuitMeta(8).duration(50).buildAndRegister();
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(16).input(OrePrefix.plate, Neutronium, 8).outputs(MetaBlocks.MACHINE_CASING.getItemVariant(MachineCasingType.MAX)).circuitMeta(8).duration(50).buildAndRegister();
 
-        if (ConfigHolder.recipes.harderHeatingCoils) {
-            RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(VA[LV]).input(OrePrefix.wireGtDouble, Materials.Cupronickel, 8).input(OrePrefix.foil, Materials.Bronze, 8).fluidInputs(Materials.TinAlloy.getFluid(GTValues.L)).outputs(MetaBlocks.WIRE_COIL.getItemVariant(CoilType.CUPRONICKEL)).duration(200).buildAndRegister();
-            RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(VA[MV]).input(OrePrefix.wireGtDouble, Materials.Kanthal, 8).input(OrePrefix.foil, Materials.Aluminium, 8).fluidInputs(Materials.Copper.getFluid(GTValues.L)).outputs(MetaBlocks.WIRE_COIL.getItemVariant(CoilType.KANTHAL)).duration(300).buildAndRegister();
-            RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(VA[HV]).input(OrePrefix.wireGtDouble, Materials.Nichrome, 8).input(OrePrefix.foil, Materials.StainlessSteel, 8).fluidInputs(Materials.Aluminium.getFluid(GTValues.L)).outputs(MetaBlocks.WIRE_COIL.getItemVariant(CoilType.NICHROME)).duration(400).buildAndRegister();
-            RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(VA[EV]).input(OrePrefix.wireGtDouble, Materials.TungstenSteel, 8).input(OrePrefix.foil, Materials.VanadiumSteel, 8).fluidInputs(Materials.Nichrome.getFluid(GTValues.L)).outputs(MetaBlocks.WIRE_COIL.getItemVariant(CoilType.TUNGSTENSTEEL)).duration(500).buildAndRegister();
-            RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(VA[IV]).input(OrePrefix.wireGtDouble, Materials.HSSG, 8).input(OrePrefix.foil, Materials.TungstenCarbide, 8).fluidInputs(Materials.Tungsten.getFluid(GTValues.L)).outputs(MetaBlocks.WIRE_COIL.getItemVariant(CoilType.HSS_G)).duration(600).buildAndRegister();
-            RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(VA[LuV]).input(OrePrefix.wireGtDouble, Materials.Naquadah, 8).input(OrePrefix.foil, Materials.Osmium, 8).fluidInputs(Materials.TungstenSteel.getFluid(GTValues.L)).outputs(MetaBlocks.WIRE_COIL.getItemVariant(CoilType.NAQUADAH)).duration(700).buildAndRegister();
-            RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(VA[ZPM]).input(OrePrefix.wireGtDouble, Materials.NaquadahAlloy, 8).input(OrePrefix.foil, Materials.Osmiridium, 8).fluidInputs(Materials.Naquadah.getFluid(GTValues.L)).outputs(MetaBlocks.WIRE_COIL.getItemVariant(CoilType.NAQUADAH_ALLOY)).duration(800).buildAndRegister();
-            RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(500000).input(OrePrefix.wireGtDouble, Materials.FluxedElectrum, 8).input(OrePrefix.foil, Materials.Naquadria, 8).fluidInputs(Materials.NaquadahAlloy.getFluid(GTValues.L)).outputs(MetaBlocks.WIRE_COIL.getItemVariant(CoilType.FLUXED_ELECTRUM)).duration(900).buildAndRegister();
-            RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(2000000).input(OrePrefix.wireGtDouble, Materials.DiamericiumTitanium, 8).input(OrePrefix.foil, Materials.Trinium, 8).fluidInputs(Materials.Neutronium.getFluid(GTValues.L)).outputs(MetaBlocks.WIRE_COIL2.getItemVariant(CoilType2.DIAMERICIUM_TITANIUM)).duration(1000).buildAndRegister();
-
-        } else {
-            for (CoilType coilType : CoilType.values()) {
-                if (coilType.getMaterial() != null) {
-                    ItemStack outputStack = MetaBlocks.WIRE_COIL.getItemVariant(coilType);
-                    ASSEMBLER_RECIPES.recipeBuilder()
-                            .circuitMeta(8)
-                            .input(wireGtDouble, coilType.getMaterial(), 8)
-                            .outputs(outputStack)
-                            .duration(50).EUt(16).buildAndRegister();
-                }
-            }
-            for (CoilType2 coilType : CoilType2.values()) {
-                if (coilType.getMaterial() != null) {
-                    ItemStack outputStack = MetaBlocks.WIRE_COIL2.getItemVariant(coilType);
-                    ASSEMBLER_RECIPES.recipeBuilder()
-                            .circuitMeta(8)
-                            .input(wireGtDouble, coilType.getMaterial(), 8)
-                            .outputs(outputStack)
-                            .duration(50).EUt(16).buildAndRegister();
-                }
-            }
-        }
+        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(VA[LV]).input(OrePrefix.wireGtDouble, Materials.Cupronickel, 8).input(OrePrefix.foil, Materials.Bronze, 8).fluidInputs(Materials.TinAlloy.getFluid(GTValues.L)).outputs(MetaBlocks.WIRE_COIL.getItemVariant(CoilType.CUPRONICKEL)).duration(200).buildAndRegister();
+        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(VA[MV]).input(OrePrefix.wireGtDouble, Materials.Kanthal, 8).input(OrePrefix.foil, Materials.Aluminium, 8).fluidInputs(Materials.Copper.getFluid(GTValues.L)).outputs(MetaBlocks.WIRE_COIL.getItemVariant(CoilType.KANTHAL)).duration(300).buildAndRegister();
+        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(VA[HV]).input(OrePrefix.wireGtDouble, Materials.Nichrome, 8).input(OrePrefix.foil, Materials.StainlessSteel, 8).fluidInputs(Materials.Aluminium.getFluid(GTValues.L)).outputs(MetaBlocks.WIRE_COIL.getItemVariant(CoilType.NICHROME)).duration(400).buildAndRegister();
+        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(VA[EV]).input(OrePrefix.wireGtDouble, Materials.TungstenSteel, 8).input(OrePrefix.foil, Materials.VanadiumSteel, 8).fluidInputs(Materials.Nichrome.getFluid(GTValues.L)).outputs(MetaBlocks.WIRE_COIL.getItemVariant(CoilType.TUNGSTENSTEEL)).duration(500).buildAndRegister();
+        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(VA[IV]).input(OrePrefix.wireGtDouble, Materials.HSSG, 8).input(OrePrefix.foil, Materials.TungstenCarbide, 8).fluidInputs(Materials.Tungsten.getFluid(GTValues.L)).outputs(MetaBlocks.WIRE_COIL.getItemVariant(CoilType.HSS_G)).duration(600).buildAndRegister();
+        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(VA[LuV]).input(OrePrefix.wireGtDouble, Materials.Naquadah, 8).input(OrePrefix.foil, Materials.Osmium, 8).fluidInputs(Materials.TungstenSteel.getFluid(GTValues.L)).outputs(MetaBlocks.WIRE_COIL.getItemVariant(CoilType.NAQUADAH)).duration(700).buildAndRegister();
+        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(VA[ZPM]).input(OrePrefix.wireGtDouble, Materials.NaquadahAlloy, 8).input(OrePrefix.foil, Materials.Osmiridium, 8).fluidInputs(Materials.Naquadah.getFluid(GTValues.L)).outputs(MetaBlocks.WIRE_COIL.getItemVariant(CoilType.NAQUADAH_ALLOY)).duration(800).buildAndRegister();
+        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(500000).input(OrePrefix.wireGtDouble, Materials.FluxedElectrum, 8).input(OrePrefix.foil, Materials.Naquadria, 8).fluidInputs(Materials.NaquadahAlloy.getFluid(GTValues.L)).outputs(MetaBlocks.WIRE_COIL.getItemVariant(CoilType.FLUXED_ELECTRUM)).duration(900).buildAndRegister();
+        RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(2000000).input(OrePrefix.wireGtDouble, Materials.DiamericiumTitanium, 8).input(OrePrefix.foil, Materials.Trinium, 8).fluidInputs(Materials.Neutronium.getFluid(GTValues.L)).outputs(MetaBlocks.WIRE_COIL2.getItemVariant(CoilType2.DIAMERICIUM_TITANIUM)).duration(1000).buildAndRegister();
 
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(16).input(OrePrefix.plate, Materials.Invar, 6).input(OrePrefix.frameGt, Materials.Invar, 1).outputs(MetaBlocks.METAL_CASING.getItemVariant(MetalCasingType.INVAR_HEATPROOF, 2)).duration(50).buildAndRegister();
         RecipeMaps.ASSEMBLER_RECIPES.recipeBuilder().EUt(16).input(OrePrefix.plate, Materials.Steel, 6).input(OrePrefix.frameGt, Materials.Steel, 1).outputs(MetaBlocks.METAL_CASING.getItemVariant(MetalCasingType.STEEL_SOLID, 2)).duration(50).buildAndRegister();
