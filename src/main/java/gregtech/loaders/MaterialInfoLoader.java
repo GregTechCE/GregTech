@@ -112,9 +112,9 @@ public class MaterialInfoLoader {
                 new MaterialStack(Materials.NaquadahAlloy, OrePrefix.cableGtSingle.materialAmount * 2),
                 new MaterialStack(Materials.Rubber, OrePrefix.plate.materialAmount * 2)));
 
-        OreDictUnifier.registerOre(MetaTileEntities.HULL[14].getStackForm(), new ItemMaterialInfo(
+        OreDictUnifier.registerOre(MetaTileEntities.HULL[9].getStackForm(), new ItemMaterialInfo(
                 new MaterialStack(Materials.Neutronium, OrePrefix.plate.materialAmount * 8),
-                new MaterialStack(Materials.RutheniumTriniumAmericiumNeutronate, OrePrefix.cableGtSingle.materialAmount * 2),
+                new MaterialStack(Materials.Europium, OrePrefix.cableGtSingle.materialAmount * 2),
                 new MaterialStack(Materials.Rubber, OrePrefix.plate.materialAmount * 2)));
 
         if (ConfigHolder.recipes.hardWoodRecipes) {
