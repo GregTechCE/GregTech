@@ -8,6 +8,7 @@ import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Material;
 import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.ore.OrePrefix;
+import gregtech.api.unification.stack.ItemMaterialInfo;
 import gregtech.api.unification.stack.MaterialStack;
 import gregtech.api.unification.stack.UnificationEntry;
 import gregtech.api.util.DummyContainer;
@@ -39,6 +40,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import javax.annotation.Nullable;
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -225,6 +227,10 @@ public class ModHandler {
      * </ul>
      */
     public static void addShapedRecipe(String regName, ItemStack result, Object... recipe) {
+        addShapedRecipe(false, regName, result, recipe);
+    }
+
+    public static void addShapedRecipe(boolean withUnificationData, String regName, ItemStack result, Object... recipe) {
         boolean skip = false;
         if (result.isEmpty()) {
             GTLog.logger.error("Result cannot be an empty ItemStack. Recipe: {}", regName);
@@ -241,6 +247,8 @@ public class ModHandler {
                 .setMirrored(false) //make all recipes not mirrored by default
                 .setRegistryName(regName);
         ForgeRegistries.RECIPES.register(shapedOreRecipe);
+
+        if (withUnificationData) OreDictUnifier.registerOre(result, getRecyclingIngredients(recipe));
     }
 
     public static void addShapedEnergyTransferRecipe(String regName, ItemStack result, Predicate<ItemStack> chargePredicate, boolean overrideCharge, boolean transferMaxCharge, Object... recipe) {
@@ -335,6 +343,83 @@ public class ModHandler {
             throw new IllegalArgumentException(ingredient.getClass().getSimpleName() + " type is not suitable for crafting input.");
         }
         return ingredient;
+    }
+
+    public static ItemMaterialInfo getRecyclingIngredients(Object... recipe) {
+        Map<Character, Integer> inputCountMap = new HashMap<>();
+        Map<Material, Long> materialStacksExploded = new HashMap<>();
+
+        int itr = 0;
+        while (recipe[itr] instanceof String) {
+            String s = (String) recipe[itr];
+            for (char c : s.toCharArray()) {
+                if (getToolNameByCharacter(c) != null) continue; // skip tools
+                int count = inputCountMap.getOrDefault(c, 0);
+                inputCountMap.put(c, count + 1);
+            }
+            itr++;
+        }
+
+        char lastChar = ' ';
+        for (int i = itr; i < recipe.length; i++) {
+            Object ingredient = recipe[i];
+
+            // Track the current working ingredient symbol
+            if (ingredient instanceof Character) {
+                lastChar = (char) ingredient;
+                continue;
+            }
+
+            // Should never happen if recipe is formatted correctly
+            // In the case that it isn't, this error should be handled
+            // by an earlier method call parsing the recipe.
+            if (lastChar == ' ') return null;
+
+            ItemStack stack;
+            if (ingredient instanceof MetaItem.MetaValueItem) {
+                stack = ((MetaItem<?>.MetaValueItem) ingredient).getStackForm();
+            } else if (ingredient instanceof UnificationEntry) {
+                stack = OreDictUnifier.get((UnificationEntry) ingredient);
+            } else if (ingredient instanceof ItemStack) {
+                stack = (ItemStack) ingredient;
+            } else if (ingredient instanceof Item) {
+                stack = new ItemStack((Item) ingredient, 1);
+            } else if (ingredient instanceof Block) {
+                stack = new ItemStack((Block) ingredient, 1);
+            } else if (ingredient instanceof String) {
+                stack = OreDictUnifier.get((String) ingredient);
+            } else continue; // throw out bad entries
+
+            BiConsumer<MaterialStack, Character> func = (ms, c) -> {
+                long amount = materialStacksExploded.getOrDefault(ms.material, 0L);
+                materialStacksExploded.put(ms.material, (ms.amount * inputCountMap.get(c)) + amount);
+            };
+
+            // First try to get ItemMaterialInfo
+            ItemMaterialInfo info = OreDictUnifier.getMaterialInfo(stack);
+            if (info != null) {
+                for (MaterialStack ms : info.getMaterials()) func.accept(ms, lastChar);
+                continue;
+            }
+
+            // Then try to get a single Material (UnificationEntry needs this, for example)
+            MaterialStack materialStack = OreDictUnifier.getMaterial(stack);
+            if (materialStack != null) func.accept(materialStack, lastChar);
+
+            // Gather any secondary materials if this item has an OrePrefix
+            OrePrefix prefix = OreDictUnifier.getPrefix(stack);
+            if (prefix != null && !prefix.secondaryMaterials.isEmpty()) {
+                for (MaterialStack ms : prefix.secondaryMaterials) {
+                    func.accept(ms, lastChar);
+                }
+            }
+        }
+
+        return new ItemMaterialInfo(materialStacksExploded.entrySet().stream()
+                .map(e -> new MaterialStack(e.getKey(), e.getValue()))
+                .sorted(Comparator.comparingLong(m -> -m.amount))
+                .collect(Collectors.toList())
+        );
     }
 
     /**
