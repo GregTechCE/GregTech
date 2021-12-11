@@ -43,6 +43,7 @@ public class SimpleSidedCubeRenderer implements ICubeRenderer, IIconRegister {
 
     public SimpleSidedCubeRenderer(String basePath) {
         this.basePath = basePath;
+        Textures.CUBE_RENDERER_REGISTRY.put(basePath, this);
         Textures.iconRegisters.add(this);
     }
 
