@@ -19,7 +19,8 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
 
-import static gregtech.api.GTValues.*;
+import static gregtech.api.GTValues.ULV;
+import static gregtech.api.GTValues.VA;
 import static gregtech.api.unification.material.info.MaterialFlags.HIGH_SIFTER_OUTPUT;
 
 public class OreRecipeHandler {
@@ -82,7 +83,7 @@ public class OreRecipeHandler {
             RecipeMaps.FORGE_HAMMER_RECIPES.recipeBuilder()
                     .input(orePrefix, material)
                     .outputs(GTUtility.copyAmount((int) Math.ceil(amountOfCrushedOre) * oreTypeMultiplier, crushedStack))
-                    .duration(100).EUt(6)
+                    .duration(16).EUt(10)
                     .buildAndRegister();
 
             RecipeBuilder<?> builder = RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
