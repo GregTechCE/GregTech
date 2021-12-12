@@ -28,8 +28,10 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -37,6 +39,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.lang.reflect.Field;
 import java.util.*;
@@ -48,11 +51,37 @@ import java.util.stream.Collectors;
 public class ModHandler {
 
     /**
-     * Returns if that Liquid is Water or Distilled Water
+     * Returns if that Liquid is Water or Distilled Water, or a valid Boiler Fluid.
      */
-    public static boolean isWater(FluidStack fluid) {
-        return new FluidStack(FluidRegistry.WATER, 1).isFluidEqual(fluid)
-                || Materials.DistilledWater.getFluid(1).isFluidEqual(fluid);
+    public static boolean isWater(@Nullable FluidStack fluid) {
+        if (fluid == null) return false;
+        if (fluid.isFluidEqual(new FluidStack(FluidRegistry.WATER, 1))) return true;
+        if (fluid.isFluidEqual(Materials.DistilledWater.getFluid(1))) return true;
+
+        for (String fluidName : ConfigHolder.machines.boilerFluids) {
+            Fluid f = FluidRegistry.getFluid(fluidName);
+            if (f != null && fluid.isFluidEqual(new FluidStack(f, 1))) return true;
+        }
+        return false;
+    }
+
+    public static FluidStack getWaterFromContainer(@Nonnull IFluidHandler fluidHandler, boolean doDrain) {
+        FluidStack drainedWater = fluidHandler.drain(Materials.Water.getFluid(1), doDrain);
+        if (drainedWater == null || drainedWater.amount == 0) {
+            drainedWater = fluidHandler.drain(Materials.DistilledWater.getFluid(1), doDrain);
+        }
+        if (drainedWater == null || drainedWater.amount == 0) {
+            for (String fluidName : ConfigHolder.machines.boilerFluids) {
+                Fluid f = FluidRegistry.getFluid(fluidName);
+                if (f != null) {
+                    drainedWater = fluidHandler.drain(new FluidStack(f, 1), doDrain);
+                    if (drainedWater != null && drainedWater.amount > 0) {
+                        break;
+                    }
+                }
+            }
+        }
+        return drainedWater;
     }
 
     /**

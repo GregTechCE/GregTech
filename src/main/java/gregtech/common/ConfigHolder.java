@@ -106,6 +106,10 @@ public class ConfigHolder {
 
         @Config.Comment({"Whether to play machine sounds while machines are active.", "Default: true"})
         public boolean machineSounds = true;
+
+        @Config.Comment({"Additional Fluids to allow in GT Boilers in place of Water or Distilled Water.",
+                "Useful for mods like TerraFirmaCraft with different Fluids for Water", "Default: none"})
+        public String[] boilerFluids = new String[0];
     }
 
     public static class WorldGenOptions {
