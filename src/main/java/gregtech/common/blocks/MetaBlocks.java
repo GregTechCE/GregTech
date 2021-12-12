@@ -5,9 +5,9 @@ import gregtech.api.GTValues;
 import gregtech.api.GregTechAPI;
 import gregtech.api.block.machines.BlockMachine;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
-import gregtech.api.model.IModelSupplier;
-import gregtech.api.render.MetaTileEntityRenderer;
-import gregtech.api.render.MetaTileEntityTESR;
+import gregtech.client.renderer.handler.MetaTileEntityRenderer;
+import gregtech.client.renderer.handler.MetaTileEntityTESR;
+import gregtech.client.model.IModelSupplier;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Material;
 import gregtech.api.unification.material.Materials;
@@ -17,7 +17,7 @@ import gregtech.api.unification.ore.OrePrefix;
 import gregtech.api.unification.ore.StoneType;
 import gregtech.common.blocks.foam.BlockFoam;
 import gregtech.common.blocks.foam.BlockPetrifiedFoam;
-import gregtech.api.model.modelfactories.BakedModelHandler;
+import gregtech.client.model.modelfactories.BakedModelHandler;
 import gregtech.common.blocks.surfacerock.BlockSurfaceRock;
 import gregtech.common.blocks.surfacerock.TileEntitySurfaceRock;
 import gregtech.common.blocks.wood.BlockGregLeaves;
@@ -36,9 +36,9 @@ import gregtech.common.pipelike.itempipe.BlockItemPipe;
 import gregtech.common.pipelike.itempipe.ItemPipeType;
 import gregtech.common.pipelike.itempipe.tile.TileEntityItemPipe;
 import gregtech.common.pipelike.itempipe.tile.TileEntityItemPipeTickable;
-import gregtech.common.render.CableRenderer;
-import gregtech.common.render.FluidPipeRenderer;
-import gregtech.common.render.ItemPipeRenderer;
+import gregtech.client.renderer.pipe.CableRenderer;
+import gregtech.client.renderer.pipe.FluidPipeRenderer;
+import gregtech.client.renderer.pipe.ItemPipeRenderer;
 import it.unimi.dsi.fastutil.objects.ReferenceArrayList;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog.EnumAxis;
@@ -71,7 +71,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static gregtech.api.unification.material.info.MaterialFlags.GENERATE_FRAME;
-import static gregtech.common.ClientProxy.*;
+import static gregtech.client.ClientProxy.*;
 
 public class MetaBlocks {
 
