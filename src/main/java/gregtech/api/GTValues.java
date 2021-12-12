@@ -6,6 +6,7 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.time.LocalDate;
+import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.Supplier;
@@ -45,7 +46,7 @@ public class GTValues {
      */
     public static final short W = OreDictionary.WILDCARD_VALUE;
 
-    public static final XSTR RNG = new XSTR();
+    public static final Random RNG = new XSTR();
 
     /**
      * The Voltage Tiers. Use this Array instead of the old named Voltage Variables
