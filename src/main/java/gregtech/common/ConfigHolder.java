@@ -8,7 +8,6 @@ public class ConfigHolder {
 
     @Config.Comment("Config options for client-only features")
     @Config.Name("Client Options")
-    @Config.RequiresMcRestart
     public static ClientOptions client = new ClientOptions();
 
     @Config.Comment("Config options for Mod Compatibility")
@@ -238,7 +237,11 @@ public class ConfigHolder {
 
     public static class ClientOptions {
 
+        @Config.Name("Gui Config")
+        public GuiConfig guiConfig = new GuiConfig();
+
         @Config.Name("Armor HUD Location")
+        @Config.RequiresMcRestart
         public ArmorHud armorHud = new ArmorHud();
 
         @Config.Comment("Config options for Shaders and Post-processing Effects")
@@ -246,6 +249,7 @@ public class ConfigHolder {
         public ShaderOptions shader = new ShaderOptions();
 
         @Config.Comment({"Terminal root path.", "Default: {.../config}/gregtech/terminal"})
+        @Config.RequiresMcRestart
         public String terminalRootPath = "gregtech/terminal";
 
         @Config.Comment({"Whether to hook depth texture. Has no effect on performance, but if there is a problem with rendering, try disabling it.", "Default: true"})
@@ -255,6 +259,7 @@ public class ConfigHolder {
                 "Higher values increase quality (limited by the resolution of your screen) but are more GPU intensive.", "Default: 2"})
         @Config.RangeDouble(min = 0, max = 5)
         @Config.SlidingOption
+        @Config.RequiresWorldRestart
         public double resolution = 2;
 
         @Config.Comment({"Whether or not to enable Emissive Textures for GregTech Machines.", "Default: true"})
@@ -269,6 +274,12 @@ public class ConfigHolder {
 
         @Config.Comment({"Whether or not sounds should be played when crafting with tools.", "Default: true"})
         public boolean toolCraftingSounds = true;
+
+        public static class GuiConfig {
+            @Config.Comment({"The scrolling speed of widgets", "Default: 13"})
+            @Config.RangeInt(min = 1)
+            public int scrollSpeed = 13;
+        }
 
         public static class ArmorHud {
 
