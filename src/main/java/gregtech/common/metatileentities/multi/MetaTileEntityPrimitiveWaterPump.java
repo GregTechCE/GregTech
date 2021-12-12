@@ -6,23 +6,20 @@ import codechicken.lib.vec.Matrix4;
 import gregtech.api.gui.ModularUI;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
-import gregtech.api.metatileentity.multiblock.IMultiblockAbilityPart;
 import gregtech.api.metatileentity.multiblock.IMultiblockPart;
 import gregtech.api.metatileentity.multiblock.MultiblockAbility;
 import gregtech.api.metatileentity.multiblock.MultiblockControllerBase;
 import gregtech.api.pattern.BlockPattern;
 import gregtech.api.pattern.FactoryBlockPattern;
 import gregtech.api.pattern.PatternMatchContext;
-import gregtech.api.pattern.TraceabilityPredicate;
 import gregtech.api.render.ICubeRenderer;
 import gregtech.api.render.OrientedOverlayRenderer;
 import gregtech.api.render.Textures;
 import gregtech.api.unification.material.Materials;
+import gregtech.common.blocks.BlockFrame;
 import gregtech.common.blocks.BlockSteamCasing;
 import gregtech.common.blocks.MetaBlocks;
 import gregtech.common.metatileentities.MetaTileEntities;
-import gregtech.common.metatileentities.electric.multiblockpart.MetaTileEntityFluidHatch;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
@@ -33,7 +30,6 @@ import net.minecraftforge.fluids.IFluidTank;
 import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Stream;
 
 public class MetaTileEntityPrimitiveWaterPump extends MultiblockControllerBase {
 
@@ -126,6 +122,7 @@ public class MetaTileEntityPrimitiveWaterPump extends MultiblockControllerBase {
 
     @Override
     protected BlockPattern createStructurePattern() {
+        BlockFrame woodFrame = MetaBlocks.FRAMES.get(Materials.Wood);
         return FactoryBlockPattern.start()
                 .aisle("XXXX", "**F*", "**F*")
                 .aisle("XXHX", "F**F", "FFFF")
