@@ -166,8 +166,8 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase impleme
         this.currentTemperature = 0; //reset temperature
         this.fuelBurnTicksLeft = 0;
         this.hasNoWater = false;
-        this.isActive = false;
         this.throttlePercentage = 100;
+        setActive(false);
         replaceFireboxAsActive(false);
     }
 
@@ -435,8 +435,6 @@ public class MetaTileEntityLargeBoiler extends MultiblockWithDisplayBase impleme
     protected OrientedOverlayRenderer getFrontOverlay() {
         return boilerType.frontOverlay;
     }
-
-
 
     private boolean isFireboxPart(IMultiblockPart sourcePart) {
         return isStructureFormed() && (((MetaTileEntity) sourcePart).getPos().getY() < getPos().getY());
