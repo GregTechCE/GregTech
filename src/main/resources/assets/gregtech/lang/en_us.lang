@@ -1344,8 +1344,6 @@ material.aqua_regia=Aqua Regia
 material.fireclay=Fireclay
 material.brick=Brick
 material.coke=Coke
-material.tenorite=Tenorite
-material.cuprite=Cuprite
 material.bornite=Bornite
 material.chalcocite=Chalcocite
 material.enargite=Enargite
@@ -2148,13 +2146,6 @@ tile.surface_rock.name=Surface Rock
 tile.surface_rock_new.name=Surface Rock
 gregtech.block.surface_rock.material=Rock Material: %s
 gregtech.block.surface_rock.underground_materials=Underground Materials: %s
-
-metaitem.scanner.name=Scanner
-metaitem.scanner.tooltip=Hold right mouse button on surface rocks/nto discover underground materials
-behavior.scanner.analyzing=Analyzing...
-behavior.scanner.analyzing_failed=Analyzing failed!
-behavior.scanner.analyzing_complete=Analyzing complete!
-behavior.scanner.not_enough_energy=Not Enough Energy!
 
 metaitem.prospector.lv.name=Electric Prospector's Scanner (LV)
 metaitem.prospector.hv.name=Electric Prospector's Scanner (HV)
