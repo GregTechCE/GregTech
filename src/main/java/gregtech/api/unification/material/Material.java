@@ -825,21 +825,24 @@ public class Material implements Comparable<Material> {
         }
 
         public Builder cableProperties(long voltage, int amperage, int loss) {
-            properties.setProperty(PropertyKey.WIRE, new WireProperties((int) voltage, amperage, loss));
+            cableProperties((int) voltage, amperage, loss, false);
             return this;
         }
 
         public Builder cableProperties(long voltage, int amperage, int loss, boolean isSuperCon) {
+            properties.ensureSet(PropertyKey.INGOT);
             properties.setProperty(PropertyKey.WIRE, new WireProperties((int) voltage, amperage, loss, isSuperCon));
             return this;
         }
 
         public Builder fluidPipeProperties(int maxTemp, int throughput, boolean gasProof) {
+            properties.ensureSet(PropertyKey.INGOT);
             properties.setProperty(PropertyKey.FLUID_PIPE, new FluidPipeProperties(maxTemp, throughput, gasProof));
             return this;
         }
 
         public Builder itemPipeProperties(int priority, float stacksPerSec) {
+            properties.ensureSet(PropertyKey.INGOT);
             properties.setProperty(PropertyKey.ITEM_PIPE, new ItemPipeProperties(priority, stacksPerSec));
             return this;
         }
