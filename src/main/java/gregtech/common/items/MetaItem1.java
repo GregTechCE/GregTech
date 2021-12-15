@@ -286,12 +286,11 @@ public class MetaItem1 extends StandardMetaItem {
         COVER_ENERGY_DETECTOR = addItem(306, "cover.energy.detector");
         COVER_SCREEN = addItem(307, "cover.screen");
         COVER_CRAFTING = addItem(308, "cover.crafting");
-        COVER_DRAIN = addItem(309, "cover.drain");
-        COVER_SHUTTER = addItem(310, "cover.shutter");
-        COVER_INFINITE_WATER = addItem(311, "cover.infinite_water");
-        COVER_ENDER_FLUID_LINK = addItem(312, "cover.ender_fluid_link");
-        COVER_DIGITAL_INTERFACE = addItem(313, "cover.digital");
-        COVER_DIGITAL_INTERFACE_WIRELESS = addItem(314, "cover.digital.wireless");
+        COVER_SHUTTER = addItem(309, "cover.shutter");
+        COVER_INFINITE_WATER = addItem(310, "cover.infinite_water");
+        COVER_ENDER_FLUID_LINK = addItem(311, "cover.ender_fluid_link");
+        COVER_DIGITAL_INTERFACE = addItem(312, "cover.digital");
+        COVER_DIGITAL_INTERFACE_WIRELESS = addItem(313, "cover.digital.wireless");
 
         COVER_FACADE = addItem(330, "cover.facade").addComponents(new FacadeItem()).disableModelLoading();
 
