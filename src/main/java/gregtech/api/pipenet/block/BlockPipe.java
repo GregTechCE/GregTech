@@ -152,16 +152,20 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
             setTileEntityData((TileEntityPipeBase<PipeType, NodeDataType>) pipeTile, stack);
             if (!worldIn.isRemote) {
                 for (EnumFacing facing : EnumFacing.VALUES) {
-                    if (ConfigHolder.machines.gt6StylePipesCables) {
-                        TileEntity te = worldIn.getTileEntity(pos.offset(facing));
-                        if (te instanceof IPipeTile) {
-                            if (((IPipeTile) te).isConnectionOpenAny(facing.getOpposite())) {
+                    TileEntity te = worldIn.getTileEntity(pos.offset(facing));
+                    if (te instanceof IPipeTile) {
+                        IPipeTile<?, ?> otherTile = (IPipeTile<?, ?>) te;
+                        // force close the connection on the other pipe if this pipe does not match its Pipe Type
+                        if (otherTile.getPipeType() != pipeTile.getPipeType()) {
+                            otherTile.setConnectionBlocked(AttachmentType.PIPE, facing.getOpposite(), true, true);
+                        } else if (ConfigHolder.machines.gt6StylePipesCables) {
+                            if (otherTile.isConnectionOpenAny(facing.getOpposite())) {
                                 pipeTile.setConnectionBlocked(AttachmentType.PIPE, facing, false, true);
                             }
-                        }
-                    } else {
-                        if (canConnect(getPipeTileEntity(worldIn, pos), facing)) {
-                            pipeTile.setConnectionBlocked(AttachmentType.PIPE, facing, false, false);
+                        } else {
+                            if (canConnect(pipeTile, facing)) {
+                                pipeTile.setConnectionBlocked(AttachmentType.PIPE, facing, false, false);
+                            }
                         }
                     }
                 }
