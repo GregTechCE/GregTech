@@ -736,14 +736,14 @@ public abstract class MetaTileEntity implements ICoverable {
     public void writeInitialSyncData(PacketBuffer buf) {
         buf.writeByte(this.frontFacing.getIndex());
         boolean isPainted = false;
-        if(this.paintingColor != DEFAULT_PAINTING_COLOR && !(this instanceof MultiblockControllerBase)) {
-            for(EnumDyeColor color : EnumDyeColor.values()) {
-                if(this.paintingColor == color.colorValue) {
+        if (this.paintingColor != DEFAULT_PAINTING_COLOR && !(this instanceof MultiblockControllerBase)) {
+            for (EnumDyeColor color : EnumDyeColor.values()) {
+                if (this.paintingColor == color.colorValue) {
                     isPainted = true;
                     break;
                 }
             }
-            if(!isPainted) {
+            if (!isPainted) {
                 setPaintingColor(DEFAULT_PAINTING_COLOR);
             }
         }
@@ -1355,5 +1355,14 @@ public abstract class MetaTileEntity implements ICoverable {
 
     public boolean isMuffled() {
         return muffled;
+    }
+
+    public boolean canRenderFrontFaceX() {
+        return false;
+    }
+
+    public boolean isSideUsed(EnumFacing face) {
+        if (getCoverAtSide(face) != null) return true;
+        return face == this.getFrontFacing() && this.canRenderFrontFaceX();
     }
 }
