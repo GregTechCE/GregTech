@@ -2930,8 +2930,20 @@ gregtech.machine.ore_washer.uiv.name=High-Tech Ore Washing Plant III
 gregtech.machine.ore_washer.umv.name=High-Tech Ore Washing Plant IV
 gregtech.machine.ore_washer.uxv.name=Ultimate Ore Washing Plant
 
-gregtech.machine.ore_washer.simple.name=Simple Ore Washing Plant
-gregtech.machine.ore_washer.simple.tooltip=It's like an automatic Cauldron for Washing. Grants no Byproducts, but it is fast.
+gregtech.machine.simple_ore_washer.lv.name=Basic Simple Ore Washing Plant
+gregtech.machine.simple_ore_washer.mv.name=Advanced Simple Ore Washing Plant
+gregtech.machine.simple_ore_washer.hv.name=Advanced Simple Ore Washing Plant II
+gregtech.machine.simple_ore_washer.ev.name=Advanced Simple Ore Washing Plant III
+gregtech.machine.simple_ore_washer.iv.name=Elite Simple Ore Washing Plant
+gregtech.machine.simple_ore_washer.luv.name=Elite Simple Ore Washing Plant II
+gregtech.machine.simple_ore_washer.zpm.name=Elite Simple Ore Washing Plant III
+gregtech.machine.simple_ore_washer.uv.name=Elite Simple Ore Washing Plant IV
+gregtech.machine.simple_ore_washer.uhv.name=High-Tech Simple Ore Washing Plant
+gregtech.machine.simple_ore_washer.uev.name=High-Tech Simple Ore Washing Plant II
+gregtech.machine.simple_ore_washer.uiv.name=High-Tech Simple Ore Washing Plant III
+gregtech.machine.simple_ore_washer.umv.name=High-Tech Simple Ore Washing Plant IV
+gregtech.machine.simple_ore_washer.uxv.name=Ultimate Simple Ore Washing Plant
+gregtech.machine.simple_ore_washer.tooltip=It's like an automatic Cauldron for Washing. Grants no Byproducts, but it is fast.
 
 gregtech.machine.packer.tooltip=Puts things into Boxes
 

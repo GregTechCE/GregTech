@@ -407,7 +407,7 @@ public class MetaTileEntityLoader {
 
         registerMachineRecipe(MetaTileEntities.MUFFLER_HATCH, "HM", "PR", 'H', HULL, 'M', MOTOR, 'P', PIPE_NORMAL, 'R', ROTOR);
 
-        ModHandler.addShapedRecipe(true, "gregtech.machine.simple_washer.lv", MetaTileEntities.SIMPLE_ORE_WASHER.getStackForm(), "WPW", "WBW", "WHW", 'W', new UnificationEntry(OrePrefix.plate, Materials.WroughtIron), 'P', MetaItems.ELECTRIC_PUMP_LV.getStackForm(), 'B', new UnificationEntry(OrePrefix.pipeNormalFluid, Materials. Bronze), 'H', MetaTileEntities.HULL[GTValues.ULV].getStackForm());
+        registerMachineRecipe(MetaTileEntities.SIMPLE_ORE_WASHER, "WPW", "WBW", "WHW", 'W', PLATE, 'P', PUMP, 'B', PIPE_NORMAL, 'H', HULL);
 
         ModHandler.addShapedRecipe(true, "wooden_crate", MetaTileEntities.WOODEN_CRATE.getStackForm(), "RPR", "PsP", "RPR", 'P', "plankWood", 'R', new UnificationEntry(OrePrefix.screw, Materials.Iron));
         ModHandler.addShapedRecipe(true, "bronze_crate", MetaTileEntities.BRONZE_CRATE.getStackForm(), "RPR", "PhP", "RPR", 'P', new UnificationEntry(OrePrefix.plate, Materials.Bronze), 'R', new UnificationEntry(OrePrefix.stickLong, Materials.Bronze));
