@@ -95,7 +95,7 @@ public class DecompositionRecipeHandler {
         RecipeBuilder<?> builder;
         if (material.hasFlag(DECOMPOSITION_BY_ELECTROLYZING)) {
             builder = RecipeMaps.ELECTROLYZER_RECIPES.recipeBuilder()
-                    .duration(((int) material.getAverageProtons() * totalInputAmount * 2))
+                    .duration(((int) material.getProtons() * totalInputAmount * 2))
                     .EUt(getElectrolyzingVoltage(material.getMaterialComponents().stream()
                             .map(s -> s.material).collect(Collectors.toList())));
         } else {
