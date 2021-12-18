@@ -447,12 +447,12 @@ public class MiscRecipeLoader {
 
         // Dyed Lens Decomposition
         for (MetaValueItem item : GLASS_LENSES.values()) {
-            EXTRACTOR_RECIPES.recipeBuilder().EUt(VA[LV]).duration(60)
+            EXTRACTOR_RECIPES.recipeBuilder().EUt(VA[LV]).duration(15)
                     .input(item)
                     .fluidOutputs(Glass.getFluid(108))
                     .buildAndRegister();
 
-            MACERATOR_RECIPES.recipeBuilder().duration(22)
+            MACERATOR_RECIPES.recipeBuilder().duration(15)
                     .input(item)
                     .output(dustSmall, Glass, 3)
                     .buildAndRegister();
