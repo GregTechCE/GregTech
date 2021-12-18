@@ -1,29 +1,29 @@
-package gregtech.client.renderer.cclop;
+package gregtech.client.renderer;
 
-import codechicken.lib.render.CCRenderState;
-import codechicken.lib.render.pipeline.IVertexOperation;
 import codechicken.lib.vec.Cuboid6;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Arrays;
 
 @SideOnly(Side.CLIENT)
-public class GTBlockOperation implements IVertexOperation {
-    public static final int operationIndex = CCRenderState.registerOperation();
+public class CubeRendererState {
     public final BlockRenderLayer layer;
     public final boolean[] sideMask;
+    public final IBlockAccess world;
     public static boolean[] PASS_MASK = new boolean[EnumFacing.VALUES.length];
 
     static {
         Arrays.fill(PASS_MASK, true);
     }
 
-    public GTBlockOperation(BlockRenderLayer layer, boolean[] sideMask) {
+    public CubeRendererState(BlockRenderLayer layer, boolean[] sideMask, IBlockAccess world) {
         this.layer = layer;
         this.sideMask = sideMask;
+        this.world = world;
     }
 
     public boolean shouldSideBeRendered(EnumFacing face, Cuboid6 bounds) {
@@ -53,20 +53,5 @@ public class GTBlockOperation implements IVertexOperation {
             }
         }
         return true;
-    }
-
-    @Override
-    public boolean load(CCRenderState ccRenderState) {
-        return false;
-    }
-
-    @Override
-    public void operate(CCRenderState ccRenderState) {
-
-    }
-
-    @Override
-    public int operationID() {
-        return operationIndex;
     }
 }

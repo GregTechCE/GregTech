@@ -717,7 +717,8 @@ public class MetaTileEntities {
          * - PCM's Ore Addon: 9500-9999
          * - GCM: 10000-10099
          * - MechTech: 10100-10499
-         * - FREE RANGE 10500-32767
+         * - CT(MBT) 32000 - ~
+         * - FREE RANGE 11000-32767
          */
     }
 
