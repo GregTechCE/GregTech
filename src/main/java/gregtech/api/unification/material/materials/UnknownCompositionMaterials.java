@@ -262,6 +262,7 @@ public class UnknownCompositionMaterials {
 
         Endstone = new Material.Builder(1603, "endstone")
                 .dust(1)
+                .color(0xD9DE9E)
                 .flags(NO_SMASHING)
                 .build();
 

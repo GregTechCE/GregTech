@@ -185,7 +185,7 @@ public class ConfigHolder {
         public boolean generateLowQualityGems = false;
 
         @Config.Comment({"Whether to remove Block/Ingot compression and decompression in the Crafting Table.", "Default: false"})
-        public boolean disableManualCompression = true;
+        public boolean disableManualCompression = false;
     }
 
     public static class CompatibilityOptions {

@@ -1009,9 +1009,6 @@ public class VanillaStandardRecipes {
                 'S', new ItemStack(Items.STRING)
         );
 
-        ModHandler.addShapelessRecipe("flint_from_gravel", new ItemStack(Items.FLINT),
-                Blocks.GRAVEL, Blocks.GRAVEL, Blocks.GRAVEL);
-
         for (FluidStack fluidStack : new FluidStack[]{Water.getFluid(200), DistilledWater.getFluid(36)}) {
             AUTOCLAVE_RECIPES.recipeBuilder()
                     .inputs(new ItemStack(Blocks.STONE, 1, 1))
