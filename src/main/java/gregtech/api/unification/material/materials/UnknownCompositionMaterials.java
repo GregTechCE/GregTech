@@ -268,7 +268,7 @@ public class UnknownCompositionMaterials {
 
         Netherrack = new Material.Builder(1604, "netherrack")
                 .dust(1)
-                .color(0xC80000).iconSet(METALLIC)
+                .color(0xC80000)
                 .flags(NO_SMASHING, FLAMMABLE)
                 .build();
 
