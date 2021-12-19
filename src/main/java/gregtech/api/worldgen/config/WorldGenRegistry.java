@@ -4,12 +4,12 @@ import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import crafttweaker.annotations.ZenRegister;
 import gregtech.api.GTValues;
 import gregtech.api.util.FileUtility;
 import gregtech.api.util.GTLog;
 import gregtech.api.worldgen.filler.BlacklistedBlockFiller;
 import gregtech.api.worldgen.filler.BlockFiller;
+import gregtech.api.worldgen.filler.LayeredBlockFiller;
 import gregtech.api.worldgen.filler.SimpleBlockFiller;
 import gregtech.api.worldgen.generator.WorldGeneratorImpl;
 import gregtech.api.worldgen.populator.FluidSpringPopulator;
@@ -24,8 +24,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.apache.commons.io.IOUtils;
-import stanhebben.zenscript.annotations.ZenClass;
-import stanhebben.zenscript.annotations.ZenGetter;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
@@ -38,8 +36,6 @@ import java.util.Map.Entry;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-@ZenClass("mods.gregtech.ore.WorldGenRegistry")
-@ZenRegister
 public class WorldGenRegistry {
 
     public static final WorldGenRegistry INSTANCE = new WorldGenRegistry();
@@ -96,7 +92,9 @@ public class WorldGenRegistry {
         registerShapeGenerator("sphere", SphereGenerator::new);
         registerShapeGenerator("plate", PlateGenerator::new);
         registerShapeGenerator("single", SingleBlockGenerator::new);
+        registerShapeGenerator("layered", LayeredGenerator::new);
         registerBlockFiller("simple", SimpleBlockFiller::new);
+        registerBlockFiller("layered", LayeredBlockFiller::new);
         registerBlockFiller("ignore_bedrock", () -> new BlacklistedBlockFiller(Lists.newArrayList(Blocks.BEDROCK.getDefaultState())));
         registerVeinPopulator("surface_rock", SurfaceRockPopulator::new);
         registerVeinPopulator("fluid_spring", FluidSpringPopulator::new);
@@ -523,12 +521,10 @@ public class WorldGenRegistry {
         return veinPopulator;
     }
 
-    @ZenGetter("oreDeposits")
     public static List<OreDepositDefinition> getOreDeposits() {
         return Collections.unmodifiableList(INSTANCE.registeredVeinDefinitions);
     }
 
-    @ZenGetter("bedrockVeinDeposits")
     public static List<BedrockFluidDepositDefinition> getBedrockVeinDeposits() {
         return Collections.unmodifiableList(INSTANCE.registeredBedrockVeinDefinitions);
     }
@@ -536,5 +532,4 @@ public class WorldGenRegistry {
     public static Map<Integer, String> getNamedDimensions() {
         return INSTANCE.namedDimensions;
     }
-
 }
