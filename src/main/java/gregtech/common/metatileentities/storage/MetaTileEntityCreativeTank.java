@@ -34,7 +34,7 @@ import java.util.function.Function;
 
 import static net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack.FLUID_NBT_KEY;
 
-public class MetaTileEntityCreativeTank extends MetaTileEntity {
+public class MetaTileEntityCreativeTank extends MetaTileEntityQuantumTank {
 
     private int mBPerCycle = 1;
     private int ticksPerCycle = 1;
@@ -45,7 +45,7 @@ public class MetaTileEntityCreativeTank extends MetaTileEntity {
     private final List<Character> ALLOWED_CHARS = Lists.newArrayList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
 
     public MetaTileEntityCreativeTank(ResourceLocation metaTileEntityId) {
-        super(metaTileEntityId);
+        super(metaTileEntityId, 15, -1);
     }
 
     @Override
@@ -53,8 +53,8 @@ public class MetaTileEntityCreativeTank extends MetaTileEntity {
         Textures.VOLTAGE_CASINGS[14].render(renderState, translation, ArrayUtils.add(pipeline,
                 new ColourMultiplier(GTUtility.convertRGBtoOpaqueRGBA_CL(getPaintingColorForRendering()))));
         Textures.CREATIVE_CONTAINER_OVERLAY.renderSided(EnumFacing.UP, renderState, translation, pipeline);
-        Textures.PIPE_OUT_OVERLAY.renderSided(this.getFrontFacing(), renderState, translation, pipeline);
-        Textures.FLUID_OUTPUT_OVERLAY.renderSided(this.getFrontFacing(), renderState, translation, pipeline);
+        Textures.PIPE_OUT_OVERLAY.renderSided(this.getOutputFacing(), renderState, translation, pipeline);
+        Textures.FLUID_OUTPUT_OVERLAY.renderSided(this.getOutputFacing(), renderState, translation, pipeline);
     }
 
     @Override
@@ -102,9 +102,9 @@ public class MetaTileEntityCreativeTank extends MetaTileEntity {
 
         FluidStack stack = fluidTank.getFluid().copy();
 
-        TileEntity tile = getWorld().getTileEntity(getPos().offset(this.getFrontFacing()));
+        TileEntity tile = getWorld().getTileEntity(getPos().offset(this.getOutputFacing()));
         if (tile != null) {
-            IFluidHandler fluidHandler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, frontFacing);
+            IFluidHandler fluidHandler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, getOutputFacing().getOpposite());
             if (fluidHandler == null || fluidHandler.getTankProperties().length == 0)
                 return;
 
