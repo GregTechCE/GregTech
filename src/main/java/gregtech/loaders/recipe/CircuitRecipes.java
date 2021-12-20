@@ -438,7 +438,7 @@ public class CircuitRecipes {
 
         // SMD Inductor
         ASSEMBLER_RECIPES.recipeBuilder().duration(160).EUt(VA[HV])
-                .input(foil, NickelZincFerrite)
+                .input(ring, NickelZincFerrite)
                 .input(wireFine, Cupronickel, 4)
                 .fluidInputs(Polyethylene.getFluid(L))
                 .output(SMD_INDUCTOR, 16)
@@ -478,7 +478,7 @@ public class CircuitRecipes {
 
         // Advanced SMD Inductor
         ASSEMBLER_RECIPES.recipeBuilder().EUt(VA[HV]).duration(160)
-                .input(foil, HSSE)
+                .input(ring, HSSE)
                 .input(wireFine, Palladium, 4)
                 .fluidInputs(Polybenzimidazole.getFluid(L))
                 .output(ADVANCED_SMD_INDUCTOR, 16)
