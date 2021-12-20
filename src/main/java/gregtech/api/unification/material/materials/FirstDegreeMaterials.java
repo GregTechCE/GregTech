@@ -1065,7 +1065,6 @@ public class FirstDegreeMaterials {
 
         HydrogenSulfide = new Material.Builder(400, "hydrogen_sulfide")
                 .fluid(Material.FluidType.GAS)
-                .flags(DISABLE_DECOMPOSITION)
                 .components(Hydrogen, 2, Sulfur, 1)
                 .build();
 
