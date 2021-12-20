@@ -942,12 +942,20 @@ public class CircuitRecipes {
         // T2.5: Misc ==================================================================================================
 
         // NAND Chip ULV
-        CIRCUIT_ASSEMBLER_RECIPES.recipeBuilder().EUt(VA[LV]).duration(300)
+        CIRCUIT_ASSEMBLER_RECIPES.recipeBuilder().EUt(VA[MV]).duration(300)
                 .input(GOOD_CIRCUIT_BOARD)
                 .input(SIMPLE_SYSTEM_ON_CHIP)
                 .input(bolt, RedAlloy, 2)
                 .input(wireFine, Tin, 2)
                 .output(NAND_CHIP_ULV, 8)
+                .buildAndRegister();
+
+        CIRCUIT_ASSEMBLER_RECIPES.recipeBuilder().EUt(VA[MV]).duration(300)
+                .input(PLASTIC_CIRCUIT_BOARD)
+                .input(SIMPLE_SYSTEM_ON_CHIP)
+                .input(bolt, RedAlloy, 2)
+                .input(wireFine, Tin, 2)
+                .output(NAND_CHIP_ULV, 12)
                 .buildAndRegister();
 
         // Microprocessor LV
@@ -1355,7 +1363,7 @@ public class CircuitRecipes {
                 .input(NOR_MEMORY_CHIP, 16)
                 .input(RANDOM_ACCESS_MEMORY, 32)
                 .input(wireFine, YttriumBariumCuprate, 24)
-                .input(foil, SiliconeRubber, 32)
+                .input(foil, Polybenzimidazole, 32)
                 .input(plate, Europium, 4)
                 .fluidInputs(SolderingAlloy.getFluid(1152))
                 .output(WETWARE_SUPER_COMPUTER_UV)
@@ -1370,7 +1378,7 @@ public class CircuitRecipes {
                 .input(ADVANCED_SMD_TRANSISTOR, 32)
                 .input(ADVANCED_SMD_RESISTOR, 32)
                 .input(ADVANCED_SMD_INDUCTOR, 32)
-                .input(foil, SiliconeRubber, 64)
+                .input(foil, Polybenzimidazole, 64)
                 .input(RANDOM_ACCESS_MEMORY, 32)
                 .input(wireGtDouble, EnrichedNaquadahTriniumEuropiumDuranide, 16)
                 .input(plate, Europium, 8)
@@ -1383,7 +1391,7 @@ public class CircuitRecipes {
 
         // Data Stick
         CIRCUIT_ASSEMBLER_RECIPES.recipeBuilder().duration(400).EUt(90)
-                .input(PLASTIC_BOARD)
+                .input(PLASTIC_CIRCUIT_BOARD)
                 .input(CENTRAL_PROCESSING_UNIT, 2)
                 .input(NAND_MEMORY_CHIP, 32)
                 .input(RANDOM_ACCESS_MEMORY, 4)
@@ -1395,7 +1403,7 @@ public class CircuitRecipes {
 
         // Data Orb
         CIRCUIT_ASSEMBLER_RECIPES.recipeBuilder().duration(400).EUt(1200)
-                .input(EPOXY_BOARD)
+                .input(ADVANCED_CIRCUIT_BOARD)
                 .input(circuit, Tier.Advanced, 2)
                 .input(RANDOM_ACCESS_MEMORY, 4)
                 .input(NOR_MEMORY_CHIP, 32)
