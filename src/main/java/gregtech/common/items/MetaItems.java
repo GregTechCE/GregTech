@@ -320,15 +320,17 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem DIODE;
     public static MetaItem<?>.MetaValueItem CAPACITOR;
     public static MetaItem<?>.MetaValueItem TRANSISTOR;
-    public static MetaItem<?>.MetaValueItem SMALL_COIL;
+    public static MetaItem<?>.MetaValueItem INDUCTOR;
     public static MetaItem<?>.MetaValueItem SMD_CAPACITOR;
     public static MetaItem<?>.MetaValueItem SMD_DIODE;
     public static MetaItem<?>.MetaValueItem SMD_RESISTOR;
     public static MetaItem<?>.MetaValueItem SMD_TRANSISTOR;
+    public static MetaItem<?>.MetaValueItem SMD_INDUCTOR;
     public static MetaItem<?>.MetaValueItem ADVANCED_SMD_CAPACITOR;
     public static MetaItem<?>.MetaValueItem ADVANCED_SMD_DIODE;
     public static MetaItem<?>.MetaValueItem ADVANCED_SMD_RESISTOR;
     public static MetaItem<?>.MetaValueItem ADVANCED_SMD_TRANSISTOR;
+    public static MetaItem<?>.MetaValueItem ADVANCED_SMD_INDUCTOR;
 
     // T1: Electronic
     public static MetaItem<?>.MetaValueItem ELECTRONIC_CIRCUIT_LV;
@@ -486,8 +488,8 @@ public final class MetaItems {
     public static ToolMetaItem<?>.MetaToolValueItem BUZZSAW;
     public static ToolMetaItem<?>.MetaToolValueItem SCREWDRIVER_LV;
 
-    public static MetaItem<?>.MetaValueItem ENERGY_LAPOTRONIC_MODULE;
-    public static MetaItem<?>.MetaValueItem ENERGY_LAPOTRONIC_CLUSTER;
+    public static MetaItem<?>.MetaValueItem ENERGY_MODULE;
+    public static MetaItem<?>.MetaValueItem ENERGY_CLUSTER;
     public static MetaItem<?>.MetaValueItem NEURO_PROCESSOR;
     public static MetaItem<?>.MetaValueItem STEM_CELLS;
     public static MetaItem<?>.MetaValueItem PETRI_DISH;

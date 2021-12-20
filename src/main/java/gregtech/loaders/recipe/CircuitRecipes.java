@@ -354,19 +354,33 @@ public class CircuitRecipes {
                 .output(DIODE, 8)
                 .buildAndRegister();
 
-        // Small Coil
-        ASSEMBLER_RECIPES.recipeBuilder().duration(320).EUt(60)
+        // Inductor
+        ASSEMBLER_RECIPES.recipeBuilder().duration(320).EUt(30)
+                .input(ring, Steel)
+                .input(wireFine, Copper, 2)
+                .fluidInputs(Polyethylene.getFluid(L / 4))
+                .output(INDUCTOR, 2)
+                .buildAndRegister();
+
+        ASSEMBLER_RECIPES.recipeBuilder().duration(320).EUt(30)
+                .input(ring, Steel)
+                .input(wireFine, AnnealedCopper, 2)
+                .fluidInputs(Polyethylene.getFluid(L / 4))
+                .output(INDUCTOR, 4)
+                .buildAndRegister();
+
+        ASSEMBLER_RECIPES.recipeBuilder().duration(320).EUt(30)
                 .input(ring, NickelZincFerrite)
                 .input(wireFine, Copper, 2)
                 .fluidInputs(Polyethylene.getFluid(L / 4))
-                .output(SMALL_COIL, 4)
+                .output(INDUCTOR, 4)
                 .buildAndRegister();
 
-        ASSEMBLER_RECIPES.recipeBuilder().duration(320).EUt(60)
+        ASSEMBLER_RECIPES.recipeBuilder().duration(320).EUt(30)
                 .input(ring, NickelZincFerrite)
                 .input(wireFine, AnnealedCopper, 2)
                 .fluidInputs(Polyethylene.getFluid(L / 4))
-                .output(SMALL_COIL, 8)
+                .output(INDUCTOR, 8)
                 .buildAndRegister();
 
         // SMD Resistor
@@ -422,6 +436,14 @@ public class CircuitRecipes {
                 .output(SMD_CAPACITOR, 24)
                 .buildAndRegister();
 
+        // SMD Inductor
+        ASSEMBLER_RECIPES.recipeBuilder().duration(160).EUt(VA[HV])
+                .input(foil, NickelZincFerrite)
+                .input(wireFine, Cupronickel, 4)
+                .fluidInputs(Polyethylene.getFluid(L))
+                .output(SMD_INDUCTOR, 16)
+                .buildAndRegister();
+
         // Advanced SMD Resistor
         ASSEMBLER_RECIPES.recipeBuilder().EUt(384).duration(160)
                 .input(dust, Graphene)
@@ -452,6 +474,14 @@ public class CircuitRecipes {
                 .input(foil, HSSS)
                 .fluidInputs(Polybenzimidazole.getFluid(L / 4))
                 .output(ADVANCED_SMD_CAPACITOR, 16)
+                .buildAndRegister();
+
+        // Advanced SMD Inductor
+        ASSEMBLER_RECIPES.recipeBuilder().EUt(VA[HV]).duration(160)
+                .input(foil, HSSE)
+                .input(wireFine, Palladium, 4)
+                .fluidInputs(Polybenzimidazole.getFluid(L))
+                .output(ADVANCED_SMD_INDUCTOR, 16)
                 .buildAndRegister();
 
         // Carbon Fibers
@@ -966,7 +996,7 @@ public class CircuitRecipes {
         CIRCUIT_ASSEMBLER_RECIPES.recipeBuilder().EUt(VA[MV]).duration(400)
                 .input(PLASTIC_CIRCUIT_BOARD)
                 .input(PROCESSOR_MV, 2)
-                .input(SMALL_COIL, 4)
+                .input(component, Component.Inductor, 4)
                 .input(component, Component.Capacitor, 8)
                 .input(RANDOM_ACCESS_MEMORY, 4)
                 .input(wireFine, RedAlloy, 8)
@@ -990,7 +1020,7 @@ public class CircuitRecipes {
         CIRCUIT_ASSEMBLER_RECIPES.recipeBuilder().EUt(VA[HV]).duration(800)
                 .input(frameGt, Aluminium, 2)
                 .input(WORKSTATION_EV, 2)
-                .input(SMALL_COIL, 12)
+                .input(component, Component.Inductor, 8)
                 .input(component, Component.Capacitor, 16)
                 .input(RANDOM_ACCESS_MEMORY, 16)
                 .input(wireGtSingle, AnnealedCopper, 16)
@@ -1001,7 +1031,7 @@ public class CircuitRecipes {
         CIRCUIT_ASSEMBLER_RECIPES.recipeBuilder().EUt(VA[HV]).duration(400)
                 .input(frameGt, Aluminium, 2)
                 .input(WORKSTATION_EV, 2)
-                .input(SMALL_COIL, 12)
+                .input(ADVANCED_SMD_INDUCTOR, 2)
                 .input(ADVANCED_SMD_CAPACITOR, 4)
                 .input(RANDOM_ACCESS_MEMORY, 16)
                 .input(wireGtSingle, AnnealedCopper, 16)
@@ -1045,7 +1075,7 @@ public class CircuitRecipes {
         CIRCUIT_ASSEMBLER_RECIPES.recipeBuilder().EUt(600).duration(400)
                 .input(ADVANCED_CIRCUIT_BOARD)
                 .input(NANO_PROCESSOR_HV, 2)
-                .input(SMALL_COIL, 8)
+                .input(SMD_INDUCTOR, 4)
                 .input(SMD_CAPACITOR, 8)
                 .input(RANDOM_ACCESS_MEMORY, 8)
                 .input(wireFine, Electrum, 16)
@@ -1056,7 +1086,7 @@ public class CircuitRecipes {
         CIRCUIT_ASSEMBLER_RECIPES.recipeBuilder().EUt(600).duration(200)
                 .input(ADVANCED_CIRCUIT_BOARD)
                 .input(NANO_PROCESSOR_HV, 2)
-                .input(SMALL_COIL, 8)
+                .input(ADVANCED_SMD_INDUCTOR)
                 .input(ADVANCED_SMD_CAPACITOR, 2)
                 .input(RANDOM_ACCESS_MEMORY, 8)
                 .input(wireFine, Electrum, 16)
@@ -1091,7 +1121,7 @@ public class CircuitRecipes {
         CIRCUIT_ASSEMBLER_RECIPES.recipeBuilder().EUt(VA[EV]).duration(800)
                 .input(frameGt, Aluminium, 2)
                 .input(NANO_COMPUTER_IV, 2)
-                .input(SMALL_COIL, 16)
+                .input(SMD_INDUCTOR, 16)
                 .input(SMD_CAPACITOR, 32)
                 .input(RANDOM_ACCESS_MEMORY, 16)
                 .input(wireGtSingle, AnnealedCopper, 32)
@@ -1102,7 +1132,7 @@ public class CircuitRecipes {
         CIRCUIT_ASSEMBLER_RECIPES.recipeBuilder().EUt(VA[EV]).duration(400)
                 .input(frameGt, Aluminium, 2)
                 .input(NANO_COMPUTER_IV, 2)
-                .input(SMALL_COIL, 16)
+                .input(ADVANCED_SMD_INDUCTOR, 4)
                 .input(ADVANCED_SMD_CAPACITOR, 8)
                 .input(RANDOM_ACCESS_MEMORY, 16)
                 .input(wireGtSingle, AnnealedCopper, 32)
@@ -1146,7 +1176,7 @@ public class CircuitRecipes {
         CIRCUIT_ASSEMBLER_RECIPES.recipeBuilder().EUt(2400).duration(400)
                 .input(EXTREME_CIRCUIT_BOARD)
                 .input(QUANTUM_PROCESSOR_EV, 2)
-                .input(SMALL_COIL, 12)
+                .input(SMD_INDUCTOR, 8)
                 .input(SMD_CAPACITOR, 16)
                 .input(RANDOM_ACCESS_MEMORY, 4)
                 .input(wireFine, Platinum, 16)
@@ -1157,7 +1187,7 @@ public class CircuitRecipes {
         CIRCUIT_ASSEMBLER_RECIPES.recipeBuilder().EUt(2400).duration(200)
                 .input(EXTREME_CIRCUIT_BOARD)
                 .input(QUANTUM_PROCESSOR_EV, 2)
-                .input(SMALL_COIL, 12)
+                .input(ADVANCED_SMD_INDUCTOR, 2)
                 .input(ADVANCED_SMD_CAPACITOR, 4)
                 .input(RANDOM_ACCESS_MEMORY, 4)
                 .input(wireFine, Platinum, 16)
@@ -1192,7 +1222,7 @@ public class CircuitRecipes {
         CIRCUIT_ASSEMBLER_RECIPES.recipeBuilder().EUt(VA[IV]).duration(800)
                 .input(frameGt, HSSG, 2)
                 .input(QUANTUM_COMPUTER_LUV, 2)
-                .input(SMALL_COIL, 24)
+                .input(SMD_INDUCTOR, 24)
                 .input(SMD_CAPACITOR, 48)
                 .input(RANDOM_ACCESS_MEMORY, 24)
                 .input(wireGtSingle, AnnealedCopper, 48)
@@ -1203,7 +1233,7 @@ public class CircuitRecipes {
         CIRCUIT_ASSEMBLER_RECIPES.recipeBuilder().EUt(VA[IV]).duration(400)
                 .input(frameGt, HSSG, 2)
                 .input(QUANTUM_COMPUTER_LUV, 2)
-                .input(SMALL_COIL, 24)
+                .input(ADVANCED_SMD_INDUCTOR, 6)
                 .input(ADVANCED_SMD_CAPACITOR, 12)
                 .input(RANDOM_ACCESS_MEMORY, 24)
                 .input(wireGtSingle, AnnealedCopper, 48)
@@ -1237,7 +1267,7 @@ public class CircuitRecipes {
         CIRCUIT_ASSEMBLER_RECIPES.recipeBuilder().EUt(9600).duration(400)
                 .input(ELITE_CIRCUIT_BOARD)
                 .input(CRYSTAL_PROCESSOR_IV, 2)
-                .input(SMALL_COIL, 24)
+                .input(ADVANCED_SMD_INDUCTOR, 4)
                 .input(ADVANCED_SMD_CAPACITOR, 8)
                 .input(RANDOM_ACCESS_MEMORY, 24)
                 .input(wireFine, NiobiumTitanium, 16)
@@ -1264,7 +1294,7 @@ public class CircuitRecipes {
                 .input(RANDOM_ACCESS_MEMORY, 32)
                 .input(HIGH_POWER_INTEGRATED_CIRCUIT, 2)
                 .input(wireGtSingle, NiobiumTitanium, 8)
-                .input(SMALL_COIL, 32)
+                .input(ADVANCED_SMD_INDUCTOR, 8)
                 .input(ADVANCED_SMD_CAPACITOR, 16)
                 .input(ADVANCED_SMD_DIODE, 8)
                 .fluidInputs(SolderingAlloy.getFluid(L * 10))
@@ -1309,7 +1339,7 @@ public class CircuitRecipes {
         CIRCUIT_ASSEMBLER_RECIPES.recipeBuilder().EUt(38400).duration(400)
                 .input(WETWARE_CIRCUIT_BOARD)
                 .input(WETWARE_PROCESSOR_LUV, 2)
-                .input(SMALL_COIL, 32)
+                .input(ADVANCED_SMD_INDUCTOR, 6)
                 .input(ADVANCED_SMD_CAPACITOR, 12)
                 .input(RANDOM_ACCESS_MEMORY, 24)
                 .input(wireFine, YttriumBariumCuprate, 16)
@@ -1339,6 +1369,7 @@ public class CircuitRecipes {
                 .input(ADVANCED_SMD_CAPACITOR, 32)
                 .input(ADVANCED_SMD_TRANSISTOR, 32)
                 .input(ADVANCED_SMD_RESISTOR, 32)
+                .input(ADVANCED_SMD_INDUCTOR, 32)
                 .input(foil, SiliconeRubber, 64)
                 .input(RANDOM_ACCESS_MEMORY, 32)
                 .input(wireGtDouble, EnrichedNaquadahTriniumEuropiumDuranide, 16)
@@ -1372,51 +1403,6 @@ public class CircuitRecipes {
                 .input(wireFine, Platinum, 32)
                 .solderMultiplier(2)
                 .output(TOOL_DATA_ORB)
-                .buildAndRegister();
-
-        // Lapotronic Energy Orb
-        CIRCUIT_ASSEMBLER_RECIPES.recipeBuilder().duration(512).EUt(1024)
-                .input(FIBER_BOARD)
-                .input(POWER_INTEGRATED_CIRCUIT, 4)
-                .input(ENGRAVED_LAPOTRON_CHIP, 24)
-                .input(NANO_CENTRAL_PROCESSING_UNIT, 2)
-                .input(wireFine, Platinum, 16)
-                .input(plate, Platinum, 8)
-                .output(ENERGY_LAPOTRONIC_ORB)
-                .solderMultiplier(2)
-                .buildAndRegister();
-
-        // Lapotronic Energy Cluster
-        ASSEMBLY_LINE_RECIPES.recipeBuilder().EUt(80000).duration(1000)
-                .input(MULTILAYER_FIBER_BOARD)
-                .input(foil, Europium, 32)
-                .input(circuit, Tier.Master, 4)
-                .input(ENGRAVED_LAPOTRON_CHIP, 36)
-                .input(ENGRAVED_LAPOTRON_CHIP, 36)
-                .input(HIGH_POWER_INTEGRATED_CIRCUIT, 64)
-                .input(SMD_DIODE, 32)
-                .input(SMD_CAPACITOR, 32)
-                .input(SMD_RESISTOR, 32)
-                .input(SMD_TRANSISTOR, 32)
-                .input(wireFine, Platinum, 64)
-                .fluidInputs(SolderingAlloy.getFluid(L * 5))
-                .output(ENERGY_LAPOTRONIC_ORB_CLUSTER)
-                .buildAndRegister();
-
-        ASSEMBLY_LINE_RECIPES.recipeBuilder().EUt(80000).duration(500)
-                .input(MULTILAYER_FIBER_BOARD)
-                .input(foil, Europium, 32)
-                .input(circuit, Tier.Master, 4)
-                .input(ENGRAVED_LAPOTRON_CHIP, 36)
-                .input(ENGRAVED_LAPOTRON_CHIP, 36)
-                .input(HIGH_POWER_INTEGRATED_CIRCUIT, 64)
-                .input(ADVANCED_SMD_DIODE, 8)
-                .input(ADVANCED_SMD_CAPACITOR, 8)
-                .input(ADVANCED_SMD_RESISTOR, 8)
-                .input(ADVANCED_SMD_TRANSISTOR, 8)
-                .input(wireFine, Platinum, 64)
-                .fluidInputs(SolderingAlloy.getFluid(L * 5))
-                .output(ENERGY_LAPOTRONIC_ORB_CLUSTER)
                 .buildAndRegister();
     }
 }

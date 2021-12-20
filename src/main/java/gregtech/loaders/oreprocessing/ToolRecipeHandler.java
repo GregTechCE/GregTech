@@ -70,8 +70,8 @@ public class ToolRecipeHandler {
                 {MetaItems.BATTERY_EV_VANADIUM, MetaItems.LAPOTRON_CRYSTAL},
                 {MetaItems.BATTERY_IV_VANADIUM, MetaItems.ENERGY_LAPOTRONIC_ORB},
                 {MetaItems.BATTERY_LUV_VANADIUM, MetaItems.ENERGY_LAPOTRONIC_ORB_CLUSTER},
-                {MetaItems.BATTERY_ZPM_NAQUADRIA, MetaItems.ENERGY_LAPOTRONIC_MODULE},
-                {MetaItems.BATTERY_UV_NAQUADRIA, MetaItems.ENERGY_LAPOTRONIC_CLUSTER}};
+                {MetaItems.BATTERY_ZPM_NAQUADRIA, MetaItems.ENERGY_MODULE},
+                {MetaItems.BATTERY_UV_NAQUADRIA, MetaItems.ENERGY_CLUSTER}};
     }
 
     public static void registerPowerUnitRecipes() {

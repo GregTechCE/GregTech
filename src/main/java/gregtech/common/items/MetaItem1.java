@@ -402,19 +402,21 @@ public class MetaItem1 extends StandardMetaItem {
         // Circuit Components: ID 516-565
         VACUUM_TUBE = addItem(516, "circuit.vacuum_tube").setUnificationData(OrePrefix.circuit, Tier.Primitive);
         GLASS_TUBE = addItem(517, "component.glass.tube");
-        SMALL_COIL = addItem(518, "component.small_coil");
-        TRANSISTOR = addItem(519, "component.transistor").setUnificationData(OrePrefix.component, Component.Transistor);
-        RESISTOR = addItem(520, "component.resistor").setUnificationData(OrePrefix.component, Component.Resistor);
-        CAPACITOR = addItem(521, "component.capacitor").setUnificationData(OrePrefix.component, Component.Capacitor);
-        DIODE = addItem(522, "component.diode").setUnificationData(OrePrefix.component, Component.Diode);
+        TRANSISTOR = addItem(518, "component.transistor").setUnificationData(OrePrefix.component, Component.Transistor);
+        RESISTOR = addItem(519, "component.resistor").setUnificationData(OrePrefix.component, Component.Resistor);
+        CAPACITOR = addItem(520, "component.capacitor").setUnificationData(OrePrefix.component, Component.Capacitor);
+        DIODE = addItem(521, "component.diode").setUnificationData(OrePrefix.component, Component.Diode);
+        INDUCTOR = addItem(522, "component.inductor").setUnificationData(OrePrefix.component, Component.Inductor);
         SMD_TRANSISTOR = addItem(523, "component.smd.transistor").setUnificationData(OrePrefix.component, Component.Transistor);
         SMD_RESISTOR = addItem(524, "component.smd.resistor").setUnificationData(OrePrefix.component, Component.Resistor);
         SMD_CAPACITOR = addItem(525, "component.smd.capacitor").setUnificationData(OrePrefix.component, Component.Capacitor);
         SMD_DIODE = addItem(526, "component.smd.diode").setUnificationData(OrePrefix.component, Component.Diode);
-        ADVANCED_SMD_TRANSISTOR = addItem(527, "component.advanced_smd.transistor");
-        ADVANCED_SMD_RESISTOR = addItem(528, "component.advanced_smd.resistor");
-        ADVANCED_SMD_CAPACITOR = addItem(529, "component.advanced_smd.capacitor");
-        ADVANCED_SMD_DIODE = addItem(530, "component.advanced_smd.diode");
+        SMD_INDUCTOR = addItem(527, "component.smd.inductor").setUnificationData(OrePrefix.component, Component.Inductor);
+        ADVANCED_SMD_TRANSISTOR = addItem(528, "component.advanced_smd.transistor");
+        ADVANCED_SMD_RESISTOR = addItem(529, "component.advanced_smd.resistor");
+        ADVANCED_SMD_CAPACITOR = addItem(530, "component.advanced_smd.capacitor");
+        ADVANCED_SMD_DIODE = addItem(531, "component.advanced_smd.diode");
+        ADVANCED_SMD_INDUCTOR = addItem(532, "component.advanced_smd.inductor");
 
         // Engraved and Complex Wafers: ID 566-590
         CENTRAL_PROCESSING_UNIT_WAFER = addItem(566, "wafer.central_processing_unit");
@@ -562,11 +564,11 @@ public class MetaItem1 extends StandardMetaItem {
         ENERGY_LAPOTRONIC_ORB = addItem(748, "energy.lapotronic_orb").addComponents(ElectricStats.createRechargeableBattery(100000000L, GTValues.IV)).setUnificationData(OrePrefix.battery, Tier.Elite).setModelAmount(8);
         ENERGY_LAPOTRONIC_ORB_CLUSTER = addItem(749, "energy.lapotronic_orb_cluster").addComponents(ElectricStats.createRechargeableBattery(1000000000L, GTValues.LuV)).setUnificationData(OrePrefix.battery, Tier.Master).setModelAmount(8);
 
-        ENERGY_LAPOTRONIC_MODULE = addItem(750, "energy.module").addComponents(new IItemComponent[]{ElectricStats.createRechargeableBattery(10000000000L, GTValues.ZPM)}).setUnificationData(OrePrefix.battery, Tier.Ultimate).setModelAmount(8);
-        ENERGY_LAPOTRONIC_CLUSTER = addItem(751, "energy.cluster").addComponents(new IItemComponent[]{ElectricStats.createRechargeableBattery(100000000000L, GTValues.UV)}).setUnificationData(OrePrefix.battery, Tier.Super).setModelAmount(8);
+        ENERGY_MODULE = addItem(750, "energy.module").addComponents(new IItemComponent[]{ElectricStats.createRechargeableBattery(10000000000L, GTValues.ZPM)}).setUnificationData(OrePrefix.battery, Tier.Ultimate).setModelAmount(8);
+        ENERGY_CLUSTER = addItem(751, "energy.cluster").addComponents(new IItemComponent[]{ElectricStats.createRechargeableBattery(100000000000L, GTValues.UV)}).setUnificationData(OrePrefix.battery, Tier.Super).setModelAmount(8);
 
         ZERO_POINT_MODULE = addItem(752, "zpm").addComponents(ElectricStats.createBattery(2000000000000L, GTValues.ZPM, true)).setModelAmount(8);
-        ULTIMATE_BATTERY = addItem(753, "max.battery").addComponents(ElectricStats.createRechargeableBattery(Long.MAX_VALUE, GTValues.MAX)).setUnificationData(OrePrefix.battery, Tier.Maximum).setModelAmount(8);
+        ULTIMATE_BATTERY = addItem(753, "max.battery").addComponents(ElectricStats.createRechargeableBattery(Long.MAX_VALUE, GTValues.UHV)).setUnificationData(OrePrefix.battery, Tier.Infinite).setModelAmount(8);
 
         IMPELLER_MV = addItem(776, "impeller.mv").setRarity(EnumRarity.UNCOMMON);
         IMPELLER_HV = addItem(777, "impeller.hv").setRarity(EnumRarity.RARE);
