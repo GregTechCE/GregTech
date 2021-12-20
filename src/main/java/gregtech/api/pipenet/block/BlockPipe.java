@@ -158,6 +158,8 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
                             IPipeTile<?, ?> otherTile = (IPipeTile<?, ?>) te;
                             if (otherTile.getPipeType().getClass() != pipeTile.getPipeType().getClass()) {
                                 otherTile.setConnectionBlocked(AttachmentType.PIPE, facing.getOpposite(), true, true);
+                            } else if (!ConfigHolder.machines.gt6StylePipesCables || otherTile.isConnectionOpenAny(facing.getOpposite())) {
+                                pipeTile.setConnectionBlocked(AttachmentType.PIPE, facing, false, true);
                             }
                         } else if (!ConfigHolder.machines.gt6StylePipesCables) {
                             pipeTile.setConnectionBlocked(AttachmentType.PIPE, facing, false, true);
@@ -397,7 +399,7 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
     }
 
     protected boolean isThisPipeBlock(Block block) {
-        return block.getClass().isAssignableFrom(getClass());
+        return block != null && block.getClass().isAssignableFrom(getClass());
     }
 
     /**
