@@ -1095,5 +1095,12 @@ public class ReactorRecipes {
                 .output(dust, Blaze)
                 .duration(200).EUt(VA[HV]).buildAndRegister();
 
+        CHEMICAL_RECIPES.recipeBuilder()
+                .input(dust, Potassium)
+                .fluidInputs(NitricAcid.getFluid(1000))
+                .output(dust, Saltpeter, 5)
+                .fluidOutputs(Hydrogen.getFluid(1000))
+                .duration(100).EUt(VA[LV]).buildAndRegister();
+
     }
 }
