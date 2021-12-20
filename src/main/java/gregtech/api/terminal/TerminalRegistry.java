@@ -87,12 +87,14 @@ public class TerminalRegistry {
                 .upgrade(6, MetaItems.COIN_GOLD_ANCIENT.getStackForm())
                 .device(DeviceHardware.DEVICE.PROSPECTOR_LV)
                 .build();
-        AppRegistryBuilder.create(new ProspectorApp(1))
-                .battery(GTValues.MV, 1000)
-                .upgrade(MetaItems.COIN_DOGE.getStackForm(10))
-                .upgrade(6, MetaItems.COIN_GOLD_ANCIENT.getStackForm())
-                .device(DeviceHardware.DEVICE.PROSPECTOR_LV)
-                .build();
+
+        // TODO Reimplement this when Fluid Rigs are added
+        //AppRegistryBuilder.create(new ProspectorApp(1))
+        //        .battery(GTValues.MV, 1000)
+        //        .upgrade(MetaItems.COIN_DOGE.getStackForm(10))
+        //        .upgrade(6, MetaItems.COIN_GOLD_ANCIENT.getStackForm())
+        //        .device(DeviceHardware.DEVICE.PROSPECTOR_LV)
+        //        .build();
         AppRegistryBuilder.create(new MultiBlockPreviewARApp())
                 .battery(GTValues.LV, 512)
                 .device(DeviceHardware.DEVICE.CAMERA)
