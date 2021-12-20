@@ -33,7 +33,7 @@ public class ItemBlockPipe<PipeType extends Enum<PipeType> & IPipeType<NodeDataT
     @SuppressWarnings({"rawtypes", "unchecked"})
     public boolean placeBlockAt(@Nonnull ItemStack stack, @Nonnull EntityPlayer player, @Nonnull World world, @Nonnull BlockPos pos, @Nonnull EnumFacing side, float hitX, float hitY, float hitZ, @Nonnull IBlockState newState) {
         boolean superVal = super.placeBlockAt(stack, player, world, pos, side, hitX, hitY, hitZ, newState);
-        if (superVal && ConfigHolder.machines.gt6StylePipesCables && !world.isRemote) {
+        if (superVal && !world.isRemote) {
             IPipeTile selfTile = (IPipeTile) world.getTileEntity(pos);
             if (selfTile != null && selfTile.getPipeBlock().canConnect(selfTile, side.getOpposite())) {
                 selfTile.setConnectionBlocked(AttachmentType.PIPE, side.getOpposite(), false, false);
