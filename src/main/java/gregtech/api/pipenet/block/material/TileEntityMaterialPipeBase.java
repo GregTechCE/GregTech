@@ -54,6 +54,9 @@ public abstract class TileEntityMaterialPipeBase<PipeType extends Enum<PipeType>
     public void readFromNBT(@Nonnull NBTTagCompound compound) {
         super.readFromNBT(compound);
         this.pipeMaterial = GregTechAPI.MATERIAL_REGISTRY.getObject(compound.getString("PipeMaterial"));
+        if (this.pipeMaterial == null) {
+            this.pipeMaterial = Materials.Aluminium; // fallback
+        }
     }
 
     private void writePipeMaterial(PacketBuffer buf) {
