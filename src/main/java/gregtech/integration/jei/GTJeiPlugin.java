@@ -162,6 +162,7 @@ public class GTJeiPlugin implements IModPlugin {
                             recipeMap.recipeBuilder() instanceof CircuitAssemblerRecipeBuilder) &&
                             !(metaTileEntity instanceof MultiblockControllerBase)) {
                             deferredCatalysts.put(recipeMap, MetaTileEntities.PROCESSING_ARRAY);
+                            deferredCatalysts.put(recipeMap, MetaTileEntities.ADVANCED_PROCESSING_ARRAY);
                         }
                     }
                 } else if (workableCapability instanceof FuelRecipeLogic) {

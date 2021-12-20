@@ -3430,6 +3430,7 @@ gregtech.machine.basic.input_from_output_side.disallow=Disallow Input from Outpu
 gregtech.machine.muffle.on=Sound Muffling: Enabled
 gregtech.machine.muffle.off=Sound Muffling: Disabled
 gregtech.machine.perfect_oc=Does not lose energy efficiency when overclocked.
+gregtech.machine.parallel_limit=Can run up to §b%d§r§7 Recipes at once.
 
 # Advancements
 gregtech.advancement.root_steam.name=Steam Age
