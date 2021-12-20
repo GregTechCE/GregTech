@@ -207,7 +207,7 @@ public interface ICoverable {
         }
     }
 
-    public default boolean canRenderMachineGrid() {
+    default boolean canRenderMachineGrid() {
         return true;
     }
 }
