@@ -64,6 +64,7 @@ public class Textures {
     public static final SimpleOverlayRenderer CLEAN_STAINLESS_STEEL_CASING = new SimpleOverlayRenderer("casings/solid/machine_casing_clean_stainless_steel");
     public static final SimpleOverlayRenderer STABLE_TITANIUM_CASING = new SimpleOverlayRenderer("casings/solid/machine_casing_stable_titanium");
     public static final SimpleOverlayRenderer ROBUST_TUNGSTENSTEEL_CASING = new SimpleOverlayRenderer("casings/solid/machine_casing_robust_tungstensteel");
+    public static final SimpleOverlayRenderer ROBUST_HSSE_CASING = new SimpleOverlayRenderer("casings/solid/machine_casing_robust_hsse");
     public static final SimpleOverlayRenderer INERT_PTFE_CASING = new SimpleOverlayRenderer("casings/solid/machine_casing_inert_ptfe");
     public static final SimpleOverlayRenderer BRONZE_FIREBOX = new SimpleOverlayRenderer("casings/firebox/machine_casing_firebox_bronze");
     public static final SimpleOverlayRenderer BRONZE_FIREBOX_ACTIVE = new FullBrightnessSimpleCubeRenderer("casings/firebox/machine_casing_firebox_bronze_active");
@@ -114,6 +115,8 @@ public class Textures {
     public static final OrientedOverlayRenderer LARGE_TITANIUM_BOILER = new OrientedOverlayRenderer("multiblock/generator/large_titanium_boiler", FRONT);
     public static final OrientedOverlayRenderer LARGE_TUNGSTENSTEEL_BOILER = new OrientedOverlayRenderer("multiblock/generator/large_tungstensteel_boiler", FRONT);
     public static final OrientedOverlayRenderer FUSION_REACTOR_OVERLAY = new OrientedOverlayRenderer("multiblock/fusion_reactor", FRONT);
+    public static final OrientedOverlayRenderer PROCESSING_ARRAY_OVERLAY = new OrientedOverlayRenderer("multiblock/processing_array", FRONT);
+    public static final OrientedOverlayRenderer ADVANCED_PROCESSING_ARRAY_OVERLAY = new OrientedOverlayRenderer("multiblock/advanced_processing_array", FRONT);
     public static final OrientedOverlayRenderer LARGE_MINER_OVERLAY_BASIC = new OrientedOverlayRenderer("multiblock/large_miner_basic", FRONT);
     public static final OrientedOverlayRenderer LARGE_MINER_OVERLAY_ADVANCED = new OrientedOverlayRenderer("multiblock/large_miner_advanced", FRONT);
     public static final OrientedOverlayRenderer LARGE_MINER_OVERLAY_ADVANCED_2 = new OrientedOverlayRenderer("multiblock/large_miner_advanced_2", FRONT);

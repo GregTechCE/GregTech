@@ -820,6 +820,7 @@ public class RecipeMaps {
             .setProgressBar(GuiTextures.PROGRESS_BAR_BATH, MoveType.CIRCULAR)
             .setSound(GTSounds.BATH);
 
+
     //////////////////////////////////////
     //         Fuel Recipe Maps         //
     //////////////////////////////////////
