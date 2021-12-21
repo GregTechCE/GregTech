@@ -788,7 +788,7 @@ public class FirstDegreeMaterials {
         SiliconDioxide = new Material.Builder(356, "silicon_dioxide")
                 .dust(1)
                 .color(0xC8C8C8).iconSet(QUARTZ)
-                .flags(NO_SMASHING, NO_SMELTING, CRYSTALLIZABLE)
+                .flags(NO_SMASHING, NO_SMELTING)
                 .components(Silicon, 1, Oxygen, 2)
                 .build();
 
