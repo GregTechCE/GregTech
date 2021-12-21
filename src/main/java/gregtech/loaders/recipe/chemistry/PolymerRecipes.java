@@ -47,7 +47,6 @@ public class PolymerRecipes {
         CHEMICAL_RECIPES.recipeBuilder().EUt(VA[HV]).duration(100)
                 .fluidInputs(NitrationMixture.getFluid(2000))
                 .fluidInputs(Chlorobenzene.getFluid(1000))
-                .notConsumable(new IntCircuitIngredient(1))
                 .fluidOutputs(Nitrochlorobenzene.getFluid(1000))
                 .fluidOutputs(DilutedSulfuricAcid.getFluid(1000))
                 .buildAndRegister();
