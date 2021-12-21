@@ -179,7 +179,7 @@ public class BlockFluidPipe extends BlockMaterialPipe<FluidPipeType, FluidPipePr
                 }
             }
         }
-        net.invalidateNetCapacity();
+        if (net != null) net.invalidateNetCapacity();
         nets.forEach(FluidPipeNet::invalidateNetCapacity);
     }
 
