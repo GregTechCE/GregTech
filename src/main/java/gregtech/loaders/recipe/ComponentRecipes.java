@@ -485,6 +485,7 @@ public class ComponentRecipes {
 
         ASSEMBLY_LINE_RECIPES.recipeBuilder()
                 .input(frameGt, Tritanium)
+                .input(ELECTRIC_MOTOR_UV)
                 .input(plate, Tritanium, 4)
                 .input(GRAVI_STAR)
                 .input(circuit, Tier.Super, 2)
