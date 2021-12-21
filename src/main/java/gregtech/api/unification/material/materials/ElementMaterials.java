@@ -35,7 +35,7 @@ public class ElementMaterials {
         Americium = new Material.Builder(3, "americium")
                 .ingot(3).fluid()
                 .color(0x287869).iconSet(METALLIC)
-                .flags(EXT_METAL, GENERATE_FOIL)
+                .flags(EXT_METAL, GENERATE_FOIL, GENERATE_FINE_WIRE)
                 .element(Elements.Am)
                 .itemPipeProperties(64, 64)
                 .build();

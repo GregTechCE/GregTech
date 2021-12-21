@@ -591,7 +591,7 @@ public class CircuitRecipes {
                 .buildAndRegister();
 
         AUTOCLAVE_RECIPES.recipeBuilder().duration(480).EUt(VA[IV])
-                .input(gem, NetherStar)
+                .input(QUANTUM_STAR)
                 .fluidInputs(Neutronium.getFluid(L * 2))
                 .output(GRAVI_STAR)
                 .buildAndRegister();

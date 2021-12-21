@@ -455,7 +455,7 @@ public class FirstDegreeMaterials {
         Ruridit = new Material.Builder(310, "ruridit")
                 .ingot(3)
                 .colorAverage().iconSet(BRIGHT)
-                .flags(GENERATE_FINE_WIRE, GENERATE_GEAR)
+                .flags(GENERATE_FINE_WIRE, GENERATE_GEAR, GENERATE_LONG_ROD)
                 .components(Ruthenium, 2, Iridium, 1)
                 .blastTemp(4500, GasTier.HIGH, VA[EV], 1600)
                 .build();
@@ -716,7 +716,7 @@ public class FirstDegreeMaterials {
         Osmiridium = new Material.Builder(344, "osmiridium")
                 .ingot(3).fluid()
                 .color(0x6464FF).iconSet(METALLIC)
-                .flags(EXT2_METAL)
+                .flags(EXT2_METAL, GENERATE_SMALL_GEAR, GENERATE_RING, GENERATE_ROTOR)
                 .components(Iridium, 3, Osmium, 1)
                 .toolStats(9.0f, 3.0f, 3152, 21)
                 .itemPipeProperties(64, 32)
