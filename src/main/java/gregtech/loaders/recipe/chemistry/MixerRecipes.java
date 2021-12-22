@@ -393,6 +393,13 @@ public class MixerRecipes {
                 .output(dust, NiobiumTitanium, 2)
                 .buildAndRegister();
 
+        MIXER_RECIPES.recipeBuilder().duration(400).EUt(VA[EV])
+                .input(dust, Vanadium, 3)
+                .input(dust, Gallium)
+                .notConsumable(new IntCircuitIngredient(1))
+                .output(dust, VanadiumGallium, 4)
+                .buildAndRegister();
+
         MIXER_RECIPES.recipeBuilder().duration(600).EUt(24)
                 .input(dust, Manganese)
                 .input(dust, Phosphorus)
