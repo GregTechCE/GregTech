@@ -94,9 +94,8 @@ public class Material implements Comparable<Material> {
         this.materialInfo = materialInfo;
         this.properties = properties;
         this.flags = flags;
-
         this.properties.setMaterial(this);
-        registerMaterial(this);
+        registerMaterial();
     }
 
     // thou shall not call
@@ -107,7 +106,8 @@ public class Material implements Comparable<Material> {
         flags = new MaterialFlags();
     }
 
-    protected void registerMaterial(Material material) {
+    protected void registerMaterial() {
+        verifyMaterial();
         GregTechAPI.MATERIAL_REGISTRY.register(this);
     }
 
@@ -323,9 +323,6 @@ public class Material implements Comparable<Material> {
     public void verifyMaterial() {
         properties.verify();
         flags.verify(this);
-    }
-
-    public void postVerify() {
         this.chemicalFormula = calculateChemicalFormula();
         calculateDecompositionType();
     }

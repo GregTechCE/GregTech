@@ -1,7 +1,6 @@
 package gregtech.api.recipes.logic;
 
 import gregtech.api.GTValues;
-import gregtech.api.GregTechAPI;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.recipes.builders.BlastRecipeBuilder;
@@ -33,7 +32,6 @@ public class ParallelLogicTest {
     public static void bootStrap() {
         Bootstrap.register();
         Materials.register();
-        GregTechAPI.MATERIAL_REGISTRY.flush();
         MetaFluids.init();
     }
 

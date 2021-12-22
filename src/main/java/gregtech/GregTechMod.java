@@ -91,12 +91,10 @@ public class GregTechMod {
         MATERIAL_REGISTRY.unfreeze();
         GTLog.logger.info("Registering GTCEu Materials");
         Materials.register();
-        MATERIAL_REGISTRY.flush();
 
         // Then, register addon Materials
         GTLog.logger.info("Registering addon Materials");
         MinecraftForge.EVENT_BUS.post(new MaterialEvent());
-        MATERIAL_REGISTRY.flush();
 
         // Then, run CraftTweaker Material registration scripts
         if (GTValues.isModLoaded(GTValues.MODID_CT)) {
