@@ -630,9 +630,9 @@ public class CraftingComponent {
                 {5, MetaItems.POWER_INTEGRATED_CIRCUIT.getStackForm()},
                 {6, MetaItems.HIGH_POWER_INTEGRATED_CIRCUIT.getStackForm()},
                 {7, MetaItems.HIGH_POWER_INTEGRATED_CIRCUIT.getStackForm()},
-                {8, MetaItems.HIGH_POWER_INTEGRATED_CIRCUIT.getStackForm()},
-                {9, MetaItems.HIGH_POWER_INTEGRATED_CIRCUIT.getStackForm()},
-                {GTValues.FALLBACK, MetaItems.HIGH_POWER_INTEGRATED_CIRCUIT},
+                {8, MetaItems.ULTRA_HIGH_POWER_INTEGRATED_CIRCUIT.getStackForm()},
+                {9, MetaItems.ULTRA_HIGH_POWER_INTEGRATED_CIRCUIT.getStackForm()},
+                {GTValues.FALLBACK, MetaItems.ULTRA_HIGH_POWER_INTEGRATED_CIRCUIT},
 
         }).collect(Collectors.toMap(data -> (Integer) data[0], data -> data[1])));
 

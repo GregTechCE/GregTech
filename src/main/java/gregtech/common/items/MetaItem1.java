@@ -428,12 +428,13 @@ public class MetaItem1 extends StandardMetaItem {
         SYSTEM_ON_CHIP_WAFER = addItem(572, "wafer.system_on_chip");
         ADVANCED_SYSTEM_ON_CHIP_WAFER = addItem(573, "wafer.advanced_system_on_chip");
         HIGHLY_ADVANCED_SOC_WAFER = addItem(574, "wafer.highly_advanced_system_on_chip");
-        ULTRA_LOW_POWER_INTEGRATED_CIRCUIT_WAFER = addItem(575, "wafer.ultra_low_power_integrated_circuit");
-        LOW_POWER_INTEGRATED_CIRCUIT_WAFER = addItem(576, "wafer.low_power_integrated_circuit");
-        POWER_INTEGRATED_CIRCUIT_WAFER = addItem(577, "wafer.power_integrated_circuit");
-        HIGH_POWER_INTEGRATED_CIRCUIT_WAFER = addItem(578, "wafer.high_power_integrated_circuit");
-        NAND_MEMORY_CHIP_WAFER = addItem(579, "wafer.nand_memory_chip");
-        NOR_MEMORY_CHIP_WAFER = addItem(580, "wafer.nor_memory_chip");
+        NAND_MEMORY_CHIP_WAFER = addItem(575, "wafer.nand_memory_chip");
+        NOR_MEMORY_CHIP_WAFER = addItem(576, "wafer.nor_memory_chip");
+        ULTRA_LOW_POWER_INTEGRATED_CIRCUIT_WAFER = addItem(577, "wafer.ultra_low_power_integrated_circuit");
+        LOW_POWER_INTEGRATED_CIRCUIT_WAFER = addItem(578, "wafer.low_power_integrated_circuit");
+        POWER_INTEGRATED_CIRCUIT_WAFER = addItem(579, "wafer.power_integrated_circuit");
+        HIGH_POWER_INTEGRATED_CIRCUIT_WAFER = addItem(580, "wafer.high_power_integrated_circuit");
+        ULTRA_HIGH_POWER_INTEGRATED_CIRCUIT_WAFER = addItem(581, "wafer.ultra_high_power_integrated_circuit");
 
         // Engraved and Complex Cut Wafers: ID 591-615
         CENTRAL_PROCESSING_UNIT = addItem(591, "plate.central_processing_unit");
@@ -445,12 +446,13 @@ public class MetaItem1 extends StandardMetaItem {
         SYSTEM_ON_CHIP = addItem(597, "plate.system_on_chip");
         ADVANCED_SYSTEM_ON_CHIP = addItem(598, "plate.advanced_system_on_chip");
         HIGHLY_ADVANCED_SOC = addItem(599, "plate.highly_advanced_system_on_chip");
-        ULTRA_LOW_POWER_INTEGRATED_CIRCUIT = addItem(600, "plate.ultra_low_power_integrated_circuit");
-        LOW_POWER_INTEGRATED_CIRCUIT = addItem(601, "plate.low_power_integrated_circuit");
-        POWER_INTEGRATED_CIRCUIT = addItem(602, "plate.power_integrated_circuit");
-        HIGH_POWER_INTEGRATED_CIRCUIT = addItem(603, "plate.high_power_integrated_circuit");
-        NAND_MEMORY_CHIP = addItem(604, "plate.nand_memory_chip");
-        NOR_MEMORY_CHIP = addItem(605, "plate.nor_memory_chip");
+        NAND_MEMORY_CHIP = addItem(600, "plate.nand_memory_chip");
+        NOR_MEMORY_CHIP = addItem(601, "plate.nor_memory_chip");
+        ULTRA_LOW_POWER_INTEGRATED_CIRCUIT = addItem(602, "plate.ultra_low_power_integrated_circuit");
+        LOW_POWER_INTEGRATED_CIRCUIT = addItem(603, "plate.low_power_integrated_circuit");
+        POWER_INTEGRATED_CIRCUIT = addItem(604, "plate.power_integrated_circuit");
+        HIGH_POWER_INTEGRATED_CIRCUIT = addItem(605, "plate.high_power_integrated_circuit");
+        ULTRA_HIGH_POWER_INTEGRATED_CIRCUIT = addItem(606, "plate.ultra_high_power_integrated_circuit");
 
         // ???: ID 616-620
 

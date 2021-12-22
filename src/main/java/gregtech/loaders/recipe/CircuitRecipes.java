@@ -127,6 +127,13 @@ public class CircuitRecipes {
                 .output(HIGH_POWER_INTEGRATED_CIRCUIT_WAFER)
                 .buildAndRegister();
 
+        CHEMICAL_RECIPES.recipeBuilder().duration(1200).EUt(VA[LuV])
+                .input(HIGH_POWER_INTEGRATED_CIRCUIT_WAFER)
+                .input(dust, IndiumGalliumPhosphide, 8)
+                .fluidInputs(Naquadah.getFluid(L * 4))
+                .output(ULTRA_HIGH_POWER_INTEGRATED_CIRCUIT_WAFER)
+                .buildAndRegister();
+
         CHEMICAL_RECIPES.recipeBuilder().duration(1200).EUt(VA[EV])
                 .input(CENTRAL_PROCESSING_UNIT_WAFER)
                 .input(CARBON_FIBERS, 16)
@@ -159,6 +166,7 @@ public class CircuitRecipes {
         CUTTER_RECIPES.recipeBuilder().duration(900).EUt(VA[HV]).input(LOW_POWER_INTEGRATED_CIRCUIT_WAFER).output(LOW_POWER_INTEGRATED_CIRCUIT, 4).buildAndRegister();
         CUTTER_RECIPES.recipeBuilder().duration(900).EUt(VA[EV]).input(POWER_INTEGRATED_CIRCUIT_WAFER).output(POWER_INTEGRATED_CIRCUIT, 4).buildAndRegister();
         CUTTER_RECIPES.recipeBuilder().duration(900).EUt(VA[IV]).input(HIGH_POWER_INTEGRATED_CIRCUIT_WAFER).output(HIGH_POWER_INTEGRATED_CIRCUIT, 2).buildAndRegister();
+        CUTTER_RECIPES.recipeBuilder().duration(900).EUt(VA[LuV]).input(ULTRA_HIGH_POWER_INTEGRATED_CIRCUIT_WAFER).output(ULTRA_HIGH_POWER_INTEGRATED_CIRCUIT, 2).buildAndRegister();
         CUTTER_RECIPES.recipeBuilder().duration(900).EUt(192).input(NOR_MEMORY_CHIP_WAFER).output(NOR_MEMORY_CHIP, 16).buildAndRegister();
         CUTTER_RECIPES.recipeBuilder().duration(900).EUt(192).input(NAND_MEMORY_CHIP_WAFER).output(NAND_MEMORY_CHIP, 32).buildAndRegister();
         CUTTER_RECIPES.recipeBuilder().duration(900).EUt(VA[MV]).input(CENTRAL_PROCESSING_UNIT_WAFER).output(CENTRAL_PROCESSING_UNIT, 8).buildAndRegister();

@@ -266,6 +266,7 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem LOW_POWER_INTEGRATED_CIRCUIT_WAFER;
     public static MetaItem<?>.MetaValueItem POWER_INTEGRATED_CIRCUIT_WAFER;
     public static MetaItem<?>.MetaValueItem HIGH_POWER_INTEGRATED_CIRCUIT_WAFER;
+    public static MetaItem<?>.MetaValueItem ULTRA_HIGH_POWER_INTEGRATED_CIRCUIT_WAFER;
     public static MetaItem<?>.MetaValueItem NAND_MEMORY_CHIP_WAFER;
     public static MetaItem<?>.MetaValueItem NANO_CENTRAL_PROCESSING_UNIT_WAFER;
     public static MetaItem<?>.MetaValueItem NOR_MEMORY_CHIP_WAFER;
@@ -285,6 +286,7 @@ public final class MetaItems {
     public static MetaItem<?>.MetaValueItem LOW_POWER_INTEGRATED_CIRCUIT;
     public static MetaItem<?>.MetaValueItem POWER_INTEGRATED_CIRCUIT;
     public static MetaItem<?>.MetaValueItem HIGH_POWER_INTEGRATED_CIRCUIT;
+    public static MetaItem<?>.MetaValueItem ULTRA_HIGH_POWER_INTEGRATED_CIRCUIT;
     public static MetaItem<?>.MetaValueItem NAND_MEMORY_CHIP;
     public static MetaItem<?>.MetaValueItem NANO_CENTRAL_PROCESSING_UNIT;
     public static MetaItem<?>.MetaValueItem NOR_MEMORY_CHIP;
