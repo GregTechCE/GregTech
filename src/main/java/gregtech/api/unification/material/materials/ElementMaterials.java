@@ -990,7 +990,7 @@ public class ElementMaterials {
 
         Duranium = new Material.Builder(129, "duranium")
                 .ingot(5).fluid()
-                .color(0x4BAFAF).iconSet(METALLIC)
+                .color(0x4BAFAF).iconSet(BRIGHT)
                 .flags(EXT_METAL, GENERATE_FOIL)
                 .element(Elements.Dr)
                 .toolStats(16.0f, 5.0f, 5120, 21)
