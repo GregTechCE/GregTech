@@ -559,7 +559,7 @@ public class RecipeMaps {
             .setSlotOverlay(false, false, true, GuiTextures.IMPLOSION_OVERLAY_1)
             .setSlotOverlay(false, false, false, GuiTextures.IMPLOSION_OVERLAY_2)
             .setSlotOverlay(true, false, true, GuiTextures.DUST_OVERLAY)
-            .setSound(GTSounds.EXPLOSION);
+            .setSound(SoundEvents.ENTITY_GENERIC_EXPLODE);
 
     /**
      * Example:
