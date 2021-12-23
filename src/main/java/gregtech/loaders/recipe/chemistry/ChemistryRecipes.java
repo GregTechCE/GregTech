@@ -13,7 +13,7 @@ public class ChemistryRecipes {
 
     public static void init() {
 
-        CrackingRecipes.init();
+        PetrochemRecipes.init();
         DistillationRecipes.init();
         SeparationRecipes.init();
         MixerRecipes.init();

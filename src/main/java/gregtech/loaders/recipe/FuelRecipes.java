@@ -57,7 +57,7 @@ public class FuelRecipes {
         registerSemiFluidGeneratorFuel(Creosote.getFluid(16), 1, LV);
         registerSemiFluidGeneratorFuel(Biomass.getFluid(16), 1, LV);
         registerSemiFluidGeneratorFuel(OilLight.getFluid(32), 5, LV);
-        registerSemiFluidGeneratorFuel(OilMedium.getFluid(64), 15, LV);
+        registerSemiFluidGeneratorFuel(RawOil.getFluid(64), 15, LV);
         registerSemiFluidGeneratorFuel(OilHeavy.getFluid(16), 5, LV);
         registerSemiFluidGeneratorFuel(SulfuricHeavyFuel.getFluid(16), 5, LV);
         registerSemiFluidGeneratorFuel(HeavyFuel.getFluid(8), 15, LV);

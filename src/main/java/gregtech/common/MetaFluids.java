@@ -181,7 +181,7 @@ public class MetaFluids {
         setMaterialFluidTexture(Materials.TitaniumTetrachloride, FluidType.NORMAL);
         setMaterialFluidTexture(Materials.Steam, FluidType.NORMAL);
         setMaterialFluidTexture(Materials.OilHeavy, FluidType.NORMAL);
-        setMaterialFluidTexture(Materials.OilMedium, FluidType.NORMAL);
+        setMaterialFluidTexture(Materials.RawOil, FluidType.NORMAL);
         setMaterialFluidTexture(Materials.OilLight, FluidType.NORMAL);
         setMaterialFluidTexture(Materials.HydrogenSulfide, FluidType.NORMAL);
         setMaterialFluidTexture(Materials.SulfuricGas, FluidType.NORMAL);
@@ -193,8 +193,10 @@ public class MetaFluids {
         setMaterialFluidTexture(Materials.LightFuel, FluidType.NORMAL);
         setMaterialFluidTexture(Materials.HeavyFuel, FluidType.NORMAL);
         setMaterialFluidTexture(Materials.LPG, FluidType.NORMAL);
-        setMaterialFluidTexture(Materials.SteamCrackedLightFuel, FluidType.NORMAL);
-        setMaterialFluidTexture(Materials.SteamCrackedHeavyFuel, FluidType.NORMAL);
+        setMaterialFluidTexture(Materials.LightlySteamCrackedLightFuel, FluidType.NORMAL);
+        setMaterialFluidTexture(Materials.SeverelySteamCrackedLightFuel, FluidType.NORMAL);
+        setMaterialFluidTexture(Materials.LightlySteamCrackedHeavyFuel, FluidType.NORMAL);
+        setMaterialFluidTexture(Materials.SeverelySteamCrackedHeavyFuel, FluidType.NORMAL);
         setMaterialFluidTexture(Materials.Chlorine, FluidType.NORMAL);
         setMaterialFluidTexture(Materials.NitroDiesel, FluidType.NORMAL);
         setMaterialFluidTexture(Materials.SodiumPersulfate, FluidType.NORMAL);
