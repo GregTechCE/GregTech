@@ -590,7 +590,7 @@ public abstract class AbstractRecipeLogic extends MTETrait implements IWorkable,
         final int maxTier = getOverclockingTier(getMaxVoltage());
         final String[] result = new String[maxTier + 1];
         result[0] = "gregtech.gui.overclock.off";
-        if (maxTier >= 0) System.arraycopy(GTValues.VN, 1, result, 1, maxTier);
+        if (maxTier >= 0) System.arraycopy(GTValues.VNF, 1, result, 1, maxTier);
         return result;
     }
 

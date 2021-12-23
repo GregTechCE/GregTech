@@ -98,7 +98,7 @@ public class MetaTileEntityEnergyHatch extends MetaTileEntityMultiblockPart impl
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, boolean advanced) {
-        String tierName = GTValues.VN[getTier()];
+        String tierName = GTValues.VNF[getTier()];
 
         if (isExportHatch) {
             if (amperage > 2) {

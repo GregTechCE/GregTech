@@ -74,7 +74,7 @@ gregtech.tooltip.hold_shift=Hold §aShift§7 for more info
 
 metaitem.generic.fluid_container.tooltip=%,d/%,dL %s
 metaitem.generic.fluid_container.tooltip_empty=§9No Fluids Contained
-metaitem.generic.electric_item.tooltip=%,d/%,d EU - Tier §e%s
+metaitem.generic.electric_item.tooltip=%,d/%,d EU - Tier %s
 metaitem.electric.discharge_mode.enabled=§eDischarge Mode Enabled
 metaitem.electric.discharge_mode.disabled=§eDischarge Mode Disabled
 metaitem.electric.discharge_mode.tooltip=Use while sneaking to toggle discharge mode
@@ -257,24 +257,24 @@ metaitem.ingot.iridiumalloy.name=Iridium Alloy Ingot
 metaitem.ingot.iridiumalloy.tooltip=Used to make Iridium Plates
 
 metaitem.battery.hull.lv.name=Small Battery Hull
-metaitem.battery.hull.lv.tooltip=An empty LV Battery Hull
+metaitem.battery.hull.lv.tooltip=An empty §7LV §7Battery Hull
 metaitem.battery.hull.mv.name=Medium Battery Hull
-metaitem.battery.hull.mv.tooltip=An empty MV Battery Hull
+metaitem.battery.hull.mv.tooltip=An empty §bMV §7Battery Hull
 metaitem.battery.hull.hv.name=Large Battery Hull
-metaitem.battery.hull.hv.tooltip=An empty HV Battery Hull
+metaitem.battery.hull.hv.tooltip=An empty §6HV §7Battery Hull
 metaitem.battery.hull.ev.name=Small Vanadium Battery Hull
-metaitem.battery.hull.ev.tooltip=An empty EV Battery Hull
+metaitem.battery.hull.ev.tooltip=An empty §5EV §7Battery Hull
 metaitem.battery.hull.iv.name=Medium Vanadium Battery Hull
-metaitem.battery.hull.iv.tooltip=An empty IV Battery Hull
+metaitem.battery.hull.iv.tooltip=An empty §1IV §7Battery Hull
 metaitem.battery.hull.luv.name=Large Vanadium Battery Hull
-metaitem.battery.hull.luv.tooltip=An empty LuV Battery Hull
+metaitem.battery.hull.luv.tooltip=An empty §dLuV §7Battery Hull
 metaitem.battery.hull.zpm.name=Medium Naquadria Battery Hull
-metaitem.battery.hull.zpm.tooltip=An empty ZPM Battery Hull
+metaitem.battery.hull.zpm.tooltip=An empty §fZPM §7Battery Hull
 metaitem.battery.hull.uv.name=Large Naquadria Battery Hull
-metaitem.battery.hull.uv.tooltip=An empty UV Battery Hull
+metaitem.battery.hull.uv.tooltip=An empty §3UV §7Battery Hull
 
 metaitem.battery.charge_time=§aHolds %,d%s of Power
-metaitem.battery.charge_detailed=%,d/%,d EU - Tier §e%s §r(§%c%,d%s remaining§r)
+metaitem.battery.charge_detailed=%,d/%,d EU - Tier %s §7(§%c%,d%s remaining§7)
 
 metaitem.battery.re.ulv.tantalum.name=Tantalum Capacitor
 metaitem.battery.re.ulv.tantalum.tooltip=Reusable Battery
@@ -2498,9 +2498,7 @@ gregtech.machine.gas_turbine.ev.tooltip=Requires flammable Gasses
 
 
 gregtech.machine.magic_energy_absorber.name=Magic Energy Absorber
-gregtech.machine.magic_energy_absorber.tooltip=Max Voltage OUT: §a2048 §7(§aEV§7)/nCollects energy from end crystals on naturally generated obsidian pillars in the End within 64 blocks./nEach ender crystal adds 32 EU/t to output/nPlace Dragon Egg on top to amplify output/n/nWhen amplified:/nEach ender crystal adds 128 EU/t
-gregtech.machine.magic_energy_converter.name=Magic Energy Converter
-gregtech.machine.magic_energy_converter.tooltip=Voltage OUT: §a128 §7(§aMV§7)/nCollects essentia from containers within 16 blocks/nConsumes 20 Potentia per second
+gregtech.machine.magic_energy_absorber.tooltip=Max Voltage OUT: §a2048 §7(§5EV§7)/nCollects energy from end crystals on naturally generated obsidian pillars in the End within 64 blocks./nEach ender crystal adds 32 EU/t to output/nPlace Dragon Egg on top to amplify output/n/nWhen amplified:/nEach ender crystal adds 128 EU/t
 
 # Machines
 gregtech.machine.block_breaker.lv.name=Basic Block Breaker
@@ -3226,9 +3224,9 @@ gregtech.machine.battery_buffer.max.16.name=MAX Voltage 16x Battery Buffer
 
 # Transformers
 gregtech.machine.transformer.tooltip_tool_usage=Use Soft Hammer to invert (Starts as Transform Down)
-gregtech.machine.transformer.tooltip_transform_down=Transform Down: §a%dA %dEU (%d)§7 -> §a%dA %dEU (%d)
+gregtech.machine.transformer.tooltip_transform_down=Transform Down: §a%dA %dEU (%s§a)§7 -> §a%dA %dEU (%s§a)
 gregtech.machine.transformer.message_transform_down=Transforming Down, In: %dEU %dA, Out: %dEU %dA
-gregtech.machine.transformer.tooltip_transform_up=Transform Up: §a%dA %dEU (%d)§7 -> §a%dA %dEU (%d)
+gregtech.machine.transformer.tooltip_transform_up=Transform Up: §a%dA %dEU (%s§a)§7 -> §a%dA %dEU (%s§a)
 gregtech.machine.transformer.message_transform_up=Transforming Up, In: %dEU %dA, Out: %dEU %dA
 gregtech.machine.transformer_adjustable.tooltip_tool_usage=Use Screwdriver to cycle amperage (Starts as 4 Amps)
 gregtech.machine.transformer_adjustable.message_adjust=Adjusted Hi-Amp to %dEU %dA, Lo-Amp to %dEU %dA
@@ -3714,7 +3712,7 @@ gregtech.machine.miner.multi.production=Produces 3x more crushed ore than a mace
 gregtech.machine.miner.multi.description=A multiblock mining machine that covers a large area and produces huge quantity of ore.
 #Small ores lang: gregtech.machine.miner.multi.production=Produces 3x more crushed ore than a macerator. Small ore Fortune §b%d§7.
 gregtech.machine.miner.fluid_usage=Consumes §b%dmb§7 of §e%s§7 per tick. Each overclock doubles the fluid consumption.
-gregtech.machine.miner.overclock=Requires §e%s§7 power. Overclocks up to §e%s§7.
+gregtech.machine.miner.overclock=Requires %s§7 power. Overclocks up to %s§7.
 
 gregtech.machine.central_monitor.name=Central Monitor
 gregtech.multiblock.central_monitor.low_power=Low Power
@@ -3922,8 +3920,8 @@ gregtech.machine.item_controller.tooltip.redstone=Requires Redstone Input To Wor
 gregtech.machine.item_controller.tooltip.consumption=While working, constantly consumes %,d EU/t
 
 # Universal tooltips
-gregtech.universal.tooltip.voltage_in=Voltage IN: §a%,d (%s)
-gregtech.universal.tooltip.voltage_out=Voltage OUT: §a%,d (%s)
+gregtech.universal.tooltip.voltage_in=Voltage IN: §a%,d (§r%s§a)
+gregtech.universal.tooltip.voltage_out=Voltage OUT: §a%,d (§r%s§a)
 gregtech.universal.tooltip.energy_storage_capacity=Energy Capacity: §9%,d
 gregtech.universal.tooltip.amperage_in=Amperage IN: §e%,d
 gregtech.universal.tooltip.amperage_in_till=Amperage IN up to: §e%,d
@@ -3931,10 +3929,10 @@ gregtech.universal.tooltip.amperage_out=Amperage OUT: §e%,d
 gregtech.universal.tooltip.amperage_out_till=Amperage OUT up to: §e%,d
 gregtech.universal.tooltip.item_storage_capacity=Item Slots: %,d
 gregtech.universal.tooltip.fluid_storage_capacity=Fluid Capacity: %,d L
-gregtech.universal.tooltip.max_voltage_in=Max Voltage IN: §a%,d (%s)
+gregtech.universal.tooltip.max_voltage_in=Max Voltage IN: §a%,d (§r%s§a)
 
 gregtech.recipe.total=Total: %,d EU
-gregtech.recipe.eu=Usage: %,d EU/t (%s)
+gregtech.recipe.eu=Usage: %,d EU/t (%s§r)
 gregtech.recipe.eu_inverted=Generation: %,d EU/t
 gregtech.recipe.duration=Duration: %,.2f secs
 gregtech.recipe.amperage=Amperage: %,d
@@ -3998,7 +3996,7 @@ gregtech.jei.materials.average_neutrons=Average neutrons: %,d
 gregtech.item_filter.empty_item=Empty (No Item)
 gregtech.item_filter.footer=§eClick with item to override
 
-gregtech.cable.voltage=Max Voltage: §a%,d §a(%s)
+gregtech.cable.voltage=Max Voltage: §a%,d §a(%s§a)
 gregtech.cable.amperage=Max Amperage: §e%,d
 gregtech.cable.loss_per_block=Loss/Meter/Ampere: §c%,d§7 EU-Volt
 gregtech.cable.superconductor=§d%s Superconductor
@@ -4020,7 +4018,7 @@ gregtech.multiblock.progress=Progress: %s%%
 gregtech.multiblock.invalid_structure=Invalid structure.
 gregtech.multiblock.invalid_structure.tooltip=This block is a controller of the multiblock structure. For building help, see structure template in JEI.
 gregtech.multiblock.validation_failed=Invalid amount of inputs/outputs.
-gregtech.multiblock.max_energy_per_tick=Max EU/t: §a%s (%s)
+gregtech.multiblock.max_energy_per_tick=Max EU/t: §a%s (%s§r)
 gregtech.multiblock.generation_eu=Outputting: §a%s EU/t
 gregtech.multiblock.universal.no_problems=No Maintenance Problems!
 gregtech.multiblock.universal.has_problems=Has Maintenance Problems!
@@ -4118,28 +4116,6 @@ gregtech.command.util.hand.tool_stats=Tool Stats Class: %s
 gregtech.command.util.hand.meta_item=Meta Item Name: %s
 gregtech.command.util.hand.not_a_player=This command is only usable by a player.
 gregtech.command.util.hand.no_item=You must hold something in mainhand before executing this command.
-
-info.infinite_energy.infinite=Infinite: §lOn§r
-info.infinite_energy.finite=Infinite: §lOff§r
-info.button.accept=Press §lENTER§r to accept changes
-info.button.decline=Press §lESC§r to decline changes
-info.infinite_energy.accept=Accept
-info.infinite_energy.decline=Decline
-info.infinite_energy.ulv=Voltage: ULV
-info.infinite_energy.lv=Voltage: LV
-info.infinite_energy.mv=Voltage: MV
-info.infinite_energy.hv=Voltage: HV
-info.infinite_energy.ev=Voltage: EV
-info.infinite_energy.iv=Voltage: IV
-info.infinite_energy.luv=Voltage: LUV
-info.infinite_energy.zpm=Voltage: ZPM
-info.infinite_energy.uv=Voltage: UV
-info.infinite_energy.uhv=Voltage: UHV
-info.infinite_energy.uev=Voltage: UEV
-info.infinite_energy.uiv=Voltage: UIV
-info.infinite_energy.umv=Voltage: UMV
-info.infinite_energy.uxv=Voltage: UXV
-info.infinite_energy.max=Voltage: MAX
 
 gregtech.universal.clear_nbt_recipe.tooltip=§cThis will destroy all contents!
 

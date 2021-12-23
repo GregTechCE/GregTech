@@ -154,7 +154,7 @@ public class MetaTileEntityBatteryBuffer extends TieredMetaTileEntity implements
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, boolean advanced) {
-        String tierName = GTValues.VN[getTier()];
+        String tierName = GTValues.VNF[getTier()];
 
         tooltip.add(I18n.format("gregtech.universal.tooltip.item_storage_capacity", inventorySize));
         tooltip.add(I18n.format("gregtech.universal.tooltip.voltage_in", energyContainer.getInputVoltage(), tierName));

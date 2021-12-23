@@ -181,8 +181,8 @@ public class MetaTileEntityAdjustableTransformer extends MetaTileEntityTransform
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, boolean advanced) {
-        String lowerTierName = GTValues.VN[getTier()];
-        String higherTierName = GTValues.VN[getTier() + 1];
+        String lowerTierName = GTValues.VNF[getTier()];
+        String higherTierName = GTValues.VNF[getTier() + 1];
         long lowerVoltage = energyContainer.getOutputVoltage();
         long higherVoltage = energyContainer.getInputVoltage();
         long lowerAmperage = energyContainer.getInputAmperage();
