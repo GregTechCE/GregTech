@@ -54,7 +54,7 @@ public class ElementMaterials {
                 .build();
 
         Arsenic = new Material.Builder(6, "arsenic")
-                .dust()
+                .dust().fluid()
                 .color(0x676756)
                 .element(Elements.As)
                 .build();
@@ -206,9 +206,9 @@ public class ElementMaterials {
 
         Darmstadtium = new Material.Builder(27, "darmstadtium")
                 .ingot().fluid()
-                .color(0xAAAAAA)
+                .color(0x578062)
+                .flags(EXT2_METAL, GENERATE_ROTOR, GENERATE_DENSE)
                 .element(Elements.Ds)
-                .setHidden()
                 .build();
 
         Deuterium = new Material.Builder(28, "deuterium")
@@ -428,9 +428,9 @@ public class ElementMaterials {
 
         Livermorium = new Material.Builder(57, "livermorium")
                 .ingot().fluid()
-                .color(0x578062).iconSet(SHINY)
-                .flags(EXT2_METAL, GENERATE_ROTOR, GENERATE_DENSE)
+                .color(0xAAAAAA).iconSet(SHINY)
                 .element(Elements.Lv)
+                .setHidden()
                 .build();
 
         Lutetium = new Material.Builder(58, "lutetium")
@@ -1003,7 +1003,7 @@ public class ElementMaterials {
                 .flags(GENERATE_FOIL)
                 .element(Elements.Ke)
                 .cableProperties(GTValues.V[7], 6, 4)
-                .blastTemp(7500, GasTier.HIGH, VA[LuV], 1500)
+                .blastTemp(7200, GasTier.HIGH, VA[LuV], 1500)
                 .build();
 
         Adamantium = new Material.Builder(131, "adamantium")
