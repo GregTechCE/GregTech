@@ -285,7 +285,7 @@ public class PetrochemRecipes {
                 .duration(120).EUt(VA[MV]).buildAndRegister();
 
         DISTILLATION_RECIPES.recipeBuilder()
-                .fluidInputs(LightlySteamCrackedHeavyFuel.getFluid(1000))
+                .fluidInputs(LightlySteamCrackedLightFuel.getFluid(1000))
                 .output(dustTiny, Carbon)
                 .fluidOutputs(HeavyFuel.getFluid(150))
                 .fluidOutputs(Naphtha.getFluid(400))
@@ -325,7 +325,7 @@ public class PetrochemRecipes {
                 .duration(120).EUt(VA[MV]).buildAndRegister();
 
         DISTILLATION_RECIPES.recipeBuilder()
-                .fluidInputs(SeverelyHydroCrackedHeavyFuel.getFluid(1000))
+                .fluidInputs(SeverelyHydroCrackedNaphtha.getFluid(1000))
                 .fluidOutputs(Butane.getFluid(125))
                 .fluidOutputs(Propane.getFluid(125))
                 .fluidOutputs(Ethane.getFluid(1500))
@@ -499,6 +499,7 @@ public class PetrochemRecipes {
                 .notConsumable(new IntCircuitIngredient(2))
                 .fluidInputs(raw.getFluid(1000))
                 .fluidInputs(Steam.getFluid(1000))
+                .fluidOutputs(steamCracked.getFluid(1000))
                 .duration(240).EUt(VA[LV]).buildAndRegister();
     }
 
