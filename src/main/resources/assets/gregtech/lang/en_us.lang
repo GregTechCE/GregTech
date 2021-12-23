@@ -2957,22 +2957,7 @@ gregtech.machine.ore_washer.uiv.name=High-Tech Ore Washing Plant III
 gregtech.machine.ore_washer.umv.name=High-Tech Ore Washing Plant IV
 gregtech.machine.ore_washer.uxv.name=Ultimate Ore Washing Plant
 
-gregtech.machine.simple_ore_washer.lv.name=Basic Simple Ore Washing Plant
-gregtech.machine.simple_ore_washer.mv.name=Advanced Simple Ore Washing Plant
-gregtech.machine.simple_ore_washer.hv.name=Advanced Simple Ore Washing Plant II
-gregtech.machine.simple_ore_washer.ev.name=Advanced Simple Ore Washing Plant III
-gregtech.machine.simple_ore_washer.iv.name=Elite Simple Ore Washing Plant
-gregtech.machine.simple_ore_washer.luv.name=Elite Simple Ore Washing Plant II
-gregtech.machine.simple_ore_washer.zpm.name=Elite Simple Ore Washing Plant III
-gregtech.machine.simple_ore_washer.uv.name=Elite Simple Ore Washing Plant IV
-gregtech.machine.simple_ore_washer.uhv.name=High-Tech Simple Ore Washing Plant
-gregtech.machine.simple_ore_washer.uev.name=High-Tech Simple Ore Washing Plant II
-gregtech.machine.simple_ore_washer.uiv.name=High-Tech Simple Ore Washing Plant III
-gregtech.machine.simple_ore_washer.umv.name=High-Tech Simple Ore Washing Plant IV
-gregtech.machine.simple_ore_washer.uxv.name=Ultimate Simple Ore Washing Plant
-gregtech.machine.simple_ore_washer.tooltip=It's like an automatic Cauldron for Washing. Grants no Byproducts, but it is fast.
-
-gregtech.machine.packer.tooltip=Puts things into Boxes
+gregtech.machine.packer.tooltip=Puts things into and Grabs things out of Boxes
 
 gregtech.machine.packer.lv.name=Basic Packager
 gregtech.machine.packer.mv.name=Advanced Packager
@@ -2987,22 +2972,6 @@ gregtech.machine.packer.uev.name=High-Tech Packer II
 gregtech.machine.packer.uiv.name=High-Tech Packer III
 gregtech.machine.packer.umv.name=High-Tech Packer IV
 gregtech.machine.packer.uxv.name=Ultimate Packer
-
-gregtech.machine.unpacker.tooltip=Grabs things out of Boxes
-
-gregtech.machine.unpacker.lv.name=Basic Unpackager
-gregtech.machine.unpacker.mv.name=Advanced Unpackager
-gregtech.machine.unpacker.hv.name=Advanced Unpackager II
-gregtech.machine.unpacker.ev.name=Advanced Unpackager III
-gregtech.machine.unpacker.iv.name=Elite Unpackager
-gregtech.machine.unpacker.luv.name=Elite Unpackager II
-gregtech.machine.unpacker.zpm.name=Elite Unpackager III
-gregtech.machine.unpacker.uv.name=Elite Unpackager IV
-gregtech.machine.unpacker.uhv.name=High-Tech Unpacker
-gregtech.machine.unpacker.uev.name=High-Tech Unpacker II
-gregtech.machine.unpacker.uiv.name=High-Tech Unpacker III
-gregtech.machine.unpacker.umv.name=High-Tech Unpacker IV
-gregtech.machine.unpacker.uxv.name=Ultimate Unpacker
 
 gregtech.machine.polarizer.tooltip=Bipolarising your Magnets
 

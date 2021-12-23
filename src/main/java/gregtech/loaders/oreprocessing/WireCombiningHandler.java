@@ -11,7 +11,6 @@ import gregtech.api.unification.stack.UnificationEntry;
 import org.apache.commons.lang3.ArrayUtils;
 
 import static gregtech.api.recipes.RecipeMaps.PACKER_RECIPES;
-import static gregtech.api.recipes.RecipeMaps.UNPACKER_RECIPES;
 import static gregtech.api.unification.ore.OrePrefix.*;
 
 public class WireCombiningHandler {
@@ -104,7 +103,7 @@ public class WireCombiningHandler {
         }
 
         for (int i = 1; i < 5; i++) {
-            UNPACKER_RECIPES.recipeBuilder()
+            PACKER_RECIPES.recipeBuilder()
                     .inputs(OreDictUnifier.get(WIRE_DOUBLING_ORDER[i], material, 1))
                     .notConsumable(new IntCircuitIngredient(1))
                     .outputs(OreDictUnifier.get(WIRE_DOUBLING_ORDER[0], material, (int) Math.pow(2, i)))

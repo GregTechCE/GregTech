@@ -51,7 +51,6 @@ import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -197,7 +196,7 @@ public class GTJeiPlugin implements IModPlugin {
                 MetaTileEntities.CHEMICAL_BATH,
                 MetaTileEntities.ELECTROMAGNETIC_SEPARATOR,
                 MetaTileEntities.SIFTER,
-                MetaTileEntities.SIMPLE_ORE_WASHER
+                MetaTileEntities.ORE_WASHER
         };
         for (MetaTileEntity[] machine : machineLists) {
             if (machine.length < 1 || machine[0] == null) continue;

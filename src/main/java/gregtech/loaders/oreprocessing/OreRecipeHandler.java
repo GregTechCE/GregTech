@@ -20,7 +20,8 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
 
-import static gregtech.api.GTValues.*;
+import static gregtech.api.GTValues.LV;
+import static gregtech.api.GTValues.VA;
 import static gregtech.api.unification.material.info.MaterialFlags.HIGH_SIFTER_OUTPUT;
 
 public class OreRecipeHandler {
@@ -148,17 +149,9 @@ public class OreRecipeHandler {
 
         RecipeMaps.ORE_WASHER_RECIPES.recipeBuilder()
                 .input(crushedPrefix, material)
-                .fluidInputs(Materials.Water.getFluid(1000))
-                .outputs(crushedPurifiedOre,
-                        OreDictUnifier.get(OrePrefix.dustTiny, byproductMaterial, 3),
-                        OreDictUnifier.get(OrePrefix.dust, Materials.Stone))
-                .buildAndRegister();
-
-        RecipeMaps.SIMPLE_WASHER_RECIPES.recipeBuilder()
-                .input(crushedPrefix, material)
                 .fluidInputs(Materials.Water.getFluid(100))
                 .outputs(crushedPurifiedOre)
-                .duration(8).EUt(1).buildAndRegister();
+                .duration(8).EUt(4).buildAndRegister();
 
         RecipeMaps.ORE_WASHER_RECIPES.recipeBuilder()
                 .input(crushedPrefix, material)
@@ -240,12 +233,6 @@ public class OreRecipeHandler {
                 .duration(400)
                 .buildAndRegister();
 
-        RecipeMaps.SIMPLE_WASHER_RECIPES.recipeBuilder()
-                .input(purifiedPrefix, material)
-                .fluidInputs(Materials.Water.getFluid(100))
-                .outputs(dustStack)
-                .duration(8).EUt(1).buildAndRegister();
-
         ModHandler.addShapelessRecipe(String.format("purified_ore_to_dust_%s", material), dustStack,
                 'h', new UnificationEntry(purifiedPrefix, material));
 
@@ -317,11 +304,11 @@ public class OreRecipeHandler {
 
         builder.buildAndRegister();
 
-        RecipeMaps.SIMPLE_WASHER_RECIPES.recipeBuilder()
+        RecipeMaps.ORE_WASHER_RECIPES.recipeBuilder()
                 .input(dustPrefix, material)
                 .fluidInputs(Materials.Water.getFluid(100))
                 .outputs(dustStack)
-                .duration(8).EUt(1).buildAndRegister();
+                .duration(8).EUt(4).buildAndRegister();
 
         //dust gains same amount of material as normal dust
         processMetalSmelting(dustPrefix, material, property);
@@ -362,6 +349,12 @@ public class OreRecipeHandler {
                 .duration(100)
                 .EUt(5)
                 .buildAndRegister();
+
+        RecipeMaps.ORE_WASHER_RECIPES.recipeBuilder()
+                .input(purePrefix, material)
+                .fluidInputs(Materials.Water.getFluid(100))
+                .outputs(dustStack)
+                .duration(8).EUt(4).buildAndRegister();
 
         processMetalSmelting(purePrefix, material, property);
     }

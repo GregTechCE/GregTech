@@ -19,7 +19,9 @@ import gregtech.loaders.recipe.CraftingComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static gregtech.api.GTValues.*;
 import static gregtech.api.recipes.RecipeMaps.*;
@@ -164,11 +166,11 @@ public class MaterialRecipeHandler {
                 dustStack, "XX", "XX", 'X', new UnificationEntry(orePrefix, material));
 
         RecipeMaps.PACKER_RECIPES.recipeBuilder().input(orePrefix, material, 4)
-                .inputs(new CountableIngredient(new IntCircuitIngredient(2), 0))
+                .inputs(new CountableIngredient(new IntCircuitIngredient(1), 0))
                 .outputs(dustStack)
                 .buildAndRegister();
 
-        RecipeMaps.UNPACKER_RECIPES.recipeBuilder().input(OrePrefix.dust, material)
+        RecipeMaps.PACKER_RECIPES.recipeBuilder().input(OrePrefix.dust, material)
                 .inputs(new CountableIngredient(new IntCircuitIngredient(2), 0))
                 .outputs(GTUtility.copyAmount(4, smallDustStack))
                 .buildAndRegister();
@@ -188,7 +190,7 @@ public class MaterialRecipeHandler {
                 .outputs(dustStack)
                 .buildAndRegister();
 
-        RecipeMaps.UNPACKER_RECIPES.recipeBuilder().input(OrePrefix.dust, material)
+        RecipeMaps.PACKER_RECIPES.recipeBuilder().input(OrePrefix.dust, material)
                 .inputs(new CountableIngredient(new IntCircuitIngredient(1), 0))
                 .outputs(GTUtility.copyAmount(9, tinyDustStack))
                 .buildAndRegister();

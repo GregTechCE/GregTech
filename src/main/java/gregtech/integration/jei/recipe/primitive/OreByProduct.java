@@ -107,7 +107,7 @@ public class OreByProduct implements IRecipeWrapper {
         // set up machines as inputs
         List<ItemStack> simpleWashers = new ArrayList<>();
         simpleWashers.add(new ItemStack(Items.CAULDRON));
-        simpleWashers.add(MetaTileEntities.SIMPLE_ORE_WASHER[0].getStackForm());
+        simpleWashers.add(MetaTileEntities.ORE_WASHER[0].getStackForm());
 
         for (ItemStack stack : ALWAYS_MACHINES) {
             addToInputs(stack);
@@ -180,7 +180,6 @@ public class OreByProduct implements IRecipeWrapper {
         addToOutputs(material, OrePrefix.crushedPurified, 1);
         addToOutputs(byproducts[0], OrePrefix.dustTiny, 3);
         List<FluidStack> fluidStacks = new ArrayList<>();
-        fluidStacks.add(Materials.Water.getFluid(1000));
         fluidStacks.add(Materials.DistilledWater.getFluid(100));
         fluidInputs.add(fluidStacks);
 
