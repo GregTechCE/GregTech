@@ -103,13 +103,6 @@ public class MixerRecipes {
                 .output(dust, FerriteMixture, 6)
                 .buildAndRegister();
 
-        MIXER_RECIPES.recipeBuilder().duration(100).EUt(48)
-                .input(dust, EnderPearl)
-                .input(dust, Blaze)
-                .notConsumable(new IntCircuitIngredient(2))
-                .output(dust, EnderEye)
-                .buildAndRegister();
-
         MIXER_RECIPES.recipeBuilder().duration(200).EUt(VA[ULV])
                 .input(dust, Gold)
                 .input(dust, Silver)

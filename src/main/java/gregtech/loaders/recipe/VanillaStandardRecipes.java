@@ -1077,6 +1077,17 @@ public class VanillaStandardRecipes {
                 .notConsumable(new IntCircuitIngredient(9))
                 .outputs(new ItemStack(Blocks.PRISMARINE, 1, 1))
                 .duration(200).EUt(2).buildAndRegister();
+
+        CHEMICAL_BATH_RECIPES.recipeBuilder()
+                .fluidInputs(Blaze.getFluid(GTValues.L))
+                .input(OrePrefix.gem, Materials.EnderPearl)
+                .outputs(new ItemStack(Items.ENDER_EYE))
+                .duration(50).EUt(VA[HV]).buildAndRegister();
+
+        COMPRESSOR_RECIPES.recipeBuilder()
+                .input(dust, Blaze, 4)
+                .output(stick, Blaze)
+                .buildAndRegister();
     }
 
     /**

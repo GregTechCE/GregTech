@@ -4,7 +4,6 @@ import gregtech.api.recipes.ingredients.IntCircuitIngredient;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.MarkerMaterials;
 import gregtech.api.unification.material.Materials;
-import gregtech.api.unification.ore.OrePrefix;
 import gregtech.common.items.MetaItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -1015,12 +1014,6 @@ public class ReactorRecipes {
                 .inputs(new ItemStack(Items.BLAZE_POWDER))
                 .inputs(new ItemStack(Items.SLIME_BALL))
                 .outputs(new ItemStack(Items.MAGMA_CREAM))
-                .duration(50).EUt(VA[LV]).buildAndRegister();
-
-        CHEMICAL_RECIPES.recipeBuilder()
-                .inputs(new ItemStack(Items.BLAZE_POWDER))
-                .input(OrePrefix.gem, Materials.EnderPearl)
-                .outputs(new ItemStack(Items.ENDER_EYE))
                 .duration(50).EUt(VA[LV]).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
