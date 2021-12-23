@@ -1102,5 +1102,13 @@ public class ReactorRecipes {
                 .fluidOutputs(Hydrogen.getFluid(1000))
                 .duration(100).EUt(VA[LV]).buildAndRegister();
 
+        CHEMICAL_RECIPES.recipeBuilder()
+                .inputs(new ItemStack(Items.GHAST_TEAR))
+                .fluidInputs(Water.getFluid(1000))
+                .output(dustTiny, Potassium)
+                .output(dustTiny, Lithium)
+                .fluidOutputs(SaltWater.getFluid(1000))
+                .duration(400).EUt(30).buildAndRegister();
+
     }
 }
