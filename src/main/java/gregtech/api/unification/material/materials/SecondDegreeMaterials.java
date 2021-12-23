@@ -79,12 +79,7 @@ public class SecondDegreeMaterials {
                 .components(DarkAsh, 1, Sulfur, 1)
                 .build();
 
-        Niter = new Material.Builder(2009, "niter")
-                .dust(1)
-                .color(0xFFC8C8).iconSet(FLINT)
-                .flags(NO_SMASHING, NO_SMELTING, DECOMPOSITION_BY_CENTRIFUGING)
-                .components(Saltpeter, 1)
-                .build();
+        // Free ID 2009
 
         Apatite = new Material.Builder(2010, "apatite")
                 .gem(1).ore(4, 2)
@@ -176,11 +171,7 @@ public class SecondDegreeMaterials {
                 .components(Aluminium, 2, PotassiumFeldspar, 1, Oxygen, 3)
                 .build();
 
-        Chrysotile = new Material.Builder(2021, "chrysotile")
-                .dust()
-                .color(0x6E8C6E).iconSet(ROUGH)
-                .components(Asbestos, 1)
-                .build();
+        // Free ID 2021
 
         VanadiumMagnetite = new Material.Builder(2022, "vanadium_magnetite")
                 .dust().ore()
@@ -197,31 +188,28 @@ public class SecondDegreeMaterials {
                 .build();
 
         Pollucite = new Material.Builder(2024, "pollucite")
-                .dust()
+                .dust().ore()
                 .color(0xF0D2D2)
                 .components(Caesium, 2, Aluminium, 2, Silicon, 4, Water, 2, Oxygen, 12)
                 .build();
 
-        Vermiculite = new Material.Builder(2025, "vermiculite")
-                .dust()
-                .color(0xC8B40F).iconSet(METALLIC)
-                .components(Iron, 3, Aluminium, 4, Silicon, 4, Hydrogen, 2, Water, 4, Oxygen, 12)
-                .build();
+        // Free ID 2025
 
         Bentonite = new Material.Builder(2026, "bentonite")
-                .dust().ore(7, 1)
+                .dust().ore(3, 1)
                 .color(0xF5D7D2).iconSet(ROUGH)
+                .flags(DISABLE_DECOMPOSITION)
                 .components(Sodium, 1, Magnesium, 6, Silicon, 12, Hydrogen, 4, Water, 5, Oxygen, 36)
                 .build();
 
         FullersEarth = new Material.Builder(2027, "fullers_earth")
-                .dust().ore()
+                .dust().ore(2, 1)
                 .color(0xA0A078).iconSet(FINE)
                 .components(Magnesium, 1, Silicon, 4, Hydrogen, 1, Water, 4, Oxygen, 11)
                 .build();
 
         Pitchblende = new Material.Builder(2028, "pitchblende")
-                .dust(3).ore(2, 1)
+                .dust(3).ore(true)
                 .color(0xC8D200)
                 .flags(DECOMPOSITION_BY_CENTRIFUGING)
                 .components(Uraninite, 3, Thorium, 1, Lead, 1)
@@ -229,7 +217,7 @@ public class SecondDegreeMaterials {
                 .setFormula("(UO2)3ThPb", true);
 
         Monazite = new Material.Builder(2029, "monazite")
-                .gem(1).ore(8, 2) // todo does this need 8x ore multiplier?
+                .gem(1).ore(4, 2)
                 .color(0x324632).iconSet(DIAMOND)
                 .flags(NO_SMASHING, NO_SMELTING, CRYSTALLIZABLE)
                 .components(RareEarth, 1, Phosphate, 1)
@@ -242,7 +230,7 @@ public class SecondDegreeMaterials {
                 .build();
 
         Trona = new Material.Builder(2031, "trona")
-                .dust(1).ore()
+                .dust(1).ore(2, 1)
                 .color(0x87875F).iconSet(METALLIC)
                 .flags(DISABLE_DECOMPOSITION)
                 .components(Sodium, 3, Carbon, 2, Hydrogen, 1, Water, 2, Oxygen, 6)
@@ -255,8 +243,9 @@ public class SecondDegreeMaterials {
                 .build();
 
         Zeolite = new Material.Builder(2033, "zeolite")
-                .dust().ore()
+                .dust().ore(3, 1)
                 .color(0xF0E6E6)
+                .flags(DISABLE_DECOMPOSITION)
                 .components(Sodium, 1, Calcium, 4, Silicon, 27, Aluminium, 9, Water, 28, Oxygen, 72)
                 .build();
 
@@ -469,6 +458,13 @@ public class SecondDegreeMaterials {
                 .color(0xC8C8DC).iconSet(ROUGH)
                 .flags(MORTAR_GRINDABLE, EXCLUDE_BLOCK_CRAFTING_BY_HAND_RECIPES)
                 .components(Sodium, 2, Lithium, 1, Aluminium, 2, Silicon, 2, Water, 6)
+                .build();
+
+        Redstone = new Material.Builder(2064, "redstone")
+                .dust().ore(5, 1).fluid()
+                .color(0xC80000).iconSet(ROUGH)
+                .flags(GENERATE_PLATE, NO_SMASHING, NO_SMELTING, EXCLUDE_BLOCK_CRAFTING_BY_HAND_RECIPES, DECOMPOSITION_BY_CENTRIFUGING)
+                .components(Silicon, 1, Pyrite, 5, Ruby, 1, Mercury, 3)
                 .build();
     }
 }

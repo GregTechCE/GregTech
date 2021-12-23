@@ -1841,6 +1841,9 @@ material.impure_naquadria_solution=Impure Naquadria Solution
 material.naquadria_solution=Naquadria Solution
 material.acidic_naquadria_solution=Acidic Naquadria Solution
 material.naquadria_waste=Naquadria Waste
+material.pyrochlore=Pyrochlore
+material.electrotine=Electrotine
+material.blue_alloy=Blue Alloy
 
 
 item.nether_quartz.oreNetherrack=Nether Quartz Ore
@@ -1872,6 +1875,9 @@ item.dark_ash.dust=Dark Ashes
 item.ice.dustTiny=Tiny Pile of Crushed Ice
 item.ice.dustSmall=Small Pile of Crushed Ice
 item.ice.dust=Crushed Ice
+item.sugar.gem=Sugar Cube
+item.sugar.gemChipped=Small Sugar Cubes
+item.sugar.gemFlawed=Tiny Sugar Cube
 item.plastic.dustTiny=Tiny Pile of Polyethylene (PE) Pulp
 item.plastic.dustSmall=Small Pile of Polyethylene (PE) Pulp
 item.plastic.dust=Polyethylene (PE) Pulp
@@ -3979,10 +3985,6 @@ gregtech.gui.silktouch.enabled=Silk Touch Enabled: Click to Disable./n§7Switchi
 gregtech.gui.silktouch.disabled=Silk Touch Disabled: Click to Enable./n§7Switching requires an idle machine.
 gregtech.gui.chunkmode.enabled=Chunk Mode Enabled: Click to Disable./n§7Switching requires an idle machine.
 gregtech.gui.chunkmode.disabled=Chunk Mode Disabled: Click to Enable./n§7Switching requires an idle machine.
-
-gregtech.jei.ore_by_product_from_ore=Use %s for %s
-gregtech.jei.ore_by_product_from_machine=Produce by processing %s with %s
-gregtech.jei.ore_by_product_not_obtainable=Byproduct not obtainable
 
 ore.spawnlocation.name=Ore Spawn Information
 gregtech.jei.ore.surface_rock_1=Surface Rocks with this material denote vein spawn locations.

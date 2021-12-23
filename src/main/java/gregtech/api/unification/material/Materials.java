@@ -352,7 +352,6 @@ public class Materials {
     public static Material StainlessSteel;
     public static Material Steel;
     public static Material Stibnite;
-    public static Material Tanzanite;
     public static Material Tetrahedrite;
     public static Material TinAlloy;
     public static Material Topaz;
@@ -370,12 +369,9 @@ public class Materials {
     public static Material Quartzite;
     public static Material Graphite;
     public static Material Graphene;
-    public static Material Jasper;
     public static Material Osmiridium;
     public static Material Bornite;
     public static Material Chalcocite;
-    public static Material Enargite;
-    public static Material Tennantite;
 
     public static Material GalliumArsenide;
     public static Material Potash;
@@ -409,15 +405,11 @@ public class Materials {
     public static Material Pentlandite;
     public static Material Spodumene;
     public static Material Lepidolite;
-    public static Material Glauconite;
     public static Material GlauconiteSand;
     public static Material Malachite;
     public static Material Mica;
     public static Material Barite;
     public static Material Alunite;
-    public static Material Dolomite;
-    public static Material Wollastonite;
-    public static Material Kaolinite;
     public static Material Talc;
     public static Material Soapstone;
     public static Material Kyanite;
@@ -459,14 +451,12 @@ public class Materials {
     public static Material UraniumRhodiumDinaquadide;
     public static Material EnrichedNaquadahTriniumEuropiumDuranide;
     public static Material RutheniumTriniumAmericiumNeutronate;
-
     public static Material PlatinumRaw;
     public static Material InertMetalMixture;
     public static Material RhodiumSulfate;
     public static Material RutheniumTetroxide;
     public static Material OsmiumTetroxide;
     public static Material IridiumChloride;
-
     public static Material FluoroantimonicAcid;
     public static Material TitaniumTrifluoride;
     public static Material CalciumPhosphide;
@@ -478,6 +468,7 @@ public class Materials {
     public static Material AntimonyTrifluoride;
     public static Material EnrichedNaquadahSulfate;
     public static Material NaquadriaSulfate;
+    public static Material Pyrochlore;
 
     /**
      * Organic chemistry
@@ -636,7 +627,6 @@ public class Materials {
     public static Material Gelatin;
     public static Material Agar;
     public static Material Andesite;
-    public static Material Vinteum;
     public static Material Milk;
     public static Material Cocoa;
     public static Material Wheat;
@@ -684,7 +674,6 @@ public class Materials {
     public static Material Amethyst;
     public static Material Lapis;
     public static Material Blaze;
-    public static Material Niter;
     public static Material Apatite;
     public static Material BlackSteel;
     public static Material DamascusSteel;
@@ -696,11 +685,9 @@ public class Materials {
     public static Material Marble;
     public static Material GraniteBlack;
     public static Material GraniteRed;
-    public static Material Chrysotile;
     public static Material VanadiumMagnetite;
     public static Material QuartzSand;
     public static Material Pollucite;
-    public static Material Vermiculite;
     public static Material Bentonite;
     public static Material FullersEarth;
     public static Material Pitchblende;
@@ -731,11 +718,12 @@ public class Materials {
     public static Material AquaRegia;
     public static Material SaltWater;
     public static Material Clay;
+    public static Material Redstone;
 
     /**
      * Third Degree Materials
      */
-    public static Material Redstone;
+    public static Material Electrotine;
     public static Material EnderEye;
     public static Material Diatomite;
     public static Material RedSteel;
@@ -755,6 +743,7 @@ public class Materials {
      * Fourth Degree Materials
      */
     public static Material RedAlloy;
+    public static Material BlueAlloy;
     public static Material BasalticMineralSand;
     public static Material HSSE;
     public static Material HSSS;
