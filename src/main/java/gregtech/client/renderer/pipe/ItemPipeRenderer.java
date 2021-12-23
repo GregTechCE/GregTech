@@ -210,22 +210,24 @@ public class ItemPipeRenderer implements ICCBlockRenderer, IItemRenderer {
     }
 
     private void renderPipeCube(int connections, CCRenderState renderState, IVertexOperation[] pipeline, IVertexOperation[] pipeConnectSide, IVertexOperation[] pipeRestrictive, EnumFacing side, float thickness, boolean isRestrictive) {
-        Cuboid6 cuboid6 = BlockItemPipe.getSideBox(side, thickness);
+        Cuboid6 cuboid = BlockItemPipe.getSideBox(side, thickness);
         // render connection cuboid
         for (EnumFacing renderedSide : EnumFacing.VALUES) {
             if (renderedSide.getAxis() != side.getAxis()) {
                 // render base side texture
-                renderPipeSide(renderState, pipeline, renderedSide, cuboid6);
+                renderPipeSide(renderState, pipeline, renderedSide, cuboid);
                 if (isRestrictive)
                     // render restrictive texture
-                    renderPipeSide(renderState, pipeRestrictive, renderedSide, cuboid6);
+                    renderPipeSide(renderState, pipeRestrictive, renderedSide, cuboid);
             }
         }
         if ((connections & 1 << (6 + side.getIndex())) > 0) {
             // if neighbour pipe is smaller, render closed texture
-            renderPipeSide(renderState, pipeline, side, cuboid6);
+            renderPipeSide(renderState, pipeline, side, cuboid);
         } else {
-            renderPipeSide(renderState, pipeConnectSide, side, cuboid6);
+            if((connections & 1 << (12 + side.getIndex())) > 0)
+                cuboid = BlockItemPipe.getCoverSideBox(side, thickness);
+            renderPipeSide(renderState, pipeConnectSide, side, cuboid);
         }
     }
 

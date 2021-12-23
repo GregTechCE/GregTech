@@ -172,23 +172,26 @@ public class CableRenderer implements ICCBlockRenderer, IItemRenderer {
                     renderCableSide(state, insulation, renderedSide, cuboid6);
                 }
             } else {
+
                 renderCableCube(connectMask, state, insulation, wire, overlays, renderedSide, thickness);
             }
         }
     }
 
     private static void renderCableCube(int connections, CCRenderState renderState, IVertexOperation[] pipeline, IVertexOperation[] wire, IVertexOperation[] overlays, EnumFacing side, float thickness) {
-        Cuboid6 cuboid6 = BlockCable.getSideBox(side, thickness);
+        Cuboid6 cuboid = BlockCable.getSideBox(side, thickness);
         for (EnumFacing renderedSide : EnumFacing.VALUES) {
             if (renderedSide.getAxis() != side.getAxis()) {
-                renderCableSide(renderState, pipeline, renderedSide, cuboid6);
+                renderCableSide(renderState, pipeline, renderedSide, cuboid);
             }
         }
         if ((connections & 1 << (6 + side.getIndex())) > 0) {
-            renderCableSide(renderState, pipeline, side, cuboid6);
+            renderCableSide(renderState, pipeline, side, cuboid);
         } else {
-            renderCableSide(renderState, wire, side, cuboid6);
-            renderCableSide(renderState, overlays, side, cuboid6);
+            if((connections & 1 << (12 + side.getIndex())) > 0)
+                cuboid = BlockCable.getCoverSideBox(side, thickness);
+            renderCableSide(renderState, wire, side, cuboid);
+            renderCableSide(renderState, overlays, side, cuboid);
         }
     }
 
