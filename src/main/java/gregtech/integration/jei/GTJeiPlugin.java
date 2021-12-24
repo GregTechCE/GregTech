@@ -11,14 +11,9 @@ import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.SteamMetaTileEntity;
 import gregtech.api.metatileentity.multiblock.IMultipleRecipeMaps;
-import gregtech.api.metatileentity.multiblock.MultiblockControllerBase;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.recipes.RecipeMaps;
-import gregtech.api.recipes.builders.CircuitAssemblerRecipeBuilder;
-import gregtech.api.recipes.builders.IntCircuitRecipeBuilder;
-import gregtech.api.recipes.builders.SimpleRecipeBuilder;
-import gregtech.api.recipes.builders.UniversalDistillationRecipeBuilder;
 import gregtech.api.recipes.ingredients.IntCircuitIngredient;
 import gregtech.api.recipes.machines.FuelRecipeMap;
 import gregtech.api.recipes.machines.RecipeMapFurnace;
@@ -154,15 +149,6 @@ public class GTJeiPlugin implements IModPlugin {
                             continue;
                         }
                         registerRecipeMapCatalyst(registry, ((AbstractRecipeLogic) workableCapability).getRecipeMap(), metaTileEntity);
-
-                        if((recipeMap.recipeBuilder() instanceof SimpleRecipeBuilder ||
-                            recipeMap.recipeBuilder() instanceof IntCircuitRecipeBuilder ||
-                            recipeMap.recipeBuilder() instanceof UniversalDistillationRecipeBuilder ||
-                            recipeMap.recipeBuilder() instanceof CircuitAssemblerRecipeBuilder) &&
-                            !(metaTileEntity instanceof MultiblockControllerBase)) {
-                            deferredCatalysts.put(recipeMap, MetaTileEntities.PROCESSING_ARRAY);
-                            deferredCatalysts.put(recipeMap, MetaTileEntities.ADVANCED_PROCESSING_ARRAY);
-                        }
                     }
                 } else if (workableCapability instanceof FuelRecipeLogic) {
                     FuelRecipeMap recipeMap = ((FuelRecipeLogic) workableCapability).recipeMap;
