@@ -70,7 +70,7 @@ public class MetaTileEntityDistillationTower extends RecipeMapMultiblockControll
                                 .filter(mte->!(mte instanceof MetaTileEntityMultiFluidHatch))
                                 .toArray(MetaTileEntity[]::new))
                                 .setMinLayerLimited(1).setMaxLayerLimited(1))
-                        .or(hasMaintenanceMechanics() ? abilities(MultiblockAbility.MAINTENANCE_HATCH).setMinGlobalLimited(1).setMaxGlobalLimited(1) : null))
+                        .or(autoAbilities(true, false)))
                 .where('#', air())
                 .build();
     }

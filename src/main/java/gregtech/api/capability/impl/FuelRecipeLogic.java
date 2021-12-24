@@ -9,6 +9,7 @@ import gregtech.api.metatileentity.multiblock.IMaintenance;
 import gregtech.api.recipes.machines.FuelRecipeMap;
 import gregtech.api.recipes.recipes.FuelRecipe;
 import gregtech.api.util.GTUtility;
+import gregtech.common.ConfigHolder;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.common.capabilities.Capability;
@@ -168,7 +169,7 @@ public class FuelRecipeLogic extends MTETrait implements IControllable, IFuelabl
             IMaintenance controller = (IMaintenance) metaTileEntity;
 
             // do not run recipes when there are more than 5 maintenance problems
-            if (controller.hasMaintenanceMechanics() && controller.getNumMaintenanceProblems() > 5) {
+            if (ConfigHolder.machines.enableMaintenance && controller.hasMaintenanceMechanics() && controller.getNumMaintenanceProblems() > 5) {
                 return false;
             }
         }

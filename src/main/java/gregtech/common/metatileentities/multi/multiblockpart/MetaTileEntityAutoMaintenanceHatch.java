@@ -10,7 +10,11 @@ import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.metatileentity.multiblock.IMultiblockAbilityPart;
 import gregtech.api.metatileentity.multiblock.MultiblockAbility;
 import gregtech.client.renderer.texture.Textures;
+import gregtech.common.ConfigHolder;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;
 
@@ -96,5 +100,12 @@ public class MetaTileEntityAutoMaintenanceHatch extends MetaTileEntityMultiblock
     @Override
     public boolean canPartShare() {
         return false;
+    }
+
+    @Override
+    public void getSubItems(CreativeTabs creativeTab, NonNullList<ItemStack> subItems) {
+        if (ConfigHolder.machines.enableMaintenance) {
+            super.getSubItems(creativeTab, subItems);
+        }
     }
 }

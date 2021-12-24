@@ -11,6 +11,7 @@ import gregtech.api.recipes.MatchingMode;
 import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.util.GTUtility;
+import gregtech.common.ConfigHolder;
 import net.minecraft.util.Tuple;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
@@ -103,7 +104,7 @@ public class MultiblockRecipeLogic extends AbstractRecipeLogic {
         // do not run recipes when there are more than 5 maintenance problems
         // Maintenance can apply to all multiblocks, so cast to a base multiblock class
         MultiblockWithDisplayBase controller = (MultiblockWithDisplayBase) metaTileEntity;
-        if (controller.hasMaintenanceMechanics() && controller.getNumMaintenanceProblems() > 5) {
+        if (ConfigHolder.machines.enableMaintenance && controller.hasMaintenanceMechanics() && controller.getNumMaintenanceProblems() > 5) {
             return;
         }
 
@@ -243,9 +244,9 @@ public class MultiblockRecipeLogic extends AbstractRecipeLogic {
 
     protected Tuple<Integer, Double> getMaintenanceValues() {
         MultiblockWithDisplayBase displayBase = this.metaTileEntity instanceof MultiblockWithDisplayBase ? (MultiblockWithDisplayBase) metaTileEntity : null;
-        int numMaintenanceProblems = displayBase == null || !displayBase.hasMaintenanceMechanics() ? 0 : displayBase.getNumMaintenanceProblems();
+        int numMaintenanceProblems = displayBase == null || !displayBase.hasMaintenanceMechanics() || !ConfigHolder.machines.enableMaintenance ? 0 : displayBase.getNumMaintenanceProblems();
         double durationMultiplier = 1.0D;
-        if (displayBase != null && displayBase.hasMaintenanceMechanics()) {
+        if (displayBase != null && displayBase.hasMaintenanceMechanics() && ConfigHolder.machines.enableMaintenance) {
             IMaintenanceHatch hatch = displayBase.getAbilities(MultiblockAbility.MAINTENANCE_HATCH).get(0);
             durationMultiplier = hatch.getDurationMultiplier();
         }
@@ -280,7 +281,7 @@ public class MultiblockRecipeLogic extends AbstractRecipeLogic {
             }
 
             // increase total on time
-            if (controller.hasMaintenanceMechanics())
+            if (controller.hasMaintenanceMechanics() && ConfigHolder.machines.enableMaintenance)
                 controller.calculateMaintenance(this.progressTime);
         }
     }

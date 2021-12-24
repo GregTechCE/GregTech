@@ -118,11 +118,6 @@ public class MetaTileEntityProcessingArray extends RecipeMapMultiblockController
     }
 
     @Override
-    public boolean hasMaintenanceMechanics() {
-        return true;
-    }
-
-    @Override
     public void notifyMachineChanged() {
         machineChanged = true;
     }
