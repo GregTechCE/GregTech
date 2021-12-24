@@ -109,8 +109,8 @@ public class CraftingRecipeLoader {
         ModHandler.addShapedRecipe("solar_panel_lv", COVER_SOLAR_PANEL_LV.getStackForm(), "WGW", "CAC", "P P", 'W', NAQUADAH_WAFER.getStackForm(), 'G', MetaBlocks.TRANSPARENT_CASING.getItemVariant(
                 BlockGlassCasing.CasingType.TEMPERED_GLASS), 'C', new UnificationEntry(OrePrefix.circuit, Tier.Master), 'P', OreDictUnifier.get(OrePrefix.plate, IndiumGalliumPhosphide), 'A', OreDictUnifier.get(OrePrefix.wireGtHex, Graphene));
 
-        ModHandler.addShapedRecipe("universal_fluid_cell", FLUID_CELL_UNIVERSAL.getStackForm(), "C", 'C', FLUID_CELL);
-        ModHandler.addShapedRecipe("universal_fluid_cell_revert", FLUID_CELL.getStackForm(), "C", 'C', FLUID_CELL_UNIVERSAL);
+        ModHandler.addShapedRecipe("universal_fluid_cell", FLUID_CELL_UNIVERSAL.getStackForm(), "C ", "  ", 'C', FLUID_CELL);
+        ModHandler.addShapedRecipe("universal_fluid_cell_revert", FLUID_CELL.getStackForm(), "C ", "  ", 'C', FLUID_CELL_UNIVERSAL);
 
         ///////////////////////////////////////////////////
         //               Shapes and Molds                //
