@@ -29,12 +29,16 @@ public class MiscRecipeLoader {
     public static void init() {
 
         // Potin Recipe
-        ModHandler.addShapelessRecipe("potin_dust", OreDictUnifier.get(dust, Potin, 5),
-                new UnificationEntry(dust, Lead),
-                new UnificationEntry(dust, Lead),
-                new UnificationEntry(dust, Bronze),
-                new UnificationEntry(dust, Bronze),
-                new UnificationEntry(dust, Tin));
+        ModHandler.addShapelessRecipe("potin_dust", OreDictUnifier.get(dust, Potin, 9),
+                new UnificationEntry(dust, Copper),
+                new UnificationEntry(dust, Copper),
+                new UnificationEntry(dust, Copper),
+                new UnificationEntry(dust, Copper),
+                new UnificationEntry(dust, Copper),
+                new UnificationEntry(dust, Copper),
+                new UnificationEntry(dust, Tin),
+                new UnificationEntry(dust, Tin),
+                new UnificationEntry(dust, Lead));
 
         RecipeMaps.MIXER_RECIPES.recipeBuilder().duration(100).EUt(VA[ULV])
                 .input(dust, Sugar)

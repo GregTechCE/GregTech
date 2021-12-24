@@ -632,7 +632,7 @@ public class Materials {
     public static Material NetherStar;
     public static Material Endstone;
     public static Material Netherrack;
-    public static Material NitroDiesel;
+    public static Material CetaneBoostedDiesel;
     public static Material Collagen;
     public static Material Gelatin;
     public static Material Agar;

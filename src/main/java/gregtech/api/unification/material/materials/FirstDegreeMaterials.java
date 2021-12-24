@@ -524,7 +524,7 @@ public class FirstDegreeMaterials {
                 .ingot(1).fluid()
                 .color(0x9696A0)
                 .flags(EXT_METAL, GENERATE_FINE_WIRE)
-                .components(Tin, 9, Antimony, 1)
+                .components(Tin, 6, Lead, 3, Antimony, 1)
                 .build();
 
         Spessartine = new Material.Builder(321, "spessartine")

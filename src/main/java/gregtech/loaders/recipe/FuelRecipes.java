@@ -21,7 +21,7 @@ public class FuelRecipes {
         registerCombustionGeneratorFuel(BioDiesel.getFluid(1), 8, LV);
         registerCombustionGeneratorFuel(LightFuel.getFluid(32), 305, LV);
         registerCombustionGeneratorFuel(Diesel.getFluid(1), 15, LV);
-        registerCombustionGeneratorFuel(NitroDiesel.getFluid(2), 45, LV);
+        registerCombustionGeneratorFuel(CetaneBoostedDiesel.getFluid(2), 45, LV);
         registerCombustionGeneratorFuel(RocketFuel.getFluid(2), 7, LV);
         registerCombustionGeneratorFuel(Gasoline.getFluid(1), 24, LV);
         registerCombustionGeneratorFuel(HighOctaneGasoline.getFluid(1), 68, LV);

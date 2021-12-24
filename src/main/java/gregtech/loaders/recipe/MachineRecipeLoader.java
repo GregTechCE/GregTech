@@ -280,51 +280,10 @@ public class MachineRecipeLoader {
     private static void registerMixingCrystallizationRecipes() {
 
         RecipeMaps.MIXER_RECIPES.recipeBuilder()
-                .input(OrePrefix.dust, Materials.Stone, 1)
-                .fluidInputs(Materials.Lubricant.getFluid(20), Materials.Water.getFluid(4980))
-                .fluidOutputs(Materials.DrillingFluid.getFluid(5000))
-                .duration(64).EUt(16)
-                .buildAndRegister();
-
-        RecipeMaps.MIXER_RECIPES.recipeBuilder()
-                .input(OrePrefix.dust, Materials.Clay, 1)
-                .input(OrePrefix.dust, Materials.Stone, 3)
-                .fluidInputs(Materials.Water.getFluid(500))
-                .notConsumable(new IntCircuitIngredient(1))
-                .fluidOutputs(Materials.Concrete.getFluid(576))
-                .duration(20).EUt(16)
-                .buildAndRegister();
-
-        MIXER_RECIPES.recipeBuilder().duration(100).EUt(16)
-                .input(dust, Calcite, 2)
-                .input(dust, Stone)
-                .input(dust, Clay)
-                .input(dust, QuartzSand)
-                .fluidInputs(Water.getFluid(2000))
-                .fluidOutputs(Concrete.getFluid(2304))
-                .buildAndRegister();
-
-        RecipeMaps.MIXER_RECIPES.recipeBuilder()
                 .inputs(MetaBlocks.CONCRETE.getItemVariant(ConcreteVariant.LIGHT_CONCRETE, ChiselingVariant.NORMAL))
                 .fluidInputs(Materials.Water.getFluid(144))
                 .outputs(MetaBlocks.CONCRETE.getItemVariant(ConcreteVariant.DARK_CONCRETE, ChiselingVariant.NORMAL))
                 .duration(12).EUt(4)
-                .buildAndRegister();
-
-        RecipeMaps.MIXER_RECIPES.recipeBuilder()
-                .duration(64).EUt(16)
-                .fluidInputs(Materials.Water.getFluid(1000))
-                .input("sand", 2)
-                .input(OrePrefix.dust, Materials.Stone, 6)
-                .input(OrePrefix.dust, Materials.Flint)
-                .fluidOutputs(Materials.ConstructionFoam.getFluid(1000))
-                .buildAndRegister();
-
-        RecipeMaps.MIXER_RECIPES.recipeBuilder()
-                .duration(600).EUt(VA[MV])
-                .input(OrePrefix.dust, Materials.Ruby, 4)
-                .input(OrePrefix.dust, Materials.Redstone, 5)
-                .outputs(MetaItems.ENERGIUM_DUST.getStackForm(9))
                 .buildAndRegister();
 
         RecipeMaps.AUTOCLAVE_RECIPES.recipeBuilder().inputs(MetaItems.ENERGIUM_DUST.getStackForm(9))
@@ -360,12 +319,6 @@ public class MachineRecipeLoader {
                 .fluidOutputs(Materials.IndiumConcentrate.getFluid(1000))
                 .duration(60).EUt(150).buildAndRegister();
 
-        RecipeMaps.MIXER_RECIPES.recipeBuilder()
-                .input(OrePrefix.dust, Materials.Sodium)
-                .input(OrePrefix.dust, Materials.Potassium)
-                .fluidOutputs(Materials.SodiumPotassium.getFluid(1000))
-                .duration(400).EUt(VA[LV]).buildAndRegister();
-
     }
 
     private static void registerOrganicRecyclingRecipes() {
@@ -386,7 +339,6 @@ public class MachineRecipeLoader {
             {new MaterialStack(Materials.WroughtIron, 1), new MaterialStack(Materials.Tin, 1), new MaterialStack(Materials.TinAlloy, 2L)},
             {new MaterialStack(Materials.Iron, 2L), new MaterialStack(Materials.Nickel, 1), new MaterialStack(Materials.Invar, 3L)},
             {new MaterialStack(Materials.WroughtIron, 2L), new MaterialStack(Materials.Nickel, 1), new MaterialStack(Materials.Invar, 3L)},
-            {new MaterialStack(Materials.Tin, 9L), new MaterialStack(Materials.Antimony, 1), new MaterialStack(Materials.SolderingAlloy, 10L)},
             {new MaterialStack(Materials.Lead, 4L), new MaterialStack(Materials.Antimony, 1), new MaterialStack(Materials.BatteryAlloy, 5L)},
             {new MaterialStack(Materials.Gold, 1), new MaterialStack(Materials.Silver, 1), new MaterialStack(Materials.Electrum, 2L)},
             {new MaterialStack(Materials.Magnesium, 1), new MaterialStack(Materials.Aluminium, 2L), new MaterialStack(Materials.Magnalium, 3L)},

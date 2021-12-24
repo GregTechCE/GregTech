@@ -282,7 +282,7 @@ public class SecondDegreeMaterials {
                 .ingot().fluid()
                 .color(0xc99781).iconSet(METALLIC)
                 .flags(EXT2_METAL)
-                .components(Lead, 2, Bronze, 2, Tin, 1)
+                .components(Copper, 6, Tin, 2, Lead, 1)
                 .fluidPipeProperties(2023, 69, true)
                 .build();
 

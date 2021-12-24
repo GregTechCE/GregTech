@@ -198,7 +198,7 @@ public class MetaFluids {
         setMaterialFluidTexture(Materials.LightlySteamCrackedHeavyFuel, FluidType.NORMAL);
         setMaterialFluidTexture(Materials.SeverelySteamCrackedHeavyFuel, FluidType.NORMAL);
         setMaterialFluidTexture(Materials.Chlorine, FluidType.NORMAL);
-        setMaterialFluidTexture(Materials.NitroDiesel, FluidType.NORMAL);
+        setMaterialFluidTexture(Materials.CetaneBoostedDiesel, FluidType.NORMAL);
         setMaterialFluidTexture(Materials.SodiumPersulfate, FluidType.NORMAL);
         setMaterialFluidTexture(Materials.GlycerylTrinitrate, FluidType.NORMAL);
         setMaterialFluidTexture(Materials.Lubricant, FluidType.NORMAL);

@@ -423,24 +423,6 @@ public class PetrochemRecipes {
                 .fluidInputs(HeavyFuel.getFluid(20))
                 .fluidOutputs(Phenol.getFluid(5))
                 .duration(32).EUt(24).buildAndRegister();
-
-        DISTILLERY_RECIPES.recipeBuilder()
-                .circuitMeta(5)
-                .fluidInputs(OilLight.getFluid(300))
-                .fluidOutputs(Oil.getFluid(100))
-                .duration(16).EUt(24).buildAndRegister();
-
-        DISTILLERY_RECIPES.recipeBuilder()
-                .circuitMeta(5)
-                .fluidInputs(RawOil.getFluid(200))
-                .fluidOutputs(Oil.getFluid(100))
-                .duration(16).EUt(24).buildAndRegister();
-
-        DISTILLERY_RECIPES.recipeBuilder()
-                .circuitMeta(5)
-                .fluidInputs(OilHeavy.getFluid(100))
-                .fluidOutputs(Oil.getFluid(100))
-                .duration(16).EUt(24).buildAndRegister();
     }
 
     private static void lightlyCrack(Material raw, Material hydroCracked, Material steamCracked) {
