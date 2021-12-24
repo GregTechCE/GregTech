@@ -65,11 +65,16 @@ public class RecyclingRecipes {
         registerExtractorRecycling(input, components, voltageMultiplier);
         if (ignoreArcSmelting) return;
 
-        //do not apply arc smelting for gems, solid materials and dust materials
-        //only generate recipes for ingot materials
         if (components.size() == 1) {
             Material m = components.get(0).material;
-            if (!(m.hasProperty(PropertyKey.INGOT) && m.getProperty(PropertyKey.INGOT).getArcSmeltInto() != m)) {
+
+            // skip non-ingot materials
+            if (!m.hasProperty(PropertyKey.INGOT)) {
+                return;
+            }
+
+            // Skip Ingot -> Ingot Arc Recipes
+            if (OreDictUnifier.getPrefix(input) == OrePrefix.ingot && m.getProperty(PropertyKey.INGOT).getArcSmeltInto() == m) {
                 return;
             }
         }
@@ -92,7 +97,7 @@ public class RecyclingRecipes {
         RecipeMaps.MACERATOR_RECIPES.recipeBuilder()
                 .inputs(input.copy())
                 .outputs(outputs)
-                .duration(calculateDuration(materials))
+                .duration(calculateDuration(outputs))
                 .EUt(2 * multiplier)
                 .buildAndRegister();
     }
@@ -157,7 +162,7 @@ public class RecyclingRecipes {
         RecipeMaps.ARC_FURNACE_RECIPES.recipeBuilder()
                 .inputs(input.copy())
                 .outputs(outputs)
-                .duration(calculateDuration(materials))
+                .duration(calculateDuration(outputs))
                 .EUt(GTValues.VA[GTValues.LV] * multiplier)
                 .buildAndRegister();
     }
@@ -252,9 +257,12 @@ public class RecyclingRecipes {
      * - Sums the amount of material times the mass of the material for the List
      * - Divides that by M
      */
-    private static int calculateDuration(List<MaterialStack> materials) {
+    private static int calculateDuration(List<ItemStack> materials) {
         long duration = 0;
-        for (MaterialStack ms : materials) duration += (ms.amount * ms.material.getMass());
+        for (ItemStack is : materials) {
+            MaterialStack ms = OreDictUnifier.getMaterial(is);
+            if (ms != null) duration += ms.amount * ms.material.getMass();
+        }
         return (int) Math.max(1L, duration / M);
     }
 
@@ -310,30 +318,43 @@ public class RecyclingRecipes {
         // Sort the List by total material amount descending.
         outputs.sort(Comparator.comparingLong(e -> -e.getSecond().amount));
 
-        // Cut out "duplicate" outputs.
+        // Sort "duplicate" outputs to the end.
         // For example, if there are blocks of Steel and nuggets of Steel, and the nuggets
         // are preventing some other output from occupying one of the final slots of the machine,
         // cut the nuggets out to favor the newer item instead of having 2 slots occupied by Steel.
+        //
+        // There is probably a better way to do this.
         Map<MaterialStack, ItemStack> temp = new HashMap<>();
         for (Tuple<ItemStack, MaterialStack> t : outputs) {
-            if (temp.containsKey(t.getSecond())) continue;
-            temp.put(t.getSecond(), t.getFirst());
+            boolean isInMap = false;
+            for (MaterialStack ms : temp.keySet()) {
+                if (ms.material == t.getSecond().material) {
+                    isInMap = true;
+                    break;
+                }
+            }
+            if (!isInMap) temp.put(t.getSecond(), t.getFirst());
         }
+        temp.putAll(outputs.stream().collect(Collectors.toMap(Tuple::getSecond, Tuple::getFirst)));
 
-        // Not enough unique elements in the result list map.
-        if (temp.size() < maxOutputs) {
-            int limit = maxOutputs - temp.size(); // maximum number of outputs to append
-            temp.putAll(outputs.stream()
-                    .filter(t -> !temp.containsKey(t.getSecond()))
-                    .limit(limit)
-                    .collect(Collectors.toMap(Tuple::getSecond, Tuple::getFirst)));
-        }
-
-        return temp.entrySet().stream()
+        // Filter Ash to the very end of the list, after all others
+        List<ItemStack> ashStacks = temp.entrySet().stream()
+                .filter(e -> isAshMaterial(e.getKey()))
                 .sorted(Comparator.comparingLong(e -> -e.getKey().amount))
+                .map(Entry::getValue)
+                .collect(Collectors.toList());
+
+        List<ItemStack> returnValues = temp.entrySet().stream()
+                .sorted(Comparator.comparingLong(e -> -e.getKey().amount))
+                .filter(e -> !isAshMaterial(e.getKey()))
                 .limit(maxOutputs)
                 .map(Entry::getValue)
                 .collect(Collectors.toList());
+
+        for (int i = 0; i < ashStacks.size() && returnValues.size() < maxOutputs; i++) {
+            returnValues.add(ashStacks.get(i));
+        }
+        return returnValues;
     }
 
     private static void splitStacks(List<Tuple<ItemStack, MaterialStack>> list, ItemStack originalStack, UnificationEntry entry) {
@@ -399,5 +420,9 @@ public class RecyclingRecipes {
                 OreDictUnifier.get(smallestPrefix, material, (int) (smallestMS.amount / smallestPrefix.materialAmount)),
                 new MaterialStack(material, smallestMS.amount)
         ));
+    }
+
+    private static boolean isAshMaterial(MaterialStack ms) {
+        return ms.material == Materials.Ash || ms.material == Materials.DarkAsh || ms.material == Materials.Carbon;
     }
 }

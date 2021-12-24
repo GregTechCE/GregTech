@@ -53,7 +53,7 @@ public class MetaTileEntityLoader {
         ModHandler.addShapedRecipe(true, "casing_uhv", MetaBlocks.MACHINE_CASING.getItemVariant(UHV), "PPP", "PwP", "PPP", 'P', new UnificationEntry(OrePrefix.plate, Materials.Neutronium));
 
         // If these recipes are changed, change the values in MaterialInfoLoader.java
-        registerMachineRecipe(MetaTileEntities.HULL, "PLP", "CHC", 'P', HULL_PLATE, 'L', PLATE, 'C', CABLE, 'H', CASING);
+        registerMachineRecipe(false, MetaTileEntities.HULL, "PLP", "CHC", 'P', HULL_PLATE, 'L', PLATE, 'C', CABLE, 'H', CASING);
 
         ModHandler.addShapedRecipe("casing_primitive_bricks", MetaBlocks.METAL_CASING.getItemVariant(PRIMITIVE_BRICKS, 1), "XX", "XX", 'X', MetaItems.FIRECLAY_BRICK);
         ModHandler.addShapedRecipe("casing_coke_bricks", MetaBlocks.METAL_CASING.getItemVariant(COKE_BRICKS, 1), "XX", "XX", 'X', MetaItems.COKE_OVEN_BRICK);
@@ -376,7 +376,7 @@ public class MetaTileEntityLoader {
     // - CraftingComponent.Component
     // - UnificationEntry
     // - String (intended as an OreDictionary entry)
-    public static <T extends MetaTileEntity & ITieredMetaTileEntity> void registerMachineRecipe(T[] metaTileEntities, Object... recipe) {
+    public static <T extends MetaTileEntity & ITieredMetaTileEntity> void registerMachineRecipe(boolean withUnificationData, T[] metaTileEntities, Object... recipe) {
         for (T metaTileEntity : metaTileEntities) {
 
             // Needed to skip certain tiers if not enabled.
@@ -386,9 +386,13 @@ public class MetaTileEntityLoader {
                 if (prepRecipe == null) {
                     return;
                 }
-                ModHandler.addShapedRecipe(true, metaTileEntity.getMetaName(), metaTileEntity.getStackForm(), prepRecipe);
+                ModHandler.addShapedRecipe(withUnificationData, metaTileEntity.getMetaName(), metaTileEntity.getStackForm(), prepRecipe);
             }
         }
+    }
+
+    public static <T extends MetaTileEntity & ITieredMetaTileEntity> void registerMachineRecipe(T[] metaTileEntities, Object... recipe) {
+        registerMachineRecipe(true, metaTileEntities, recipe);
     }
 
     private static Object[] prepareRecipe(int tier, Object... recipe) {
