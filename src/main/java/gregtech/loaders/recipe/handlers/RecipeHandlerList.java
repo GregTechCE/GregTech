@@ -1,4 +1,4 @@
-package gregtech.loaders.oreprocessing;
+package gregtech.loaders.recipe.handlers;
 
 public class RecipeHandlerList {
 

@@ -1,8 +1,11 @@
 package gregtech.loaders.recipe;
 
 import gregtech.api.recipes.ModHandler;
+import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.unification.material.MarkerMaterials.Tier;
+import gregtech.api.unification.material.Materials;
 import gregtech.api.unification.stack.UnificationEntry;
+import gregtech.common.items.MetaItems;
 
 import static gregtech.api.GTValues.*;
 import static gregtech.api.recipes.RecipeMaps.*;
@@ -14,18 +17,18 @@ public class BatteryRecipes {
 
     public static void init() {
         standardBatteries();
-        highEndBatteries();
+        gemBatteries();
     }
 
     private static void standardBatteries() {
 
         // Tantalum Battery (since it doesn't fit elsewhere)
-        ASSEMBLER_RECIPES.recipeBuilder().duration(30).EUt(4)
+        ASSEMBLER_RECIPES.recipeBuilder()
                 .input(dust, Tantalum)
                 .input(foil, Manganese)
-                .fluidInputs(Polyethylene.getFluid(144))
-                .outputs(BATTERY_ULV_TANTALUM.getStackForm(8))
-                .buildAndRegister();
+                .fluidInputs(Polyethylene.getFluid(L))
+                .output(BATTERY_ULV_TANTALUM, 8)
+                .duration(30).EUt(4).buildAndRegister();
 
         // :trol:
         ModHandler.addShapedRecipe("tantalum_capacitor", BATTERY_ULV_TANTALUM.getStackForm(2),
@@ -42,12 +45,12 @@ public class BatteryRecipes {
                 'C', new UnificationEntry(cableGtSingle, Tin),
                 'P', new UnificationEntry(plate, BatteryAlloy));
 
-        ASSEMBLER_RECIPES.recipeBuilder().duration(400).EUt(1)
+        ASSEMBLER_RECIPES.recipeBuilder()
                 .input(cableGtSingle, Tin)
                 .input(plate, BatteryAlloy)
-                .fluidInputs(Polyethylene.getFluid(144))
+                .fluidInputs(Polyethylene.getFluid(L))
                 .output(BATTERY_HULL_LV)
-                .buildAndRegister();
+                .duration(400).EUt(1).buildAndRegister();
 
         // MV
         ModHandler.addShapedRecipe("battery_hull_mv", BATTERY_HULL_MV.getStackForm(),
@@ -55,19 +58,19 @@ public class BatteryRecipes {
                 'C', new UnificationEntry(cableGtSingle, Copper),
                 'P', new UnificationEntry(plate, BatteryAlloy));
 
-        ASSEMBLER_RECIPES.recipeBuilder().duration(100).EUt(2)
+        ASSEMBLER_RECIPES.recipeBuilder()
                 .input(cableGtSingle, Copper, 2)
                 .input(plate, BatteryAlloy, 3)
-                .fluidInputs(Polyethylene.getFluid(432))
+                .fluidInputs(Polyethylene.getFluid(L * 3))
                 .output(BATTERY_HULL_MV)
-                .buildAndRegister();
+                .duration(200).EUt(2).buildAndRegister();
 
-        ASSEMBLER_RECIPES.recipeBuilder().duration(200).EUt(2)
+        ASSEMBLER_RECIPES.recipeBuilder()
                 .input(cableGtSingle, AnnealedCopper, 2)
                 .input(plate, BatteryAlloy, 3)
-                .fluidInputs(Polyethylene.getFluid(432))
+                .fluidInputs(Polyethylene.getFluid(L * 3))
                 .output(BATTERY_HULL_MV)
-                .buildAndRegister();
+                .duration(200).EUt(2).buildAndRegister();
 
         // HV
         ASSEMBLER_RECIPES.recipeBuilder().duration(300).EUt(4)
@@ -233,7 +236,20 @@ public class BatteryRecipes {
         EXTRACTOR_RECIPES.recipeBuilder().input(BATTERY_UV_NAQUADRIA).output(BATTERY_HULL_LARGE_NAQUADRIA).buildAndRegister();
     }
 
-    private static void highEndBatteries() {
+    private static void gemBatteries() {
+
+        // Energium Crystal
+        AUTOCLAVE_RECIPES.recipeBuilder()
+                .input(ENERGIUM_DUST, 9)
+                .fluidInputs(Water.getFluid(1800))
+                .output(ENERGIUM_CRYSTAL)
+                .duration(2000).EUt(VA[MV]).buildAndRegister();
+
+        AUTOCLAVE_RECIPES.recipeBuilder()
+                .input(ENERGIUM_DUST, 9)
+                .fluidInputs(DistilledWater.getFluid(1800))
+                .output(ENERGIUM_CRYSTAL)
+                .duration(1500).EUt(VA[MV]).buildAndRegister();
 
         // Lapotronic Energy Orb
         CIRCUIT_ASSEMBLER_RECIPES.recipeBuilder().duration(512).EUt(1024)

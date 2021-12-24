@@ -500,6 +500,11 @@ public class VanillaStandardRecipes {
                 .inputs(new ItemStack(Blocks.SNOW, 1))
                 .outputs(new ItemStack(Blocks.SNOW_LAYER, 16))
                 .duration(25).EUt(VA[ULV]).buildAndRegister();
+
+        CUTTER_RECIPES.recipeBuilder()
+                .inputs(new ItemStack(Blocks.GLOWSTONE))
+                .output(plate, Glowstone, 4)
+                .duration(100).EUt(16).buildAndRegister();
     }
 
     /**

@@ -1,4 +1,4 @@
-package gregtech.loaders.oreprocessing;
+package gregtech.loaders.recipe.handlers;
 
 import gregtech.api.GregTechAPI;
 import gregtech.api.recipes.RecipeBuilder;

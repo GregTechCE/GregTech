@@ -31,10 +31,8 @@ import gregtech.common.pipelike.itempipe.BlockItemPipe;
 import gregtech.common.pipelike.itempipe.ItemBlockItemPipe;
 import gregtech.loaders.MaterialInfoLoader;
 import gregtech.loaders.OreDictionaryLoader;
-import gregtech.loaders.oreprocessing.DecompositionRecipeHandler;
-import gregtech.loaders.oreprocessing.RecipeHandlerList;
-import gregtech.loaders.oreprocessing.ToolRecipeHandler;
-import gregtech.loaders.recipe.*;
+import gregtech.loaders.recipe.CraftingComponent;
+import gregtech.loaders.recipe.GTRecipeManager;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.advancements.ICriterionTrigger;
 import net.minecraft.block.Block;
@@ -122,7 +120,7 @@ public class CommonProxy {
             registry.register(item);
             item.registerSubItems();
         }
-        ToolRecipeHandler.initializeMetaItems();
+        GTRecipeManager.preLoad();
 
         registry.register(createItemBlock(MACHINE, MachineItemBlock::new));
 
@@ -193,11 +191,7 @@ public class CommonProxy {
 
         GTLog.logger.info("Registering recipes...");
 
-        MachineRecipeLoader.init();
-        CraftingRecipeLoader.init();
-        MetaTileEntityLoader.init();
-        MetaTileEntityMachineRecipeLoader.init();
-        RecipeHandlerList.register();
+        GTRecipeManager.load();
     }
 
     //this is called almost last, to make sure all mods registered their ore dictionary
@@ -215,9 +209,7 @@ public class CommonProxy {
     public static void registerRecipesLowest(RegistryEvent.Register<IRecipe> event) {
         GTLog.logger.info("Running late material handlers...");
         OrePrefix.runMaterialHandlers();
-        DecompositionRecipeHandler.runRecipeGeneration();
-        RecyclingRecipes.init();
-        WoodMachineRecipes.init();
+        GTRecipeManager.loadLatest();
 
         if (GTValues.isModLoaded(GTValues.MODID_CT)) {
             MetaItemBracketHandler.rebuildComponentRegistry();
@@ -294,7 +286,7 @@ public class CommonProxy {
     }
 
     public void onPostLoad() {
-        WoodMachineRecipes.postInit();
+        GTRecipeManager.postLoad();
         TerminalRegistry.init();
     }
 }

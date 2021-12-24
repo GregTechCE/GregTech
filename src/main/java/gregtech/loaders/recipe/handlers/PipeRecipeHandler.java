@@ -1,4 +1,4 @@
-package gregtech.loaders.oreprocessing;
+package gregtech.loaders.recipe.handlers;
 
 import com.google.common.base.CaseFormat;
 import gregtech.api.recipes.ModHandler;

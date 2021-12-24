@@ -1,6 +1,9 @@
 package gregtech.loaders.recipe.chemistry;
 
+import gregtech.api.recipes.ModHandler;
 import gregtech.api.recipes.ingredients.IntCircuitIngredient;
+import gregtech.api.unification.OreDictUnifier;
+import gregtech.api.unification.stack.UnificationEntry;
 
 import static gregtech.api.GTValues.*;
 import static gregtech.api.recipes.RecipeMaps.MIXER_RECIPES;
@@ -119,6 +122,29 @@ public class MixerRecipes {
                 .buildAndRegister();
 
         // Alloys
+        ModHandler.addShapelessRecipe("dust_brass", OreDictUnifier.get(dust, Brass, 3),
+                new UnificationEntry(dust, Copper),
+                new UnificationEntry(dust, Copper),
+                new UnificationEntry(dust, Copper),
+                new UnificationEntry(dust, Zinc));
+
+        ModHandler.addShapelessRecipe("dust_bronze", OreDictUnifier.get(dust, Bronze, 3),
+                new UnificationEntry(dust, Copper),
+                new UnificationEntry(dust, Copper),
+                new UnificationEntry(dust, Copper),
+                new UnificationEntry(dust, Tin));
+
+        ModHandler.addShapelessRecipe("dust_cobalt_brass", OreDictUnifier.get(dust, CobaltBrass, 8),
+                new UnificationEntry(dust, Brass),
+                new UnificationEntry(dust, Brass),
+                new UnificationEntry(dust, Brass),
+                new UnificationEntry(dust, Brass),
+                new UnificationEntry(dust, Brass),
+                new UnificationEntry(dust, Brass),
+                new UnificationEntry(dust, Brass),
+                new UnificationEntry(dust, Aluminium),
+                new UnificationEntry(dust, Cobalt));
+
         MIXER_RECIPES.recipeBuilder().duration(100).EUt(VA[ULV])
                 .input(dust, Copper)
                 .input(dust, Redstone, 4)
@@ -156,9 +182,9 @@ public class MixerRecipes {
                 .buildAndRegister();
 
         MIXER_RECIPES.recipeBuilder().duration(200).EUt(VA[ULV])
+                .notConsumable(new IntCircuitIngredient(1))
                 .input(dust, Boron)
                 .input(dust, Glass, 7)
-                .notConsumable(new IntCircuitIngredient(1))
                 .output(dust, BorosilicateGlass, 8)
                 .buildAndRegister();
 
