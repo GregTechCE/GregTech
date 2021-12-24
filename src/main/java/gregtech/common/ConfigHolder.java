@@ -59,16 +59,16 @@ public class ConfigHolder {
         @Config.Comment({"Whether to require a Wrench to break machines.", "Default: false"})
         public boolean requireWrenchForMachines = false;
 
-        @Config.Comment({"The default color to overlay onto machines.", "16777215 (0xFFFFFF in decimal) is no coloring (default).",
-                "13819135 (0xD2DCFF in decimal) is the classic blue from GT5.", "THIS IS SERVER SIDE!!!"})
-        public int defaultPaintingColor = 0xFFFFFF;
+        @Config.Comment({"The default color to overlay onto machines.", "16777215 (0xFFFFFF in decimal) is no coloring (like GTCE).",
+                "13819135 (0xD2DCFF in decimal) is the classic blue from GT5 (default).", "THIS IS SERVER SIDE!!!"})
+        public int defaultPaintingColor = 0xD2DCFF;
 
-        @Config.Comment({"The default color to overlay onto cable insulation.", "7829367 (0x777777 in decimal) is no coloring (default).",
-                "4210752 (0x404040 in decimal) is the classic black from GT5.", "THIS IS SERVER SIDE!!!"})
-        public int defaultInsulationColor = 0x777777;
+        @Config.Comment({"The default color to overlay onto cable insulation.", "7829367 (0x777777 in decimal) is no coloring (like GTCE).",
+                "4210752 (0x404040 in decimal) is the classic black from GT5 (default).", "THIS IS SERVER SIDE!!!"})
+        public int defaultInsulationColor = 0x404040;
 
-        @Config.Comment({"Whether to enable the Maintenance Hatch, required for Multiblocks.", "Default: false"})
-        public boolean enableMaintenance = true; // TODO Change this before release
+        @Config.Comment({"Whether to enable the Maintenance Hatch, required for Multiblocks.", "Default: true"})
+        public boolean enableMaintenance = true;
 
         @Config.Comment({"Whether to enable High-Tier Solar Panels (IV-UV). They will not have recipes.", "Default: false"})
         public boolean enableHighTierSolars = false;
