@@ -80,8 +80,8 @@ public class ConfigHolder {
         public boolean accelerateGTMachines = false;
 
         @Config.Comment({"Whether to use GT6-style pipe and cable connections, meaning they will not auto-connect " +
-                "unless placed directly onto another pipe or cable.", "Default: false"})
-        public boolean gt6StylePipesCables = false;
+                "unless placed directly onto another pipe or cable.", "Default: true"})
+        public boolean gt6StylePipesCables = true;
 
         @Config.Comment({"Divisor for Recipe Duration per Overclock.", "Default: 2.0"})
         @Config.RangeDouble(min = 2.0, max = 3.0)
