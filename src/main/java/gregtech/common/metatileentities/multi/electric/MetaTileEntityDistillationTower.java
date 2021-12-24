@@ -57,14 +57,14 @@ public class MetaTileEntityDistillationTower extends RecipeMapMultiblockControll
     @Override
     protected BlockPattern createStructurePattern() {
         return FactoryBlockPattern.start(RIGHT, FRONT, UP)
-                .aisle("YSY", "YFY", "YYY")
+                .aisle("YSY", "YYY", "YYY")
                 .aisle("XXX", "X#X", "XXX").setRepeatable(1, 11)
                 .aisle("XXX", "XXX", "XXX")
                 .where('S', selfPredicate())
-                .where('F', abilities(MultiblockAbility.IMPORT_FLUIDS))
                 .where('Y', states(getCasingState())
                         .or(abilities(MultiblockAbility.EXPORT_ITEMS).setMaxGlobalLimited(1))
-                        .or(abilities(MultiblockAbility.INPUT_ENERGY).setMinGlobalLimited(1)))
+                        .or(abilities(MultiblockAbility.INPUT_ENERGY).setMinGlobalLimited(1))
+                        .or(abilities(MultiblockAbility.IMPORT_FLUIDS).setExactLimit(1)))
                 .where('X', states(getCasingState())
                         .or(metaTileEntities(MultiblockAbility.REGISTRY.get(MultiblockAbility.EXPORT_FLUIDS).stream()
                                 .filter(mte->!(mte instanceof MetaTileEntityMultiFluidHatch))

@@ -41,11 +41,10 @@ public class MetaTileEntityCokeOven extends RecipeMapPrimitiveMultiblockControll
     @Override
     protected BlockPattern createStructurePattern() {
         return FactoryBlockPattern.start()
-                .aisle("XXX", "XZX", "XXX")
-                .aisle("XZX", "Z#Z", "XZX")
+                .aisle("XXX", "XXX", "XXX")
+                .aisle("XXX", "X#X", "XXX")
                 .aisle("XXX", "XYX", "XXX")
-                .where('Z', states(getCasingState()).or(metaTileEntities(MetaTileEntities.COKE_OVEN_HATCH)))
-                .where('X', states(getCasingState()))
+                .where('X', states(getCasingState()).or(metaTileEntities(MetaTileEntities.COKE_OVEN_HATCH)))
                 .where('#', air())
                 .where('Y', selfPredicate())
                 .build();
