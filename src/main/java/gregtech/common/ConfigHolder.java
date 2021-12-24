@@ -355,80 +355,69 @@ public class ConfigHolder {
 
     public static class ToolOptions {
 
-        @Config.Name("BatPack Options")
-        public BatPack batpack = new BatPack();
-
         @Config.Name("NanoSaber Options")
         public NanoSaber nanoSaber = new NanoSaber();
 
         @Config.Comment({"Should EV and IV Drills be enabled, which may cause lag when used on low-end devices?", "Default: true"})
         public boolean enableHighTierDrills = true;
 
-        @Config.Comment({"NightVision Goggles Voltage Tier.", "Default: 2 (LV)"})
+        @Config.Comment("NightVision Goggles Voltage Tier. Default: 1 (LV)")
         @Config.RangeInt(min = 0, max = 14)
-        @Config.SlidingOption
-        public int voltageTierNightVision = 2;
+        public int voltageTierNightVision = 1;
 
-        @Config.Comment({"NanoSuit Voltage Tier.", "Default: 3 (MV)"})
+        @Config.Comment("NanoSuit Voltage Tier. Default: 3 (HV)")
         @Config.RangeInt(min = 0, max = 14)
-        @Config.SlidingOption
         public int voltageTierNanoSuit = 3;
 
-        @Config.Comment({"Advanced NanoSuit Chestplate Voltage Tier.", "Default: 4 (EV)"})
+        @Config.Comment({"Advanced NanoSuit Chestplate Voltage Tier.", "Default: 3 (HV)"})
         @Config.RangeInt(min = 0, max = 14)
-        @Config.SlidingOption
-        public int voltageTierAdvNanoSuit = 4;
+        public int voltageTierAdvNanoSuit = 3;
 
         @Config.Comment({"QuarkTech Suit Voltage Tier.", "Default: 5 (IV)"})
         @Config.RangeInt(min = 0, max = 14)
         @Config.SlidingOption
         public int voltageTierQuarkTech = 5;
 
-        @Config.Comment({"Advanced QuarkTech Suit Chestplate Voltage Tier.", "Default: 5 (IV)"})
+        @Config.Comment({"Advanced QuarkTech Suit Chestplate Voltage Tier.", "Default: 5 (LuV)"})
         @Config.RangeInt(min = 0, max = 14)
-        @Config.SlidingOption
-        public int voltageTierAdvQuarkTech = 5;
+        public int voltageTierAdvQuarkTech = 6;
 
-        @Config.Comment({"Impeller Jetpack Voltage Tier.", "Default: 2 (MV)"})
+        @Config.Comment({"Electric Impeller Jetpack Voltage Tier.", "Default: 2 (MV)"})
         @Config.RangeInt(min = 0, max = 14)
-        @Config.SlidingOption
         public int voltageTierImpeller = 2;
 
-        @Config.Comment({"Advanced Impeller Jetpack Voltage Tier.", "Default: 3 (HV)"})
+        @Config.Comment({"Advanced Electric Jetpack Voltage Tier.", "Default: 3 (HV)"})
         @Config.RangeInt(min = 0, max = 14)
-        @Config.SlidingOption
         public int voltageTierAdvImpeller = 3;
 
-        public static class BatPack {
-            @Config.Comment({"Total LV BatPack capacity.", "Default: 600,000"})
-            @Config.RangeInt(min = 1)
-            public int capacityLV = 600000;
+        @Config.Comment("Armor HUD Location")
+        public ArmorHud armorHud = new ArmorHud();
+    }
 
-            @Config.Comment({"Total MV BatPack capacity.", "Default: 2,400,000"})
-            @Config.RangeInt(min = 1)
-            public int capacityMV = 2400000;
+    public static class ArmorHud {
+        @Config.Comment({"Sets HUD location", "1 - left-upper corner", "2 - right-upper corner", "3 - left-bottom corner", "4 - right-bottom corner"})
+        public byte hudLocation = 1;
+        @Config.Comment("Horizontal offset of HUD [0 ~ 100)")
+        public byte hudOffsetX = 0;
+        @Config.Comment("Vertical offset of HUD [0 ~ 100)")
+        public byte hudOffsetY = 0;
+    }
 
-            @Config.Comment({"Total HV BatPack capacity.", "Default: 9,600,000"})
-            @Config.RangeInt(min = 1)
-            public int capacityHV = 9600000;
-        }
+    public static class NanoSaber {
 
-        public static class NanoSaber {
+        @Config.RangeDouble(min = 0, max = 100)
+        @Config.Comment({"The additional damage added when the NanoSaber is powered.", "Default: 20.0"})
+        public double nanoSaberDamageBoost = 20;
 
-            @Config.RangeDouble(min = 0, max = 100)
-            @Config.Comment({"The additional damage added when the NanoSaber is powered.", "Default: 20.0"})
-            public double nanoSaberDamageBoost = 20;
+        @Config.RangeDouble(min = 0, max = 100)
+        @Config.Comment({"The base damage of the NanoSaber.", "Default: 5.0"})
+        public double nanoSaberBaseDamage = 5;
 
-            @Config.RangeDouble(min = 0, max = 100)
-            @Config.Comment({"The base damage of the NanoSaber.", "Default: 5.0"})
-            public double nanoSaberBaseDamage = 5;
+        @Config.Comment({"Should Zombies spawn with charged, active NanoSabers on hard difficulty?", "Default: true"})
+        public boolean zombieSpawnWithSabers = true;
 
-            @Config.Comment({"Should Zombies spawn with charged, active NanoSabers on hard difficulty?", "Default: true"})
-            public boolean zombieSpawnWithSabers = true;
-
-            @Config.RangeInt(min = 1, max = 512)
-            @Config.Comment({"The EU/t consumption of the NanoSaber.", "Default: 64"})
-            public int energyConsumption = 64;
-        }
+        @Config.RangeInt(min = 1, max = 512)
+        @Config.Comment({"The EU/t consumption of the NanoSaber.", "Default: 64"})
+        public int energyConsumption = 64;
     }
 }

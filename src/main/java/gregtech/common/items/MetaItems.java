@@ -117,7 +117,7 @@ public final class MetaItems {
 
     public static MetaItem<?>.MetaValueItem CARBON_FIBERS;
     public static MetaItem<?>.MetaValueItem CARBON_MESH;
-    public static MetaItem<?>.MetaValueItem CARBON_PLATE;
+    public static MetaItem<?>.MetaValueItem CARBON_FIBER_PLATE;
     public static MetaItem<?>.MetaValueItem DUCT_TAPE;
 
     public static MetaItem<?>.MetaValueItem NEUTRON_REFLECTOR;
@@ -512,29 +512,25 @@ public final class MetaItems {
 
     public static ArmorMetaItem<?>.ArmorMetaValueItem NIGHTVISION_GOGGLES;
 
-    public static ArmorMetaItem<?>.ArmorMetaValueItem NANO_MUSCLE_SUITE_CHESTPLATE;
-    public static ArmorMetaItem<?>.ArmorMetaValueItem NANO_MUSCLE_SUITE_LEGGINGS;
-    public static ArmorMetaItem<?>.ArmorMetaValueItem NANO_MUSCLE_SUITE_BOOTS;
-    public static ArmorMetaItem<?>.ArmorMetaValueItem NANO_MUSCLE_SUITE_HELMET;
+    public static ArmorMetaItem<?>.ArmorMetaValueItem NANO_CHESTPLATE;
+    public static ArmorMetaItem<?>.ArmorMetaValueItem NANO_LEGGINGS;
+    public static ArmorMetaItem<?>.ArmorMetaValueItem NANO_BOOTS;
+    public static ArmorMetaItem<?>.ArmorMetaValueItem NANO_HELMET;
 
-    public static ArmorMetaItem<?>.ArmorMetaValueItem QUARK_TECH_SUITE_CHESTPLATE;
-    public static ArmorMetaItem<?>.ArmorMetaValueItem QUARK_TECH_SUITE_LEGGINGS;
-    public static ArmorMetaItem<?>.ArmorMetaValueItem QUARK_TECH_SUITE_BOOTS;
-    public static ArmorMetaItem<?>.ArmorMetaValueItem QUARK_TECH_SUITE_HELMET;
+    public static ArmorMetaItem<?>.ArmorMetaValueItem QUANTUM_CHESTPLATE;
+    public static ArmorMetaItem<?>.ArmorMetaValueItem QUANTUM_LEGGINGS;
+    public static ArmorMetaItem<?>.ArmorMetaValueItem QUANTUM_BOOTS;
+    public static ArmorMetaItem<?>.ArmorMetaValueItem QUANTUM_HELMET;
 
     public static ArmorMetaItem<?>.ArmorMetaValueItem SEMIFLUID_JETPACK;
-    public static ArmorMetaItem<?>.ArmorMetaValueItem IMPELLER_JETPACK;
+    public static ArmorMetaItem<?>.ArmorMetaValueItem ELECTRIC_JETPACK;
 
-    public static ArmorMetaItem<?>.ArmorMetaValueItem BATPACK_LV;
-    public static ArmorMetaItem<?>.ArmorMetaValueItem BATPACK_MV;
-    public static ArmorMetaItem<?>.ArmorMetaValueItem BATPACK_HV;
+    public static ArmorMetaItem<?>.ArmorMetaValueItem ELECTRIC_JETPACK_ADVANCED;
+    public static ArmorMetaItem<?>.ArmorMetaValueItem NANO_CHESTPLATE_ADVANCED;
+    public static ArmorMetaItem<?>.ArmorMetaValueItem QUANTUM_CHESTPLATE_ADVANCED;
 
-    public static ArmorMetaItem<?>.ArmorMetaValueItem ADVANCED_IMPELLER_JETPACK;
-    public static ArmorMetaItem<?>.ArmorMetaValueItem ADVANCED_NANO_MUSCLE_CHESTPLATE;
-    public static ArmorMetaItem<?>.ArmorMetaValueItem ADVANCED_QUARK_TECH_SUITE_CHESTPLATE;
-
-    public static MetaItem<?>.MetaValueItem IMPELLER_MV;
-    public static MetaItem<?>.MetaValueItem IMPELLER_HV;
+    public static MetaItem<?>.MetaValueItem POWER_THRUSTER;
+    public static MetaItem<?>.MetaValueItem POWER_THRUSTER_ADVANCED;
     public static MetaItem<?>.MetaValueItem GRAVITATION_ENGINE;
 
     public static MetaItem<?>.MetaValueItem SUS_RECORD;
