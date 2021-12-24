@@ -335,7 +335,9 @@ public class RecyclingRecipes {
             }
             if (!isInMap) temp.put(t.getSecond(), t.getFirst());
         }
-        temp.putAll(outputs.stream().collect(Collectors.toMap(Tuple::getSecond, Tuple::getFirst)));
+        temp.putAll(outputs.stream()
+                .filter(t -> !temp.containsKey(t.getSecond()))
+                .collect(Collectors.toMap(Tuple::getSecond, Tuple::getFirst)));
 
         // Filter Ash to the very end of the list, after all others
         List<ItemStack> ashStacks = temp.entrySet().stream()
