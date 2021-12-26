@@ -140,10 +140,10 @@ public class MetaTileEntityBatteryBuffer extends TieredMetaTileEntity implements
                         18 + 18 * colSize + 94)
                 .label(6, 6, getMetaFullName());
 
-        for (int x = 0; x < rowSize; x++) {
-            for (int y = 0; y < colSize; y++) {
-                int index = y * colSize + x;
-                builder.widget(new SlotWidget(importItems, index, 88 - rowSize * 9 + x * 18, 18 + y * 18, true, true)
+        int index = 0;
+        for (int y = 0; y < colSize; y++) {
+            for (int x = 0; x < rowSize; x++) {
+                builder.widget(new SlotWidget(importItems, index++, 88 - rowSize * 9 + x * 18, 18 + y * 18, true, true)
                         .setBackgroundTexture(GuiTextures.SLOT, GuiTextures.BATTERY_OVERLAY));
             }
         }
