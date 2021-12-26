@@ -540,24 +540,9 @@ public class CoverConveyor extends CoverBehavior implements CoverWithUI, ITickab
         this.conveyorMode = ConveyorMode.values()[tagCompound.getInteger("ConveyorMode")];
         this.distributionMode = DistributionMode.values()[tagCompound.getInteger("DistributionMode")];
         this.blocksInput = tagCompound.getBoolean("BlocksInput");
-        //LEGACY SAVE FORMAT SUPPORT
-        if (tagCompound.hasKey("AllowManualIO")) {
-            this.manualImportExportMode = tagCompound.getBoolean("AllowManualIO")
-                    ? ManualImportExportMode.FILTERED
-                    : ManualImportExportMode.DISABLED;
-        }
-        if (tagCompound.hasKey("FilterInventory")) {
-            this.itemFilterContainer.deserializeNBT(tagCompound);
-        } else {
-            NBTTagCompound filterComponent = tagCompound.getCompoundTag("Filter");
-            this.itemFilterContainer.deserializeNBT(filterComponent);
-        }
-        if (tagCompound.hasKey("WorkingAllowed")) {
-            this.isWorkingAllowed = tagCompound.getBoolean("WorkingAllowed");
-        }
-        if (tagCompound.hasKey("ManualImportExportMode")) {
-            this.manualImportExportMode = ManualImportExportMode.values()[tagCompound.getInteger("ManualImportExportMode")];
-        }
+        this.isWorkingAllowed = tagCompound.getBoolean("WorkingAllowed");
+        this.manualImportExportMode = ManualImportExportMode.values()[tagCompound.getInteger("ManualImportExportMode")];
+        this.itemFilterContainer.deserializeNBT(tagCompound.getCompoundTag("Filter"));
     }
 
     @Override
