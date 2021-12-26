@@ -109,6 +109,9 @@ public class ClientProxy extends CommonProxy {
     public static final IBlockColor FOAM_BLOCK_COLOR = (IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex) ->
             state.getValue(BlockColored.COLOR).colorValue;
 
+    public static final IBlockColor SURFACE_ROCK_BLOCK_COLOR = (IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex) ->
+            state.getValue(((BlockSurfaceRock) state.getBlock()).variantProperty).getMaterialRGB();
+
     public void onPreLoad() {
         super.onPreLoad();
 
@@ -167,6 +170,7 @@ public class ClientProxy extends CommonProxy {
         }
         MetaBlocks.COMPRESSED.values().stream().distinct().forEach(c -> c.onTextureStitch(event));
         MetaBlocks.FRAMES.values().stream().distinct().forEach(f -> f.onTextureStitch(event));
+        MetaBlocks.SURFACE_ROCK.values().stream().distinct().forEach(c -> c.onTextureStitch(event));
         MetaBlocks.ORES.forEach(o -> o.onTextureStitch(event));
     }
 
