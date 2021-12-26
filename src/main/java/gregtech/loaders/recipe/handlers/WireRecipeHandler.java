@@ -34,10 +34,9 @@ import static gregtech.common.items.MetaItems.SHAPE_EXTRUDER_WIRE;
  *                                   fluid available.
  *
  * Extra Materials for Cable Covering:
- * - Polyvinyl Chloride (PVC): At HV and above, you can use a Small Pile of PVC to cheapen the cable recipe,
- *                             halving the amount of fluid needed.
- *
  * - Polyphenylene Sulfide (PPS): At LuV, this foil is required to cover cables. Lower tiers will not use it.
+ *
+ * - Material Foil: At IV, an extra foil of the Material is needed to make the cable with SiR.
  */
 public class WireRecipeHandler {
 
@@ -103,20 +102,10 @@ public class WireRecipeHandler {
 
         // Rubber Recipe (ULV-EV cables)
         if (voltageTier <= GTValues.EV) {
-            IntCircuitRecipeBuilder builder = ASSEMBLER_RECIPES.recipeBuilder().EUt(VA[ULV]).duration(100)
+            ASSEMBLER_RECIPES.recipeBuilder().EUt(VA[ULV]).duration(100)
                     .input(wirePrefix, material)
-                    .output(cablePrefix, material);
-
-            // Add a recipe using PVC if HV or above.
-            // Also apply a circuit to the non-PVC recipe to avoid conflicts.
-            if (voltageTier >= GTValues.HV) {
-                builder.copy()
-                        .input(dustSmall, PolyvinylChloride, insulationAmount)
-                        .fluidInputs(Rubber.getFluid(GTValues.L * insulationAmount / 2))
-                        .buildAndRegister();
-                builder.circuitMeta(24);
-            }
-            builder.fluidInputs(Rubber.getFluid(GTValues.L * insulationAmount))
+                    .output(cablePrefix, material)
+                    .fluidInputs(Rubber.getFluid(GTValues.L * insulationAmount))
                     .buildAndRegister();
         }
 
@@ -135,16 +124,6 @@ public class WireRecipeHandler {
             builder.input(foil, material, insulationAmount);
         }
 
-        // Add a recipe using PVC if HV or above.
-        // Also apply a circuit to the non-PVC recipe to avoid conflicts.
-        if (voltageTier >= GTValues.HV) {
-            builder.copy()
-                    .input(dustSmall, PolyvinylChloride, insulationAmount)
-                    .fluidInputs(SiliconeRubber.getFluid(GTValues.L * insulationAmount / 4))
-                    .buildAndRegister();
-            builder.circuitMeta(24);
-        }
-
         builder.fluidInputs(SiliconeRubber.getFluid(GTValues.L * insulationAmount / 2))
                 .buildAndRegister();
 
@@ -156,16 +135,6 @@ public class WireRecipeHandler {
         // Apply a Polyphenylene Sulfate Foil if LuV or above.
         if (voltageTier >= GTValues.LuV) {
             builder.input(foil, PolyphenyleneSulfide, insulationAmount);
-        }
-
-        // Add a recipe using PVC if HV or above.
-        // Also apply a circuit to the non-PVC recipe to avoid conflicts.
-        if (voltageTier >= GTValues.HV) {
-            builder.copy()
-                    .input(dustSmall, PolyvinylChloride, insulationAmount)
-                    .fluidInputs(StyreneButadieneRubber.getFluid(GTValues.L * insulationAmount / 8))
-                    .buildAndRegister();
-            builder.circuitMeta(24);
         }
 
         builder.fluidInputs(StyreneButadieneRubber.getFluid(GTValues.L * insulationAmount / 4))

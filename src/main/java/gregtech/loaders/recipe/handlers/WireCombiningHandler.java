@@ -19,22 +19,14 @@ public class WireCombiningHandler {
             wireGtSingle, wireGtDouble, wireGtQuadruple, wireGtOctal, wireGtHex
     };
 
-    private static final OrePrefix[] CABLE_DOUBLING_ORDER = new OrePrefix[]{
-            cableGtSingle, cableGtDouble, cableGtQuadruple, cableGtOctal, cableGtHex
-    };
-
     public static void register() {
 
-        // Generate Wire Packer/Unpacker recipes TODO Move into generateWireCombining? Add for cables?
+        // Generate Wire Packer/Unpacker recipes TODO Move into generateWireCombining?
         wireGtSingle.addProcessingHandler(PropertyKey.WIRE, WireCombiningHandler::processWireCompression);
 
         // Generate manual recipes for combining Wires/Cables
         for (OrePrefix wirePrefix : WIRE_DOUBLING_ORDER) {
             wirePrefix.addProcessingHandler(PropertyKey.WIRE, WireCombiningHandler::generateWireCombiningRecipe);
-        }
-
-        for (OrePrefix cablePrefix : CABLE_DOUBLING_ORDER) {
-            cablePrefix.addProcessingHandler(PropertyKey.WIRE, WireCombiningHandler::generateCableCombiningRecipe);
         }
     }
 
@@ -61,33 +53,6 @@ public class WireCombiningHandler {
                     new UnificationEntry(wirePrefix, material),
                     new UnificationEntry(wirePrefix, material),
                     new UnificationEntry(wirePrefix, material));
-        }
-    }
-
-    private static void generateCableCombiningRecipe(OrePrefix cablePrefix, Material material, WireProperties property) {
-        if (property.isSuperconductor()) return;
-        int cableIndex = ArrayUtils.indexOf(CABLE_DOUBLING_ORDER, cablePrefix);
-
-        if (cableIndex < CABLE_DOUBLING_ORDER.length - 1) {
-            ModHandler.addShapelessRecipe(String.format("%s_cable_%s_doubling", material, cablePrefix),
-                    OreDictUnifier.get(CABLE_DOUBLING_ORDER[cableIndex + 1], material),
-                    new UnificationEntry(cablePrefix, material),
-                    new UnificationEntry(cablePrefix, material));
-        }
-
-        if (cableIndex > 0) {
-            ModHandler.addShapelessRecipe(String.format("%s_cable_%s_splitting", material, cablePrefix),
-                    OreDictUnifier.get(CABLE_DOUBLING_ORDER[cableIndex - 1], material, 2),
-                    new UnificationEntry(cablePrefix, material));
-        }
-
-        if (cableIndex < 3) {
-            ModHandler.addShapelessRecipe(String.format("%s_cable_%s_quadrupling", material, cablePrefix),
-                    OreDictUnifier.get(CABLE_DOUBLING_ORDER[cableIndex + 2], material),
-                    new UnificationEntry(cablePrefix, material),
-                    new UnificationEntry(cablePrefix, material),
-                    new UnificationEntry(cablePrefix, material),
-                    new UnificationEntry(cablePrefix, material));
         }
     }
 
