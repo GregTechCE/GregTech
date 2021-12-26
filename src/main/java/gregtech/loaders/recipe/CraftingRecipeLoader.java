@@ -19,7 +19,6 @@ import gregtech.common.items.MetaItems;
 import gregtech.loaders.recipe.handlers.ToolRecipeHandler;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreIngredient;
 
@@ -75,22 +74,6 @@ public class CraftingRecipeLoader {
 
         ModHandler.addShapedRecipe("clipboard", CLIPBOARD.getStackForm(), " Sd", "BWR", "PPP", 'P', Items.PAPER, 'R', new UnificationEntry(OrePrefix.springSmall, Iron), 'B', new UnificationEntry(OrePrefix.bolt, Iron), 'S', new UnificationEntry(OrePrefix.screw, Iron), 'W', new UnificationEntry(OrePrefix.plate, Wood));
 
-        for (Material material : new Material[]{Materials.Lapis, Materials.Lazurite, Materials.Sodalite}) {
-            String recipeName = "lapotron_crystal_" + material.toString();
-            ModHandler.addShapedEnergyTransferRecipe(recipeName, LAPOTRON_CRYSTAL.getStackForm(),
-                    Ingredient.fromStacks(ENERGIUM_CRYSTAL.getStackForm()), false, false,
-                    "XCX", "RER", "XCX",
-                    'X', new UnificationEntry(OrePrefix.plate, material),
-                    'R', new UnificationEntry(OrePrefix.stick, material),
-                    'C', new UnificationEntry(OrePrefix.circuit, Tier.Extreme),
-                    'E', ENERGIUM_CRYSTAL.getStackForm());
-
-            ModHandler.addShapelessRecipe(recipeName + "_alt", LAPOTRON_CRYSTAL.getStackForm(),
-                    new UnificationEntry(OrePrefix.gemExquisite, Materials.Sapphire),
-                    new UnificationEntry(OrePrefix.stick, material),
-                    CAPACITOR.getStackForm());
-        }
-
         ModHandler.addShapelessRecipe("rubber_wood_planks", new ItemStack(MetaBlocks.PLANKS, 4, BlockGregPlank.PlankVariant.RUBBER_PLANK.ordinal()), new ItemStack(MetaBlocks.LOG, 1, LogVariant.RUBBER_WOOD.ordinal()));
 
         ModHandler.addShapedRecipe("rubber_ring", OreDictUnifier.get(OrePrefix.ring, Materials.Rubber), "k", "X", 'X', new UnificationEntry(OrePrefix.plate, Materials.Rubber));
@@ -115,7 +98,7 @@ public class CraftingRecipeLoader {
         ///////////////////////////////////////////////////
         //               Shapes and Molds                //
         ///////////////////////////////////////////////////
-        ModHandler.addShapedRecipe("shape/shape_empty", SHAPE_EMPTY.getStackForm(), "hf", "PP", "PP", 'P', new UnificationEntry(OrePrefix.plate, Materials.Steel));
+        ModHandler.addShapedRecipe("shape_empty", SHAPE_EMPTY.getStackForm(), "hf", "PP", "PP", 'P', new UnificationEntry(OrePrefix.plate, Materials.Steel));
 
         ModHandler.addShapedRecipe("shape_extruder_bottle", SHAPE_EXTRUDER_BOTTLE.getStackForm(), "  x", " S ", "   ", 'S', SHAPE_EXTRUDER_RING.getStackForm());
         ModHandler.addShapedRecipe("shape_extruder_gear", SHAPE_EXTRUDER_GEAR.getStackForm(), "x  ", " S ", "   ", 'S', SHAPE_EXTRUDER_RING.getStackForm());
@@ -181,15 +164,15 @@ public class CraftingRecipeLoader {
         ///////////////////////////////////////////////////
         //                   Armors                      //
         ///////////////////////////////////////////////////
-        ModHandler.addShapedRecipe("armor/nightvision_goggles", MetaItems.NIGHTVISION_GOGGLES.getStackForm(), "CSC", "RBR", "LdL", 'C', new UnificationEntry(OrePrefix.circuit, Tier.Primitive), 'S', new UnificationEntry(OrePrefix.screw, Steel), 'R', new UnificationEntry(OrePrefix.ring, Rubber), 'B', MetaItems.BATTERY_LV_SODIUM, 'L', new UnificationEntry(OrePrefix.lens, Glass));
-        ModHandler.addShapedRecipe("armor/fluid_jetpack", MetaItems.SEMIFLUID_JETPACK.getStackForm(), "xCw", "SUS", "RIR", 'C', new UnificationEntry(OrePrefix.circuit, Tier.Basic), 'S', MetaItems.FLUID_CELL_LARGE_STEEL.getStackForm(), 'U', MetaItems.ELECTRIC_PUMP_LV.getStackForm(), 'R', new UnificationEntry(OrePrefix.rotor, Lead), 'I', new UnificationEntry(OrePrefix.pipeSmallFluid, Potin));
-        ModHandler.addShapedRecipe("armor/electric_jetpack", MetaItems.ELECTRIC_JETPACK.getStackForm(), "xCd", "TBT", "I I", 'C', new UnificationEntry(OrePrefix.circuit, Tier.Good), 'T', MetaItems.POWER_THRUSTER.getStackForm(), 'B', MetaItems.BATTERY_MV_LITHIUM.getStackForm(), 'I', new UnificationEntry(OrePrefix.wireGtDouble, AnnealedCopper));
-        ModHandler.addShapedRecipe("armor/electric_jetpack_advanced", MetaItems.ELECTRIC_JETPACK_ADVANCED.getStackForm(), "xJd", "TBT", "WCW", 'J', MetaItems.ELECTRIC_JETPACK.getStackForm(), 'T', MetaItems.POWER_THRUSTER_ADVANCED.getStackForm(), 'B', MetaItems.BATTERY_HV_LITHIUM.getStackForm(), 'W', new UnificationEntry(OrePrefix.wireGtQuadruple, Gold), 'C', new UnificationEntry(OrePrefix.circuit, Tier.Advanced));
-        ModHandler.addShapedRecipe("armor/nano_helmet", MetaItems.NANO_HELMET.getStackForm(), "PPP", "PNP", "xEd", 'P', MetaItems.CARBON_FIBER_PLATE.getStackForm(), 'N', MetaItems.NIGHTVISION_GOGGLES.getStackForm(), 'E', MetaItems.ENERGIUM_CRYSTAL.getStackForm());
-        ModHandler.addShapedRecipe("armor/nano_chestplate", MetaItems.NANO_CHESTPLATE.getStackForm(), "PEP", "PPP", "PPP", 'P', MetaItems.CARBON_FIBER_PLATE.getStackForm(), 'E', MetaItems.ENERGIUM_CRYSTAL.getStackForm());
-        ModHandler.addShapedRecipe("armor/nano_leggings", MetaItems.NANO_LEGGINGS.getStackForm(), "PPP", "PEP", "PxP", 'P', MetaItems.CARBON_FIBER_PLATE.getStackForm(), 'E', MetaItems.ENERGIUM_CRYSTAL.getStackForm());
-        ModHandler.addShapedRecipe("armor/nano_boots", MetaItems.NANO_BOOTS.getStackForm(), "PxP", "PEP", 'P', MetaItems.CARBON_FIBER_PLATE.getStackForm(), 'E', MetaItems.ENERGIUM_CRYSTAL.getStackForm());
-        ModHandler.addShapedRecipe("armor/nano_chestplate_advanced", MetaItems.NANO_CHESTPLATE_ADVANCED.getStackForm(), "xJd", "PNP", "WCW", 'J', MetaItems.ELECTRIC_JETPACK_ADVANCED.getStackForm(), 'P', MetaItems.LOW_POWER_INTEGRATED_CIRCUIT.getStackForm(), 'N', MetaItems.NANO_CHESTPLATE.getStackForm(), 'W', new UnificationEntry(OrePrefix.wireGtQuadruple, Platinum), 'C', new UnificationEntry(OrePrefix.circuit, Tier.Elite));
+        ModHandler.addShapedRecipe("nightvision_goggles", MetaItems.NIGHTVISION_GOGGLES.getStackForm(), "CSC", "RBR", "LdL", 'C', new UnificationEntry(OrePrefix.circuit, Tier.Primitive), 'S', new UnificationEntry(OrePrefix.screw, Steel), 'R', new UnificationEntry(OrePrefix.ring, Rubber), 'B', MetaItems.BATTERY_LV_SODIUM, 'L', new UnificationEntry(OrePrefix.lens, Glass));
+        ModHandler.addShapedRecipe("fluid_jetpack", MetaItems.SEMIFLUID_JETPACK.getStackForm(), "xCw", "SUS", "RIR", 'C', new UnificationEntry(OrePrefix.circuit, Tier.Basic), 'S', MetaItems.FLUID_CELL_LARGE_STEEL.getStackForm(), 'U', MetaItems.ELECTRIC_PUMP_LV.getStackForm(), 'R', new UnificationEntry(OrePrefix.rotor, Lead), 'I', new UnificationEntry(OrePrefix.pipeSmallFluid, Potin));
+        ModHandler.addShapedRecipe("electric_jetpack", MetaItems.ELECTRIC_JETPACK.getStackForm(), "xCd", "TBT", "I I", 'C', new UnificationEntry(OrePrefix.circuit, Tier.Good), 'T', MetaItems.POWER_THRUSTER.getStackForm(), 'B', MetaItems.BATTERY_MV_LITHIUM.getStackForm(), 'I', new UnificationEntry(OrePrefix.wireGtDouble, AnnealedCopper));
+        ModHandler.addShapedRecipe("electric_jetpack_advanced", MetaItems.ELECTRIC_JETPACK_ADVANCED.getStackForm(), "xJd", "TBT", "WCW", 'J', MetaItems.ELECTRIC_JETPACK.getStackForm(), 'T', MetaItems.POWER_THRUSTER_ADVANCED.getStackForm(), 'B', MetaItems.BATTERY_HV_LITHIUM.getStackForm(), 'W', new UnificationEntry(OrePrefix.wireGtQuadruple, Gold), 'C', new UnificationEntry(OrePrefix.circuit, Tier.Advanced));
+        ModHandler.addShapedRecipe("nano_helmet", MetaItems.NANO_HELMET.getStackForm(), "PPP", "PNP", "xEd", 'P', MetaItems.CARBON_FIBER_PLATE.getStackForm(), 'N', MetaItems.NIGHTVISION_GOGGLES.getStackForm(), 'E', MetaItems.ENERGIUM_CRYSTAL.getStackForm());
+        ModHandler.addShapedRecipe("nano_chestplate", MetaItems.NANO_CHESTPLATE.getStackForm(), "PEP", "PPP", "PPP", 'P', MetaItems.CARBON_FIBER_PLATE.getStackForm(), 'E', MetaItems.ENERGIUM_CRYSTAL.getStackForm());
+        ModHandler.addShapedRecipe("nano_leggings", MetaItems.NANO_LEGGINGS.getStackForm(), "PPP", "PEP", "PxP", 'P', MetaItems.CARBON_FIBER_PLATE.getStackForm(), 'E', MetaItems.ENERGIUM_CRYSTAL.getStackForm());
+        ModHandler.addShapedRecipe("nano_boots", MetaItems.NANO_BOOTS.getStackForm(), "PxP", "PEP", 'P', MetaItems.CARBON_FIBER_PLATE.getStackForm(), 'E', MetaItems.ENERGIUM_CRYSTAL.getStackForm());
+        ModHandler.addShapedRecipe("nano_chestplate_advanced", MetaItems.NANO_CHESTPLATE_ADVANCED.getStackForm(), "xJd", "PNP", "WCW", 'J', MetaItems.ELECTRIC_JETPACK_ADVANCED.getStackForm(), 'P', MetaItems.LOW_POWER_INTEGRATED_CIRCUIT.getStackForm(), 'N', MetaItems.NANO_CHESTPLATE.getStackForm(), 'W', new UnificationEntry(OrePrefix.wireGtQuadruple, Platinum), 'C', new UnificationEntry(OrePrefix.circuit, Tier.Elite));
         ModHandler.addShapedRecipe("gravitation_engine", MetaItems.GRAVITATION_ENGINE.getStackForm(), "ESE", "POP", "ESE", 'E', MetaItems.EMITTER_LUV.getStackForm(), 'S', new UnificationEntry(OrePrefix.wireGtQuadruple, Osmium), 'P', new UnificationEntry(OrePrefix.plateDouble, Iridium), 'O', MetaItems.ENERGY_LAPOTRONIC_ORB.getStackForm());
     }
 

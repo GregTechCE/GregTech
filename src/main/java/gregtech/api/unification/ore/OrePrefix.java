@@ -293,6 +293,7 @@ public class OrePrefix {
         excludeAllGems(Materials.EnderPearl);
         excludeAllGems(Materials.EnderEye);
         excludeAllGems(Materials.Flint);
+        excludeAllGemsButNormal(Materials.Lapotron);
 
         dust.setIgnored(Materials.Redstone);
         dust.setIgnored(Materials.Glowstone);
@@ -342,6 +343,7 @@ public class OrePrefix {
         block.setIgnored(Materials.Netherrack);
         block.setIgnored(Materials.Concrete);
         block.setIgnored(Materials.Blaze);
+        block.setIgnored(Materials.Lapotron);
 
         ore.addSecondaryMaterial(new MaterialStack(Materials.Stone, dust.materialAmount));
         oreNetherrack.addSecondaryMaterial(new MaterialStack(Materials.Netherrack, dust.materialAmount));
@@ -382,10 +384,17 @@ public class OrePrefix {
         plateDouble.setIgnored(Materials.BorosilicateGlass);
         plate.setIgnored(Materials.BorosilicateGlass);
         foil.setIgnored(Materials.BorosilicateGlass);
+
+        dustSmall.setIgnored(Materials.Lapotron);
+        dustTiny.setIgnored(Materials.Lapotron);
     }
 
     private static void excludeAllGems(Material material) {
         gem.setIgnored(material);
+        excludeAllGemsButNormal(material);
+    }
+
+    private static void excludeAllGemsButNormal(Material material) {
         gemChipped.setIgnored(material);
         gemFlawed.setIgnored(material);
         gemFlawless.setIgnored(material);

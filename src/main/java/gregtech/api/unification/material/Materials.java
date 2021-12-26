@@ -675,6 +675,7 @@ public class Materials {
     public static Material NaquadriaSolution;
     public static Material AcidicNaquadriaSolution;
     public static Material NaquadriaWaste;
+    public static Material Lapotron;
 
     /**
      * Second Degree Compounds

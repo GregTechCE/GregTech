@@ -9,7 +9,6 @@ import static gregtech.api.GTValues.*;
 import static gregtech.api.recipes.RecipeMaps.MIXER_RECIPES;
 import static gregtech.api.unification.material.Materials.*;
 import static gregtech.api.unification.ore.OrePrefix.dust;
-import static gregtech.common.items.MetaItems.ENERGIUM_DUST;
 
 public class MixerRecipes {
 
@@ -332,13 +331,6 @@ public class MixerRecipes {
                 .input(dust, Gold, 4)
                 .notConsumable(new IntCircuitIngredient(3))
                 .output(dust, RoseGold, 5)
-                .buildAndRegister();
-
-        MIXER_RECIPES.recipeBuilder().duration(600).EUt(VA[MV])
-                .input(dust, Redstone, 5)
-                .input(dust, Ruby, 4)
-                .notConsumable(new IntCircuitIngredient(1))
-                .output(ENERGIUM_DUST, 9)
                 .buildAndRegister();
 
         MIXER_RECIPES.recipeBuilder().duration(600).EUt(VA[MV])

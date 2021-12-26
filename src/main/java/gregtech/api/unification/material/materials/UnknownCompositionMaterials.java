@@ -443,5 +443,11 @@ public class UnknownCompositionMaterials {
 
         NaquadriaWaste = new Material.Builder(1646, "naquadria_waste")
                 .fluid().color(0x425B42).build();
+
+        Lapotron = new Material.Builder(1647, "lapotron")
+                .gem()
+                .color(0x2C39B1).iconSet(DIAMOND)
+                .flags(NO_UNIFICATION)
+                .build();
     }
 }

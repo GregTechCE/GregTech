@@ -534,12 +534,6 @@ public class CircuitRecipes {
 
         // Crystal Circuit Components
         LASER_ENGRAVER_RECIPES.recipeBuilder()
-                .input(LAPOTRON_CRYSTAL)
-                .notConsumable(craftingLens, Color.Blue)
-                .output(ENGRAVED_LAPOTRON_CHIP, 3)
-                .duration(256).EUt(VA[HV]).buildAndRegister();
-
-        LASER_ENGRAVER_RECIPES.recipeBuilder()
                 .input(ENGRAVED_CRYSTAL_CHIP)
                 .notConsumable(craftingLens, Color.Lime)
                 .output(CRYSTAL_CENTRAL_PROCESSING_UNIT)
