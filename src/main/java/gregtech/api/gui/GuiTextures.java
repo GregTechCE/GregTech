@@ -175,6 +175,7 @@ public class GuiTextures {
     public static final TextureArea PROGRESS_BAR_COMPRESS = TextureArea.fullImage("textures/gui/progress_bar/progress_bar_compress.png");
     public static final SteamTexture PROGRESS_BAR_COMPRESS_STEAM = SteamTexture.fullImage("textures/gui/progress_bar/progress_bar_compress_%s.png");
     public static final TextureArea PROGRESS_BAR_CRACKING = TextureArea.fullImage("textures/gui/progress_bar/progress_bar_cracking.png");
+    public static final TextureArea PROGRESS_BAR_CRACKING_INPUT = TextureArea.fullImage("textures/gui/progress_bar/progress_bar_cracking_2.png");
     public static final TextureArea PROGRESS_BAR_CRYSTALLIZATION = TextureArea.fullImage("textures/gui/progress_bar/progress_bar_crystallization.png");
     public static final TextureArea PROGRESS_BAR_DISTILLATION_TOWER = TextureArea.fullImage("textures/gui/progress_bar/progress_bar_distillation_tower.png");
     public static final TextureArea PROGRESS_BAR_EXTRACT = TextureArea.fullImage("textures/gui/progress_bar/progress_bar_extract.png");
