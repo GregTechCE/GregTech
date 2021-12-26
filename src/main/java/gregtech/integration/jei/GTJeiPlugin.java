@@ -52,6 +52,7 @@ import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -134,7 +135,7 @@ public class GTJeiPlugin implements IModPlugin {
             registry.addRecipes(recipeList, GTValues.MODID + ":" + fuelRecipeMap.unlocalizedName);
         }
 
-        Map<RecipeMap<?>, MetaTileEntity> deferredCatalysts = new HashMap<>();
+        Map<RecipeMap<?>, List<MetaTileEntity>> deferredCatalysts = new HashMap<>();
         for (ResourceLocation metaTileEntityId : GregTechAPI.MTE_REGISTRY.getKeys()) {
             MetaTileEntity metaTileEntity = GregTechAPI.MTE_REGISTRY.getObject(metaTileEntityId);
             assert metaTileEntity != null;
@@ -142,19 +143,20 @@ public class GTJeiPlugin implements IModPlugin {
                 IControllable workableCapability = metaTileEntity.getCapability(GregtechTileCapabilities.CAPABILITY_CONTROLLABLE, null);
 
                 if (workableCapability instanceof AbstractRecipeLogic) {
+                    AbstractRecipeLogic logic = (AbstractRecipeLogic) workableCapability;
                     if (metaTileEntity instanceof SteamMetaTileEntity) {
-                        deferredCatalysts.put(((AbstractRecipeLogic) workableCapability).getRecipeMap(), metaTileEntity);
+                        deferredCatalysts.computeIfAbsent(logic.getRecipeMap(), k -> new ArrayList<>()).add(metaTileEntity);
                     } else if (metaTileEntity instanceof IMultipleRecipeMaps && ((IMultipleRecipeMaps) metaTileEntity).hasMultipleRecipeMaps()) {
                         for (RecipeMap<?> recipeMap : ((IMultipleRecipeMaps) metaTileEntity).getAvailableRecipeMaps()) {
                             registerRecipeMapCatalyst(registry, recipeMap, metaTileEntity);
                         }
                     } else {
                         //Special Case here for the processing array
-                        RecipeMap<?> recipeMap = ((AbstractRecipeLogic) workableCapability).getRecipeMap();
+                        RecipeMap<?> recipeMap = logic.getRecipeMap();
                         if(recipeMap == null) {
                             continue;
                         }
-                        registerRecipeMapCatalyst(registry, ((AbstractRecipeLogic) workableCapability).getRecipeMap(), metaTileEntity);
+                        registerRecipeMapCatalyst(registry, logic.getRecipeMap(), metaTileEntity);
                     }
                 } else if (workableCapability instanceof FuelRecipeLogic) {
                     FuelRecipeMap recipeMap = ((FuelRecipeLogic) workableCapability).recipeMap;
@@ -162,8 +164,10 @@ public class GTJeiPlugin implements IModPlugin {
                 }
             }
         }
-        for (Map.Entry<RecipeMap<?>, MetaTileEntity> deferredMetaTileEntity : deferredCatalysts.entrySet()) {
-            registerRecipeMapCatalyst(registry, deferredMetaTileEntity.getKey(), deferredMetaTileEntity.getValue());
+        for (Map.Entry<RecipeMap<?>, List<MetaTileEntity>> deferredMetaTileEntities : deferredCatalysts.entrySet()) {
+            for (MetaTileEntity mte : deferredMetaTileEntities.getValue()) {
+                registerRecipeMapCatalyst(registry, deferredMetaTileEntities.getKey(), mte);
+            }
         }
 
         String semiFluidMapId = GTValues.MODID + ":" + RecipeMaps.SEMI_FLUID_GENERATOR_FUELS.getUnlocalizedName();
