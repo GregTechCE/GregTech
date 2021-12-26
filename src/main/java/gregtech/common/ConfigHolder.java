@@ -195,6 +195,9 @@ public class ConfigHolder {
 
         @Config.Comment({"Whether to remove Block/Ingot compression and decompression in the Crafting Table.", "Default: false"})
         public boolean disableManualCompression = false;
+
+        @Config.Comment({"Whether to remove Vanilla Block Recipes from the Crafting Table.", "Default: false"})
+        public boolean removeVanillaBlockRecipes = false;
     }
 
     public static class CompatibilityOptions {
