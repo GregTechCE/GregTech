@@ -1,10 +1,13 @@
 package gregtech.integration.jei;
 
+import com.google.common.collect.ImmutableList;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Material;
+import gregtech.api.worldgen.config.FillerConfigUtils;
 import gregtech.api.worldgen.config.OreDepositDefinition;
 import gregtech.api.worldgen.filler.BlockFiller;
 import gregtech.api.worldgen.filler.FillerEntry;
+import gregtech.api.worldgen.filler.LayeredBlockFiller;
 import gregtech.api.worldgen.populator.FluidSpringPopulator;
 import gregtech.api.worldgen.populator.IVeinPopulator;
 import gregtech.api.worldgen.populator.SurfaceBlockPopulator;
@@ -44,7 +47,7 @@ public class GTOreInfo implements IRecipeWrapper {
     private final IVeinPopulator veinPopulator;
     private final BlockFiller blockFiller;
     private final List<List<ItemStack>> groupedInputsAsItemStacks = new ArrayList<>();
-    private List<List<ItemStack>> groupedOutputsAsItemStacks;
+    private final List<List<ItemStack>> groupedOutputsAsItemStacks;
     private final Function<Biome, Integer> biomeFunction;
 
     public GTOreInfo(OreDepositDefinition definition) {
@@ -81,14 +84,18 @@ public class GTOreInfo implements IRecipeWrapper {
 
         this.biomeFunction = definition.getBiomeWeightModifier();
 
-        //Group the input ores and the Surface Identifier
+        // Group the input ores and the Surface Identifier
         List<ItemStack> generatedBlocksAsItemStacks = findComponentBlocksAsItemStacks();
         groupedInputsAsItemStacks.add(generatedBlocksAsItemStacks);
         groupedInputsAsItemStacks.add(Collections.singletonList(identifierStack));
 
-        //Group the output Ores
-        groupedOutputsAsItemStacks = findUniqueBlocksAsItemStack(generatedBlocksAsItemStacks);
-
+        // Different behavior if this is a Layered Vein
+        if (blockFiller instanceof LayeredBlockFiller) {
+            groupedOutputsAsItemStacks = getLayeredVeinOutputStacks();
+        } else {
+            //Group the output Ores
+            groupedOutputsAsItemStacks = findUniqueBlocksAsItemStack(generatedBlocksAsItemStacks);
+        }
     }
 
     @Override
@@ -97,27 +104,16 @@ public class GTOreInfo implements IRecipeWrapper {
         ingredients.setOutputLists(VanillaTypes.ITEM, groupedOutputsAsItemStacks);
     }
 
-    //Finds the possible blocks from the Filler definition, and returns them as ItemStacks
+    // Finds the possible blocks from the Filler definition, and returns them as ItemStacks.
     public List<ItemStack> findComponentBlocksAsItemStacks() {
         Collection<IBlockState> containedStates = new ArrayList<>();
         List<ItemStack> containedBlocksAsItemStacks = new ArrayList<>();
 
-        //Find all possible states in the Filler
-        //Needed because one generation option returns all possible blockStates
-        List<FillerEntry> possibleStates = blockFiller.getAllPossibleStates();
-        for (FillerEntry entry : possibleStates) {
-            Collection<IBlockState> possibleResults = entry.getPossibleResults();
-            for (IBlockState state : possibleResults) {
-                if (state.getBlock() instanceof BlockOre) {
-                    if (!state.getValue(((BlockOre) state.getBlock()).STONE_TYPE).shouldBeDroppedAsItem) {
-                        continue;
-                    }
-                }
-                containedStates.add(state);
-            }
-        }
+        // Find all possible states in the Filler.
+        // Needed because one generation option returns all possible blockStates.
+        blockFiller.getAllPossibleStates().forEach(e -> getPossibleStates(e, containedStates));
 
-        //Check to see if we are dealing with a fluid generation case, before transforming states
+        // Check to see if we are dealing with a fluid generation case, before transforming states.
         if (veinPopulator instanceof FluidSpringPopulator) {
             for (IBlockState state : containedStates) {
                 Block temp = state.getBlock();
@@ -129,36 +125,58 @@ public class GTOreInfo implements IRecipeWrapper {
                 }
             }
         } else {
-            //Transform the list of BlockStates to a list of ItemStacks
-            for (IBlockState state : containedStates) {
-                containedBlocksAsItemStacks.add(new ItemStack(state.getBlock(), 1, state.getBlock().getMetaFromState(state)));
-            }
+            // Transform the list of BlockStates to a list of ItemStacks.
+            getStacksFromStates(containedStates, containedBlocksAsItemStacks);
         }
-
-
         return containedBlocksAsItemStacks;
-
     }
 
-    //Condenses the List of ores down to group together ores that share the same material but only vary in stone type
-    public List<List<ItemStack>> findUniqueBlocksAsItemStack(List<ItemStack> itemList) {
+    private Collection<IBlockState> getPossibleStates(FillerEntry entry, Collection<IBlockState> collection) {
+        for (IBlockState state : entry.getPossibleResults()) {
+            if (state.getBlock() instanceof BlockOre) {
+                if (!state.getValue(((BlockOre) state.getBlock()).STONE_TYPE).shouldBeDroppedAsItem) {
+                    continue;
+                }
+            }
+            collection.add(state);
+        }
+        return collection;
+    }
 
+    private List<ItemStack> getStacksFromStates(Collection<IBlockState> states, List<ItemStack> list) {
+        for (IBlockState state : states) {
+            list.add(new ItemStack(state.getBlock(), 1, state.getBlock().getMetaFromState(state)));
+        }
+        return list;
+    }
+
+    private List<List<ItemStack>> getLayeredVeinOutputStacks() {
+        // We can assume we are a LayeredBlockFiller.
+        LayeredBlockFiller filler = (LayeredBlockFiller) blockFiller;
+        return ImmutableList.of(
+                getStacksFromStates(getPossibleStates(filler.getPrimary(), new ArrayList<>()), new ArrayList<>()),
+                getStacksFromStates(getPossibleStates(filler.getSecondary(), new ArrayList<>()), new ArrayList<>()),
+                getStacksFromStates(getPossibleStates(filler.getBetween(), new ArrayList<>()), new ArrayList<>()),
+                getStacksFromStates(getPossibleStates(filler.getSporadic(), new ArrayList<>()), new ArrayList<>())
+        );
+    }
+
+    // Condenses the List of ores down to group together ores that share the same material but only vary in stone type.
+    public List<List<ItemStack>> findUniqueBlocksAsItemStack(List<ItemStack> itemList) {
         List<List<ItemStack>> groupedItems = new ArrayList<>();
         int entries = itemList.size();
 
-
-        //return early for Fluid Generation
+        // Return early for Fluid Generation.
         if (veinPopulator instanceof FluidSpringPopulator) {
             groupedItems.add(new ArrayList<>(itemList));
             return groupedItems;
         }
 
-
         ItemStack firstItem = itemList.get(0);
         List<ItemStack> oreList = new ArrayList<>();
         oreList.add(firstItem);
 
-        //Separate the ores ignoring their Stone Variants
+        // Separate the ores ignoring their Stone Variants.
         for (int counter = 1; counter < entries; counter++) {
             ItemStack item = itemList.get(counter);
 
@@ -170,13 +188,13 @@ public class GTOreInfo implements IRecipeWrapper {
             firstItem = item;
 
         }
-        //Add the last generated list
+        // Add the last generated list.
         groupedItems.add(new ArrayList<>(oreList));
 
         return groupedItems;
     }
 
-    //Finds the generated surface block or material. In the case of Fluid generation, finds a bucket of the fluid
+    // Finds the generated surface block or material. In the case of Fluid generation, finds a bucket of the fluid.
     public ItemStack findSurfaceBlock(IVeinPopulator veinPopulator) {
 
         Material mat;
@@ -184,14 +202,14 @@ public class GTOreInfo implements IRecipeWrapper {
         ItemStack stack = new ItemStack(Items.AIR);
         FluidStack fStack;
 
-        //Legacy Surface rock Support
+        // Surface rock Support
         if (veinPopulator instanceof SurfaceRockPopulator) {
             mat = ((SurfaceRockPopulator) veinPopulator).getMaterial();
-            //Create a Tiny Dust for the Identifier.
+            // Create a Tiny Dust for the Identifier.
             stack = OreDictUnifier.getDust(mat.createMaterialStack(M / 9));
             return stack.isEmpty() ? new ItemStack(Items.AIR) : stack;
         }
-        //Surface Block support
+        // Surface Block support
         else if (veinPopulator instanceof SurfaceBlockPopulator) {
             state = ((SurfaceBlockPopulator) veinPopulator).getBlockState();
             stack = new ItemStack(state.getBlock(), 1, state.getBlock().getMetaFromState(state));
@@ -208,14 +226,12 @@ public class GTOreInfo implements IRecipeWrapper {
                 return stack;
             }
         }
-
-        //No defined surface rock
+        // No defined surface rock.
         return stack;
     }
 
 
     public String makePrettyName(String name) {
-
         FileSystem fs = FileSystems.getDefault();
         String separator = fs.getSeparator();
 
@@ -253,7 +269,11 @@ public class GTOreInfo implements IRecipeWrapper {
                 tooltip.add(I18n.format("gregtech.jei.ore.surface_rock_2"));
             }
         } else {
-            tooltip.addAll(createOreWeightingTooltip(slotIndex));
+            if (blockFiller instanceof LayeredBlockFiller) {
+                tooltip.addAll(createOreLayeringTooltip(slotIndex));
+            } else {
+                tooltip.addAll(createOreWeightingTooltip(slotIndex));
+            }
         }
     }
 
@@ -315,10 +335,39 @@ public class GTOreInfo implements IRecipeWrapper {
             if (entry.getEntries() != null && !entry.getEntries().isEmpty()) {
                 Pair<Integer, FillerEntry> entryWithWeight = entry.getEntries().get(slotIndex - 2);
                 weight = Math.round((entryWithWeight.getKey() / (double) totalWeight) * 100);
-                tooltip.add("Weight in vein: " + weight + "%");
+                tooltip.add(I18n.format("gregtech.jei.ore.ore_weight", weight));
             }
         }
 
+        return tooltip;
+    }
+
+    private List<String> createOreLayeringTooltip(int slotIndex) {
+        List<String> tooltip = new ArrayList<>();
+        FillerConfigUtils.LayeredFillerEntry filler = (FillerConfigUtils.LayeredFillerEntry) blockFiller.getAllPossibleStates().get(0);
+        switch (slotIndex) {
+            // cases are offset by 2, being the "Ore Input" and the Surface Indicator
+            case 2: {
+                tooltip.add(I18n.format("gregtech.jei.ore.primary_1"));
+                tooltip.add(I18n.format("gregtech.jei.ore.primary_2", filler.getPrimaryLayers()));
+                break;
+            }
+            case 3: {
+                tooltip.add(I18n.format("gregtech.jei.ore.secondary_1"));
+                tooltip.add(I18n.format("gregtech.jei.ore.secondary_2", filler.getSecondaryLayers()));
+                break;
+            }
+            case 4: {
+                tooltip.add(I18n.format("gregtech.jei.ore.between_1"));
+                tooltip.add(I18n.format("gregtech.jei.ore.between_2", filler.getBetweenLayers()));
+                break;
+            }
+            case 5: {
+                tooltip.add(I18n.format("gregtech.jei.ore.sporadic_1"));
+                tooltip.add(I18n.format("gregtech.jei.ore.sporadic_2"));
+                break;
+            }
+        }
         return tooltip;
     }
 
