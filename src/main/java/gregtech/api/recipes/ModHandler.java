@@ -232,7 +232,7 @@ public class ModHandler {
                 .setRegistryName(regName);
         ForgeRegistries.RECIPES.register(shapedOreRecipe);
 
-        if (withUnificationData) OreDictUnifier.registerOre(result, getRecyclingIngredients(recipe));
+        if (withUnificationData) OreDictUnifier.registerOre(result, getRecyclingIngredients(result.getCount(), recipe));
 
     }
 
@@ -286,7 +286,7 @@ public class ModHandler {
                 .setRegistryName(regName);
         ForgeRegistries.RECIPES.register(shapedOreRecipe);
 
-        if (withUnificationData) OreDictUnifier.registerOre(result, getRecyclingIngredients(recipe));
+        if (withUnificationData) OreDictUnifier.registerOre(result, getRecyclingIngredients(result.getCount(), recipe));
     }
 
     public static void addShapedEnergyTransferRecipe(String regName, ItemStack result, Predicate<ItemStack> chargePredicate, boolean overrideCharge, boolean transferMaxCharge, Object... recipe) {
@@ -383,7 +383,7 @@ public class ModHandler {
         return ingredient;
     }
 
-    public static ItemMaterialInfo getRecyclingIngredients(Object... recipe) {
+    public static ItemMaterialInfo getRecyclingIngredients(int outputCount, Object... recipe) {
         Map<Character, Integer> inputCountMap = new HashMap<>();
         Map<Material, Long> materialStacksExploded = new HashMap<>();
 
@@ -456,7 +456,7 @@ public class ModHandler {
         }
 
         return new ItemMaterialInfo(materialStacksExploded.entrySet().stream()
-                .map(e -> new MaterialStack(e.getKey(), e.getValue()))
+                .map(e -> new MaterialStack(e.getKey(), e.getValue() / outputCount))
                 .sorted(Comparator.comparingLong(m -> -m.amount))
                 .collect(Collectors.toList())
         );
