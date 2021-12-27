@@ -415,11 +415,11 @@ public class SeparationRecipes {
                 .duration(784).EUt(VA[LV] * 2).buildAndRegister();
 
         ELECTROLYZER_RECIPES.recipeBuilder()
-                .input(dust, Bauxite, 5)
-                .output(dust, Aluminium, 2)
-                .output(dustTiny, Rutile, 3)
-                .fluidOutputs(Oxygen.getFluid(3000))
-                .duration(100).EUt(VA[LV] * 2).buildAndRegister();
+                .input(dust, Bauxite, 15)
+                .output(dust, Aluminium, 6)
+                .output(dust, Rutile)
+                .fluidOutputs(Oxygen.getFluid(9000))
+                .duration(270).EUt(VA[LV] * 2).buildAndRegister();
 
         ELECTROLYZER_RECIPES.recipeBuilder()
                 .input(dust, Zeolite, 41)
