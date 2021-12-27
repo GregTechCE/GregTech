@@ -163,7 +163,7 @@ public class OrePrefix {
     // made of 4 Ingots.
     public static final OrePrefix toolHeadWrench = new OrePrefix("toolHeadWrench", M * 4, null, MaterialIconType.toolHeadWrench, ENABLE_UNIFICATION, hasNoCraftingToolProperty);
     // made of 5 Ingots.
-    public static final OrePrefix turbineBlade = new OrePrefix("turbineBlade", M * 10, null, MaterialIconType.turbineBlade, ENABLE_UNIFICATION, hasToolProperty.and(m -> m.hasFlags(GENERATE_BOLT_SCREW, GENERATE_PLATE)));
+    public static final OrePrefix turbineBlade = new OrePrefix("turbineBlade", M * 10, null, MaterialIconType.turbineBlade, ENABLE_UNIFICATION, hasToolProperty.and(m -> m.hasFlags(GENERATE_BOLT_SCREW, GENERATE_PLATE) && !m.hasProperty(PropertyKey.GEM)));
 
     public static final OrePrefix paneGlass = new OrePrefix("paneGlass", -1, MarkerMaterials.Color.Colorless, null, SELF_REFERENCING, null);
     public static final OrePrefix blockGlass = new OrePrefix("blockGlass", -1, MarkerMaterials.Color.Colorless, null, SELF_REFERENCING, null);
@@ -178,10 +178,6 @@ public class OrePrefix {
 
     // Prefix to determine which kind of Rock this is.
     public static final OrePrefix stone = new OrePrefix("stone", -1, Materials.Stone, null, SELF_REFERENCING, null);
-    public static final OrePrefix cobblestone = new OrePrefix("cobblestone", -1, Materials.Stone, null, SELF_REFERENCING, null);
-    // Prefix to determine which kind of Rock this is.
-    // Cobblestone Prefix for all Cobblestones.
-    public static final OrePrefix stoneCobble = new OrePrefix("stoneCobble", -1, Materials.Stone, null, SELF_REFERENCING, null);
 
     public static final OrePrefix frameGt = new OrePrefix("frameGt", M * 2, null, null, ENABLE_UNIFICATION, material -> material.hasFlag(GENERATE_FRAME));
 
