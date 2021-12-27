@@ -263,9 +263,6 @@ public class Materials {
     public static Material Tritanium;
     public static Material Duranium;
     public static Material Trinium;
-    public static Material Adamantium;
-    public static Material Vibranium;
-    public static Material Taranium;
 
     /**
      * First Degree Compounds

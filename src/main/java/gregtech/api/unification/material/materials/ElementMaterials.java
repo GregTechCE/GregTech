@@ -992,28 +992,5 @@ public class ElementMaterials {
                 .blastTemp(7200, GasTier.HIGH, VA[LuV], 1500)
                 .build();
 
-        Adamantium = new Material.Builder(131, "adamantium")
-                .ingot(7).fluid()
-                .color(0x2D365C).iconSet(SHINY)
-                .element(Elements.Ad)
-                .blastTemp(10850)
-                .setHidden()
-                .build();
-
-        Vibranium = new Material.Builder(132, "vibranium")
-                .ingot(7).fluid()
-                .color(0x828AAD).iconSet(SHINY)
-                .element(Elements.Vb)
-                .blastTemp(11220)
-                .setHidden()
-                .build();
-
-        Taranium = new Material.Builder(133, "taranium")
-                .ingot(7).fluid()
-                .color(0x0C0C0D).iconSet(SHINY)
-                .element(Elements.Tn)
-                .blastTemp(10000)
-                .setHidden()
-                .build();
     }
 }
