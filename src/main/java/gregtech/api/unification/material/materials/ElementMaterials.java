@@ -986,7 +986,7 @@ public class ElementMaterials {
         Trinium = new Material.Builder(130, "trinium")
                 .ingot(7).fluid()
                 .color(0x9973BD).iconSet(SHINY)
-                .flags(GENERATE_FOIL)
+                .flags(GENERATE_FOIL, GENERATE_BOLT_SCREW)
                 .element(Elements.Ke)
                 .cableProperties(GTValues.V[7], 6, 4)
                 .blastTemp(7200, GasTier.HIGH, VA[LuV], 1500)
