@@ -951,7 +951,7 @@ public class ElementMaterials {
         Naquadria = new Material.Builder(126, "naquadria")
                 .ingot(3).fluid()
                 .color(0x1E1E1E, false).iconSet(SHINY)
-                .flags(EXT_METAL, GENERATE_FOIL, GENERATE_GEAR, GENERATE_FINE_WIRE)
+                .flags(EXT_METAL, GENERATE_FOIL, GENERATE_GEAR, GENERATE_FINE_WIRE, GENERATE_BOLT_SCREW)
                 .element(Elements.Nq2)
                 .blastTemp(9000, GasTier.HIGH, VA[ZPM], 1200)
                 .build();
