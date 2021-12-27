@@ -52,6 +52,7 @@ public class AssemblerRecipeLoader {
         ASSEMBLER_RECIPES.recipeBuilder()
                 .input(plate, Bronze, 6)
                 .inputs(new ItemStack(Blocks.BRICK_BLOCK, 1))
+                .circuitMeta(6)
                 .outputs(METAL_CASING.getItemVariant(BRONZE_BRICKS, 2))
                 .duration(100).EUt(VA[LV]).buildAndRegister();
 
