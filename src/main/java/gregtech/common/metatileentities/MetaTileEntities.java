@@ -752,7 +752,7 @@ public class MetaTileEntities {
             if (i > 7 && !getHighTier(name)) break;
 
             String voltageName = GTValues.VN[i + 1].toLowerCase();
-            machines[i] = registerMetaTileEntity(startId + i,
+            machines[i + 1] = registerMetaTileEntity(startId + i,
                     new SimpleMachineMetaTileEntity(resourceId.apply(String.format("%s.%s", name, voltageName)), map, texture, i + 1, hasFrontFacing, tankScalingFunction));
         }
     }

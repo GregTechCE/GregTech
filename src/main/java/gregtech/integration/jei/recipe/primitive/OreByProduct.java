@@ -1,6 +1,7 @@
 package gregtech.integration.jei.recipe.primitive;
 
 import com.google.common.collect.ImmutableList;
+import gregtech.api.GTValues;
 import gregtech.api.recipes.Recipe.ChanceEntry;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.unification.material.Material;
@@ -61,14 +62,14 @@ public class OreByProduct implements IRecipeWrapper {
 
     private static final ImmutableList<ItemStack> ALWAYS_MACHINES = ImmutableList.of(
             new ItemStack(Blocks.FURNACE),
-            MetaTileEntities.MACERATOR[0].getStackForm(),
-            MetaTileEntities.MACERATOR[0].getStackForm(),
-            MetaTileEntities.CENTRIFUGE[0].getStackForm(),
-            MetaTileEntities.ORE_WASHER[0].getStackForm(),
-            MetaTileEntities.THERMAL_CENTRIFUGE[0].getStackForm(),
-            MetaTileEntities.MACERATOR[0].getStackForm(),
-            MetaTileEntities.MACERATOR[0].getStackForm(),
-            MetaTileEntities.CENTRIFUGE[0].getStackForm()
+            MetaTileEntities.MACERATOR[GTValues.LV].getStackForm(),
+            MetaTileEntities.MACERATOR[GTValues.LV].getStackForm(),
+            MetaTileEntities.CENTRIFUGE[GTValues.LV].getStackForm(),
+            MetaTileEntities.ORE_WASHER[GTValues.LV].getStackForm(),
+            MetaTileEntities.THERMAL_CENTRIFUGE[GTValues.LV].getStackForm(),
+            MetaTileEntities.MACERATOR[GTValues.LV].getStackForm(),
+            MetaTileEntities.MACERATOR[GTValues.LV].getStackForm(),
+            MetaTileEntities.CENTRIFUGE[GTValues.LV].getStackForm()
     );
 
     private final Int2ObjectMap<ChanceEntry> chances = new Int2ObjectOpenHashMap<>();
@@ -107,7 +108,7 @@ public class OreByProduct implements IRecipeWrapper {
         // set up machines as inputs
         List<ItemStack> simpleWashers = new ArrayList<>();
         simpleWashers.add(new ItemStack(Items.CAULDRON));
-        simpleWashers.add(MetaTileEntities.ORE_WASHER[0].getStackForm());
+        simpleWashers.add(MetaTileEntities.ORE_WASHER[GTValues.LV].getStackForm());
 
         for (ItemStack stack : ALWAYS_MACHINES) {
             addToInputs(stack);
@@ -119,19 +120,19 @@ public class OreByProduct implements IRecipeWrapper {
 
         if (washedIn != null && washedIn.getKey() != null) {
             hasChemBath = true;
-            addToInputs(MetaTileEntities.CHEMICAL_BATH[0].getStackForm());
+            addToInputs(MetaTileEntities.CHEMICAL_BATH[GTValues.LV].getStackForm());
         } else {
             addToInputs(ItemStack.EMPTY);
         }
         if (separatedInto != null && !separatedInto.isEmpty()) {
             hasSeparator = true;
-            addToInputs(MetaTileEntities.ELECTROMAGNETIC_SEPARATOR[0].getStackForm());
+            addToInputs(MetaTileEntities.ELECTROMAGNETIC_SEPARATOR[GTValues.LV].getStackForm());
         } else {
             addToInputs(ItemStack.EMPTY);
         }
         if (material.hasProperty(PropertyKey.GEM)) {
             hasSifter = true;
-            addToInputs(MetaTileEntities.SIFTER[0].getStackForm());
+            addToInputs(MetaTileEntities.SIFTER[GTValues.LV].getStackForm());
         } else {
             addToInputs(ItemStack.EMPTY);
         }
