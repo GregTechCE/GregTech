@@ -1,5 +1,6 @@
 package gregtech.common.pipelike.fluidpipe.tile;
 
+import gregtech.api.GTValues;
 import gregtech.api.capability.GregtechTileCapabilities;
 import gregtech.api.cover.CoverBehavior;
 import gregtech.api.cover.ICoverable;
@@ -279,9 +280,7 @@ public class TileEntityFluidPipe extends TileEntityMaterialPipeBase<FluidPipeTyp
         } else
             world.setBlockToAir(pos);
         if (isLeaking && world.rand.nextInt(isBurning ? 3 : 7) == 0) {
-            world.createExplosion(null,
-                    pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
-                    1.0f + world.rand.nextFloat(), false);
+            this.doExplosion(1.0f + GTValues.RNG.nextFloat());
         }
     }
 

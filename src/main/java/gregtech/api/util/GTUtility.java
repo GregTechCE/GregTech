@@ -44,7 +44,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.util.Constants;
@@ -721,17 +720,8 @@ public class GTUtility {
         return replacement;
     }
 
-    public static void doOvervoltageExplosion(MetaTileEntity metaTileEntity, long voltage) {
-        BlockPos pos = metaTileEntity.getPos();
-        metaTileEntity.getWorld().setBlockToAir(pos);
-        if (!metaTileEntity.getWorld().isRemote) {
-            double posX = pos.getX() + 0.5;
-            double posY = pos.getY() + 0.5;
-            double posZ = pos.getZ() + 0.5;
-            ((WorldServer) metaTileEntity.getWorld()).spawnParticle(EnumParticleTypes.SMOKE_LARGE, posX, posY, posZ,
-                    10, 0.2, 0.2, 0.2, 0.0);
-            metaTileEntity.getWorld().createExplosion(null, posX, posY, posZ, getTierByVoltage(voltage), ConfigHolder.machines.doExplosions);
-        }
+    public static int getExplosionPower(long voltage) {
+        return getTierByVoltage(voltage) + 1;
     }
 
     public static int getRedstonePower(World world, BlockPos blockPos, EnumFacing side) {
