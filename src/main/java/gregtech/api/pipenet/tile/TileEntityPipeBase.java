@@ -15,10 +15,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants.NBT;
 
@@ -381,9 +383,11 @@ public abstract class TileEntityPipeBase<PipeType extends Enum<PipeType> & IPipe
 
     public void doExplosion(float explosionPower) {
         getWorld().setBlockToAir(getPos());
-        if (ConfigHolder.machines.doExplosions) {
-            getWorld().createExplosion(null, getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5,
-                    explosionPower, true);
+        if (!getWorld().isRemote) {
+            ((WorldServer) getWorld()).spawnParticle(EnumParticleTypes.SMOKE_LARGE, getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5,
+                    10, 0.2, 0.2, 0.2, 0.0);
         }
+        getWorld().createExplosion(null, getPos().getX() + 0.5, getPos().getY() + 0.5, getPos().getZ() + 0.5,
+                explosionPower, false);
     }
 }
