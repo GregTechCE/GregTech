@@ -49,6 +49,8 @@ minecraft {
     mappings = "stable_39"
     runDir = "run"
     isUseDepAts = true
+    replace("@VERSION@", modVersion)
+    replaceIn("GregTechVersion.java")
 }
 
 repositories {

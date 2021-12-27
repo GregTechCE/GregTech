@@ -1,5 +1,6 @@
 package gregtech.api;
 
+import gregtech.GregTechVersion;
 import gregtech.api.util.XSTR;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
@@ -21,7 +22,7 @@ public class GTValues {
     /**
      * Version String for use in addon mods' @Mod(dependencies = "...") block.
      */
-    public static final String MOD_VERSION_DEP = "required-after:gregtech@[2.0,);";
+    public static final String MOD_VERSION_DEP = "required-after:gregtech@[" + GregTechVersion.VERSION + ",);";
 
     /**
      * <p/>

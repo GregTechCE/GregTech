@@ -9,8 +9,8 @@ public final class GregTechVersion {
     public static final int REVISION = 0;
     //This String is for additional info on the release version if needed (like alpha, beta, rc). Comment out when unused
     public static final String EXTRA = "alpha";
-    //This number is incremented every build, and never reset. Should always be 0 in the repo code.
-    public static final int BUILD = 0;
+    //This is the String formatted version, used in builds
+    public static final String VERSION = "@VERSION@";
 
     private GregTechVersion() {
     }
