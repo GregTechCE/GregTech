@@ -438,6 +438,13 @@ public class SeparationRecipes {
                 .fluidOutputs(Hydrogen.getFluid(6000))
                 .duration(480).EUt(VA[MV]).buildAndRegister();
 
+        ELECTROLYZER_RECIPES.recipeBuilder()
+                .input(dust, SodiumHydroxide, 3)
+                .output(dust, Sodium)
+                .fluidOutputs(Oxygen.getFluid(1000))
+                .fluidOutputs(Hydrogen.getFluid(1000))
+                .duration(360).EUt(60).buildAndRegister();
+
         // Thermal Centrifuge
         THERMAL_CENTRIFUGE_RECIPES.recipeBuilder()
                 .inputs(new ItemStack(Blocks.COBBLESTONE, 1, GTValues.W))
