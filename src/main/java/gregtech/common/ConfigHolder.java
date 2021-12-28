@@ -43,15 +43,6 @@ public class ConfigHolder {
 
     public static class MachineOptions {
 
-        @Config.Comment({"Sets the bonus EU output of Steam Turbines.", "Default: 6144"})
-        public int steamTurbineBonusOutput = 6144;
-
-        @Config.Comment({"Sets the bonus EU output of Plasma Turbines.", "Default: 6144"})
-        public int plasmaTurbineBonusOutput = 6144;
-
-        @Config.Comment({"Sets the bonus EU output of Gas Turbines.", "Default 6144"})
-        public int gasTurbineBonusOutput = 6144;
-
         @Config.Comment({"Whether insufficient energy supply should reset Machine recipe progress to zero.",
                 "If true, progress will reset.", "If false, progress will decrease to zero with 2x speed", "Default: false"})
         public boolean recipeProgressLowEnergy = false;
