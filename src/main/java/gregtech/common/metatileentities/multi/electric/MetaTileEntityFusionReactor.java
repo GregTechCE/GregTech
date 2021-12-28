@@ -231,7 +231,7 @@ public class MetaTileEntityFusionReactor extends RecipeMapMultiblockController i
                     writeCustomData(GregtechDataCodes.UPDATE_COLOR, this::writeColor);
                 }
             }
-        } else if (!recipeMapWorkable.isWorking() && color != null){
+        } else if (!recipeMapWorkable.isWorking() && isStructureFormed() && color != null){
             color = null;
             writeCustomData(GregtechDataCodes.UPDATE_COLOR, this::writeColor);
         }
