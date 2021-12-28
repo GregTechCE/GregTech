@@ -226,7 +226,7 @@ public class ConfigHolder {
         @Config.Comment({"Whether to enable more verbose logging.", "Default: false"})
         public boolean debug = false;
 
-        @Config.Comment({"Setting this to true makes GTCE ignore error and invalid recipes that would otherwise cause crash.", "Default: true"})
+        @Config.Comment({"Setting this to true makes GTCEu ignore error and invalid recipes that would otherwise cause crash.", "Default: true"})
         public boolean ignoreErrorOrInvalidRecipes = true;
 
         @Config.Comment({"Whether to enable a login message to players when they join the world.", "Default: true"})
