@@ -2324,6 +2324,7 @@ tile.steam_casing.wood_wall.name=Wooden Wall
 # Gearbox casing blocks
 tile.turbine_casing.bronze_gearbox.name=Bronze Gearbox Casing
 tile.turbine_casing.steel_gearbox.name=Steel Gearbox Casing
+tile.turbine_casing.stainless_steel_gearbox.name=Stainless Steel Gearbox Casing
 tile.turbine_casing.titanium_gearbox.name=Titanium Gearbox Casing
 tile.turbine_casing.tungstensteel_gearbox.name=Tungstensteel Gearbox Casing
 

@@ -142,7 +142,7 @@ public class MetaTileEntityLargeTurbine extends FuelMultiblockController impleme
     protected BlockPattern createStructurePattern() {
         return FactoryBlockPattern.start()
                 .aisle("CCCC", "CHHC", "CCCC")
-                .aisle("CHHC", "RGGR", "CTTC")
+                .aisle("CHHC", "RGGR", "CHHC")
                 .aisle("CCCC", "CSHC", "CCCC")
                 .where('S', selfPredicate())
                 .where('G', states(getGearBoxState()))
@@ -154,8 +154,7 @@ public class MetaTileEntityLargeTurbine extends FuelMultiblockController impleme
                         .addTooltips(I18n.format("gregtech.multiblock.pattern.error.limited.1", GTValues.VN[tier]))
                         .setExactLimit(1)
                         .or(abilities(MultiblockAbility.OUTPUT_ENERGY)).setExactLimit(1))
-                .where('H', states(getCasingState()).or(autoAbilities(false, true, false, false, true, true, false)))
-                .where('T', states(getCasingState()).or(autoAbilities(false, true)))
+                .where('H', states(getCasingState()).or(autoAbilities(false, true, false, false, true, true, true)))
                 .build();
     }
 

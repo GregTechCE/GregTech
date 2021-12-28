@@ -35,6 +35,13 @@ public class AssemblerRecipeLoader {
                 .duration(100).EUt(VA[LV]).buildAndRegister();
 
         ASSEMBLER_RECIPES.recipeBuilder()
+                .input(plate, StainlessSteel, 4)
+                .input(gear, StainlessSteel, 2)
+                .input(frameGt, StainlessSteel)
+                .outputs(TURBINE_CASING.getItemVariant(STAINLESS_STEEL_GEARBOX, 2))
+                .duration(100).EUt(VA[LV]).buildAndRegister();
+
+        ASSEMBLER_RECIPES.recipeBuilder()
                 .input(plate, Titanium, 4)
                 .input(gear, Titanium, 2)
                 .input(frameGt, Titanium)

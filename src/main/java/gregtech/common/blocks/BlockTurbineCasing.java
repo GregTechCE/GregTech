@@ -33,6 +33,7 @@ public class BlockTurbineCasing extends VariantBlock<BlockTurbineCasing.TurbineC
 
         BRONZE_GEARBOX("bronze_gearbox"),
         STEEL_GEARBOX("steel_gearbox"),
+        STAINLESS_STEEL_GEARBOX("stainless_steel_gearbox"),
         TITANIUM_GEARBOX("titanium_gearbox"),
         TUNGSTENSTEEL_GEARBOX("tungstensteel_gearbox"),
 
