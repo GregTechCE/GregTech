@@ -28,6 +28,7 @@ public class ChemistryRecipes {
         GemSlurryRecipes.init();
         PlatGroupMetalsRecipes.init();
         NaquadahRecipes.init();
+        AcidRecipes.init();
 
 
         // A Few Random Recipes

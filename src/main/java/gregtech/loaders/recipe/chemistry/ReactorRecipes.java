@@ -83,12 +83,6 @@ public class ReactorRecipes {
                 .duration(600).EUt(VA[LV]).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
-                .fluidInputs(SulfurTrioxide.getFluid(1000))
-                .fluidInputs(Water.getFluid(1000))
-                .fluidOutputs(SulfuricAcid.getFluid(1000))
-                .duration(320).EUt(VA[ULV]).buildAndRegister();
-
-        CHEMICAL_RECIPES.recipeBuilder()
                 .input(dust, Carbon, 2)
                 .input(dust, Rutile)
                 .fluidInputs(Chlorine.getFluid(4000))
@@ -162,28 +156,6 @@ public class ReactorRecipes {
                 .duration(120).EUt(VA[LV]).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
-                .input(dust, Apatite, 9)
-                .fluidInputs(SulfuricAcid.getFluid(5000))
-                .fluidInputs(Water.getFluid(10000))
-                .output(dust, Gypsum, 40)
-                .fluidOutputs(HydrochloricAcid.getFluid(1000))
-                .fluidOutputs(PhosphoricAcid.getFluid(3000))
-                .duration(320).EUt(VA[LV]).buildAndRegister();
-
-        CHEMICAL_RECIPES.recipeBuilder()
-                .fluidInputs(SulfurDioxide.getFluid(1000))
-                .fluidInputs(Oxygen.getFluid(1000))
-                .fluidOutputs(SulfurTrioxide.getFluid(1000))
-                .duration(200).EUt(VA[LV]).buildAndRegister();
-
-        CHEMICAL_RECIPES.recipeBuilder()
-                .notConsumable(new IntCircuitIngredient(3))
-                .input(dust, Sulfur)
-                .fluidInputs(Oxygen.getFluid(3000))
-                .fluidOutputs(SulfurTrioxide.getFluid(1000))
-                .duration(280).EUt(VA[LV]).buildAndRegister();
-
-        CHEMICAL_RECIPES.recipeBuilder()
                 .notConsumable(new IntCircuitIngredient(1))
                 .input(dust, Sodium)
                 .fluidInputs(Water.getFluid(1000))
@@ -236,20 +208,6 @@ public class ReactorRecipes {
                 .fluidInputs(Hydrogen.getFluid(2000))
                 .fluidOutputs(HydrogenSulfide.getFluid(1000))
                 .duration(60).EUt(VA[ULV]).buildAndRegister();
-
-        CHEMICAL_RECIPES.recipeBuilder()
-                .notConsumable(new IntCircuitIngredient(1))
-                .fluidInputs(Nitrogen.getFluid(1000))
-                .fluidInputs(Oxygen.getFluid(2000))
-                .fluidOutputs(NitrogenDioxide.getFluid(1000))
-                .duration(1250).EUt(VA[LV]).buildAndRegister();
-
-        CHEMICAL_RECIPES.recipeBuilder()
-                .notConsumable(new IntCircuitIngredient(1))
-                .fluidInputs(Oxygen.getFluid(1000))
-                .fluidInputs(NitricOxide.getFluid(1000))
-                .fluidOutputs(NitrogenDioxide.getFluid(1000))
-                .duration(160).EUt(VA[LV]).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
                 .notConsumable(new IntCircuitIngredient(1))
@@ -334,21 +292,6 @@ public class ReactorRecipes {
                 .duration(1040).EUt(VA[HV]).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
-                .notConsumable(new IntCircuitIngredient(2))
-                .input(dust, Sulfur)
-                .fluidInputs(Oxygen.getFluid(2000))
-                .fluidOutputs(SulfurDioxide.getFluid(1000))
-                .duration(60).EUt(VA[ULV]).buildAndRegister();
-
-        CHEMICAL_RECIPES.recipeBuilder()
-                .notConsumable(new IntCircuitIngredient(1))
-                .fluidInputs(Oxygen.getFluid(3000))
-                .fluidInputs(HydrogenSulfide.getFluid(1000))
-                .fluidOutputs(Water.getFluid(1000))
-                .fluidOutputs(SulfurDioxide.getFluid(1000))
-                .duration(120).EUt(VA[LV]).buildAndRegister();
-
-        CHEMICAL_RECIPES.recipeBuilder()
                 .fluidInputs(Hydrogen.getFluid(1000))
                 .fluidInputs(Fluorine.getFluid(1000))
                 .fluidOutputs(HydrofluoricAcid.getFluid(1000))
@@ -402,22 +345,6 @@ public class ReactorRecipes {
                 .output(dust, AluminiumSulfite, 4)
                 .fluidOutputs(LeadZincSolution.getFluid(1000))
                 .duration(50).EUt(600).buildAndRegister();
-
-        CHEMICAL_RECIPES.recipeBuilder()
-                .notConsumable(new IntCircuitIngredient(1))
-                .fluidInputs(NitrogenDioxide.getFluid(3000))
-                .fluidInputs(Water.getFluid(1000))
-                .fluidOutputs(NitricOxide.getFluid(1000))
-                .fluidOutputs(NitricAcid.getFluid(2000))
-                .duration(240).EUt(VA[LV]).buildAndRegister();
-
-        CHEMICAL_RECIPES.recipeBuilder()
-                .notConsumable(new IntCircuitIngredient(1))
-                .fluidInputs(Oxygen.getFluid(5000))
-                .fluidInputs(Ammonia.getFluid(2000))
-                .fluidOutputs(NitricOxide.getFluid(2000))
-                .fluidOutputs(Water.getFluid(3000))
-                .duration(160).EUt(VA[LV]).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
                 .notConsumable(new IntCircuitIngredient(3))
@@ -475,13 +402,6 @@ public class ReactorRecipes {
                 .duration(800).EUt(VA[ULV]).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
-                .notConsumable(new IntCircuitIngredient(1))
-                .fluidInputs(Hydrogen.getFluid(3000))
-                .fluidInputs(Nitrogen.getFluid(1000))
-                .fluidOutputs(Ammonia.getFluid(1000))
-                .duration(320).EUt(384).buildAndRegister();
-
-        CHEMICAL_RECIPES.recipeBuilder()
                 .fluidInputs(HypochlorousAcid.getFluid(1000))
                 .fluidInputs(Ammonia.getFluid(1000))
                 .fluidOutputs(Water.getFluid(1000))
@@ -496,33 +416,12 @@ public class ReactorRecipes {
                 .duration(240).EUt(VA[MV]).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
-                .input(dust, PhosphorusPentoxide, 14)
-                .fluidInputs(Water.getFluid(6000))
-                .fluidOutputs(PhosphoricAcid.getFluid(4000))
-                .duration(40).EUt(VA[LV]).buildAndRegister();
-
-        CHEMICAL_RECIPES.recipeBuilder()
-                .notConsumable(new IntCircuitIngredient(2))
-                .input(dust, Phosphorus, 2)
-                .fluidInputs(Water.getFluid(3000))
-                .fluidInputs(Oxygen.getFluid(5000))
-                .fluidOutputs(PhosphoricAcid.getFluid(2000))
-                .duration(320).EUt(VA[LV]).buildAndRegister();
-
-        CHEMICAL_RECIPES.recipeBuilder()
                 .notConsumable(new IntCircuitIngredient(1))
                 .fluidInputs(HydrochloricAcid.getFluid(1000))
                 .fluidInputs(Methanol.getFluid(1000))
                 .fluidOutputs(Water.getFluid(1000))
                 .fluidOutputs(Chloromethane.getFluid(1000))
                 .duration(160).EUt(VA[LV]).buildAndRegister();
-
-        CHEMICAL_RECIPES.recipeBuilder()
-                .notConsumable(new IntCircuitIngredient(1))
-                .input(dust, Phosphorus, 4)
-                .fluidInputs(Oxygen.getFluid(10000))
-                .output(dust, PhosphorusPentoxide, 14)
-                .duration(40).EUt(VA[LV]).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
                 .notConsumable(new IntCircuitIngredient(2))
@@ -610,31 +509,6 @@ public class ReactorRecipes {
                 .duration(1100).EUt(VA[HV]).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
-                .notConsumable(new IntCircuitIngredient(2))
-                .fluidInputs(Oxygen.getFluid(4000))
-                .fluidInputs(Ammonia.getFluid(1000))
-                .fluidOutputs(NitricAcid.getFluid(1000))
-                .fluidOutputs(Water.getFluid(1000))
-                .duration(480).EUt(VA[HV]).buildAndRegister();
-
-        CHEMICAL_RECIPES.recipeBuilder()
-                .notConsumable(new IntCircuitIngredient(3))
-                .fluidInputs(Water.getFluid(1000))
-                .fluidInputs(Oxygen.getFluid(1000))
-                .fluidInputs(NitrogenDioxide.getFluid(2000))
-                .fluidOutputs(NitricAcid.getFluid(2000))
-                .duration(240).EUt(VA[LV]).buildAndRegister();
-
-        CHEMICAL_RECIPES.recipeBuilder()
-                .notConsumable(new IntCircuitIngredient(2))
-                .fluidInputs(Oxygen.getFluid(4000))
-                .fluidInputs(Nitrogen.getFluid(1000))
-                .fluidInputs(Hydrogen.getFluid(3000))
-                .fluidOutputs(NitricAcid.getFluid(1000))
-                .fluidOutputs(Water.getFluid(1000))
-                .duration(720).EUt(VA[HV]).buildAndRegister();
-
-        CHEMICAL_RECIPES.recipeBuilder()
                 .input(dust, SodiumBisulfate, 7)
                 .fluidInputs(Water.getFluid(1000))
                 .output(dust, SodiumHydroxide, 3)
@@ -647,13 +521,6 @@ public class ReactorRecipes {
                 .fluidInputs(Toluene.getFluid(1000))
                 .outputs(MetaItems.GELLED_TOLUENE.getStackForm(20))
                 .duration(140).EUt(192).buildAndRegister();
-
-        CHEMICAL_RECIPES.recipeBuilder()
-                .notConsumable(new IntCircuitIngredient(2))
-                .fluidInputs(HydrogenSulfide.getFluid(1000))
-                .fluidInputs(Oxygen.getFluid(4000))
-                .fluidOutputs(SulfuricAcid.getFluid(1000))
-                .duration(320).EUt(VA[LV]).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
                 .input(dust, Saltpeter)
