@@ -23,7 +23,7 @@ import gregtech.common.blocks.foam.BlockFoam;
 import gregtech.common.blocks.foam.BlockPetrifiedFoam;
 import gregtech.common.blocks.wood.BlockGregLeaves;
 import gregtech.common.blocks.wood.BlockGregLog;
-import gregtech.common.blocks.wood.BlockGregPlank;
+import gregtech.common.blocks.wood.BlockGregPlanks;
 import gregtech.common.blocks.wood.BlockGregSapling;
 import gregtech.common.pipelike.cable.BlockCable;
 import gregtech.common.pipelike.cable.Insulation;
@@ -94,9 +94,22 @@ public class MetaBlocks {
     public static BlockWarningSign WARNING_SIGN;
     public static HermeticCasings HERMETIC_CASING;
 
-    public static BlockGranite GRANITE;
-    public static BlockMineral MINERAL;
-    public static BlockConcrete CONCRETE;
+    public static BlockAsphalt ASPHALT;
+
+    public static BlockStoneSmooth STONE_SMOOTH;
+    public static BlockStoneCobble STONE_COBBLE;
+    public static BlockStoneCobbleMossy STONE_COBBLE_MOSSY;
+    public static BlockStonePolished STONE_POLISHED;
+    public static BlockStoneBricks STONE_BRICKS;
+    public static BlockStoneBricksCracked STONE_BRICKS_CRACKED;
+    public static BlockStoneBricksMossy STONE_BRICKS_MOSSY;
+    public static BlockStoneChiseled STONE_CHISELED;
+    public static BlockStoneTiled STONE_TILED;
+    public static BlockStoneTiledSmall STONE_TILED_SMALL;
+    public static BlockStoneBricksSmall STONE_BRICKS_SMALL;
+    public static BlockStoneWindmillA STONE_WINDMILL_A;
+    public static BlockStoneWindmillB STONE_WINDMILL_B;
+    public static BlockStoneBricksSquare STONE_BRICKS_SQUARE;
 
     public static BlockFoam FOAM;
     public static BlockFoam REINFORCED_FOAM;
@@ -106,7 +119,7 @@ public class MetaBlocks {
     public static BlockGregLog LOG;
     public static BlockGregLeaves LEAVES;
     public static BlockGregSapling SAPLING;
-    public static BlockGregPlank PLANKS;
+    public static BlockGregPlanks PLANKS;
 
     public static final Map<Material, BlockCompressed> COMPRESSED = new HashMap<>();
     public static final Map<Material, BlockFrame> FRAMES = new HashMap<>();
@@ -155,13 +168,38 @@ public class MetaBlocks {
         WARNING_SIGN.setRegistryName("warning_sign");
         HERMETIC_CASING = new HermeticCasings();
         HERMETIC_CASING.setRegistryName("hermetic_casing");
-        GRANITE = new BlockGranite();
-        GRANITE.setRegistryName("granite");
-        MINERAL = new BlockMineral();
-        MINERAL.setRegistryName("mineral");
 
-        CONCRETE = new BlockConcrete();
-        CONCRETE.setRegistryName("concrete");
+        ASPHALT = new BlockAsphalt();
+        ASPHALT.setRegistryName("asphalt");
+
+        STONE_SMOOTH = new BlockStoneSmooth();
+        STONE_SMOOTH.setRegistryName("stone_smooth");
+        STONE_COBBLE = new BlockStoneCobble();
+        STONE_COBBLE.setRegistryName("stone_cobble");
+        STONE_COBBLE_MOSSY = new BlockStoneCobbleMossy();
+        STONE_COBBLE_MOSSY.setRegistryName("stone_cobble_mossy");
+        STONE_POLISHED = new BlockStonePolished();
+        STONE_POLISHED.setRegistryName("stone_polished");
+        STONE_BRICKS = new BlockStoneBricks();
+        STONE_BRICKS.setRegistryName("stone_bricks");
+        STONE_BRICKS_CRACKED = new BlockStoneBricksCracked();
+        STONE_BRICKS_CRACKED.setRegistryName("stone_bricks_cracked");
+        STONE_BRICKS_MOSSY = new BlockStoneBricksMossy();
+        STONE_BRICKS_MOSSY.setRegistryName("stone_bricks_mossy");
+        STONE_CHISELED = new BlockStoneChiseled();
+        STONE_CHISELED.setRegistryName("stone_chiseled");
+        STONE_TILED = new BlockStoneTiled();
+        STONE_TILED.setRegistryName("stone_tiled");
+        STONE_TILED_SMALL = new BlockStoneTiledSmall();
+        STONE_TILED_SMALL.setRegistryName("stone_tiled_small");
+        STONE_BRICKS_SMALL = new BlockStoneBricksSmall();
+        STONE_BRICKS_SMALL.setRegistryName("stone_bricks_small");
+        STONE_WINDMILL_A = new BlockStoneWindmillA();
+        STONE_WINDMILL_A.setRegistryName("stone_windmill_a");
+        STONE_WINDMILL_B = new BlockStoneWindmillB();
+        STONE_WINDMILL_B.setRegistryName("stone_windmill_b");
+        STONE_BRICKS_SQUARE = new BlockStoneBricksSquare();
+        STONE_BRICKS_SQUARE.setRegistryName("stone_bricks_square");
 
         FOAM = new BlockFoam(false);
         FOAM.setRegistryName("foam");
@@ -178,8 +216,8 @@ public class MetaBlocks {
         LEAVES.setRegistryName("leaves");
         SAPLING = new BlockGregSapling();
         SAPLING.setRegistryName("sapling");
-        PLANKS = new BlockGregPlank();
-        PLANKS.setRegistryName("plank");
+        PLANKS = new BlockGregPlanks();
+        PLANKS.setRegistryName("planks");
 
         StoneType.init();
 
@@ -221,8 +259,10 @@ public class MetaBlocks {
             }
         }
         for (BlockFluidPipe pipe : FLUID_PIPES) {
-            if(!pipe.getItemPipeType(pipe.getItem(Materials.Wood)).getOrePrefix().isIgnored(Materials.Wood)) {
+            if(!pipe.getItemPipeType(pipe.getItem(Materials.Wood)).getOrePrefix().isIgnored(Materials.Wood) ||
+            !pipe.getItemPipeType(pipe.getItem(Materials.TreatedWood)).getOrePrefix().isIgnored(Materials.TreatedWood)) {
                 pipe.addPipeMaterial(Materials.Wood, new FluidPipeProperties(310, 5, false));
+                pipe.addPipeMaterial(Materials.TreatedWood, new FluidPipeProperties(310, 8, false));
             }
         }
         registerTileEntity();
@@ -350,9 +390,21 @@ public class MetaBlocks {
         registerItemModel(FUSION_CASING);
         registerItemModel(WARNING_SIGN);
         registerItemModel(HERMETIC_CASING);
-        registerItemModel(GRANITE);
-        registerItemModel(MINERAL);
-        registerItemModel(CONCRETE);
+        registerItemModel(ASPHALT);
+        registerItemModel(STONE_SMOOTH);
+        registerItemModel(STONE_COBBLE);
+        registerItemModel(STONE_COBBLE_MOSSY);
+        registerItemModel(STONE_POLISHED);
+        registerItemModel(STONE_BRICKS);
+        registerItemModel(STONE_BRICKS_CRACKED);
+        registerItemModel(STONE_BRICKS_MOSSY);
+        registerItemModel(STONE_CHISELED);
+        registerItemModel(STONE_TILED);
+        registerItemModel(STONE_TILED_SMALL);
+        registerItemModel(STONE_BRICKS_SMALL);
+        registerItemModel(STONE_WINDMILL_A);
+        registerItemModel(STONE_WINDMILL_B);
+        registerItemModel(STONE_BRICKS_SQUARE);
         registerItemModelWithOverride(LOG, ImmutableMap.of(BlockGregLog.LOG_AXIS, EnumAxis.Y));
         registerItemModel(LEAVES);
         registerItemModel(SAPLING);
@@ -489,7 +541,8 @@ public class MetaBlocks {
         OreDictUnifier.registerOre(new ItemStack(LOG, 1, GTValues.W), OrePrefix.log, Materials.Wood);
         OreDictUnifier.registerOre(new ItemStack(LEAVES, 1, GTValues.W), "treeLeaves");
         OreDictUnifier.registerOre(new ItemStack(SAPLING, 1, GTValues.W), "treeSapling");
-        OreDictUnifier.registerOre(new ItemStack(PLANKS, 1, GTValues.W), OrePrefix.plank, Materials.Wood);
+        OreDictUnifier.registerOre(PLANKS.getItemVariant(BlockGregPlanks.BlockType.RUBBER_PLANK), OrePrefix.plank, Materials.Wood);
+        OreDictUnifier.registerOre(PLANKS.getItemVariant(BlockGregPlanks.BlockType.TREATED_PLANK), OrePrefix.plank, Materials.TreatedWood);
         GameRegistry.addSmelting(LOG, new ItemStack(Items.COAL, 1, 1), 0.15F);
 
         for (Entry<Material, BlockCompressed> entry : COMPRESSED.entrySet()) {

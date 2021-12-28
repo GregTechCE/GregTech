@@ -120,7 +120,7 @@ public class ModHandler {
     }
 
     public static boolean isMaterialWood(Material material) {
-        return material == Materials.Wood;
+        return material == Materials.Wood || material == Materials.TreatedWood;
     }
 
     public static int getFuelValue(ItemStack stack) {

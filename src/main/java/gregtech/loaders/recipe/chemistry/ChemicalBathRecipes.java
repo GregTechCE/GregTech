@@ -2,6 +2,9 @@ package gregtech.loaders.recipe.chemistry;
 
 import gregtech.api.GTValues;
 import gregtech.api.unification.OreDictUnifier;
+import gregtech.common.blocks.BlockStoneSmooth;
+import gregtech.common.blocks.MetaBlocks;
+import gregtech.common.blocks.wood.BlockGregPlanks;
 import net.minecraft.init.Items;
 
 import static gregtech.api.GTValues.ULV;
@@ -48,6 +51,18 @@ public class ChemicalBathRecipes {
                 .input(Items.REEDS, 1, true)
                 .fluidInputs(DistilledWater.getFluid(100))
                 .output(Items.PAPER)
+                .duration(100).EUt(VA[ULV]).buildAndRegister();
+
+        CHEMICAL_BATH_RECIPES.recipeBuilder()
+                .input("plankWood", 1)
+                .fluidInputs(Creosote.getFluid(100))
+                .outputs(MetaBlocks.PLANKS.getItemVariant(BlockGregPlanks.BlockType.TREATED_PLANK))
+                .duration(100).EUt(VA[ULV]).buildAndRegister();
+
+        CHEMICAL_BATH_RECIPES.recipeBuilder()
+                .inputs(MetaBlocks.STONE_SMOOTH.getItemVariant(BlockStoneSmooth.BlockType.CONCRETE_LIGHT))
+                .fluidInputs(Water.getFluid(100))
+                .outputs(MetaBlocks.STONE_SMOOTH.getItemVariant(BlockStoneSmooth.BlockType.CONCRETE_DARK))
                 .duration(100).EUt(VA[ULV]).buildAndRegister();
 
         //todo add these to ore byproducts
