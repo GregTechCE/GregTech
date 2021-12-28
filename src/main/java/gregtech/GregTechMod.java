@@ -190,7 +190,7 @@ public class GregTechMod {
 
     @Mod.EventHandler
     public void loadComplete(FMLLoadCompleteEvent event) {
-        proxy.onLoadComplete();
+        proxy.onLoadComplete(event);
     }
 
     @Mod.EventHandler

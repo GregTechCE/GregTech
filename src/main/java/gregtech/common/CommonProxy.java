@@ -52,8 +52,10 @@ import net.minecraftforge.event.furnace.FurnaceFuelBurnTimeEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import java.lang.reflect.InvocationTargetException;
@@ -291,8 +293,9 @@ public class CommonProxy {
         TerminalRegistry.init();
     }
 
-    public void onLoadComplete() {
-        if(GTValues.isModLoaded(GTValues.MODID_JEI))
+    public void onLoadComplete(FMLLoadCompleteEvent event) {
+        if(GTValues.isModLoaded(GTValues.MODID_JEI) && event.getSide() == Side.CLIENT) {
             GTJeiPlugin.setupInputHandler();
+        }
     }
 }
