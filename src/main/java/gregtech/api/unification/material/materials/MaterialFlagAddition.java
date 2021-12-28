@@ -170,6 +170,7 @@ public class MaterialFlagAddition {
 
         oreProp = Bauxite.getProperty(PropertyKey.ORE);
         oreProp.setOreByProducts(Grossular, Rutile, Gallium);
+        oreProp.setWashedIn(SodiumPersulfate);
 
         oreProp = Lazurite.getProperty(PropertyKey.ORE);
         oreProp.setOreByProducts(Sodalite, Lapis);
@@ -231,7 +232,7 @@ public class MaterialFlagAddition {
         oreProp.setOreByProducts(GarnetRed, Manganese);
 
         oreProp = Sphalerite.getProperty(PropertyKey.ORE);
-        oreProp.setOreByProducts(GarnetYellow, Cadmium, Gallium, Zinc);
+        oreProp.setOreByProducts(GarnetYellow, Gallium, Cadmium, Zinc);
         oreProp.setWashedIn(SodiumPersulfate);
         oreProp.setDirectSmeltResult(Zinc);
 
