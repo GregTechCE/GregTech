@@ -67,9 +67,6 @@ public class ConfigHolder {
         @Config.Comment({"Whether to enable World Accelerators, which accelerate ticks for surrounding Tile Entities, Crops, etc.", "Default: true"})
         public boolean enableWorldAccelerators = true;
 
-        @Config.Comment({"Whether to allow GT machines to be affected by World Accelerators.", "Default: false"})
-        public boolean accelerateGTMachines = false;
-
         @Config.Comment({"Whether to use GT6-style pipe and cable connections, meaning they will not auto-connect " +
                 "unless placed directly onto another pipe or cable.", "Default: true"})
         public boolean gt6StylePipesCables = true;
