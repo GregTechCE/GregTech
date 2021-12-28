@@ -359,7 +359,7 @@ public class MixerRecipes {
                 .output(dust, Graphene)
                 .buildAndRegister();
 
-        MIXER_RECIPES.recipeBuilder().duration(400).EUt(VA[HV])
+        MIXER_RECIPES.recipeBuilder().duration(400).EUt(VA[MV])
                 .input(dust, Steel, 7)
                 .input(dust, Vanadium)
                 .input(dust, Chrome)
