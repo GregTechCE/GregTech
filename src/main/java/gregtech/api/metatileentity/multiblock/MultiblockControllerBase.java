@@ -1,5 +1,6 @@
 package gregtech.api.metatileentity.multiblock;
 
+import codechicken.lib.raytracer.CuboidRayTraceResult;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.pipeline.ColourMultiplier;
 import codechicken.lib.render.pipeline.IVertexOperation;
@@ -10,6 +11,7 @@ import gregtech.api.metatileentity.MetaTileEntity;
 import gregtech.api.metatileentity.MetaTileEntityHolder;
 import gregtech.api.pattern.*;
 import gregtech.client.renderer.ICubeRenderer;
+import gregtech.client.renderer.handler.MultiblockPreviewRenderer;
 import gregtech.client.renderer.texture.Textures;
 import gregtech.api.util.BlockInfo;
 import gregtech.api.util.GTUtility;
@@ -19,10 +21,12 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -315,6 +319,18 @@ public abstract class MultiblockControllerBase extends MetaTileEntity implements
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, boolean advanced) {
         super.addInformation(stack, player, tooltip, advanced);
         tooltip.add(I18n.format("gregtech.machine.multiblock.universal.controller_information", I18n.format(getMetaFullName())));
+    }
+
+    @Override
+    public boolean onRightClick(EntityPlayer playerIn, EnumHand hand, EnumFacing facing, CuboidRayTraceResult hitResult) {
+        if (super.onRightClick(playerIn, hand, facing, hitResult))
+            return true;
+
+        if (this.getWorld().isRemote && !this.isStructureFormed() && playerIn.isSneaking() && playerIn.getHeldItem(hand).isEmpty()) {
+            MultiblockPreviewRenderer.renderMultiBlockPreview(this, 60000);
+            return true;
+        }
+        return false;
     }
 
     public List<MultiblockShapeInfo> getMatchingShapes() {
