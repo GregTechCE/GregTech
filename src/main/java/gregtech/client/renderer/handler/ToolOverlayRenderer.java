@@ -154,18 +154,9 @@ public class ToolOverlayRenderer {
         ICoverable coverable;
         if ((coverable = tileEntity.getCapability(GregtechTileCapabilities.CAPABILITY_COVERABLE, null)) != null) {
             return itemStack.hasCapability(GregtechCapabilities.CAPABILITY_SCREWDRIVER, null) ||
-                    GTUtility.isCoverBehaviorItem(itemStack, coverable::hasAnyCover, cover -> canPlaceCover(cover, coverable));
+                    GTUtility.isCoverBehaviorItem(itemStack, coverable::hasAnyCover, cover -> ICoverable.canPlaceCover(cover, coverable));
         }
 
-        return false;
-    }
-
-    public static boolean canPlaceCover(CoverDefinition coverDef, ICoverable coverable) {
-        for (EnumFacing facing : EnumFacing.VALUES) {
-            CoverBehavior cover = coverDef.createCoverBehavior(coverable, facing);
-            if (coverable.canPlaceCoverOnSide(facing) && cover.canAttach())
-                return true;
-        }
         return false;
     }
 

@@ -530,7 +530,7 @@ public abstract class BlockPipe<PipeType extends Enum<PipeType> & IPipeType<Node
                 stack.hasCapability(GregtechCapabilities.CAPABILITY_SCREWDRIVER, null) ||
                 GTUtility.isCoverBehaviorItem(stack,
                         () -> hasCover(getPipeTileEntity(world, pos)),
-                        coverDef -> ToolOverlayRenderer.canPlaceCover(coverDef, getPipeTileEntity(world, pos).getCoverableImplementation()));
+                        coverDef -> ICoverable.canPlaceCover(coverDef, getPipeTileEntity(world, pos).getCoverableImplementation()));
     }
 
     protected boolean doDrawGrid(ItemStack stack) {

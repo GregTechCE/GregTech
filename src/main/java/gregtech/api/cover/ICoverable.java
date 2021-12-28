@@ -207,6 +207,15 @@ public interface ICoverable {
         }
     }
 
+    static boolean canPlaceCover(CoverDefinition coverDef, ICoverable coverable) {
+        for (EnumFacing facing : EnumFacing.VALUES) {
+            CoverBehavior cover = coverDef.createCoverBehavior(coverable, facing);
+            if (coverable.canPlaceCoverOnSide(facing) && cover.canAttach())
+                return true;
+        }
+        return false;
+    }
+
     default boolean canRenderMachineGrid() {
         return true;
     }
