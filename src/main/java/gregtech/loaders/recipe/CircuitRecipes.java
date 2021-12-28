@@ -339,7 +339,7 @@ public class CircuitRecipes {
                 .input(wireFine, Tin, 6)
                 .fluidInputs(Polyethylene.getFluid(L))
                 .output(TRANSISTOR, 8)
-                .duration(80).EUt(24).buildAndRegister();
+                .duration(160).EUt(VA[MV]).buildAndRegister();
 
         // Diode
         ASSEMBLER_RECIPES.recipeBuilder()

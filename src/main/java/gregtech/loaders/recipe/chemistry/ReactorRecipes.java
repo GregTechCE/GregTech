@@ -188,8 +188,7 @@ public class ReactorRecipes {
                 .input(dust, Sodium)
                 .fluidInputs(Water.getFluid(1000))
                 .output(dust, SodiumHydroxide, 3)
-                .fluidOutputs(Hydrogen.getFluid(1000))
-                .duration(80).EUt(VA[LV]).buildAndRegister();
+                .duration(40).EUt(8).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
                 .fluidInputs(NitrationMixture.getFluid(3000))
@@ -798,10 +797,10 @@ public class ReactorRecipes {
 
         CHEMICAL_RECIPES.recipeBuilder()
                 .input(dust, Potassium)
-                .fluidInputs(NitricAcid.getFluid(1000))
+                .fluidInputs(Oxygen.getFluid(3000))
+                .fluidInputs(Nitrogen.getFluid(1000))
                 .output(dust, Saltpeter, 5)
-                .fluidOutputs(Hydrogen.getFluid(1000))
-                .duration(100).EUt(VA[LV]).buildAndRegister();
+                .duration(180).EUt(VA[LV]).buildAndRegister();
 
         CHEMICAL_RECIPES.recipeBuilder()
                 .inputs(new ItemStack(Items.GHAST_TEAR))

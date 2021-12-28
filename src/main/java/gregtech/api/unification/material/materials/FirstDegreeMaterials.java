@@ -1180,6 +1180,7 @@ public class FirstDegreeMaterials {
 
         HydrochloricAcid = new Material.Builder(419, "hydrochloric_acid")
                 .fluid()
+                .flags(DISABLE_DECOMPOSITION)
                 .components(Hydrogen, 1, Chlorine, 1)
                 .build();
 
