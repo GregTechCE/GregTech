@@ -48,11 +48,11 @@ public class StoneTypes {
             () -> Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.ANDESITE),
             state -> state.getBlock() instanceof BlockStone && state.getValue(BlockStone.VARIANT) == EnumType.ANDESITE, false);
 
-    public static StoneType BLACK_GRANITE = new StoneType(8, "black_granite", new ResourceLocation(GTValues.MODID, "blocks/stones/granite/granite_black_smooth"), SoundType.STONE, OrePrefix.oreBlackgranite, Materials.GraniteBlack, "pickaxe",
+    public static StoneType BLACK_GRANITE = new StoneType(8, "black_granite", new ResourceLocation(GTValues.MODID, "blocks/stones/black_granite/black_granite_smooth"), SoundType.STONE, OrePrefix.oreBlackgranite, Materials.GraniteBlack, "pickaxe",
             () -> MetaBlocks.STONE_SMOOTH.getState(BlockStoneSmooth.BlockType.BLACK_GRANITE),
             state -> state.getBlock() instanceof BlockStoneSmooth && ((BlockStoneSmooth) state.getBlock()).getVariant(state) == BlockStoneSmooth.BlockType.BLACK_GRANITE, false);
 
-    public static StoneType RED_GRANITE = new StoneType(9, "red_granite", new ResourceLocation(GTValues.MODID, "blocks/stones/granite/granite_red_smooth"), SoundType.STONE, OrePrefix.oreRedgranite, Materials.GraniteRed, "pickaxe",
+    public static StoneType RED_GRANITE = new StoneType(9, "red_granite", new ResourceLocation(GTValues.MODID, "blocks/stones/red_granite/red_granite_smooth"), SoundType.STONE, OrePrefix.oreRedgranite, Materials.GraniteRed, "pickaxe",
             () -> MetaBlocks.STONE_SMOOTH.getState(BlockStoneSmooth.BlockType.RED_GRANITE),
             state -> state.getBlock() instanceof BlockStoneSmooth && ((BlockStoneSmooth) state.getBlock()).getVariant(state) == BlockStoneSmooth.BlockType.RED_GRANITE, false);
 
