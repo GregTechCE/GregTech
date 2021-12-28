@@ -5,7 +5,6 @@ import gregtech.api.GregTechAPI;
 import gregtech.api.capability.GregtechTileCapabilities;
 import gregtech.api.capability.IControllable;
 import gregtech.api.capability.impl.AbstractRecipeLogic;
-import gregtech.api.capability.impl.FuelRecipeLogic;
 import gregtech.api.gui.impl.ModularUIGuiHandler;
 import gregtech.api.items.metaitem.MetaItem;
 import gregtech.api.metatileentity.MetaTileEntity;
@@ -15,7 +14,6 @@ import gregtech.api.recipes.Recipe;
 import gregtech.api.recipes.RecipeMap;
 import gregtech.api.recipes.RecipeMaps;
 import gregtech.api.recipes.ingredients.IntCircuitIngredient;
-import gregtech.api.recipes.machines.FuelRecipeMap;
 import gregtech.api.recipes.machines.RecipeMapFurnace;
 import gregtech.api.unification.material.Material;
 import gregtech.api.unification.material.properties.PropertyKey;
@@ -26,8 +24,6 @@ import gregtech.common.items.MetaItems;
 import gregtech.common.metatileentities.MetaTileEntities;
 import gregtech.integration.jei.multiblock.MultiblockInfoCategory;
 import gregtech.integration.jei.recipe.*;
-import gregtech.integration.jei.recipe.fuel.FuelRecipeMapCategory;
-import gregtech.integration.jei.recipe.fuel.GTFuelRecipeWrapper;
 import gregtech.integration.jei.recipe.primitive.MaterialTree;
 import gregtech.integration.jei.recipe.primitive.MaterialTreeCategory;
 import gregtech.integration.jei.recipe.primitive.OreByProduct;
@@ -89,9 +85,6 @@ public class GTJeiPlugin implements IModPlugin {
                 registry.addRecipeCategories(new RecipeMapCategory(recipeMap, registry.getJeiHelpers().getGuiHelper()));
             }
         }
-        for (FuelRecipeMap fuelRecipeMap : FuelRecipeMap.getRecipeMaps()) {
-            registry.addRecipeCategories(new FuelRecipeMapCategory(fuelRecipeMap, registry.getJeiHelpers().getGuiHelper()));
-        }
         registry.addRecipeCategories(new OreByProductCategory(registry.getJeiHelpers().getGuiHelper()));
         registry.addRecipeCategories(new GTOreCategory(registry.getJeiHelpers().getGuiHelper()));
         registry.addRecipeCategories(new MaterialTreeCategory(registry.getJeiHelpers().getGuiHelper()));
@@ -128,13 +121,6 @@ public class GTJeiPlugin implements IModPlugin {
             }
         }
 
-        for (FuelRecipeMap fuelRecipeMap : FuelRecipeMap.getRecipeMaps()) {
-            List<GTFuelRecipeWrapper> recipeList = fuelRecipeMap.getRecipeList().stream()
-                    .map(GTFuelRecipeWrapper::new)
-                    .collect(Collectors.toList());
-            registry.addRecipes(recipeList, GTValues.MODID + ":" + fuelRecipeMap.unlocalizedName);
-        }
-
         Map<RecipeMap<?>, List<MetaTileEntity>> deferredCatalysts = new HashMap<>();
         for (ResourceLocation metaTileEntityId : GregTechAPI.MTE_REGISTRY.getKeys()) {
             MetaTileEntity metaTileEntity = GregTechAPI.MTE_REGISTRY.getObject(metaTileEntityId);
@@ -158,9 +144,6 @@ public class GTJeiPlugin implements IModPlugin {
                         }
                         registerRecipeMapCatalyst(registry, logic.getRecipeMap(), metaTileEntity);
                     }
-                } else if (workableCapability instanceof FuelRecipeLogic) {
-                    FuelRecipeMap recipeMap = ((FuelRecipeLogic) workableCapability).recipeMap;
-                    registry.addRecipeCatalyst(metaTileEntity.getStackForm(), GTValues.MODID + ":" + recipeMap.unlocalizedName);
                 }
             }
         }

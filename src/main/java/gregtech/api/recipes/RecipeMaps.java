@@ -22,7 +22,7 @@ public class RecipeMaps {
 
     @ZenProperty
     public static final RecipeMap<SimpleRecipeBuilder> ALLOY_SMELTER_RECIPES = new RecipeMap<>("alloy_smelter", 1, 2, 1, 1, 0, 0, 0, 0, new SimpleRecipeBuilder(), false)
-            .setSlotOverlay(false, false, GuiTextures.FURNACE_OVERLAY)
+            .setSlotOverlay(false, false, GuiTextures.FURNACE_OVERLAY_1)
             .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW, MoveType.HORIZONTAL)
             .setSound(GTSounds.FURNACE);
 
@@ -514,7 +514,7 @@ public class RecipeMaps {
 
     @ZenProperty
     public static final RecipeMap<SimpleRecipeBuilder> FURNACE_RECIPES = new RecipeMapFurnace("electric_furnace", 1, 1, 1, 1, 0, 0, 0, 0, new SimpleRecipeBuilder(), false)
-            .setSlotOverlay(false, false, GuiTextures.FURNACE_OVERLAY)
+            .setSlotOverlay(false, false, GuiTextures.FURNACE_OVERLAY_1)
             .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW, MoveType.HORIZONTAL)
             .setSound(GTSounds.FURNACE);
 
@@ -811,22 +811,32 @@ public class RecipeMaps {
     //////////////////////////////////////
 
     @ZenProperty
-    public static final FuelRecipeMap COMBUSTION_GENERATOR_FUELS = new FuelRecipeMap("combustion_generator")
+    public static final RecipeMap<FuelRecipeBuilder> COMBUSTION_GENERATOR_FUELS = new RecipeMap<>("combustion_generator", 0, 0, 0, 0, 1, 1, 0, 0, new FuelRecipeBuilder(), false)
+            .setSlotOverlay(false, true, true, GuiTextures.FURNACE_OVERLAY_2)
+            .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW_MULTIPLE, MoveType.HORIZONTAL)
             .setSound(GTSounds.COMBUSTION);
 
     @ZenProperty
-    public static final FuelRecipeMap GAS_TURBINE_FUELS = new FuelRecipeMap("gas_turbine")
+    public static final RecipeMap<FuelRecipeBuilder> GAS_TURBINE_FUELS = new RecipeMap<>("gas_turbine", 0, 0, 0, 0, 1, 1, 0, 0, new FuelRecipeBuilder(), false)
+            .setSlotOverlay(false, true, true, GuiTextures.DARK_CANISTER_OVERLAY)
+            .setProgressBar(GuiTextures.PROGRESS_BAR_GAS_COLLECTOR, MoveType.HORIZONTAL)
             .setSound(GTSounds.TURBINE);
 
     @ZenProperty
-    public static final FuelRecipeMap PLASMA_GENERATOR_FUELS = new FuelRecipeMap("plasma_generator")
+    public static final RecipeMap<FuelRecipeBuilder> STEAM_TURBINE_FUELS = new RecipeMap<>("steam_turbine", 0, 0, 0, 0, 1, 1, 0, 1, new FuelRecipeBuilder(), false)
+            .setSlotOverlay(false, true, true, GuiTextures.CENTRIFUGE_OVERLAY)
+            .setProgressBar(GuiTextures.PROGRESS_BAR_GAS_COLLECTOR, MoveType.HORIZONTAL)
             .setSound(GTSounds.TURBINE);
 
     @ZenProperty
-    public static final FuelRecipeMap SEMI_FLUID_GENERATOR_FUELS = new FuelRecipeMap("semi_fluid_generator")
+    public static final RecipeMap<FuelRecipeBuilder> SEMI_FLUID_GENERATOR_FUELS = new RecipeMap<>("semi_fluid_generator", 0, 0, 0, 0, 1, 1, 0, 0, new FuelRecipeBuilder(), false)
+            .setSlotOverlay(false, true, true, GuiTextures.FURNACE_OVERLAY_2)
+            .setProgressBar(GuiTextures.PROGRESS_BAR_ARROW_MULTIPLE, MoveType.HORIZONTAL)
             .setSound(GTSounds.COMBUSTION);
 
     @ZenProperty
-    public static final FuelRecipeMap STEAM_TURBINE_FUELS = new FuelRecipeMap("steam_turbine")
+    public static final RecipeMap<FuelRecipeBuilder> PLASMA_GENERATOR_FUELS = new RecipeMap<>("plasma_generator", 0, 0, 0, 0, 1, 1, 0, 1, new FuelRecipeBuilder(), false)
+            .setSlotOverlay(false, true, true, GuiTextures.CENTRIFUGE_OVERLAY)
+            .setProgressBar(GuiTextures.PROGRESS_BAR_GAS_COLLECTOR, MoveType.HORIZONTAL)
             .setSound(GTSounds.TURBINE);
 }

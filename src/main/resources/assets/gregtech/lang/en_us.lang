@@ -50,6 +50,7 @@ gregtech.multiblock.implosion_compressor.description=The Implosion Compressor is
 gregtech.multiblock.pyrolyse_oven.description=The Pyrolyse Oven is a multiblock structure used for turning Logs into Charcoal and Creosote Oil, or Ash and Heavy Oil.
 gregtech.multiblock.cracker.description=The Oil Cracking Unit is a multiblock structure used for turning Light and Heavy Fuel into their Cracked variants.
 gregtech.multiblock.large_combustion_engine.description=The Large Combustion Engine is a multiblock structure that acts as a Combustion Generator for EV power.
+gregtech.multiblock.extreme_combustion_engine.description=The Extreme Combustion Engine is a multiblock structure that acts as a Combustion Generator for IV power.
 gregtech.multiblock.distillation_tower.description=The Distillation Tower is a multiblock structure used for distilling the various types of Oil and some of their byproducts. Each layer must have exactly one output hatch, starting from the second one. The bottom layer can output items and insert fluids in any position.
 gregtech.multiblock.electric_blast_furnace.description=The Electric Blast Furnace (EBF) is a multiblock structure used for smelting alloys, cooking metals and refining ores. It is required for obtaining high-tier alloys and metals, such as aluminium, stainless steel, titanium, and naquadah alloy.
 gregtech.multiblock.multi_furnace.description=The Multi Smelter is a multiblock structure used for smelting massive amounts of items at once. Different tiers of coils provide a speed boost and energy efficiency gain. 16 is the base value of items smelted per operation, and can be multiplied by using higher level coils.
@@ -901,6 +902,7 @@ metaitem.tool.tooltip.attack_damage=§fAttack damage: §9%,.1f
 metaitem.tool.tooltip.mining_speed=§fMining speed: §6%,.1f
 metaitem.tool.tooltip.durability=§fDurability: §a%,d / %,d
 metaitem.tool.tooltip.rotor.efficiency=Turbine Efficiency: §9%,d%%
+metaitem.tool.tooltip.rotor.power=Turbine Power: §9%,d%%
 
 metaitem.voltage_coil.ulv.name=Ultra Low Voltage Coil
 metaitem.voltage_coil.ulv.tooltip=Primitive Coil
@@ -1387,6 +1389,7 @@ material.nether_air=Nether Air
 material.liquid_nether_air=Liquid Nether Air
 material.ender_air=Ender Air
 material.liquid_ender_air=Liquid Ender Air
+material.liquid_oxygen=Liquid Oxygen
 material.almandine=Almandine
 material.andradite=Andradite
 material.annealed_copper=Annealed Copper
@@ -2147,11 +2150,11 @@ recipemap.forge_hammer.name=Forge Hammer
 recipemap.compressor.name=Compressor
 recipemap.packer.name=Packer
 recipemap.unpacker.name=Unpacker
-recipemap.combustion_generator.name=Combustion Generator
-recipemap.gas_turbine.name=Gas Turbine
-recipemap.steam_turbine.name=Steam Turbine
+recipemap.combustion_generator.name=Combustion Fuels
+recipemap.gas_turbine.name=Gas Fuels
+recipemap.steam_turbine.name=Steam Fuels
 recipemap.semi_fluid_generator.name=Semi Fluid Fuels
-recipemap.plasma_generator.name=Plasma Generator
+recipemap.plasma_generator.name=Plasma Fuels
 recipemap.circuit_assembler.name=Circuit Assembler
 recipemap.mass_fabricator.name=Mass Fabricator
 recipemap.materialtree.name=Material Tree
@@ -2313,18 +2316,20 @@ tile.steam_casing.pump_deck.name=Pump Deck
 tile.steam_casing.wood_wall.name=Wooden Wall
 
 # Gearbox casing blocks
-tile.turbine_casing.bronze_gearbox.name=Bronze Gear Box Casing
-tile.turbine_casing.steel_gearbox.name=Steel Gear Box Casing
-tile.turbine_casing.titanium_gearbox.name=Titanium Gear Box Casing
-tile.turbine_casing.steel_turbine_casing.name=Steel Turbine Casing
+tile.turbine_casing.bronze_gearbox.name=Bronze Gearbox Casing
+tile.turbine_casing.steel_gearbox.name=Steel Gearbox Casing
+tile.turbine_casing.titanium_gearbox.name=Titanium Gearbox Casing
+tile.turbine_casing.tungstensteel_gearbox.name=Tungstensteel Gearbox Casing
 
 # Turbine casing blocks
+tile.turbine_casing.steel_turbine_casing.name=Steel Turbine Casing
 tile.turbine_casing.titanium_turbine_casing.name=Titanium Turbine Casing
 tile.turbine_casing.stainless_turbine_casing.name=Stainless Turbine Casing
 tile.turbine_casing.tungstensteel_turbine_casing.name=Tungstensteel Turbine Casing
 
 # Multiblock casing blocks
 tile.multiblock_casing.engine_intake.name=Engine Intake Casing
+tile.multiblock_casing.extreme_engine_intake.name=Extreme Engine Intake Casing
 tile.multiblock_casing.grate.name=Grate Machine Casing
 tile.multiblock_casing.assembly_control.name=Assembly Control Casing
 tile.multiblock_casing.assembly_line.name=Assembly Line Casing
@@ -2499,32 +2504,23 @@ gregtech.machine.steam_miner.tooltip=Mines ores below the miner ONLY!
 gregtech.machine.steam_miner.description=Working Area: §b%dx%d§7 blocks. §b%ds§7 per block. Uses §b16mB/t§7 of steam.
 
 # Generators
+gregtech.machine.combustion_generator.tooltip=Requires flammable Liquids
+
 gregtech.machine.combustion_generator.lv.name=Basic Combustion Generator
-gregtech.machine.combustion_generator.lv.tooltip=Requires flammable Liquids
 gregtech.machine.combustion_generator.mv.name=Advanced Combustion Generator
-gregtech.machine.combustion_generator.mv.tooltip=Requires flammable Liquids
 gregtech.machine.combustion_generator.hv.name=Turbo Combustion Generator
-gregtech.machine.combustion_generator.hv.tooltip=Requires flammable Liquids
-gregtech.machine.combustion_generator.ev.name=Turbo Combustion Generator II
-gregtech.machine.combustion_generator.ev.tooltip=Requires flammable Liquids
+
+gregtech.machine.steam_turbine.tooltip=Converts Steam into EU
 
 gregtech.machine.steam_turbine.lv.name=Basic Steam Turbine
-gregtech.machine.steam_turbine.lv.tooltip=Converts Steam into EU
 gregtech.machine.steam_turbine.mv.name=Advanced Steam Turbine
-gregtech.machine.steam_turbine.mv.tooltip=Converts Steam into EU
 gregtech.machine.steam_turbine.hv.name=Turbo Steam Turbine
-gregtech.machine.steam_turbine.hv.tooltip=Converts Steam into EU
-gregtech.machine.steam_turbine.ev.name=Turbo Steam Turbine II
-gregtech.machine.steam_turbine.ev.tooltip=Converts Steam into EU
+
+gregtech.machine.gas_turbine.tooltip=Requires flammable Gases
 
 gregtech.machine.gas_turbine.lv.name=Basic Gas Turbine
-gregtech.machine.gas_turbine.lv.tooltip=Requires flammable Gasses
 gregtech.machine.gas_turbine.mv.name=Advanced Gas Turbine
-gregtech.machine.gas_turbine.mv.tooltip=Requires flammable Gasses
 gregtech.machine.gas_turbine.hv.name=Turbo Gas Turbine
-gregtech.machine.gas_turbine.hv.tooltip=Requires flammable Gasses
-gregtech.machine.gas_turbine.ev.name=Turbo Gas Turbine II
-gregtech.machine.gas_turbine.ev.tooltip=Requires flammable Gasses
 
 
 gregtech.machine.magic_energy_absorber.name=Magic Energy Absorber
@@ -3681,6 +3677,12 @@ gregtech.machine.large_chemical_reactor.name=Large Chemical Reactor
 
 
 gregtech.machine.large_combustion_engine.name=Large Combustion Engine
+gregtech.machine.large_combustion_engine.tooltip.1=Produces up to §e%s§7 EU/t.
+gregtech.machine.large_combustion_engine.tooltip.2=Requires §e1000 L/hr§7 of Lubricant to run.
+gregtech.machine.large_combustion_engine.tooltip.boost_regular=Supply §e20 L/s§7 of Oxygen to produce up to §e%s§7 EU/t at §e2x§7 fuel consumption.
+gregtech.machine.large_combustion_engine.tooltip.boost_extreme.1=Supply §e20 L/s§7 of Oxygen to produce up to §e%s§7 EU/t at §e1x§7 fuel consumption.
+gregtech.machine.large_combustion_engine.tooltip.boost_extreme.2=Supply §e80 L/s§7 of Liquid Oxygen to produce up to §e%s§7 EU/t at §e1.33x§7 fuel consumption.
+gregtech.machine.extreme_combustion_engine.name=Extreme Combustion Engine
 gregtech.machine.large_turbine.steam.name=Large Steam Turbine
 gregtech.machine.large_turbine.gas.name=Large Gas Turbine
 gregtech.machine.large_turbine.plasma.name=Large Plasma Turbine
@@ -3865,9 +3867,11 @@ gregtech.machine.rotor_holder.tooltip1=Rotor Holder for Multiblocks
 gregtech.machine.rotor_holder.tooltip2=Holds Rotor in place so it will not fly away
 
 gregtech.machine.rotor_holder.hv.name=HV Rotor Holder
+gregtech.machine.rotor_holder.ev.name=EV Rotor Holder
+gregtech.machine.rotor_holder.iv.name=IV Rotor Holder
 gregtech.machine.rotor_holder.luv.name=LuV Rotor Holder
-gregtech.machine.rotor_holder.uhv.name=UHV Rotor Holder
-gregtech.machine.rotor_holder.max.name=MAX Rotor Holder
+gregtech.machine.rotor_holder.zpm.name=ZPM Rotor Holder
+gregtech.machine.rotor_holder.uv.name=UV Rotor Holder
 
 gregtech.machine.maintenance_hatch.name=Maintenance Hatch
 gregtech.machine.maintenance_hatch.tooltip=For maintaining Multiblocks
@@ -4067,20 +4071,25 @@ gregtech.multiblock.blast_furnace.max_temperature=Max Temperature: %sK
 gregtech.multiblock.multi_furnace.heating_coil_level=Heating Coil Level: %s
 gregtech.multiblock.multi_furnace.heating_coil_discount=Heating Coil EU Boost: %sx
 gregtech.multiblock.distillation_tower.distilling_fluid=Distilling %s
-gregtech.multiblock.cracker.cracking_fluid=Cracking %s
 
 gregtech.multiblock.large_combustion_engine.lubricant_amount=Lubricant Amount: %sL
-gregtech.multiblock.large_combustion_engine.fuel_amount=Fuel Amount: %sL (%s)
 gregtech.multiblock.large_combustion_engine.oxygen_amount=Oxygen Amount: %sL
-gregtech.multiblock.large_combustion_engine.oxygen_boosted=Oxygen boosted.
-gregtech.multiblock.large_combustion_engine.supply_oxygen_to_boost=Supply oxygen to boost.
+gregtech.multiblock.large_combustion_engine.liquid_oxygen_amount=Liquid Oxygen Amount: %sL
+gregtech.multiblock.large_combustion_engine.oxygen_boosted=§bOxygen boosted.
+gregtech.multiblock.large_combustion_engine.liquid_oxygen_boosted=§bLiquid Oxygen boosted.
+gregtech.multiblock.large_combustion_engine.supply_oxygen_to_boost=Supply Oxygen to boost.
+gregtech.multiblock.large_combustion_engine.supply_liquid_oxygen_to_boost=Supply Liquid Oxygen to boost.
+gregtech.multiblock.large_combustion_engine.obstructed=Engine Intakes Obstructed.
 
 gregtech.multiblock.turbine.fuel_amount=Fuel Amount: %sL (%s)
-gregtech.multiblock.turbine.rotor_speed=Rotor Speed: %s / %s RPM
-gregtech.multiblock.turbine.rotor_efficiency=Rotor Efficiency: %s%%
+gregtech.multiblock.turbine.rotor_speed=Rotor Speed: %s/%s RPM
 gregtech.multiblock.turbine.rotor_durability=Rotor Durability: %s%%
-gregtech.multiblock.turbine.low_rotor_durability=WARNING: Rotor Durability below %s%% (%s%%)
+gregtech.multiblock.turbine.efficiency=Turbine Efficiency: %s%%
+gregtech.multiblock.turbine.energy_per_tick=Energy Output: %s/%s EU/t
+gregtech.multiblock.turbine.energy_per_tick_maxed=Energy Output: %s EU/t
 gregtech.multiblock.turbine.obstructed=Turbine Face Obstructed
+gregtech.multiblock.turbine.voltage_tooltip=Base Production: §e%s§7 EU/t
+gregtech.multiblock.turbine.efficiency_tooltip=Each Rotor Holder above %s§7 adds §610%%§7 efficiency.
 
 gregtech.multiblock.large_boiler.temperature=Temperature: %s / %s C
 gregtech.multiblock.large_boiler.steam_output=Steam Output: %s L/t
