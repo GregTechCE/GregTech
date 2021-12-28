@@ -136,12 +136,7 @@ public class GTJeiPlugin implements IModPlugin {
                         for (RecipeMap<?> recipeMap : ((IMultipleRecipeMaps) metaTileEntity).getAvailableRecipeMaps()) {
                             registerRecipeMapCatalyst(registry, recipeMap, metaTileEntity);
                         }
-                    } else {
-                        //Special Case here for the processing array
-                        RecipeMap<?> recipeMap = logic.getRecipeMap();
-                        if(recipeMap == null) {
-                            continue;
-                        }
+                    } else if (logic.getRecipeMap() != null) {
                         registerRecipeMapCatalyst(registry, logic.getRecipeMap(), metaTileEntity);
                     }
                 }

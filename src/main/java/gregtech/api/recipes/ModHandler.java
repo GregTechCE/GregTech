@@ -26,6 +26,7 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -66,16 +67,21 @@ public class ModHandler {
         return false;
     }
 
-    public static FluidStack getWaterFromContainer(@Nonnull IFluidHandler fluidHandler, boolean doDrain) {
-        FluidStack drainedWater = fluidHandler.drain(Materials.Water.getFluid(1), doDrain);
+    public static FluidStack getBoilerFluidFromContainer(@Nonnull IFluidHandler fluidHandler, boolean doDrain) {
+        return getBoilerFluidFromContainer(fluidHandler, 1, doDrain);
+    }
+
+    public static FluidStack getBoilerFluidFromContainer(@Nonnull IFluidHandler fluidHandler, int amount, boolean doDrain) {
+        if (amount == 0) return null;
+        FluidStack drainedWater = fluidHandler.drain(Materials.Water.getFluid(amount), doDrain);
         if (drainedWater == null || drainedWater.amount == 0) {
-            drainedWater = fluidHandler.drain(Materials.DistilledWater.getFluid(1), doDrain);
+            drainedWater = fluidHandler.drain(Materials.DistilledWater.getFluid(amount), doDrain);
         }
         if (drainedWater == null || drainedWater.amount == 0) {
             for (String fluidName : ConfigHolder.machines.boilerFluids) {
                 Fluid f = FluidRegistry.getFluid(fluidName);
                 if (f != null) {
-                    drainedWater = fluidHandler.drain(new FluidStack(f, 1), doDrain);
+                    drainedWater = fluidHandler.drain(new FluidStack(f, amount), doDrain);
                     if (drainedWater != null && drainedWater.amount > 0) {
                         break;
                     }
@@ -115,6 +121,10 @@ public class ModHandler {
 
     public static boolean isMaterialWood(Material material) {
         return material == Materials.Wood;
+    }
+
+    public static int getFuelValue(ItemStack stack) {
+        return TileEntityFurnace.getItemBurnTime(stack);
     }
 
     public static ItemStack getBurningFuelRemainder(ItemStack fuelStack) {
