@@ -582,9 +582,6 @@ public class MetaItem1 extends StandardMetaItem {
         PLUGIN_ONLINE_PIC = addItem(782, "plugin.online_pic").addComponents(new OnlinePicPluginBehavior());
         PLUGIN_TEXT = addItem(783, "plugin.text").addComponents(new TextPluginBehavior());
 
-        COLOURED_LEDS = addItem(798, "coloured.leds");
-        DISPLAY = addItem(799, "display");
-
         // Records: 800-819
         SUS_RECORD = addItem(800, "record.sus").addComponents(new MusicDiscStats(GTSounds.RECORD_SOUND)).setRarity(EnumRarity.RARE).setMaxStackSize(1).setInvisible();
 

@@ -380,7 +380,7 @@ public class ElementMaterials {
         Iron = new Material.Builder(51, "iron")
                 .ingot().fluid().plasma().ore()
                 .color(0xC8C8C8).iconSet(METALLIC)
-                .flags(EXT2_METAL, MORTAR_GRINDABLE, GENERATE_ROTOR, GENERATE_SMALL_GEAR, GENERATE_GEAR, GENERATE_SPRING_SMALL, GENERATE_SPRING, EXCLUDE_BLOCK_CRAFTING_BY_HAND_RECIPES, BLAST_FURNACE_CALCITE_TRIPLE, GENERATE_FINE_WIRE)
+                .flags(EXT2_METAL, MORTAR_GRINDABLE, GENERATE_ROTOR, GENERATE_SMALL_GEAR, GENERATE_GEAR, GENERATE_SPRING_SMALL, GENERATE_SPRING, EXCLUDE_BLOCK_CRAFTING_BY_HAND_RECIPES, BLAST_FURNACE_CALCITE_TRIPLE)
                 .element(Elements.Fe)
                 .toolStats(7.0f, 2.5f, 256, 21)
                 .cableProperties(GTValues.V[2], 2, 3)
@@ -746,7 +746,7 @@ public class ElementMaterials {
         Silver = new Material.Builder(100, "silver")
                 .ingot().fluid().ore()
                 .color(0xDCDCFF).iconSet(SHINY)
-                .flags(EXT2_METAL, MORTAR_GRINDABLE)
+                .flags(EXT2_METAL, MORTAR_GRINDABLE, GENERATE_FINE_WIRE)
                 .element(Elements.Ag)
                 .cableProperties(GTValues.V[3], 1, 1)
                 .build();
