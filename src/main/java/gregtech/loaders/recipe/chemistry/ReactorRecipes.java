@@ -400,6 +400,7 @@ public class ReactorRecipes {
                 .input(dust, Aluminium, 4)
                 .fluidInputs(IndiumConcentrate.getFluid(1000))
                 .output(dustSmall, Indium)
+                .output(dust, AluminiumSulfite, 4)
                 .fluidOutputs(LeadZincSolution.getFluid(1000))
                 .duration(50).EUt(600).buildAndRegister();
 

@@ -334,6 +334,7 @@ public class Materials {
     public static Material Sapphire;
     public static Material Scheelite;
     public static Material Sodalite;
+    public static Material AluminiumSulfite;
     public static Material Tantalite;
     public static Material Coke;
 

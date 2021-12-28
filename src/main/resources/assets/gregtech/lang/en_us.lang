@@ -1871,6 +1871,7 @@ material.pyrochlore=Pyrochlore
 material.electrotine=Electrotine
 material.blue_alloy=Blue Alloy
 material.lapotron=Lapotron
+material.aluminium_sulfite=Aluminium Sulfite
 
 item.nether_quartz.oreNetherrack=Nether Quartz Ore
 item.gunpowder.dustTiny=Tiny Pile of Gunpowder
