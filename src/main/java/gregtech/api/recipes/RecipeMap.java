@@ -127,7 +127,7 @@ public class RecipeMap<R extends RecipeBuilder<R>> {
         if (currentOrePrefix != null) {
             Material currentMaterial = OrePrefix.getCurrentMaterial();
             GTLog.logger.error("Error happened during processing ore registration of prefix {} and material {}. " +
-                            "Seems like cross-mod compatibility issue. Report to GTCE github.",
+                            "Seems like cross-mod compatibility issue. Report to GTCEu github.",
                     currentOrePrefix, currentMaterial);
         }
     }
