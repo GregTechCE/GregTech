@@ -229,6 +229,7 @@ public class FluidPipeNet extends PipeNet<FluidPipeProperties> implements ITicka
                     }
                 }
                 dirtyStacks.clear();
+                worldData.markDirty();
             }
         }
     }
