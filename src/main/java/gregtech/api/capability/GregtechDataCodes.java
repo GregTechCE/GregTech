@@ -33,7 +33,7 @@ public class GregtechDataCodes {
     public static final int BOILER_LAST_TICK_STEAM = 16;
 
     // Misc TEs (Transformer, World Accelerator)
-    public static final int SYNC_TILE_MODE = 100;
+    public static final int SYNC_TILE_MODE = 500;
 
     // Clipboard
     public static final int UPDATE_UI = 0;
