@@ -263,15 +263,14 @@ public class ConfigHolder {
                 "Higher values increase quality (limited by the resolution of your screen) but are more GPU intensive.", "Default: 2"})
         @Config.RangeDouble(min = 0, max = 5)
         @Config.SlidingOption
-        @Config.RequiresWorldRestart
         public double resolution = 2;
 
         @Config.Comment({"Whether or not to enable Emissive Textures for GregTech Machines.", "Default: true"})
         public boolean machinesEmissiveTextures = true;
 
         @Config.Comment({"Whether or not to enable Emissive Textures for GregTech Casings " +
-                "when the multiblock is working (EBF coils, Fusion Casings, etc.).", "Default: true"})
-        public boolean casingsActiveEmissiveTextures = true;
+                "when the multiblock is working (EBF coils, Fusion Casings, etc.).", "Default: false"})
+        public boolean casingsActiveEmissiveTextures = false;
 
         @Config.Comment({"Whether or not sounds should be played when using tools outside of crafting.", "Default: true"})
         public boolean toolUseSounds = true;
@@ -317,18 +316,18 @@ public class ConfigHolder {
             public int bloomStyle = 2;
 
             @Config.Comment({"The brightness after bloom should not exceed this value. It can be used to limit the brightness of highlights " +
-                    "(e.g., daytime).", "OUTPUT = BACKGROUND + BLOOM * strength * (base + LT + (1 - BACKGROUND_BRIGHTNESS)*({HT}-LT)))", "This value should be greater than lowBrightnessThreshold.", "Default: 1.3"})
+                    "(e.g., daytime).", "OUTPUT = BACKGROUND + BLOOM * strength * (base + LT + (1 - BACKGROUND_BRIGHTNESS)*({HT}-LT)))", "This value should be greater than lowBrightnessThreshold.", "Default: 0.5"})
             @Config.RangeDouble(min = 0)
-            public double highBrightnessThreshold = 1.3;
+            public double highBrightnessThreshold = 0.5;
 
             @Config.Comment({"The brightness after bloom should not smaller than this value. It can be used to limit the brightness of dusky parts " +
-                    "(e.g., night/caves).", "OUTPUT = BACKGROUND + BLOOM * strength * (base + {LT} + (1 - BACKGROUND_BRIGHTNESS)*(HT-{LT})))", "This value should be smaller than highBrightnessThreshold.", "Default: 0.3"})
+                    "(e.g., night/caves).", "OUTPUT = BACKGROUND + BLOOM * strength * (base + {LT} + (1 - BACKGROUND_BRIGHTNESS)*(HT-{LT})))", "This value should be smaller than highBrightnessThreshold.", "Default: 0.2"})
             @Config.RangeDouble(min = 0)
-            public double lowBrightnessThreshold = 0.3;
+            public double lowBrightnessThreshold = 0.2;
 
-            @Config.Comment({"The base brightness of the bloom.", "It is similar to strength", "This value should be smaller than highBrightnessThreshold.", "OUTPUT = BACKGROUND + BLOOM * strength * ({base} + LT + (1 - BACKGROUND_BRIGHTNESS)*(HT-LT)))", "Default: 0.3"})
+            @Config.Comment({"The base brightness of the bloom.", "It is similar to strength", "This value should be smaller than highBrightnessThreshold.", "OUTPUT = BACKGROUND + BLOOM * strength * ({base} + LT + (1 - BACKGROUND_BRIGHTNESS)*(HT-LT)))", "Default: 0.1"})
             @Config.RangeDouble(min = 0)
-            public double baseBrightness = 0;
+            public double baseBrightness = 0.1;
 
             @Config.Comment({"Mipmap Size.", "Higher values increase quality, but are slower to render.", "Default: 5"})
             @Config.RangeInt(min = 2, max = 5)
