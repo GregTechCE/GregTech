@@ -6,6 +6,7 @@ import gregtech.api.cover.CoverDefinition;
 import gregtech.api.cover.ICoverable;
 import gregtech.api.pipenet.block.BlockPipe;
 import gregtech.api.util.GTUtility;
+import gregtech.common.ConfigHolder;
 import gregtech.common.advancement.GTTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -173,9 +174,8 @@ public class PipeCoverableImplementation implements ICoverable {
     }
 
     @Override
-    public int getPaintingColor() {
-        //todo make insulation colors separate for pipes and cables so cover plates have the correct overlay
-        return holder.getInsulationColor() == IPipeTile.DEFAULT_INSULATION_COLOR ? IPipeTile.DEFAULT_INSULATION_COLOR : holder.getInsulationColor();
+    public int getPaintingColorForRendering() {
+        return ConfigHolder.client.defaultPaintingColor;
     }
 
     @Override
