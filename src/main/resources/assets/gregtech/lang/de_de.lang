@@ -92,8 +92,7 @@ metaitem.jackhammer_base.name=Presslufthammer (HV)
 metaitem.nano_saber.name=Nanoschwert
 metaitem.nano_saber.tooltip=Ryujin no ken wo kurae!
 metaitem.energy_field_projector.name=Energie-Feld-Schutz
-metaitem.energy_field_projector.tooltip=Repels objects in close proximity to wearer
-
+metaitem.energy_field_projector.tooltip=Prallt Objekte in der nähe ab
 metaitem.shape.mold.plate.name=Gussform (Platte)
 metaitem.shape.mold.plate.tooltip=Gussform um Platten herzustellen. 
 metaitem.shape.mold.casing.name=Gussform (Hülle)
@@ -189,7 +188,7 @@ metaitem.fuel.can.plastic.filled.name=Plastik Flüssigkeiten Kanne
 metaitem.fuel.can.plastic.filled.tooltip=Brennt gut in diesel Generatoren
 
 metaitem.spray.empty.name=Sprüh Dose (Leer)
-metaitem.spray.empty.tooltip=Can be filled with sprays of various colors
+metaitem.spray.empty.tooltip=Kann mit Sprays in verschidenen farben gefüllt werden
 
 metaitem.thermos_can.empty.name=Leere Thermos Kanne
 metaitem.thermos_can.empty.tooltip=Lasst flüssigkeiten warm/kalt bleiben
