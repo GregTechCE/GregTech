@@ -223,8 +223,8 @@ metaitem.tool.lighter.invar.name=Feuerzeug
 metaitem.tool.lighter.platinum.name=Platinum Feuerzeug
 metaitem.tool.lighter.platinum.tooltip=Ein bekannter Prank Meister ist darauf eingraviert... 
 
-metaitem.ingot.iridiumalloy.name=Iridium Alloy Ingot
-metaitem.ingot.iridiumalloy.tooltip=Used to make Iridium Plates
+metaitem.ingot.iridiumalloy.name=Iridium Verbindung Barren
+metaitem.ingot.iridiumalloy.tooltip=Wird benutzt um Iridium platten zu machen.
 
 metaitem.paper.printed.pages.name=Gedrucktes Papier
 metaitem.paper.printed.pages.tooltip=Wird gebraucht um Bücher zu machen
@@ -241,44 +241,43 @@ metaitem.battery.hull.hv.tooltip=Eine leere MV Batterie Hülle
 metaitem.battery.hull.mv.name=Große Batterie Hülle 
 metaitem.battery.hull.mv.tooltip=Eine leere HV Batterie Hülle. 
 
-metaitem.battery.re.ulv.tantalum.name=Tantalum Capacitor
-metaitem.battery.re.ulv.tantalum.tooltip=Reusable
-
-metaitem.battery.su.lv.sulfuricacid.name=Small Acid Battery
-metaitem.battery.su.lv.sulfuricacid.tooltip=Single Use
-metaitem.battery.su.lv.mercury.name=Small Mercury Battery
-metaitem.battery.su.lv.mercury.tooltip=Single Use
+metaitem.battery.re.ulv.tantalum.name=Tantalum speicher
+metaitem.battery.re.ulv.tantalum.tooltip=Wiederaufladbar
+metaitem.battery.su.lv.sulfuricacid.name=Kleine Säure Batterie
+metaitem.battery.su.lv.sulfuricacid.tooltip=Nur einmal benutzbar
+metaitem.battery.su.lv.mercury.name=Kleine Mercury Batterie
+metaitem.battery.su.lv.mercury.tooltip=Nur einmal benutzbar
 
 metaitem.battery.re.lv.cadmium.name=Small Cadmium Battery
-metaitem.battery.re.lv.cadmium.tooltip=Reusable
-metaitem.battery.re.lv.lithium.name=Small Lithium Battery
-metaitem.battery.re.lv.lithium.tooltip=Reusable
-metaitem.battery.re.lv.sodium.name=Small Sodium Battery
-metaitem.battery.re.lv.sodium.tooltip=Reusable
+metaitem.battery.re.lv.cadmium.tooltip=Wiederaufladbar
+metaitem.battery.re.lv.lithium.name=Kleine Lithium batterie
+metaitem.battery.re.lv.lithium.tooltip=Wiederaufladbae
+metaitem.battery.re.lv.sodium.name=Kleine sodium batterie
+metaitem.battery.re.lv.sodium.tooltip=Wiederaufladbar
 
-metaitem.battery.su.mv.sulfuricacid.name=Medium Acid Battery
-metaitem.battery.su.mv.sulfuricacid.tooltip=Single Use
-metaitem.battery.su.mv.mercury.name=Medium Mercury Battery
-metaitem.battery.su.mv.mercury.tooltip=Single Use
+metaitem.battery.su.mv.sulfuricacid.name=Mittelgroße Säure Batterie
+metaitem.battery.su.mv.sulfuricacid.tooltip=Nur einmal benutzbar
+metaitem.battery.su.mv.mercury.name=Mittelgroße Mercury batterie
+metaitem.battery.su.mv.mercury.tooltip=Nur einmal benutzbar
 
-metaitem.battery.re.mv.cadmium.name=Medium Cadmium Battery
-metaitem.battery.re.mv.cadmium.tooltip=Reusable
-metaitem.battery.re.mv.lithium.name=Medium Lithium Battery
-metaitem.battery.re.mv.lithium.tooltip=Reusable
-metaitem.battery.re.mv.sodium.name=Medium Sodium Battery
-metaitem.battery.re.mv.sodium.tooltip=Reusable
+metaitem.battery.re.mv.cadmium.name=Mittelgroße Cadmium Batterie
+metaitem.battery.re.mv.cadmium.tooltip=Wiederaufladbar
+metaitem.battery.re.mv.lithium.name=Mittelgroße Lithium Batterie
+metaitem.battery.re.mv.lithium.tooltip=Wiederaufladbar
+metaitem.battery.re.mv.sodium.name=Mittelgroße Sodium batterie
+metaitem.battery.re.mv.sodium.tooltip=Wiederaufladbar
 
-metaitem.battery.su.hv.sulfuricacid.name=Large Acid Battery
-metaitem.battery.su.hv.sulfuricacid.tooltip=Single Use
-metaitem.battery.su.hv.mercury.name=Large Mercury Battery
-metaitem.battery.su.hv.mercury.tooltip=Single Use
+metaitem.battery.su.hv.sulfuricacid.name=Große Säure Batterie
+metaitem.battery.su.hv.sulfuricacid.tooltip=Nur einmal benutzbar
+metaitem.battery.su.hv.mercury.name=Große Mercury Batterie
+metaitem.battery.su.hv.mercury.tooltip=Nur einmal benutzbar
 
-metaitem.battery.re.hv.cadmium.name=Large Cadmium Battery
-metaitem.battery.re.hv.cadmium.tooltip=Reusable
-metaitem.battery.re.hv.lithium.name=Large Lithium Battery
-metaitem.battery.re.hv.lithium.tooltip=Reusable
-metaitem.battery.re.hv.sodium.name=Large Sodium Battery
-metaitem.battery.re.hv.sodium.tooltip=Reusable
+metaitem.battery.re.hv.cadmium.name=Große Cadmium Batterie
+metaitem.battery.re.hv.cadmium.tooltip=Wiederaufladbar
+metaitem.battery.re.hv.lithium.name=Große Lithium Batterie
+metaitem.battery.re.hv.lithium.tooltip=Wiederaufladbar
+metaitem.battery.re.hv.sodium.name=Große Sodium Batterie
+metaitem.battery.re.hv.sodium.tooltip=Wiederaufladbar
 
 metaitem.energy_crystal.name=Energy Crystal
 metaitem.lapotron_crystal.name=Lapotron Crystal
