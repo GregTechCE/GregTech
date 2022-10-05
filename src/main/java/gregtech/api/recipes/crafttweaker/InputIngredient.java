@@ -11,6 +11,13 @@ import stanhebben.zenscript.annotations.ZenGetter;
 
 import java.util.List;
 
+/**
+ * @deprecated
+ * 	1. Not full implementation
+ * 	2. CT provides required implementaions
+ * 	3. Buggy
+ */
+@Deprecated
 @ZenClass("mods.gregtech.recipe.InputIngredient")
 @ZenRegister
 public class InputIngredient implements IIngredient {
