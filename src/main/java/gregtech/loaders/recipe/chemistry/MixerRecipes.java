@@ -55,7 +55,7 @@ public class MixerRecipes {
             .duration(300).EUt(30).buildAndRegister();
 
         MIXER_RECIPES.recipeBuilder()
-            .input(dust, Salt, 2)
+            .input(dust, Salt)
             .fluidInputs(Water.getFluid(1000))
             .fluidOutputs(SaltWater.getFluid(1000))
             .duration(40).EUt(8).buildAndRegister();

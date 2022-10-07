@@ -65,7 +65,7 @@ public class SeparationRecipes {
 
         ELECTROLYZER_RECIPES.recipeBuilder()
             .fluidInputs(SaltWater.getFluid(1000))
-            .output(dust, SodiumHydroxide, 3)
+            .output(dust, SodiumHydroxide)
             .fluidOutputs(Chlorine.getFluid(1000))
             .fluidOutputs(Hydrogen.getFluid(1000))
             .duration(720).EUt(30).buildAndRegister();
