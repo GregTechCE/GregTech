@@ -322,7 +322,7 @@ public class ReactorRecipes {
             .notConsumable(new IntCircuitIngredient(1))
             .input(dust, Sodium)
             .fluidInputs(Water.getFluid(1000))
-            .output(dust, SodiumHydroxide, 3)
+            .output(dust, SodiumHydroxide)
             .fluidOutputs(Hydrogen.getFluid(1000))
             .duration(40).EUt(8).buildAndRegister();
 
